@@ -11,7 +11,7 @@ export class User extends React.Component {
       case userPending:
         return <U.EuiLoadingSpinner size="m"/>;
       case userUnknown:
-        return <U.EuiHeaderLink href="oauth_api?oauth_login">Login</U.EuiHeaderLink>;
+        return <U.EuiHeaderLink href="oauth_api.php?oauth_login">Login</U.EuiHeaderLink>;
       default:
         return this.props.user;
     }
@@ -20,7 +20,7 @@ export class User extends React.Component {
 
 export const getUser = async () => {
   try {
-    return await $.get(`oauth_api?login?oauth_identity`);
+    return await $.get(`oauth_api.php?login?oauth_identity`);
   } catch (e) {
     return userUnknown;
   }
