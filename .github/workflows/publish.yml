@@ -16,7 +16,7 @@ jobs:
       - run: yarn
       - run: yarn build
       - name: Run composer install
-        run: docker run -it --rm --user $(id -u):$(id -g) -v ~/.composer:/tmp -v $(pwd):/app docker.io/composer install --no-dev
+        run: docker run --rm --user $(id -u):$(id -g) -v $(pwd):/app docker.io/composer install --no-dev
       - name: Deploy to vendor dir
         uses: easingthemes/ssh-deploy@v2.1.1
         env:
