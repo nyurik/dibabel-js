@@ -1,4 +1,6 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+/vendor
+/public_html
+/.secret.php
 
 # dependencies
 /node_modules
