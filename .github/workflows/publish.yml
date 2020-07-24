@@ -1,0 +1,27 @@
+name: Test and publish
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: yarn build
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@v2.1.1
+        env:
+            REMOTE_HOST: "tools-dev.wmflabs.org"
+            REMOTE_USER: ${{ secrets.TOOLFORGE_USER }}
+            SSH_PRIVATE_KEY: ${{ secrets.TOOLFORGE_KEY }}
+            ARGS: "-rltgoDzvO --delete"
+            SOURCE: "build/"
+            TARGET: "/data/project/dibabel/public_html"
