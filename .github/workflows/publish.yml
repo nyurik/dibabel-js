@@ -15,9 +15,18 @@ jobs:
           node-version: 12
       - run: yarn
       - run: yarn build
+      - name: Run composer install
+        run: docker run -it --rm --user $(id -u):$(id -g) -v ~/.composer:/tmp -v $(pwd):/app docker.io/composer install --no-dev
+      - name: Deploy to vendor dir
+        uses: easingthemes/ssh-deploy@v2.1.1
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-      - name: Deploy to Server
+            REMOTE_HOST: "tools-dev.wmflabs.org"
+            REMOTE_USER: ${{ secrets.TOOLFORGE_USER }}
+            SSH_PRIVATE_KEY: ${{ secrets.TOOLFORGE_KEY }}
+            ARGS: "-rltgoDzvO --delete"
+            SOURCE: "vendor/"
+            TARGET: "/data/project/dibabel/vendor"
+      - name: Deploy to public_html dir
         uses: easingthemes/ssh-deploy@v2.1.1
         env:
             REMOTE_HOST: "tools-dev.wmflabs.org"

@@ -15,7 +15,7 @@ use MediaWiki\OAuthClient\Token;
  */
 function createClient() {
 	/** @noinspection PhpIncludeInspection */
-	$config = require_once __DIR__ . '/.secret.php';
+	$config = require_once __DIR__ . '/../.secret.php';
 	$conf = new ClientConfig( $config['url'] );
 	$conf->setConsumer( new Consumer( $config['consumer_key'],
 		$config['consumer_secret'] ) );
