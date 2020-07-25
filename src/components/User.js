@@ -1,6 +1,5 @@
 import React from 'react';
 import * as U from '@elastic/eui';
-import $ from 'jquery';
 
 export const userUnknown = {};
 export const userPending = {};
@@ -20,8 +19,9 @@ export class User extends React.Component {
 
 export const getUser = async () => {
   try {
-    return await $.json(`oauth_api.php?oauth_identity`);
-  } catch (e) {
+    return (await fetch('oauth_api.php?oauth_identity')).json
+  } catch (err) {
+    console.log(err);
     return userUnknown;
   }
 }

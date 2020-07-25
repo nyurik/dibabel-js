@@ -17,6 +17,13 @@ jobs:
       - run: yarn build
       - name: Run composer install
         run: docker run --rm --user $(id -u):$(id -g) -v $(pwd):/app docker.io/composer install --no-dev
+      - name: Fix remote file permissions
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          host: "tools-dev.wmflabs.org"
+          username: ${{ secrets.TOOLFORGE_USER }}
+          key: ${{ secrets.TOOLFORGE_KEY }}
+          script: become dibabel bash -c 'mkdir -p public_html && mkdir -p vendor && take public_html && take vendor && chmod 2775 -R  public_html && chmod 2775 -R  vendor'
       - name: Deploy to vendor dir
         uses: easingthemes/ssh-deploy@v2.1.1
         env:
