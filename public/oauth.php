@@ -15,10 +15,14 @@ use MediaWiki\OAuthClient\Token;
  */
 function createClient() {
 	/** @noinspection PhpIncludeInspection */
-	$config = require_once __DIR__ . '/../.secret.php';
-	$conf = new ClientConfig( $config['url'] );
-	$conf->setConsumer( new Consumer( $config['consumer_key'],
-		$config['consumer_secret'] ) );
+	require_once __DIR__ . '/../.secret.php';
+
+	/** @noinspection PhpUndefinedVariableInspection */
+	$conf = new ClientConfig( $OAUTH_CONFIG['url'] );
+
+	$conf->setConsumer( new Consumer( $OAUTH_CONFIG['consumer_key'],
+		$OAUTH_CONFIG['consumer_secret'] ) );
+
 	return new Client( $conf );
 }
 

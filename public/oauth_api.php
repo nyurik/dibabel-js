@@ -37,7 +37,7 @@ function main() {
 		$server = $params['oauth_call'];
 		unset( $params['oauth_call'] );
 
-		if ( !preg_match( '/^([-_a-z0-9]+\\.)?(wikipedia|wikimedia|wikibooks|wikiversity|wikinews|wiktionary|wikisource|wikiquote|wikivoyage|wikidata|mediawiki)\\.org$/',
+		if ( !preg_match( '/^([-_a-z0-9]+\\.)?(wikipedia|wikimedia|wikibooks|wikiversity|wikinews|wiktionary|wikisource|wikiquote|wikivoyage|wikidata|mediawiki)\\.(beta\\.wmflabs\\.)?org$/',
 			$server ) ) {
 			throw new Exception( 'Unsupported server name (the "call" param)' );
 		}
