@@ -19,7 +19,7 @@ export class User extends React.Component {
 
 export const getUser = async () => {
   try {
-    return (await fetch('oauth_api.php?oauth_identity')).json
+    return (await fetch('oauth_api.php?oauth_identity')).json();
   } catch (err) {
     console.log(err);
     return userUnknown;

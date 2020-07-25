@@ -42,3 +42,10 @@ jobs:
             ARGS: "-rltgoDzvO --delete"
             SOURCE: "build/"
             TARGET: "/data/project/dibabel/public_html"
+      - name: Take file ownership to the tool
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          host: "tools-dev.wmflabs.org"
+          username: ${{ secrets.TOOLFORGE_USER }}
+          key: ${{ secrets.TOOLFORGE_KEY }}
+          script: become dibabel bash -c 'take public_html && take vendor'

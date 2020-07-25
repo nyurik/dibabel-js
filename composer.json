@@ -1,5 +1,6 @@
 {
-    "require": {
-        "mediawiki/oauthclient": "^1.1"
-    }
+  "require": {
+    "mediawiki/oauthclient": "^1.1",
+    "ext-json": "*"
+  }
 }

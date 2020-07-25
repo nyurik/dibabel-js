@@ -50,7 +50,7 @@ function getToken( $type ) {
 }
 
 /**
- * Delete oauth token from the sesion
+ * Delete oauth token from the session
  *
  * @param string $type request or access
  */
