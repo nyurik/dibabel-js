@@ -13,14 +13,14 @@ export class User extends React.Component {
       case userUnknown:
         return <U.EuiHeaderLink href="oauth_api.php?oauth_login">Login</U.EuiHeaderLink>;
       default:
-        return this.props.user;
+        return this.props.user.username;
     }
   }
 }
 
 export const getUser = async () => {
   try {
-    return await $.get(`oauth_api.php?login?oauth_identity`);
+    return await $.json(`oauth_api.php?oauth_identity`);
   } catch (e) {
     return userUnknown;
   }
