@@ -20,8 +20,8 @@ function createClient() {
 	/** @noinspection PhpUndefinedVariableInspection */
 	$conf = new ClientConfig( $OAUTH_CONFIG['url'] );
 
-	$conf->setConsumer( new Consumer( $OAUTH_CONFIG['consumer_key'],
-		$OAUTH_CONFIG['consumer_secret'] ) );
+	$conf->setConsumer( new Consumer( $OAUTH_CONFIG['key'],
+		$OAUTH_CONFIG['secret'] ) );
 
 	return new Client( $conf );
 }
@@ -33,7 +33,6 @@ function createClient() {
  * @param Token $token
  */
 function saveToken( $type, $token ) {
-	session_start();
 	$_SESSION["${type}_key"] = $token->key;
 	$_SESSION["${type}_secret"] = $token->secret;
 }
@@ -46,7 +45,6 @@ function saveToken( $type, $token ) {
  * @return Token
  */
 function getToken( $type ) {
-	session_start();
 	return new Token( $_SESSION["${type}_key"],
 		$_SESSION["${type}_secret"] );
 }

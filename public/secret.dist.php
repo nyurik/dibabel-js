@@ -11,7 +11,7 @@ $OAUTH_CONFIG = [
 
 	// When you register, you will get a consumer key and secret. Put these here (and for real
 	// applications, keep the secret secret! The key is public knowledge.).
-	'consumerKey' => '',
-	'consumerSecret' => '',
+	'key' => '',
+	'secret' => '',
 
 ];
