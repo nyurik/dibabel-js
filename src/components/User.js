@@ -24,4 +24,4 @@ export const getUser = async () => {
     console.log(err);
     return userUnknown;
   }
-}
+};

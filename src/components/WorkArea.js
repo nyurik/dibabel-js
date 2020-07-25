@@ -1,13 +1,13 @@
 import React from 'react';
 import * as U from '@elastic/eui';
-import { userPending, userUnknown } from "./User";
+import { userPending, userUnknown } from './User';
 
 export class WorkArea extends React.Component {
   render() {
     switch (this.props.user) {
       case userPending:
       case userUnknown:
-        return "";
+        return '';
       default:
         return <U.EuiPageContent>
           <U.EuiPageContentHeader>

@@ -23,7 +23,7 @@ export class Settings extends React.Component {
   }
 
   switchDarkMode() {
-    alert("NOT IMPLEMENTED");
+    alert('NOT IMPLEMENTED');
   }
 
   render() {
