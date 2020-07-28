@@ -1,5 +1,6 @@
 import React from 'react';
-import * as U from '@elastic/eui';
+import { EuiLoadingSpinner } from '@elastic/eui/es/components/loading';
+import { EuiHeaderLink } from '@elastic/eui/es/components/header/header_links';
 
 export const userPending = Symbol('Loading user info');
 export const userUnknown = Symbol('Unknown user');
@@ -7,9 +8,9 @@ export const userUnknown = Symbol('Unknown user');
 export function User(props) {
   switch (props.user) {
     case userPending:
-      return <U.EuiLoadingSpinner size="m"/>;
+      return <EuiLoadingSpinner size="m"/>;
     case userUnknown:
-      return <U.EuiHeaderLink href="oauth_api.php?oauth_login">Login</U.EuiHeaderLink>;
+      return <EuiHeaderLink href="oauth_api.php?oauth_login">Login</EuiHeaderLink>;
     default:
       return props.user.username;
   }

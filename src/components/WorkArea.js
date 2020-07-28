@@ -1,9 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import * as U from '@elastic/eui';
 import { getItems } from '../data/Store';
 import groupBy from 'lodash/groupBy';
 import countBy from 'lodash/countBy';
 import map from 'lodash/map';
+
+import { EuiCheckbox } from '@elastic/eui/es/components/form/checkbox';
+import { EuiButtonIcon } from '@elastic/eui/es/components/button/button_icon';
+import { EuiIcon } from '@elastic/eui/es/components/icon';
+import { EuiLink } from '@elastic/eui/es/components/link';
+import { EuiHealth } from '@elastic/eui/es/components/health';
+import { EuiButton } from '@elastic/eui/es/components/button';
+import { EuiInMemoryTable } from '@elastic/eui/es/components/basic_table';
 
 export const WorkArea = () => {
   const [message, setMessage] = useState('');
@@ -92,7 +99,7 @@ export const WorkArea = () => {
         const checked = selectedCount > 0 && selectable.length === selectedCount;
         const disabled = selectable.length === 0;
         const indeterminate = selectedCount > 0 && selectable.length > selectedCount;
-        return <U.EuiCheckbox
+        return <EuiCheckbox
           id={`check-${item.key}`}
           checked={checked}
           disabled={disabled}
@@ -138,7 +145,7 @@ export const WorkArea = () => {
       width: '2.5em',
       isExpander: true,
       render: item => (
-        <U.EuiButtonIcon
+        <EuiButtonIcon
           onClick={() => toggleExpandGroup(item)}
           aria-label={expandedItems.has(item) ? 'Collapse' : 'Expand'}
           iconType={expandedItems.has(item) ? 'arrowUp' : 'arrowDown'}
@@ -152,7 +159,7 @@ export const WorkArea = () => {
       sortable: true,
       mobileOptions: { show: false },
       render: type => (
-        <U.EuiIcon
+        <EuiIcon
           type={type === 'module'
             ? 'https://upload.wikimedia.org/wikipedia/commons/c/cf/Lua-Logo.svg'
             : 'https://upload.wikimedia.org/wikipedia/commons/f/fb/Template_icon.svg'}
@@ -165,7 +172,7 @@ export const WorkArea = () => {
       name: 'Source Page',
       sortable: true,
       render: (srcFullTitle, item) => (
-        <U.EuiLink href={item.srcTitleUrl} target="_blank">{srcFullTitle}</U.EuiLink>
+        <EuiLink href={item.srcTitleUrl} target="_blank">{srcFullTitle}</EuiLink>
       ),
     },
     dstSite: {
@@ -176,7 +183,7 @@ export const WorkArea = () => {
     dstTitle: {
       name: 'Page',
       render: item => (
-        <U.EuiLink href={item.dstTitleUrl} target="_blank">{item.dstFullTitle}</U.EuiLink>
+        <EuiLink href={item.dstTitleUrl} target="_blank">{item.dstFullTitle}</EuiLink>
       ),
     },
     behind: {
@@ -192,7 +199,7 @@ export const WorkArea = () => {
         } else {
           [color, label, title] = ['danger', 'Modified', 'The target page has been modified and cannot be updated automatically.'];
         }
-        return <U.EuiHealth title={title} color={color}>{label}</U.EuiHealth>;
+        return <EuiHealth title={title} color={color}>{label}</EuiHealth>;
       },
     },
     groupInSync: {
@@ -200,8 +207,8 @@ export const WorkArea = () => {
       description: 'Number of up to date pages.',
       render: item => {
         if (item.groupInSync > 0) {
-          return <U.EuiHealth title={'Number of up to date pages.'}
-                              color={'success'}>{`${item.groupInSync} pages`}</U.EuiHealth>;
+          return <EuiHealth title={'Number of up to date pages.'}
+                            color={'success'}>{`${item.groupInSync} pages`}</EuiHealth>;
         }
       },
     },
@@ -220,7 +227,7 @@ export const WorkArea = () => {
             item.groupBehind.map(v => `by\u00A0${v.behind}\u00A0x${v.count}`).join(', ');
           title = 'Number of revisions fallen behind, with (page count)';
         }
-        return <U.EuiHealth title={title} color={'warning'}>{label}</U.EuiHealth>;
+        return <EuiHealth title={title} color={'warning'}>{label}</EuiHealth>;
       },
     },
     groupDiverged: {
@@ -228,8 +235,8 @@ export const WorkArea = () => {
       description: 'Number of pages with local modifications.',
       render: item => {
         if (item.groupDiverged > 0) {
-          return <U.EuiHealth title={'Number of pages with local modifications.'}
-                              color={'danger'}>{`${item.groupDiverged} pages`}</U.EuiHealth>;
+          return <EuiHealth title={'Number of pages with local modifications.'}
+                            color={'danger'}>{`${item.groupDiverged} pages`}</EuiHealth>;
         }
       },
     },
@@ -256,21 +263,21 @@ export const WorkArea = () => {
     };
 
     return (
-      <U.EuiButton color="danger" iconType="trash" onClick={onClick}>
+      <EuiButton color="danger" iconType="trash" onClick={onClick}>
         Sync {selectedItems.size} items
-      </U.EuiButton>
+      </EuiButton>
     );
   };
 
   const renderToolsRight = () => {
     if (isLoading) {
-      return <U.EuiButton key="loadItems" isDisabled={true} isLoading={true}>
+      return <EuiButton key="loadItems" isDisabled={true} isLoading={true}>
         Refreshing...
-      </U.EuiButton>;
+      </EuiButton>;
     } else {
-      return <U.EuiButton key="loadItems" iconType="refresh" onClick={() => setIsLoading(true)}>
+      return <EuiButton key="loadItems" iconType="refresh" onClick={() => setIsLoading(true)}>
         Refresh
-      </U.EuiButton>;
+      </EuiButton>;
     }
   };
 
@@ -283,7 +290,7 @@ export const WorkArea = () => {
   const itemIdToExpandedRowMap = {};
   for (let item of groupedItems.groups) {
     if (expandedItems.has(item)) {
-      itemIdToExpandedRowMap[item.key] = (<U.EuiInMemoryTable
+      itemIdToExpandedRowMap[item.key] = (<EuiInMemoryTable
         className={'sub-table'}
         items={item.expandItems}
         columns={item.expandColumns.map(v => all_columns[v])}
@@ -293,7 +300,7 @@ export const WorkArea = () => {
     }
   }
 
-  return (<U.EuiInMemoryTable
+  return (<EuiInMemoryTable
     items={groupedItems.groups}
     loading={isLoading}
     columns={groupedItems.columns.map(v => all_columns[v])}
