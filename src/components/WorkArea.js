@@ -8,7 +8,7 @@ import map from 'lodash/map';
 export const WorkArea = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const [itemIdToExpandedRowMap, setItemIdToExpandedRowMap] = useState({});
+  const [expandedItems, setExpandedItems] = useState(new Set());
   const [selectedItems, setSelectedItems] = useState(new Set());
 
   const [allItems, setAllItems] = useState([]);
@@ -28,7 +28,7 @@ export const WorkArea = () => {
 
       setIsLoading(false);
       setMessage('');
-      setItemIdToExpandedRowMap({});
+      setExpandedItems(new Set());
       setSelectedItems(new Set());
     }
 
@@ -107,9 +107,6 @@ export const WorkArea = () => {
               }
             }
             setSelectedItems(clone);
-            if (item.isGroup) {
-              expandGroup(item, true);
-            }
           }}
         />;
       },
@@ -142,9 +139,9 @@ export const WorkArea = () => {
       isExpander: true,
       render: item => (
         <U.EuiButtonIcon
-          onClick={() => expandGroup(item)}
-          aria-label={itemIdToExpandedRowMap[item.key] ? 'Collapse' : 'Expand'}
-          iconType={itemIdToExpandedRowMap[item.key] ? 'arrowUp' : 'arrowDown'}
+          onClick={() => toggleExpandGroup(item)}
+          aria-label={expandedItems.has(item) ? 'Collapse' : 'Expand'}
+          iconType={expandedItems.has(item) ? 'arrowUp' : 'arrowDown'}
         />
       ),
     },
@@ -238,25 +235,14 @@ export const WorkArea = () => {
     },
   };
 
-  function expandGroup(item, refresh = false) {
-    const isExpanded = !!itemIdToExpandedRowMap[item.key];
-    if (refresh && !isExpanded) {
-      // already collapsed, nothing to update
-      return;
-    }
-    const clone = { ...itemIdToExpandedRowMap };
-    if (refresh ? isExpanded : !isExpanded) {
-      clone[item.key] = (<U.EuiInMemoryTable
-        className={'sub-table'}
-        items={item.expandItems}
-        columns={item.expandColumns.map(v => all_columns[v])}
-        itemId={'key'}
-        sorting={true}
-      />);
+  function toggleExpandGroup(item) {
+    const clone = new Set(expandedItems);
+    if (clone.has(item)) {
+      clone.delete(item);
     } else {
-      delete clone[item.key];
+      clone.add(item);
     }
-    setItemIdToExpandedRowMap(clone);
+    setExpandedItems(clone);
   }
 
   const renderToolsLeft = () => {
@@ -265,7 +251,7 @@ export const WorkArea = () => {
     }
 
     const onClick = async () => {
-      // store.deleteUsers(...selection.map(user => user.id));
+      // store.processItems(...);
       setSelectedItems(new Set());
     };
 
@@ -293,6 +279,19 @@ export const WorkArea = () => {
     toolsRight: renderToolsRight(),
     box: { incremental: true },
   };
+
+  const itemIdToExpandedRowMap = {};
+  for (let item of groupedItems.groups) {
+    if (expandedItems.has(item)) {
+      itemIdToExpandedRowMap[item.key] = (<U.EuiInMemoryTable
+        className={'sub-table'}
+        items={item.expandItems}
+        columns={item.expandColumns.map(v => all_columns[v])}
+        itemId={'key'}
+        sorting={true}
+      />);
+    }
+  }
 
   return (<U.EuiInMemoryTable
     items={groupedItems.groups}
