@@ -1,19 +1,17 @@
 import React from 'react';
 import * as U from '@elastic/eui';
 
-export const userUnknown = Symbol('Unknown user');
 export const userPending = Symbol('Loading user info');
+export const userUnknown = Symbol('Unknown user');
 
-export class User extends React.Component {
-  render() {
-    switch (this.props.user) {
-      case userPending:
-        return <U.EuiLoadingSpinner size="m"/>;
-      case userUnknown:
-        return <U.EuiHeaderLink href="oauth_api.php?oauth_login">Login</U.EuiHeaderLink>;
-      default:
-        return this.props.user.username;
-    }
+export function User(props) {
+  switch (props.user) {
+    case userPending:
+      return <U.EuiLoadingSpinner size="m"/>;
+    case userUnknown:
+      return <U.EuiHeaderLink href="oauth_api.php?oauth_login">Login</U.EuiHeaderLink>;
+    default:
+      return props.user.username;
   }
 }
 

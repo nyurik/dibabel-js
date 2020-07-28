@@ -36,11 +36,14 @@
 //   }
 // }
 
-
 const domainSuffix = '.org';
 const titleUrlSuffix = '/wiki/';
 
 export const getItems = async () => {
+
+  // TODO: REMOVE SLEEP!
+  await new Promise(r => setTimeout(r, 500));
+
   const data = [
     {
       primarySite: 'mediawiki',
@@ -87,7 +90,9 @@ export const getItems = async () => {
 
       for (let dstSite of Object.keys(src.copies)) {
         const dst = src.copies[dstSite];
+        let dstTitleUrl = `https://${dstSite}${domainSuffix}${titleUrlSuffix}${dst.title}`;
         yield {
+          key: dstTitleUrl,
           type,
           srcSite: src.primarySite,
           srcFullTitle: src.primaryTitle,
@@ -96,7 +101,7 @@ export const getItems = async () => {
           dstSite,
           dstFullTitle: dst.title,
           dstTitle: splitNs(dst.title)[1],
-          dstTitleUrl: `https://${dstSite}${domainSuffix}${titleUrlSuffix}${dst.title}`,
+          dstTitleUrl: dstTitleUrl,
           isInSync: dst.behind === 0,
           behind: dst.behind,
           diverged: !!dst.diverged,
