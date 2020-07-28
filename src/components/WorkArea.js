@@ -28,6 +28,8 @@ export const WorkArea = () => {
 
       setIsLoading(false);
       setMessage('');
+      setItemIdToExpandedRowMap({});
+      setSelectedItems(new Set());
     }
 
     if (isLoading) {
