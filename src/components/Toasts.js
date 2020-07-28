@@ -4,6 +4,7 @@ import { EuiGlobalToastList } from '@elastic/eui/es/components/toast';
 let addToastHandler;
 let toastId = 0;
 
+// FIXME: A global addToast function seems like a bad design
 export function addToast(toast) {
   addToastHandler(toast);
 }
@@ -17,7 +18,7 @@ export function Toasts() {
 
   addToastHandler = (toast) => {
     setToasts(toasts.concat({
-      id: toastId++,
+      id: (toastId++).toString(),
       ...toast,
     }));
   };

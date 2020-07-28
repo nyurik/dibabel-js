@@ -11,7 +11,6 @@ import { EuiLink } from '@elastic/eui/es/components/link';
 import { EuiHealth } from '@elastic/eui/es/components/health';
 import { EuiButton } from '@elastic/eui/es/components/button';
 import { EuiInMemoryTable } from '@elastic/eui/es/components/basic_table';
-import { DiffViewer } from './DiffViewer';
 
 export const WorkArea = (props) => {
   const [message, setMessage] = useState('');
@@ -21,7 +20,6 @@ export const WorkArea = (props) => {
 
   const [allItems, setAllItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [diffViewItem, setDiffViewItem] = useState();
 
   useEffect(() => {
     async function loadDataAsync() {
@@ -145,7 +143,7 @@ export const WorkArea = (props) => {
           available: ({ isInSync }) => isInSync === false,
           onClick: (item) => {
             debugger;
-            setDiffViewItem(item);
+            props.setItem(item);
           },
         },
       ],

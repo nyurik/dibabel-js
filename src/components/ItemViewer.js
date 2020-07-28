@@ -1,29 +1,20 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useEuiTextDiff } from '@elastic/eui/es/components/text_diff';
 import { EuiFlyout, EuiFlyoutBody, EuiFlyoutHeader } from '@elastic/eui/es/components/flyout';
 import { EuiTitle } from '@elastic/eui/es/components/title';
 import { EuiCodeBlock } from '@elastic/eui/es/components/code';
 
-export const DiffViewer = (props) => {
-  const value = useContext(props.context);
-
-  if (!value) {
-    return;
-  }
-
-  // FIXME? This does not seem to be a hook, not sure why eslint complains
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [rendered, textDiffObject] = useEuiTextDiff({
+const ItemDiffViewer = (props) => {
+  const [rendered] = useEuiTextDiff({
     beforeText: props.item.dstText,
     afterText: props.item.srcText,
+    timeout: 0.5,
   });
-
-  console.log(textDiffObject);
 
   return (
     <EuiFlyout
       ownFocus
-      onClose={props.closeFlyout}
+      onClose={props.close}
       aria-labelledby="flyoutTitle">
       <EuiFlyoutHeader hasBorder>
         <EuiTitle size="m">
@@ -36,4 +27,12 @@ export const DiffViewer = (props) => {
     </EuiFlyout>
   );
 
+};
+
+export const ItemViewer = (props) => {
+  // ItemDiffViewer must be wrapped because it uses a hook
+  if (!props.item) {
+    return null;
+  }
+  return <ItemDiffViewer {...props} />;
 };

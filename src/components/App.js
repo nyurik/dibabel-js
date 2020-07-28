@@ -10,10 +10,13 @@ import { EuiPageHeader, EuiPageHeaderSection } from '@elastic/eui/es/components/
 import { EuiHeaderSectionItem } from '@elastic/eui/es/components/header/header_section';
 import { EuiHeaderLogo } from '@elastic/eui/es/components/header';
 import { EuiHeaderLink } from '@elastic/eui/es/components/header/header_links';
-import { Toasts, addToast } from './Toasts';
-import { DiffViewer } from './DiffViewer';
+import { addToast, Toasts } from './Toasts';
+import { ItemViewer } from './ItemViewer';
 
 export function App() {
+
+  const [item, setItem] = useState(null);
+  const closeItem = () => setItem(null);
 
   const [user, setUser] = useState(userPending);
   useEffect(() => {
@@ -21,6 +24,7 @@ export function App() {
       getUser(addToast).then(setUser);
     }
   }, [user]);
+
 
   return (
     <EuiPage>
@@ -44,17 +48,10 @@ export function App() {
             <Settings/>
           </EuiPageHeaderSection>
         </EuiPageHeader>
-        <WorkArea addToast={addToast} user={user}/>
+        <WorkArea addToast={addToast} user={user} setItem={setItem}/>
       </EuiPageBody>
+      <ItemViewer item={item} close={closeItem}/>
       <Toasts/>
-      <Flyout />
     </EuiPage>
   );
 }
-
-
-if (diffViewItem) {
-  return (<>
-    {mainTable}
-  </>);
-} else {
