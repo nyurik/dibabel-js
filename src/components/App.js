@@ -11,6 +11,7 @@ import { EuiHeaderSectionItem } from '@elastic/eui/es/components/header/header_s
 import { EuiHeaderLogo } from '@elastic/eui/es/components/header';
 import { EuiHeaderLink } from '@elastic/eui/es/components/header/header_links';
 import { Toasts, addToast } from './Toasts';
+import { DiffViewer } from './DiffViewer';
 
 export function App() {
 
@@ -46,6 +47,14 @@ export function App() {
         <WorkArea addToast={addToast} user={user}/>
       </EuiPageBody>
       <Toasts/>
+      <Flyout />
     </EuiPage>
   );
 }
+
+
+if (diffViewItem) {
+  return (<>
+    {mainTable}
+  </>);
+} else {

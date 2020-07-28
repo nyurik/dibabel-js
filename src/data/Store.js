@@ -44,6 +44,45 @@ export const getItems = async () => {
   // TODO: REMOVE SLEEP!
   await new Promise(r => setTimeout(r, 500));
 
+  const srcLuaText = `
+--    {{#invoke:TNT | doc | Graph:Lines }}
+--        uses https://commons.wikimedia.org/wiki/Data:Templatedata/Graph:Lines.tab
+--        if the current page is Template:Graph:Lines/doc
+--
+
+local p = {}
+local i18nDataset = 'I18n/Module:TNT.tab'
+
+-- Forward declaration of the local functions
+local sanitizeDataset, loadData, link, formatMessage
+`;
+
+  const dstLuaText = `
+--    {{#invoke : TNT | doc | Graph:Lines }}
+--        uses https://commons.wikimedia.org/wiki/Data:Templatedata/Graph:Lines.tab
+--        if the current page is Template:Graph:Lines/doc
+--
+
+local i18nDataset = 'I18n/Module:TNT.map'
+
+-- Forward extra words declaration of the local functions
+new line added
+local sanitizeDataset, loadData, link, formatMessage
+`;
+
+  const srcWikiText = `
+{{#invoke:TNT | doc | Graph:Lines }}
+Some [https://commons.wikimedia.org/wiki/Data:Templatedata/Graph:Lines.tab link] to [[wiki|markup]].
+`;
+
+  const dstWikiText = `
+{{#invoke:TNT | doc | Graph:Lines }}
+Some text [https://commons.wikimedia.org/wiki/Data:Templatedata/Graph:Bars.tab link] to [[wiki|markup]]
+is not.
+`;
+
+
+
   const data = [
     {
       primarySite: 'mediawiki',
@@ -105,6 +144,8 @@ export const getItems = async () => {
           isInSync: dst.behind === 0,
           behind: dst.behind,
           diverged: !!dst.diverged,
+          srcText: type === 'module' ? srcLuaText : srcWikiText,
+          dstText: type === 'module' ? dstLuaText : dstWikiText,
         };
       }
     }
