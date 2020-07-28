@@ -16,16 +16,33 @@ export function User(props) {
   }
 }
 
-export const getUser = async () => {
+export const getUser = async (addToast) => {
   try {
     let userInfo = await fetch('oauth_api.php?oauth_identity');
     if (!userInfo.ok) {
-      console.log(`${userInfo.status}: ${userInfo.statusText}\n${await userInfo.text()}`);
+      addToast({
+        title: `${userInfo.status}: ${userInfo.statusText}`,
+        color: 'danger',
+        iconType: 'alert',
+        text: await userInfo.text(),
+      });
       return userUnknown;
     }
-    return await userInfo.json();
+    const json = await userInfo.json();
+    addToast({
+      title: `Logged in as ${json.username}`,
+      color: 'success',
+      iconType: 'check',
+    });
+    return json;
   } catch (err) {
-    console.log(`Unable to parse user info response.\n${err}`);
+    addToast({
+      title: `Unable to parse user login`,
+      color: 'danger',
+      iconType: 'alert',
+      text: `${err}`,
+      toastLifeTimeMs: 15000,
+    });
     return userUnknown;
   }
 };

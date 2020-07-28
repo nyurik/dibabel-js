@@ -12,7 +12,7 @@ import { EuiHealth } from '@elastic/eui/es/components/health';
 import { EuiButton } from '@elastic/eui/es/components/button';
 import { EuiInMemoryTable } from '@elastic/eui/es/components/basic_table';
 
-export const WorkArea = () => {
+export const WorkArea = (props) => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [expandedItems, setExpandedItems] = useState(new Set());
@@ -129,7 +129,11 @@ export const WorkArea = () => {
           type: 'icon',
           color: 'danger',
           available: ({ behind }) => behind > 0,
-          onClick: () => alert('save'),
+          onClick: () => props.addToast({
+            title: 'Copying...',
+            color: 'danger',
+            iconType: 'alert',
+          }),
         },
         {
           name: 'Diff',
@@ -137,7 +141,12 @@ export const WorkArea = () => {
           icon: 'inputOutput', // 'magnifyWithPlus' ?
           type: 'icon',
           available: ({ isInSync }) => isInSync === false,
-          onClick: () => alert('diff'),
+          onClick: () => props.addToast({
+            title: 'diff...',
+            color: 'success',
+            iconType: 'alert',
+            text: 'yei!',
+          }),
         },
       ],
     },

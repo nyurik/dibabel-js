@@ -10,13 +10,14 @@ import { EuiPageHeader, EuiPageHeaderSection } from '@elastic/eui/es/components/
 import { EuiHeaderSectionItem } from '@elastic/eui/es/components/header/header_section';
 import { EuiHeaderLogo } from '@elastic/eui/es/components/header';
 import { EuiHeaderLink } from '@elastic/eui/es/components/header/header_links';
+import { Toasts, addToast } from './Toasts';
 
 export function App() {
 
   const [user, setUser] = useState(userPending);
   useEffect(() => {
     if (user === userPending) {
-      getUser().then(setUser);
+      getUser(addToast).then(setUser);
     }
   }, [user]);
 
@@ -35,15 +36,16 @@ export function App() {
           <EuiPageHeaderSection>
             <EuiHeaderLink iconType="help" href="#">Help</EuiHeaderLink>
             <EuiHeaderLink iconType="logoGithub"
-                             href="https://github.com/nyurik/dibabel-js">Source</EuiHeaderLink>
+                           href="https://github.com/nyurik/dibabel-js">Source</EuiHeaderLink>
           </EuiPageHeaderSection>
           <EuiPageHeaderSection>
             <User user={user}/>
             <Settings/>
           </EuiPageHeaderSection>
         </EuiPageHeader>
-        <WorkArea user={user}/>
+        <WorkArea addToast={addToast} user={user}/>
       </EuiPageBody>
+      <Toasts/>
     </EuiPage>
   );
 }
