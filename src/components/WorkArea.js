@@ -6,6 +6,7 @@ import countBy from 'lodash/countBy';
 import map from 'lodash/map';
 
 export const WorkArea = () => {
+  // eslint-disable-next-line
   const [groupByItems, setGroupByItems] = useState('source');  // could also be '' and 'source+behind'
   const [items, setItems] = useState();
   const [isLoading, setIsLoading] = useState(false);
