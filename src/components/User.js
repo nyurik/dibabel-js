@@ -1,8 +1,8 @@
 import React from 'react';
 import * as U from '@elastic/eui';
 
-export const userUnknown = {};
-export const userPending = {};
+export const userUnknown = Symbol('Unknown user');
+export const userPending = Symbol('Loading user info');
 
 export class User extends React.Component {
   render() {
@@ -19,9 +19,14 @@ export class User extends React.Component {
 
 export const getUser = async () => {
   try {
-    return (await fetch('oauth_api.php?oauth_identity')).json();
+    let userInfo = await fetch('oauth_api.php?oauth_identity');
+    if (!userInfo.ok) {
+      console.log(`${userInfo.status}: ${userInfo.statusText}\n${await userInfo.text()}`);
+      return userUnknown;
+    }
+    return await userInfo.json();
   } catch (err) {
-    console.log(err);
+    console.log(`Unable to parse user info response.\n${err}`);
     return userUnknown;
   }
 };

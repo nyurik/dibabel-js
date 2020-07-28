@@ -14,11 +14,7 @@ export class App extends React.Component {
   }
 
   async componentDidMount() {
-    try {
-      this.setState({ user: await getUser() });
-    } catch (err) {
-      console.log(err);
-    }
+    this.setState({ user: await getUser() });
   }
 
   render() {
