@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import * as U from '@elastic/eui';
 import { getItems } from '../data/Store';
 import groupBy from 'lodash/groupBy';
@@ -39,12 +39,9 @@ export const WorkArea = () => {
 
   }, [isLoading]);
 
-  const [groupedItems, setGroupedItems] = useState({ columns: [], groups: [] });
+  const [groupings] = useState(['srcTitleUrl']);
 
-  // eslint-disable-next-line no-unused-vars
-  const [groupings, setGroupings] = useState(['srcTitleUrl']);
-
-  useEffect(() => {
+  const groupedItems = useMemo(() => {
     function groupItems(groupIndex, items) {
       const group = groupings[groupIndex];
       return {
@@ -81,7 +78,7 @@ export const WorkArea = () => {
       };
     }
 
-    setGroupedItems(groupItems(0, allItems));
+    return groupItems(0, allItems);
   }, [groupings, allItems]);
 
   const all_columns = {
