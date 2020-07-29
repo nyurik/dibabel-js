@@ -39,8 +39,11 @@ export function App() {
             </EuiHeaderSectionItem>
           </EuiPageHeaderSection>
           <EuiPageHeaderSection>
-            <EuiHeaderLink iconType="help" href="#">Help</EuiHeaderLink>
+            <EuiHeaderLink iconType="help"
+                           target="_blank"
+                           href="https://www.mediawiki.org/w/index.php?title=WP:TNT">Help</EuiHeaderLink>
             <EuiHeaderLink iconType="logoGithub"
+                           target="_blank"
                            href="https://github.com/nyurik/dibabel-js">Source</EuiHeaderLink>
           </EuiPageHeaderSection>
           <EuiPageHeaderSection>

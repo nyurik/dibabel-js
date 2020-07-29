@@ -11,6 +11,8 @@ import { EuiSearchBar } from '@elastic/eui/es/components/search_bar';
 import { EuiIcon } from '@elastic/eui/es/components/icon';
 import { siteIcons, typeIcons } from '../data/icons';
 import { EuiHealth } from '@elastic/eui/es/components/health';
+import { getLanguages } from '../data/languages';
+import { EuiSpacer } from '@elastic/eui/es/components/spacer';
 
 const initialQuery = EuiSearchBar.Query.MATCH_ALL;
 
@@ -135,19 +137,27 @@ export const WorkArea = (props) => {
     }));
   };
 
-  const getLanguages = async () => {
+  const getLangOptions = async () => {
     const values = uniq(allItems.map(v => v.lang));
     values.sort();
-    return values.map(value => ({
-      value: value,
-      view: (<EuiFlexGroup>
-        <EuiFlexItem grow={false}><EuiIcon
-          type={`https://commons.wikimedia.org/wiki/Special:Redirect/file/File:ISO%20639%20Icon%20${value}.svg`}
-          size={'m'}/></EuiFlexItem>
-        <EuiFlexItem grow={false}>{value}</EuiFlexItem>
-      </EuiFlexGroup>)
-    }));
+    const allLangs = await getLanguages(props.addToast);
+    return values.map(lang => {
+      const langInfo = allLangs[lang] || { name: 'Unknown' };
+      let name = langInfo.name;
+      if (langInfo.autonym && langInfo.autonym !== langInfo.name) {
+        name += ` - ${langInfo.autonym}`;
+      }
+      return {
+        value: lang,
+        // FIXME: Should use proper CSS styles
+        view: <EuiFlexGroup>
+          <EuiFlexItem grow={false} style={{ width: '1.8em' }}><b>{lang}</b></EuiFlexItem>
+          <EuiFlexItem grow={false}>{name}</EuiFlexItem>
+        </EuiFlexGroup>
+      };
+    });
   };
+
   const getStatuses = async () => {
     return map({
       'ok': 'success',
@@ -186,7 +196,7 @@ export const WorkArea = (props) => {
       field: 'lang',
       name: 'Language',
       multiSelect: 'or',
-      options: () => getLanguages(),
+      options: () => getLangOptions(),
     },
   ];
 
@@ -248,6 +258,7 @@ export const WorkArea = (props) => {
           </EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>
+      <EuiSpacer size={"l"}/>
       <ItemsTable
         groupedItems={groupedItems}
         loading={isLoading}
