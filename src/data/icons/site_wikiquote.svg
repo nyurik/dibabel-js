@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30">
+    <defs>
+        <clipPath id="c">
+            <path d="M-25 0l300 300L575 0 275-300z"/>
+        </clipPath>
+        <radialGradient cy="0" cx="0" r="59.1" gradientUnits="userSpaceOnUse" id="a">
+            <stop stop-color="#00003b" offset="0%"/>
+            <stop stop-color="#002f64" offset="100%"/>
+        </radialGradient>
+        <radialGradient xlink:href="#a" id="b" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="59.1"/>
+    </defs>
+    <g transform="translate(8.476 15) scale(.07573)">
+        <circle r="59.1" fill="url(#b)"/>
+        <g clip-path="url(#c)" fill="none">
+            <circle r="101" stroke="#003b6f" stroke-width="29"/>
+            <circle r="156.5" stroke="#3b6fa0" stroke-width="30.4"/>
+            <circle r="215.7" stroke="#6fa0d0" stroke-width="31.4"/>
+        </g>
+    </g>
+</svg>

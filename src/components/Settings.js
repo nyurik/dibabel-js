@@ -7,6 +7,7 @@ export function Settings() {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const button = (<EuiButtonIcon
+    iconSize={'m'}
     iconType="gear"
     onClick={() => setIsPopoverOpen(!isPopoverOpen)}
     aria-label="Open options menu"

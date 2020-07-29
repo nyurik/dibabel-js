@@ -81,8 +81,6 @@ Some text [https://commons.wikimedia.org/wiki/Data:Templatedata/Graph:Bars.tab l
 is not.
 `;
 
-
-
   const data = [
     {
       primarySite: 'mediawiki',
@@ -124,29 +122,36 @@ is not.
       return [t.substring(0, pos).toLowerCase(), t.substring(pos + 1)];
     };
     for (let src of data) {
-      const [type, srcTitle] = splitNs(src.primaryTitle);
+      const [type, title] = splitNs(src.primaryTitle);
       const srcTitleUrl = `https://${src.primarySite}${domainSuffix}${titleUrlSuffix}${src.primaryTitle}`;
-
-      for (let dstSite of Object.keys(src.copies)) {
-        const dst = src.copies[dstSite];
-        let dstTitleUrl = `https://${dstSite}${domainSuffix}${titleUrlSuffix}${dst.title}`;
-        yield {
+      for (let dstLangSite of Object.keys(src.copies)) {
+        const dstLangSiteParts = dstLangSite.split('.');
+        const isWikimedia = dstLangSiteParts[1] === 'wikimedia';
+        const dst = src.copies[dstLangSite];
+        let dstTitleUrl = `https://${dstLangSite}${domainSuffix}${titleUrlSuffix}${dst.title}`;
+        const item = {
           key: dstTitleUrl,
           type,
           srcSite: src.primarySite,
           srcFullTitle: src.primaryTitle,
-          srcTitle,
+          title,
           srcTitleUrl,
-          dstSite,
+          site: isWikimedia ? dstLangSiteParts[0] : dstLangSiteParts[1],
+          dstLangSite,
           dstFullTitle: dst.title,
           dstTitle: splitNs(dst.title)[1],
           dstTitleUrl: dstTitleUrl,
+          status: dst.diverged ? 'diverged' : (dst.behind === 0 ? 'ok' : 'outdated'),
           isInSync: dst.behind === 0,
           behind: dst.behind,
           diverged: !!dst.diverged,
           srcText: type === 'module' ? srcLuaText : srcWikiText,
           dstText: type === 'module' ? dstLuaText : dstWikiText,
         };
+        if (!isWikimedia) {
+          item.lang = dstLangSiteParts[0];
+        }
+        yield item;
       }
     }
   }

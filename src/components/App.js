@@ -12,6 +12,7 @@ import { EuiHeaderLogo } from '@elastic/eui/es/components/header';
 import { EuiHeaderLink } from '@elastic/eui/es/components/header/header_links';
 import { addToast, Toasts } from './Toasts';
 import { ItemViewer } from './ItemViewer';
+import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui/es/components/flex';
 
 export function App() {
 
@@ -24,7 +25,6 @@ export function App() {
       getUser(addToast).then(setUser);
     }
   }, [user]);
-
 
   return (
     <EuiPage>
@@ -44,8 +44,18 @@ export function App() {
                            href="https://github.com/nyurik/dibabel-js">Source</EuiHeaderLink>
           </EuiPageHeaderSection>
           <EuiPageHeaderSection>
-            <User user={user}/>
-            <Settings/>
+            <EuiFlexGroup
+              alignItems="center"
+              gutterSize="s"
+              responsive={false}
+              wrap>
+              <EuiFlexItem grow={false}>
+                <User user={user}/>
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <Settings/>
+              </EuiFlexItem>
+            </EuiFlexGroup>
           </EuiPageHeaderSection>
         </EuiPageHeader>
         <WorkArea addToast={addToast} user={user} setItem={setItem}/>
