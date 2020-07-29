@@ -13,6 +13,7 @@ import { EuiHeaderLink } from '@elastic/eui/es/components/header/header_links';
 import { addToast, Toasts } from './Toasts';
 import { ItemViewer } from './ItemViewer';
 import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui/es/components/flex';
+import { siteIcons } from '../data/icons';
 
 export function App() {
 
@@ -33,7 +34,7 @@ export function App() {
           <EuiPageHeaderSection>
             <EuiHeaderSectionItem border="right">
               <EuiHeaderLogo
-                iconType={'https://upload.wikimedia.org/wikipedia/commons/4/4e/Wikipedia-logo-v2-no-text.svg'}>
+                iconType={siteIcons.wikipedia}>
                 Dibabel - keeps it in sync
               </EuiHeaderLogo>
             </EuiHeaderSectionItem>

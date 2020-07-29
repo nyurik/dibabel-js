@@ -9,14 +9,12 @@ import { EuiInMemoryTable } from '@elastic/eui/es/components/basic_table';
 import { typeIcons } from '../data/icons';
 
 export const ItemsTable = (props) => {
-  const [expandedItems, setExpandedItems] = useState(new Set());
-
   const all_columns = {
     selector: {
       name: '',
       width: '2em',
       render: item => {
-        const items = item.isGroup ? item.items : [item];
+        const items = item.isGroup ? item.allSubItems : [item];
         const selectable = items.filter(v => v.behind > 0);
         const selectedCount = selectable.filter(v => props.selectedItems.has(v)).length;
         const checked = selectedCount > 0 && selectable.length === selectedCount;
@@ -47,8 +45,8 @@ export const ItemsTable = (props) => {
       render: item => (
         <EuiButtonIcon
           onClick={() => toggleExpandGroup(item)}
-          aria-label={expandedItems.has(item) ? 'Collapse' : 'Expand'}
-          iconType={expandedItems.has(item) ? 'arrowUp' : 'arrowDown'}
+          aria-label={expandedItems.has(item.key) ? 'Collapse' : 'Expand'}
+          iconType={expandedItems.has(item.key) ? 'arrowUp' : 'arrowDown'}
         />
       ),
     },
@@ -94,19 +92,29 @@ export const ItemsTable = (props) => {
     },
     title: {
       field: 'srcFullTitle',
-      name: 'Source Page',
+      name: 'Primary Page',
       sortable: true,
       render: (srcFullTitle, item) => (
         <EuiLink href={item.srcTitleUrl} target="_blank">{srcFullTitle}</EuiLink>
       ),
     },
-    site: {
-      field: 'dstLangSite',
-      name: 'Site',
+    lang: {
+      field: 'lang',
+      name: 'Lang',
+      sortable: true,
+    },
+    project: {
+      field: 'project',
+      name: 'Project',
+      sortable: true,
+    },
+    dstSite: {
+      field: 'dstSite',
+      name: 'Wiki',
       sortable: true,
     },
     dstTitle: {
-      name: 'Page',
+      name: 'Wiki page',
       render: item => (
         <EuiLink href={item.dstTitleUrl} target="_blank">{item.dstFullTitle}</EuiLink>
       ),
@@ -176,40 +184,45 @@ export const ItemsTable = (props) => {
     },
   };
 
+  const [expandedItems, setExpandedItems] = useState(new Set());
+
   function toggleExpandGroup(item) {
     const clone = new Set(expandedItems);
-    if (clone.has(item)) {
-      clone.delete(item);
+    if (clone.has(item.key)) {
+      clone.delete(item.key);
     } else {
-      clone.add(item);
+      clone.add(item.key);
     }
     setExpandedItems(clone);
   }
 
-  const itemIdToExpandedRowMap = {};
-  for (let item of props.groupedItems.groups) {
-    if (expandedItems.has(item)) {
-      itemIdToExpandedRowMap[item.key] = (<EuiInMemoryTable
-        className={'sub-table'}
-        items={item.expandItems}
-        columns={item.expandColumns.map(v => all_columns[v])}
-        itemId={'key'}
-        sorting={true}
-      />);
+  function createTable(groupedItems, isTop) {
+    const params = {
+      items: groupedItems.items,
+      columns: groupedItems.columns.map(v => all_columns[v]),
+      itemId: 'key',
+      sorting: true,
+    };
+    if (isTop) {
+      params.loading = props.isLoading;
+      params.message = props.message;
+      params.error = props.error;
+    } else {
+      params.className = 'sub-table';
     }
+    if (!groupedItems.isLastGroup) {
+      params.isExpandable = true;
+      params.itemIdToExpandedRowMap = {};
+      for (let item of groupedItems.items) {
+        if (expandedItems.has(item.key)) {
+          params.itemIdToExpandedRowMap[item.key] = createTable(item);
+        }
+      }
+    } else {
+      params.hasActions = true;
+    }
+    return (<EuiInMemoryTable {...params} />);
   }
 
-  return (<EuiInMemoryTable
-    items={props.groupedItems.groups}
-    loading={props.isLoading}
-    columns={props.groupedItems.columns.map(v => all_columns[v])}
-    // search={search}
-    itemId={'key'}
-    sorting={true}
-    message={props.message}
-    error={props.error}
-    itemIdToExpandedRowMap={itemIdToExpandedRowMap}
-    isExpandable={true}
-    hasActions={true}
-  />);
+  return createTable(props.groupedItems, true);
 };

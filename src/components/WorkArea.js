@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { getItems, defaultSearchFields } from '../data/Store';
+import { defaultSearchFields, getItems } from '../data/Store';
 import groupBy from 'lodash/groupBy';
 import uniq from 'lodash/uniq';
 import map from 'lodash/map';
@@ -12,6 +12,8 @@ import { siteIcons, typeIcons } from '../data/icons';
 import { EuiHealth } from '@elastic/eui/es/components/health';
 import { getLanguages } from '../data/languages';
 import { EuiSpacer } from '@elastic/eui/es/components/spacer';
+import { EuiSelectable } from '@elastic/eui/es/components/selectable';
+import { EuiPopover } from '@elastic/eui/es/components/popover';
 
 const initialQuery = EuiSearchBar.Query.MATCH_ALL;
 
@@ -20,16 +22,16 @@ const schema = {
   fields: {
     status: { type: 'string' },
     type: { type: 'string' },
-    site: { type: 'string' },
     ok: { type: 'boolean' },
     behind: { type: 'number' },
     diverged: { type: 'boolean' },
     lang: { type: 'string' },
+    project: { type: 'string' },
     title: { type: 'string' },
     srcSite: { type: 'string' },
     srcFullTitle: { type: 'string' },
     srcTitleUrl: { type: 'string' },
-    dstLangSite: { type: 'string' },
+    dstSite: { type: 'string' },
     dstFullTitle: { type: 'string' },
     dstTitle: { type: 'string' },
     dstTitleUrl: { type: 'string' },
@@ -46,83 +48,108 @@ export const WorkArea = (props) => {
 
   const [allItems, setAllItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isGroupListOpen, setIsGroupListOpen] = useState(false);
 
   useEffect(() => {
-    async function loadDataAsync() {
-      setAllItems([]);
-      setMessage('Loading ...');
-      setError('');
-
-      try {
-        setAllItems(await getItems());
-      } catch (err) {
-        setError(`Unable to load data. ${err}`);
-      }
-
-      setIsLoading(false);
-      setMessage('');
-      setSelectedItems(new Set());
-    }
-
     if (isLoading) {
-      // noinspection JSIgnoredPromiseFromCall
-      loadDataAsync();
-    }
+      (async () => {
+        setAllItems([]);
+        setMessage('Loading ...');
+        setError('');
 
+        try {
+          setAllItems(await getItems());
+        } catch (err) {
+          setError(`Unable to load data. ${err}`);
+        }
+
+        setIsLoading(false);
+        setMessage('');
+        setSelectedItems(new Set());
+      })();
+    }
   }, [isLoading]);
 
   const filteredItems = useMemo(() => {
-    console.log('original data', allItems);
-    try {
-      console.log('esQueryDsl', EuiSearchBar.Query.toESQuery(query));
-    } catch (e) {
-      console.error(`error in esQueryDsl: ${e}`);
-    }
-    try {
-      console.log('esQueryString', EuiSearchBar.Query.toESQueryString(query));
-    } catch (e) {
-      console.error(`error in esQueryString: ${e}`);
-    }
+    // console.log('original data', allItems);
+    // try {
+    //   console.log('esQueryDsl', EuiSearchBar.Query.toESQuery(query));
+    // } catch (e) {
+    //   console.error(`error in esQueryDsl: ${e}`);
+    // }
+    // try {
+    //   console.log('esQueryString', EuiSearchBar.Query.toESQueryString(query));
+    // } catch (e) {
+    //   console.error(`error in esQueryString: ${e}`);
+    // }
     return EuiSearchBar.Query.execute(query, allItems, { defaultSearchFields });
   }, [allItems, query]);
+  // console.log('filtered data', filteredItems);
 
-  const [groupings] = useState(['srcTitleUrl']);
+  const [groupSelection, setGroupSelection] = useState([
+    { label: 'By language', 'data-group': 'lang' },
+    { label: 'By project', 'data-group': 'project' },
+    { label: 'By wiki', 'data-group': 'dstSite' },
+    { label: 'By page', 'data-group': 'srcTitleUrl', checked: 'on' }
+  ]);
 
   const groupedItems = useMemo(() => {
-    function groupItems(groupIndex, items) {
-      const group = groupings[groupIndex];
+    const groupDefs = {
+      'lang': {
+        columns: ['lang'],
+        fields: ['lang']
+      },
+      'project': {
+        columns: ['project'],
+        fields: ['dstSite', 'project', 'lang']
+      },
+      'srcTitleUrl': {
+        columns: ['type', 'title'],
+        fields: ['type', 'srcSite', 'srcFullTitle', 'title', 'srcTitleUrl']
+      },
+      'dstSite': {
+        columns: ['dstSite'],
+        fields: ['lang', 'project', 'dstSite']
+      },
+    };
+
+    const groupings = groupSelection.filter(v => v.checked).map(v => v['data-group']);
+
+    function groupItems(groupIndex, items, parentColumns, parentKey = '') {
+      if (items.length === 1 || groupIndex === groupings.length) {
+        return { items, columns: ['selector', 'actions'].concat(parentColumns), isLastGroup: true };
+      }
+      const groupKey = groupings[groupIndex];
+      const groupDef = groupDefs[groupKey];
+      const columns = parentColumns.filter(v => !groupDef.columns.includes(v));
       return {
-        columns: ['expander', 'selector', 'type', 'title', 'countOk', 'countOutdated', 'countDiverged'],
-        groups: map(groupBy(items, v => v[group]), groupItems => {
-          const first = groupItems[0];
-          return {
-            key: first[group],
-            type: first.type,
-            srcSite: first.srcSite,
-            srcFullTitle: first.srcFullTitle,
-            title: first.title,
-            srcTitleUrl: first.srcTitleUrl,
+        columns: ['expander', 'selector'].concat(groupDef.columns, 'countOk', 'countOutdated', 'countDiverged'),
+        items: map(groupBy(items, v => v[groupKey]), allSubItems => {
+          const first = allSubItems[0];
+          const key = parentKey + '/' + first[groupKey];
+          const grpItem = {
             isGroup: true,
-            countOk: groupItems.filter(v => v.ok).length,
-            countOutdated: groupItems.filter(v => v.outdated).length,
-            countDiverged: groupItems.filter(v => v.diverged).length,
-            items: groupItems,
-            expandItems: groupItems,
-            expandColumns: ['selector', 'actions', 'site', 'dstTitle', 'status'],
+            key: key,
+            allSubItems: allSubItems,
+            countOk: allSubItems.filter(v => v.ok).length,
+            countOutdated: allSubItems.filter(v => v.outdated).length,
+            countDiverged: allSubItems.filter(v => v.diverged).length,
+            ...groupItems(groupIndex + 1, allSubItems, columns, key)
           };
+          for (let field of groupDef.fields) {
+            grpItem[field] = first[field];
+          }
+          return grpItem;
         })
       };
     }
 
-    return groupItems(0, filteredItems);
-  }, [filteredItems, groupings]);
-
-  console.log(filteredItems);
-  console.log(groupedItems);
+    return groupItems(0, filteredItems, ['type', 'dstSite', 'dstTitle', 'status']);
+  }, [filteredItems, groupSelection]);
 
   const getOptions = async (iconsMap) => {
     // FIXME: Switch to real data once available. For now keep showing all for demo.
-    // const values = uniq(allItems.map(v => v.site));
+    // const values = uniq(allItems.map(v => v.project));
     // values.sort();
     const values = Object.keys(iconsMap);
 
@@ -183,8 +210,8 @@ export const WorkArea = (props) => {
     },
     {
       type: 'field_value_selection',
-      field: 'site',
-      name: 'Site',
+      field: 'project',
+      name: 'Project',
       multiSelect: 'or',
       options: () => getOptions(siteIcons),
     },
@@ -207,22 +234,45 @@ export const WorkArea = (props) => {
   };
 
   const renderToolsLeft = () => {
-    if (selectedItems.size === 0) {
-      return null;
+    const results = [];
+    if (selectedItems.size > 0) {
+      const onClick = async () => {
+        // store.processItems(...);
+        setSelectedItems(new Set());
+      };
+      results.push(
+        <EuiFlexItem grow={false}>
+          <EuiButton color="danger" iconType="trash" onClick={onClick}>
+            Sync {selectedItems.size} items
+          </EuiButton>
+        </EuiFlexItem>
+      );
     }
 
-    const onClick = async () => {
-      // store.processItems(...);
-      setSelectedItems(new Set());
-    };
-
-    return (
+    results.push(
       <EuiFlexItem grow={false}>
-        <EuiButton color="danger" iconType="trash" onClick={onClick}>
-          Sync {selectedItems.size} items
-        </EuiButton>
+        <EuiPopover
+          // id="popover"
+          // panelPaddingSize="none"
+          button={<EuiButton
+            iconType="arrowDown"
+            iconSide="right"
+            onClick={() => setIsGroupListOpen(!isGroupListOpen)}
+          >Group by...</EuiButton>}
+          isOpen={isGroupListOpen}
+          closePopover={() => setIsGroupListOpen(false)}>
+          <EuiSelectable
+            searchable={false}
+            style={{ width: 200 }}
+            onChange={groupChoices => setGroupSelection(groupChoices)}
+            options={groupSelection}>
+            {(list) => (<>{list}</>)}
+          </EuiSelectable>
+        </EuiPopover>
       </EuiFlexItem>
     );
+
+    return <>{results}</>;
   };
 
   return (

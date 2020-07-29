@@ -124,11 +124,11 @@ is not.
     for (let src of data) {
       const [type, title] = splitNs(src.primaryTitle);
       const srcTitleUrl = `https://${src.primarySite}${domainSuffix}${titleUrlSuffix}${src.primaryTitle}`;
-      for (let dstLangSite of Object.keys(src.copies)) {
-        const dstLangSiteParts = dstLangSite.split('.');
+      for (let dstSite of Object.keys(src.copies)) {
+        const dstLangSiteParts = dstSite.split('.');
         const isWikimedia = dstLangSiteParts[1] === 'wikimedia';
-        const dst = src.copies[dstLangSite];
-        let dstTitleUrl = `https://${dstLangSite}${domainSuffix}${titleUrlSuffix}${dst.title}`;
+        const dst = src.copies[dstSite];
+        let dstTitleUrl = `https://${dstSite}${domainSuffix}${titleUrlSuffix}${dst.title}`;
         const item = {
           key: dstTitleUrl,
           type,
@@ -136,8 +136,9 @@ is not.
           srcFullTitle: src.primaryTitle,
           title,
           srcTitleUrl,
-          site: isWikimedia ? dstLangSiteParts[0] : dstLangSiteParts[1],
-          dstLangSite,
+          project: isWikimedia ? dstLangSiteParts[0] : dstLangSiteParts[1],
+          lang: isWikimedia ? '-' : dstLangSiteParts[0],
+          dstSite,
           dstFullTitle: dst.title,
           dstTitle: splitNs(dst.title)[1],
           dstTitleUrl: dstTitleUrl,
@@ -148,9 +149,6 @@ is not.
           srcText: type === 'module' ? srcLuaText : srcWikiText,
           dstText: type === 'module' ? dstLuaText : dstWikiText,
         };
-        if (!isWikimedia) {
-          item.lang = dstLangSiteParts[0];
-        }
         if (dst.behind > 0) {
           item.behind = dst.behind;
         }
@@ -163,5 +161,5 @@ is not.
 };
 
 export const defaultSearchFields = [
-  'status', 'type', 'site', 'behind', 'lang', 'title', 'dstTitle',
+  'status', 'type', 'dstSite', 'behind', 'lang', 'title', 'dstTitle',
 ];
