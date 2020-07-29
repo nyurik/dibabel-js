@@ -41,6 +41,17 @@ export const ItemsTable = (props) => {
         />;
       },
     },
+    expander: {
+      width: '2.5em',
+      isExpander: true,
+      render: item => (
+        <EuiButtonIcon
+          onClick={() => toggleExpandGroup(item)}
+          aria-label={expandedItems.has(item) ? 'Collapse' : 'Expand'}
+          iconType={expandedItems.has(item) ? 'arrowUp' : 'arrowDown'}
+        />
+      ),
+    },
     actions: {
       name: 'Actions',
       width: '70px',
@@ -51,7 +62,7 @@ export const ItemsTable = (props) => {
           icon: 'save',
           type: 'icon',
           color: 'danger',
-          available: ({ behind }) => behind > 0,
+          available: ({ outdated }) => outdated,
           onClick: () => props.addToast({
             title: 'Copying...',
             color: 'danger',
@@ -63,21 +74,10 @@ export const ItemsTable = (props) => {
           description: 'Compare with the primary',
           icon: 'inputOutput', // 'magnifyWithPlus' ?
           type: 'icon',
-          available: ({ isInSync }) => isInSync === false,
+          available: ({ ok }) => !ok,
           onClick: props.setItem,
         },
       ],
-    },
-    expander: {
-      width: '2.5em',
-      isExpander: true,
-      render: item => (
-        <EuiButtonIcon
-          onClick={() => toggleExpandGroup(item)}
-          aria-label={expandedItems.has(item) ? 'Collapse' : 'Expand'}
-          iconType={expandedItems.has(item) ? 'arrowUp' : 'arrowDown'}
-        />
-      ),
     },
     type: {
       field: 'type',
@@ -101,7 +101,7 @@ export const ItemsTable = (props) => {
       ),
     },
     site: {
-      field: 'site',
+      field: 'dstLangSite',
       name: 'Site',
       sortable: true,
     },
@@ -111,57 +111,66 @@ export const ItemsTable = (props) => {
         <EuiLink href={item.dstTitleUrl} target="_blank">{item.dstFullTitle}</EuiLink>
       ),
     },
-    behind: {
-      field: 'behind',
+    status: {
+      field: 'status',
       name: 'Status',
       sortable: true,
-      render: behind => {
+      render: (status, item) => {
         let color, label, title;
-        if (behind === 0) {
-          [color, label, title] = ['success', 'ok', 'The target page is up to date with the primary'];
-        } else if (behind > 0) {
-          [color, label, title] = ['warning', `Outdated by ${behind} rev`, `The target page is outdated by ${behind} versions, and can be updated.`];
-        } else {
-          [color, label, title] = ['danger', 'Modified', 'The target page has been modified and cannot be updated automatically.'];
+        switch (status) {
+          case 'ok':
+            [color, label, title] = ['success', status, 'The target page is up to date with the primary'];
+            break;
+          case 'outdated':
+            [color, label, title] = ['warning', `Outdated by ${item.behind} rev`, `The target page is outdated by ${item.behind} versions, and can be updated.`];
+            break;
+          case 'diverged':
+            [color, label, title] = ['danger', status, 'The target page has been modified and cannot be updated automatically.'];
+            break;
+          default:
+            throw new Error(`Unknown status ${status}`);
         }
         return <EuiHealth title={title} color={color}>{label}</EuiHealth>;
       },
     },
-    groupInSync: {
+    countOk: {
       name: 'OK',
+      field: 'countOk',
+      sortable: true,
       description: 'Number of up to date pages.',
-      render: item => {
-        if (item.groupInSync > 0) {
+      render: value => {
+        if (value > 0) {
           return <EuiHealth title={'Number of up to date pages.'}
-                            color={'success'}>{`${item.groupInSync} pages`}</EuiHealth>;
-        }
-      },
-    },
-    groupBehind: {
-      name: 'Outdated',
-      render: item => {
-        if (!item.groupBehind) {
-          return '';
-        }
-        let title, label;
-        if (item.groupBehind.length === 1) {
-          label = `${item.groupBehind[0].count} behind by ${item.groupBehind[0].behind} rev`;
-          title = `${item.groupBehind[0].count} pages are behind by ${item.groupBehind[0].behind} revisions`;
+                            color={'success'}>{`${value} pages`}</EuiHealth>;
         } else {
-          label = `${item.groupBehind.reduce((a, v) => a + v.count, 0)} pages: ` +
-            item.groupBehind.map(v => `by\u00A0${v.behind}\u00A0x${v.count}`).join(', ');
-          title = 'Number of revisions fallen behind, with (page count)';
+          return '-';
         }
-        return <EuiHealth title={title} color={'warning'}>{label}</EuiHealth>;
       },
     },
-    groupDiverged: {
+    countOutdated: {
+      name: 'Outdated',
+      field: 'countOutdated',
+      sortable: true,
+      render: value => {
+        if (value > 0) {
+          return <EuiHealth title={`${value} pages are behind`}
+                            color={'warning'}>{`${value} pages`}</EuiHealth>;
+        } else {
+          return '-';
+        }
+      },
+    },
+    countDiverged: {
       name: 'Diverged',
+      field: 'countDiverged',
+      sortable: true,
       description: 'Number of pages with local modifications.',
-      render: item => {
-        if (item.groupDiverged > 0) {
+      render: value => {
+        if (value > 0) {
           return <EuiHealth title={'Number of pages with local modifications.'}
-                            color={'danger'}>{`${item.groupDiverged} pages`}</EuiHealth>;
+                            color={'danger'}>{`${value} pages`}</EuiHealth>;
+        } else {
+          return '-';
         }
       },
     },

@@ -142,14 +142,17 @@ is not.
           dstTitle: splitNs(dst.title)[1],
           dstTitleUrl: dstTitleUrl,
           status: dst.diverged ? 'diverged' : (dst.behind === 0 ? 'ok' : 'outdated'),
-          isInSync: dst.behind === 0,
-          behind: dst.behind,
+          ok: dst.behind === 0 && !dst.diverged,
+          outdated: dst.behind > 0,
           diverged: !!dst.diverged,
           srcText: type === 'module' ? srcLuaText : srcWikiText,
           dstText: type === 'module' ? dstLuaText : dstWikiText,
         };
         if (!isWikimedia) {
           item.lang = dstLangSiteParts[0];
+        }
+        if (dst.behind > 0) {
+          item.behind = dst.behind;
         }
         yield item;
       }
@@ -158,3 +161,7 @@ is not.
 
   return Array.from(flatten(data));
 };
+
+export const defaultSearchFields = [
+  'status', 'type', 'site', 'behind', 'lang', 'title', 'dstTitle',
+];

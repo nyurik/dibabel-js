@@ -1,3 +1,8 @@
 .sub-table {
     margin: 0.3em 0 0.7em 2.5em;
 }
+
+.lang-code {
+    width: 1.8em;
+    font-weight: bold;
+}

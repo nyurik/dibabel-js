@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { getItems } from '../data/Store';
+import { getItems, defaultSearchFields } from '../data/Store';
 import groupBy from 'lodash/groupBy';
 import uniq from 'lodash/uniq';
-import countBy from 'lodash/countBy';
 import map from 'lodash/map';
 import { EuiButton } from '@elastic/eui/es/components/button';
 import { ItemsTable } from './ItemsTable';
@@ -16,17 +15,15 @@ import { EuiSpacer } from '@elastic/eui/es/components/spacer';
 
 const initialQuery = EuiSearchBar.Query.MATCH_ALL;
 
-const defaultFields = [
-  'status', 'type', 'site', 'behind', 'lang', 'title', 'dstTitle',
-];
-
 const schema = {
   strict: true,
   fields: {
     status: { type: 'string' },
     type: { type: 'string' },
     site: { type: 'string' },
+    ok: { type: 'boolean' },
     behind: { type: 'number' },
+    diverged: { type: 'boolean' },
     lang: { type: 'string' },
     title: { type: 'string' },
     srcSite: { type: 'string' },
@@ -36,8 +33,6 @@ const schema = {
     dstFullTitle: { type: 'string' },
     dstTitle: { type: 'string' },
     dstTitleUrl: { type: 'string' },
-    isInSync: { type: 'string' },
-    diverged: { type: 'number' },
     srcText: { type: 'string' },
     dstText: { type: 'string' },
   },
@@ -77,7 +72,18 @@ export const WorkArea = (props) => {
   }, [isLoading]);
 
   const filteredItems = useMemo(() => {
-    return EuiSearchBar.Query.execute(query, allItems, { defaultFields });
+    console.log('original data', allItems);
+    try {
+      console.log('esQueryDsl', EuiSearchBar.Query.toESQuery(query));
+    } catch (e) {
+      console.error(`error in esQueryDsl: ${e}`);
+    }
+    try {
+      console.log('esQueryString', EuiSearchBar.Query.toESQueryString(query));
+    } catch (e) {
+      console.error(`error in esQueryString: ${e}`);
+    }
+    return EuiSearchBar.Query.execute(query, allItems, { defaultSearchFields });
   }, [allItems, query]);
 
   const [groupings] = useState(['srcTitleUrl']);
@@ -86,20 +92,9 @@ export const WorkArea = (props) => {
     function groupItems(groupIndex, items) {
       const group = groupings[groupIndex];
       return {
-        columns: ['expander', 'selector', 'type', 'title', 'groupInSync', 'groupBehind', 'groupDiverged'],
-        groups: map(groupBy(items, v => v[group]), vals => {
-          let behind = countBy(vals.map(v => v.behind).filter(v => v !== undefined));
-          let inSync = 0;
-          if (behind.hasOwnProperty('0')) {
-            inSync = behind['0'];
-            delete behind['0'];
-          }
-          behind = map(behind, (v, k) => ({ behind: parseInt(k), count: v }));
-          behind.sort(v => v.behind);
-          let diverged = vals.map(v => v.diverged).filter(v => v).length;
-          const expandItems = vals;
-          const first = vals[0];
-
+        columns: ['expander', 'selector', 'type', 'title', 'countOk', 'countOutdated', 'countDiverged'],
+        groups: map(groupBy(items, v => v[group]), groupItems => {
+          const first = groupItems[0];
           return {
             key: first[group],
             type: first.type,
@@ -108,12 +103,12 @@ export const WorkArea = (props) => {
             title: first.title,
             srcTitleUrl: first.srcTitleUrl,
             isGroup: true,
-            groupInSync: inSync, // count
-            groupBehind: behind,  // [{behind, count}]
-            groupDiverged: diverged, // count
-            items: vals,
-            expandItems: expandItems,
-            expandColumns: ['selector', 'actions', 'site', 'dstTitle', 'behind'],
+            countOk: groupItems.filter(v => v.ok).length,
+            countOutdated: groupItems.filter(v => v.outdated).length,
+            countDiverged: groupItems.filter(v => v.diverged).length,
+            items: groupItems,
+            expandItems: groupItems,
+            expandColumns: ['selector', 'actions', 'site', 'dstTitle', 'status'],
           };
         })
       };
@@ -121,6 +116,9 @@ export const WorkArea = (props) => {
 
     return groupItems(0, filteredItems);
   }, [filteredItems, groupings]);
+
+  console.log(filteredItems);
+  console.log(groupedItems);
 
   const getOptions = async (iconsMap) => {
     // FIXME: Switch to real data once available. For now keep showing all for demo.
@@ -149,9 +147,8 @@ export const WorkArea = (props) => {
       }
       return {
         value: lang,
-        // FIXME: Should use proper CSS styles
         view: <EuiFlexGroup>
-          <EuiFlexItem grow={false} style={{ width: '1.8em' }}><b>{lang}</b></EuiFlexItem>
+          <EuiFlexItem grow={false} className={'lang-code'}>{lang}</EuiFlexItem>
           <EuiFlexItem grow={false}>{name}</EuiFlexItem>
         </EuiFlexGroup>
       };
@@ -258,7 +255,7 @@ export const WorkArea = (props) => {
           </EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>
-      <EuiSpacer size={"l"}/>
+      <EuiSpacer size={'l'}/>
       <ItemsTable
         groupedItems={groupedItems}
         loading={isLoading}
