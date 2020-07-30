@@ -87,10 +87,10 @@ export const WorkArea = (props) => {
   // console.log('filtered data', filteredItems);
 
   const [groupSelection, setGroupSelection] = useState([
-    { label: 'By language', 'data-group': 'lang' },
-    { label: 'By project', 'data-group': 'project' },
-    { label: 'By wiki', 'data-group': 'dstSite' },
-    { label: 'By page', 'data-group': 'srcTitleUrl', checked: 'on' }
+    { label: 'by language', 'data-group': 'lang' },
+    { label: 'by project', 'data-group': 'project' },
+    { label: 'by wiki', 'data-group': 'dstSite' },
+    { label: 'by page', 'data-group': 'srcTitleUrl', checked: 'on' }
   ]);
 
   const groupedItems = useMemo(() => {
@@ -115,36 +115,38 @@ export const WorkArea = (props) => {
 
     const groupings = groupSelection.filter(v => v.checked).map(v => v['data-group']);
 
-    function groupItems(groupIndex, items, parentColumns, parentKey = '') {
-      if (items.length === 1 || groupIndex === groupings.length) {
-        return { items, columns: ['selector', 'actions'].concat(parentColumns), isLastGroup: true };
+    function organizeItemsInGroups(groupIndex, itemList, parentColumns, parentKey = '') {
+      if (itemList.length === 1 || groupIndex === groupings.length) {
+        return { items: itemList, columns: ['selector', 'actions'].concat(parentColumns), isLastGroup: true };
       }
+
       const groupKey = groupings[groupIndex];
       const groupDef = groupDefs[groupKey];
       const columns = parentColumns.filter(v => !groupDef.columns.includes(v));
+
+      const items = map(groupBy(itemList, v => v[groupKey]), allSubItems => {
+        const first = allSubItems[0];
+        const key = parentKey + '/' + first[groupKey];
+        return {
+          isGroup: true,
+          key: key,
+          allSubItems: allSubItems,
+          countOk: allSubItems.filter(v => v.ok).length,
+          countOutdated: allSubItems.filter(v => v.outdated).length,
+          countDiverged: allSubItems.filter(v => v.diverged).length,
+          ...Object.fromEntries(groupDef.fields.map(v => [v, first[v]])),
+          ...organizeItemsInGroups(groupIndex + 1, allSubItems, columns, key)
+        };
+      });
+      items.sort((a, b) => a.key.localeCompare(b.key));
+
       return {
         columns: ['expander', 'selector'].concat(groupDef.columns, 'countOk', 'countOutdated', 'countDiverged'),
-        items: map(groupBy(items, v => v[groupKey]), allSubItems => {
-          const first = allSubItems[0];
-          const key = parentKey + '/' + first[groupKey];
-          const grpItem = {
-            isGroup: true,
-            key: key,
-            allSubItems: allSubItems,
-            countOk: allSubItems.filter(v => v.ok).length,
-            countOutdated: allSubItems.filter(v => v.outdated).length,
-            countDiverged: allSubItems.filter(v => v.diverged).length,
-            ...groupItems(groupIndex + 1, allSubItems, columns, key)
-          };
-          for (let field of groupDef.fields) {
-            grpItem[field] = first[field];
-          }
-          return grpItem;
-        })
+        items: items
       };
     }
 
-    return groupItems(0, filteredItems, ['type', 'dstSite', 'dstTitle', 'status']);
+    return organizeItemsInGroups(0, filteredItems, ['type', 'dstSite', 'dstTitle', 'status']);
   }, [filteredItems, groupSelection]);
 
   const getOptions = async (iconsMap) => {

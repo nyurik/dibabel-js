@@ -91,8 +91,9 @@ is not.
     },
     {
       primarySite: 'mediawiki',
-      primaryTitle: 'Module:TNT',
+      primaryTitle: 'Module:No globals',
       copies: {
+        'commons.wikimedia': { title: 'Module:No globals', behind: 0 },
         'fr.wikipedia': { title: 'Module:No globals', behind: 0 },
         'en.wikipedia': { title: 'Module:No globals', behind: 4 },
         'ru.wikipedia': { title: 'Модуль:No globals', behind: 4 },
