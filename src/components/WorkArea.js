@@ -14,6 +14,7 @@ import { getLanguages } from '../data/languages';
 import { EuiSpacer } from '@elastic/eui/es/components/spacer';
 import { EuiSelectable } from '@elastic/eui/es/components/selectable';
 import { EuiPopover } from '@elastic/eui/es/components/popover';
+import { usePersistedJsonState } from '../utils';
 
 const initialQuery = EuiSearchBar.Query.MATCH_ALL;
 
@@ -86,12 +87,18 @@ export const WorkArea = (props) => {
   }, [allItems, query]);
   // console.log('filtered data', filteredItems);
 
-  const [groupSelection, setGroupSelection] = useState([
-    { label: 'by language', 'data-group': 'lang' },
-    { label: 'by project', 'data-group': 'project' },
-    { label: 'by wiki', 'data-group': 'dstSite' },
-    { label: 'by page', 'data-group': 'srcTitleUrl', checked: 'on' }
-  ]);
+  const [groupSelection, setGroupSelection] = usePersistedJsonState(
+    'groupSelection',
+    ['srcTitleUrl'],
+    (selection) => {
+      return [
+        { label: 'by language', 'data-group': 'lang' },
+        { label: 'by project', 'data-group': 'project' },
+        { label: 'by wiki', 'data-group': 'dstSite' },
+        { label: 'by page', 'data-group': 'srcTitleUrl' }
+      ].map(v => selection.includes(v['data-group']) ? Object.assign(v, { checked: 'on' }) : v);
+    },
+    (val) => val.filter(v => v.checked === 'on').map(v => v['data-group']));
 
   const groupedItems = useMemo(() => {
     const groupDefs = {
@@ -254,8 +261,6 @@ export const WorkArea = (props) => {
     results.push(
       <EuiFlexItem grow={false}>
         <EuiPopover
-          // id="popover"
-          // panelPaddingSize="none"
           button={<EuiButton
             iconType="arrowDown"
             iconSide="right"
