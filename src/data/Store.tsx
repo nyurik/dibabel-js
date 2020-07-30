@@ -117,8 +117,8 @@ is not.
     },
   ];
 
-  function * flatten(data) {
-    const splitNs = (t) => {
+  function * flatten(data: Array<{ primarySite: string, primaryTitle: string, copies: any }>) {
+    const splitNs = (t: string) => {
       const pos = t.indexOf(':');
       return [t.substring(0, pos).toLowerCase(), t.substring(pos + 1)];
     };
@@ -130,7 +130,7 @@ is not.
         const isWikimedia = dstLangSiteParts[1] === 'wikimedia';
         const dst = src.copies[dstSite];
         let dstTitleUrl = `https://${dstSite}${domainSuffix}${titleUrlSuffix}${dst.title}`;
-        const item = {
+        yield {
           key: dstTitleUrl,
           type,
           srcSite: src.primarySite,
@@ -149,11 +149,8 @@ is not.
           diverged: !!dst.diverged,
           srcText: type === 'module' ? srcLuaText : srcWikiText,
           dstText: type === 'module' ? dstLuaText : dstWikiText,
+          behind: dst.behind > 0 ? dst.behind : undefined,
         };
-        if (dst.behind > 0) {
-          item.behind = dst.behind;
-        }
-        yield item;
       }
     }
   }

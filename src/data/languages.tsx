@@ -1,8 +1,20 @@
+import { EuiToastProps } from '@elastic/eui/src/components/toast/toast';
+import { ReactChild } from 'react';
+
+/**
+ * This overrides Eui's own toast interface to remove the ID requirement (auto-added later)
+ */
+export interface Toast extends EuiToastProps {
+  // id: string;
+  text?: ReactChild;
+  toastLifeTimeMs?: number;
+}
+
 const url = 'https://www.mediawiki.org/w/api.php?action=query&meta=languageinfo&liprop=name|autonym&format=json&formatversion=2&origin=*';
 
-let cache;
+let cache: { name: string };
 
-export const getLanguages = async (addToast) => {
+export const getLanguages = async (addToast: (toast: Toast) => void) => {
   if (cache) {
     return cache;
   }
