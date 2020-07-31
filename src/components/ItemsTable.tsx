@@ -11,7 +11,7 @@ import {
 } from '@elastic/eui';
 
 import { typeIcons } from '../data/icons';
-import { Toast } from '../data/languages';
+import { AddToast } from '../data/languages';
 import { Item } from '../data/Store';
 
 export const ItemsTable = (
@@ -22,7 +22,7 @@ export const ItemsTable = (
     groupedItems: any,
     selectedItems: Set<Item>,
     setSelectedItems: (value: Set<Item>) => void,
-    addToast: (toast: Toast) => void,
+    addToast: AddToast,
     setItem: (item: Item) => void,
   }
 ) => {

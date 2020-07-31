@@ -36,13 +36,13 @@
 //   }
 // }
 
+import { AddToast } from './languages';
+import fauxData from './fauxData.json';
+
 const domainSuffix = '.org';
 const titleUrlSuffix = '/wiki/';
 
-export async function getItems() {
-
-  // TODO: REMOVE SLEEP!
-  await new Promise(r => setTimeout(r, 500));
+export async function getItems(addToast: AddToast) {
 
   const srcLuaText = `
 --    {{#invoke:TNT | doc | Graph:Lines }}
@@ -81,41 +81,39 @@ Some text [https://commons.wikimedia.org/wiki/Data:Templatedata/Graph:Bars.tab l
 is not.
 `;
 
-  const data = [
-    {
-      primarySite: 'mediawiki',
-      primaryTitle: 'Module:TNT',
-      copies: {
-        'en.wikipedia': { title: 'Module:TNT', behind: 2 },
-      },
-    },
-    {
-      primarySite: 'mediawiki',
-      primaryTitle: 'Module:No globals',
-      copies: {
-        'commons.wikimedia': { title: 'Module:No globals', behind: 0 },
-        'fr.wikipedia': { title: 'Module:No globals', behind: 0 },
-        'en.wikipedia': { title: 'Module:No globals', behind: 4 },
-        'ru.wikipedia': { title: 'Модуль:No globals', behind: 4 },
-        'si.wikipedia': { title: 'Module:No globals', behind: 3 },
-        'gr.wikipedia': { title: 'Module:No globals', diverged: '012abcdef' },
-        'mr.wikipedia': { title: 'Module:No globals', diverged: '012abcdef' },
-        'tr.wikipedia': { title: 'Module:No globals', diverged: 'deadbeaf' },
-      },
-    },
-    {
-      primarySite: 'mediawiki',
-      primaryTitle: 'Template:Something',
-      copies: {
-        'en.wikipedia': { title: 'Template:Something', behind: 3 },
-      },
-    },
-    {
-      primarySite: 'mediawiki',
-      primaryTitle: 'Module:No copies',
-      copies: {},
-    },
-  ];
+  let cache: any;
+
+  async function getData(addToast: AddToast) {
+    if (cache) {
+      return cache;
+    }
+    try {
+      let itemData = await fetch('/data');
+      if (itemData.ok) {
+        cache = await itemData.json();
+        return cache;
+      } else {
+        addToast({
+          title: `${itemData.status}: ${itemData.statusText}`,
+          color: 'danger',
+          iconType: 'alert',
+          text: await itemData.text(),
+        });
+      }
+    } catch (err) {
+      addToast({
+        title: `Unable to parse data response, showing fake data`,
+        color: 'danger',
+        iconType: 'alert',
+        text: `${err}`,
+        toastLifeTimeMs: 15000,
+      });
+    }
+    cache = fauxData;
+    return cache;
+  }
+
+  const data = await getData(addToast);
 
   function * flatten(data: Array<{ primarySite: string, primaryTitle: string, copies: any }>) {
     const splitNs = (t: string) => {

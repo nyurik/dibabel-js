@@ -13,12 +13,14 @@ export interface Toast extends EuiToastProps {
 
 export type LangInfo = { name: string, autonym: string } ;
 export type LangInfoDict = { [key: string]: LangInfo };
+export type AddToast = (toast: Toast) => void;
 
 const url = 'https://www.mediawiki.org/w/api.php?action=query&meta=languageinfo&liprop=name|autonym&format=json&formatversion=2&origin=*';
 
 let cache: LangInfoDict;
 
-export async function getLanguages(addToast: (toast: Toast) => void): Promise<LangInfoDict> {
+
+export async function getLanguages(addToast: AddToast): Promise<LangInfoDict> {
   if (cache) {
     return cache;
   }

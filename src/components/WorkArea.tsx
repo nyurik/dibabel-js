@@ -15,12 +15,10 @@ import {
 } from '@elastic/eui';
 
 import { defaultSearchableFields, getItems, Item } from '../data/Store';
-import groupBy from 'lodash/groupBy';
-import uniq from 'lodash/uniq';
-import map from 'lodash/map';
+import { groupBy, map, uniq } from 'lodash';
 import { ItemsTable } from './ItemsTable';
 import { siteIcons, typeIcons } from '../data/icons';
-import { getLanguages, Toast } from '../data/languages';
+import { AddToast, getLanguages } from '../data/languages';
 import { usePersistedJsonState } from '../utils';
 import { UserInfo } from '../data/users';
 
@@ -50,7 +48,7 @@ const schema = {
 };
 
 export const WorkArea = (props: {
-  addToast: (toast: Toast) => void,
+  addToast: AddToast,
   setItem: (item?: Item) => void,
   user: UserInfo,
 }) => {
@@ -71,7 +69,7 @@ export const WorkArea = (props: {
         setError('');
 
         try {
-          setAllItems(await getItems());
+          setAllItems(await getItems(props.addToast));
         } catch (err) {
           setError(`Unable to load data. ${err}`);
         }
@@ -81,7 +79,7 @@ export const WorkArea = (props: {
         setSelectedItems(new Set());
       })();
     }
-  }, [isLoading]);
+  }, [isLoading, props.addToast]);
 
   const filteredItems = useMemo(() => {
     // console.log('original data', allItems);
@@ -139,16 +137,25 @@ export const WorkArea = (props: {
 
     const groupings = getSelectedGroupNames(groupSelection);
 
+    function makeLastItem(items: Array<Item>, parentColumns: Array<string>) {
+      return { items, columns: ['selector', 'actions'].concat(parentColumns), isLastGroup: true };
+    }
+
     function organizeItemsInGroups(groupIndex: number, itemList: Array<Item>, parentColumns: Array<string>, parentKey = '') {
       if (itemList.length === 1 || groupIndex === groupings.length) {
-        return { items: itemList, columns: ['selector', 'actions'].concat(parentColumns), isLastGroup: true };
+        return makeLastItem(itemList, parentColumns);
       }
 
       const groupKey = groupings[groupIndex];
       const groupDef = groupDefs[groupKey];
       const columns = parentColumns.filter(v => !groupDef.columns.includes(v));
 
-      const items: Array<Item> = map(groupBy(itemList, v => v[groupKey]), allSubItems => {
+      const groupedData = groupBy(itemList, v => v[groupKey]);
+      if (Object.values(groupedData).every(v => v.length === 1)) {
+        return makeLastItem(itemList, parentColumns);
+      }
+
+      const items: Array<Item> = map(groupedData, allSubItems => {
         const first = allSubItems[0];
         const key = parentKey + '/' + first[groupKey];
         return {
@@ -174,10 +181,9 @@ export const WorkArea = (props: {
   }, [filteredItems, groupSelection]);
 
   const getOptions = async (iconsMap: any) => {
-    // FIXME: Switch to real data once available. For now keep showing all for demo.
-    // const values = uniq(allItems.map(v => v.project));
-    // values.sort();
-    const values = Object.keys(iconsMap);
+    const values = uniq(allItems.map(v => v.project)).filter(v => v);
+    values.sort();
+    // const values = Object.keys(iconsMap);
 
     return values.map(value => ({
       value: value,

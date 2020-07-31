@@ -1,6 +1,6 @@
 import React from 'react';
 import { EuiHeaderLink, EuiLoadingSpinner } from '@elastic/eui';
-import { Toast } from '../data/languages';
+import { AddToast } from '../data/languages';
 import { UserInfo, UserObj, userPending, userUnknown } from '../data/users';
 
 export const User = (props: { user: UserInfo }) => {
@@ -14,7 +14,7 @@ export const User = (props: { user: UserInfo }) => {
   }
 };
 
-export const getUser = async (addToast: (toast: Toast) => void) => {
+export const getUser = async (addToast: AddToast) => {
   try {
     let userInfo = await fetch('oauth_api.php?oauth_identity');
     if (!userInfo.ok) {
