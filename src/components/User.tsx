@@ -1,7 +1,7 @@
 import React from 'react';
 import { EuiHeaderLink, EuiLoadingSpinner } from '@elastic/eui';
 import { Toast } from '../data/languages';
-import { UserInfo, userPending, userUnknown } from '../data/users';
+import { UserInfo, UserObj, userPending, userUnknown } from '../data/users';
 
 export const User = (props: { user: UserInfo }) => {
   switch (props.user) {
@@ -10,7 +10,7 @@ export const User = (props: { user: UserInfo }) => {
     case userUnknown:
       return <EuiHeaderLink href="oauth_api.php?oauth_login">Login</EuiHeaderLink>;
     default:
-      return <b>(props.user as UserObj).username</b>;
+      return <b>{(props.user as UserObj).username}</b>;
   }
 };
 
