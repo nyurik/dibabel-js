@@ -1,10 +1,19 @@
 import React from 'react';
-import { useEuiTextDiff } from '@elastic/eui/es/components/text_diff';
-import { EuiFlyout, EuiFlyoutBody, EuiFlyoutHeader } from '@elastic/eui/es/components/flyout';
-import { EuiTitle } from '@elastic/eui/es/components/title';
-import { EuiCodeBlock } from '@elastic/eui/es/components/code';
 
-const ItemDiffViewer = (props) => {
+import { EuiCodeBlock, EuiFlyout, EuiFlyoutBody, EuiFlyoutHeader, EuiTitle, useEuiTextDiff } from '@elastic/eui';
+
+import { Item } from '../data/Store';
+
+interface ItemViewerParams<TItem> {
+  item: TItem;
+  close: (
+    event?:
+      | React.KeyboardEvent<HTMLDivElement>
+      | React.MouseEvent<HTMLButtonElement>
+  ) => void
+}
+
+const ItemDiffViewer = (props: ItemViewerParams<Item>) => {
   const [rendered] = useEuiTextDiff({
     beforeText: props.item.dstText,
     afterText: props.item.srcText,
@@ -29,10 +38,11 @@ const ItemDiffViewer = (props) => {
 
 };
 
-export const ItemViewer = (props) => {
+export const ItemViewer = (props: ItemViewerParams<Item | null | undefined>) => {
   // ItemDiffViewer must be wrapped because it uses a hook
   if (!props.item) {
     return null;
   }
-  return <ItemDiffViewer {...props} />;
+  // TODO?  seems like a weird way to force nullable into a non-nullable .item type
+  return <ItemDiffViewer {...(props as ItemViewerParams<Item>)} />;
 };

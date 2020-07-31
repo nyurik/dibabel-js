@@ -39,7 +39,7 @@
 const domainSuffix = '.org';
 const titleUrlSuffix = '/wiki/';
 
-export const getItems = async () => {
+export async function getItems() {
 
   // TODO: REMOVE SLEEP!
   await new Promise(r => setTimeout(r, 500));
@@ -156,8 +156,13 @@ is not.
   }
 
   return Array.from(flatten(data));
-};
+}
 
-export const defaultSearchFields = [
+export interface Item {
+  [prop: string]: any
+}
+
+export const defaultSearchableFields: Array<string> = [
   'status', 'type', 'dstSite', 'behind', 'lang', 'title', 'dstTitle',
 ];
+

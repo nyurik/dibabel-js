@@ -1,22 +1,20 @@
 import React from 'react';
-import { EuiLoadingSpinner } from '@elastic/eui/es/components/loading';
-import { EuiHeaderLink } from '@elastic/eui/es/components/header/header_links';
+import { EuiHeaderLink, EuiLoadingSpinner } from '@elastic/eui';
+import { Toast } from '../data/languages';
+import { UserInfo, userPending, userUnknown } from '../data/users';
 
-export const userPending = Symbol('Loading user info');
-export const userUnknown = Symbol('Unknown user');
-
-export function User(props) {
+export const User = (props: { user: UserInfo }) => {
   switch (props.user) {
     case userPending:
       return <EuiLoadingSpinner size="m"/>;
     case userUnknown:
       return <EuiHeaderLink href="oauth_api.php?oauth_login">Login</EuiHeaderLink>;
     default:
-      return props.user.username;
+      return <b>(props.user as UserObj).username</b>;
   }
-}
+};
 
-export const getUser = async (addToast) => {
+export const getUser = async (addToast: (toast: Toast) => void) => {
   try {
     let userInfo = await fetch('oauth_api.php?oauth_identity');
     if (!userInfo.ok) {

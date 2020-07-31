@@ -19,7 +19,8 @@
     "noEmit": true,
     "jsx": "react",
     "types": [
-      "@elastic/eui"
+      "@elastic/eui",
+      "jest"
     ]
   },
   "include": [

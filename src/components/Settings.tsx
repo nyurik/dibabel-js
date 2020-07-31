@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { EuiButtonIcon } from '@elastic/eui/es/components/button/button_icon';
-import { EuiPopover, EuiPopoverTitle } from '@elastic/eui/es/components/popover';
-import { EuiSwitch } from '@elastic/eui/es/components/form/switch';
+
+import { EuiButtonIcon, EuiPopover, EuiPopoverTitle, EuiSwitch } from '@elastic/eui';
 
 export function Settings() {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);

@@ -1,20 +1,37 @@
 import React, { useState } from 'react';
 
-import { EuiCheckbox } from '@elastic/eui/es/components/form/checkbox';
-import { EuiButtonIcon } from '@elastic/eui/es/components/button/button_icon';
-import { EuiIcon } from '@elastic/eui/es/components/icon';
-import { EuiLink } from '@elastic/eui/es/components/link';
-import { EuiHealth } from '@elastic/eui/es/components/health';
-import { EuiInMemoryTable } from '@elastic/eui/es/components/basic_table';
-import { typeIcons } from '../data/icons';
+import {
+  EuiBasicTableColumn,
+  EuiButtonIcon,
+  EuiCheckbox,
+  EuiHealth,
+  EuiIcon,
+  EuiInMemoryTable,
+  EuiLink
+} from '@elastic/eui';
 
-export const ItemsTable = (props) => {
-  const all_columns = {
+import { typeIcons } from '../data/icons';
+import { Toast } from '../data/languages';
+import { Item } from '../data/Store';
+
+export const ItemsTable = (
+  props: {
+    isLoading: boolean,
+    message: string,
+    error: string,
+    groupedItems: any,
+    selectedItems: Set<Item>,
+    setSelectedItems: (value: Set<Item>) => void,
+    addToast: (toast: Toast) => void,
+    setItem: (item: Item) => void,
+  }
+) => {
+  const all_columns: { [key: string]: EuiBasicTableColumn<any> } = {
     selector: {
       name: '',
       width: '2em',
-      render: item => {
-        const items = item.isGroup ? item.allSubItems : [item];
+      render: (item: Item) => {
+        const items: Array<Item> = item.isGroup ? item.allSubItems : [item];
         const selectable = items.filter(v => v.behind > 0);
         const selectedCount = selectable.filter(v => props.selectedItems.has(v)).length;
         const checked = selectedCount > 0 && selectable.length === selectedCount;
@@ -42,7 +59,7 @@ export const ItemsTable = (props) => {
     expander: {
       width: '2.5em',
       isExpander: true,
-      render: item => (
+      render: (item: Item) => (
         <EuiButtonIcon
           onClick={() => toggleExpandGroup(item)}
           aria-label={expandedItems.has(item.key) ? 'Collapse' : 'Expand'}
@@ -60,7 +77,7 @@ export const ItemsTable = (props) => {
           icon: 'save',
           type: 'icon',
           color: 'danger',
-          available: ({ outdated }) => outdated,
+          available: ({ outdated }: Item) => outdated,
           onClick: () => props.addToast({
             title: 'Copying...',
             color: 'danger',
@@ -72,7 +89,7 @@ export const ItemsTable = (props) => {
           description: 'Compare with the primary',
           icon: 'inputOutput', // 'magnifyWithPlus' ?
           type: 'icon',
-          available: ({ ok }) => !ok,
+          available: ({ ok }: Item) => !ok,
           onClick: props.setItem,
         },
       ],
@@ -83,7 +100,7 @@ export const ItemsTable = (props) => {
       width: '3.3em',
       sortable: true,
       mobileOptions: { show: false },
-      render: type => (
+      render: (type: 'module' | 'template') => (
         <EuiIcon
           type={typeIcons[type]}
           size="l"
@@ -94,7 +111,7 @@ export const ItemsTable = (props) => {
       field: 'srcFullTitle',
       name: 'Primary Page',
       sortable: true,
-      render: (srcFullTitle, item) => (
+      render: (srcFullTitle: string, item: Item) => (
         <EuiLink href={item.srcTitleUrl} target="_blank">{srcFullTitle}</EuiLink>
       ),
     },
@@ -115,7 +132,7 @@ export const ItemsTable = (props) => {
     },
     dstTitle: {
       name: 'Wiki page',
-      render: item => (
+      render: (item: Item) => (
         <EuiLink href={item.dstTitleUrl} target="_blank">{item.dstFullTitle}</EuiLink>
       ),
     },
@@ -123,7 +140,7 @@ export const ItemsTable = (props) => {
       field: 'status',
       name: 'Status',
       sortable: true,
-      render: (status, item) => {
+      render: (status: string, item: Item) => {
         let color, label, title;
         switch (status) {
           case 'ok':
@@ -146,7 +163,7 @@ export const ItemsTable = (props) => {
       field: 'countOk',
       sortable: true,
       description: 'Number of up to date pages.',
-      render: value => {
+      render: (value: number) => {
         if (value > 0) {
           return <EuiHealth title={'Number of up to date pages.'}
                             color={'success'}>{`${value} pages`}</EuiHealth>;
@@ -159,7 +176,7 @@ export const ItemsTable = (props) => {
       name: 'Outdated',
       field: 'countOutdated',
       sortable: true,
-      render: value => {
+      render: (value: number) => {
         if (value > 0) {
           return <EuiHealth title={`${value} pages are behind`}
                             color={'warning'}>{`${value} pages`}</EuiHealth>;
@@ -173,7 +190,7 @@ export const ItemsTable = (props) => {
       field: 'countDiverged',
       sortable: true,
       description: 'Number of pages with local modifications.',
-      render: value => {
+      render: (value: number) => {
         if (value > 0) {
           return <EuiHealth title={'Number of pages with local modifications.'}
                             color={'danger'}>{`${value} pages`}</EuiHealth>;
@@ -186,7 +203,7 @@ export const ItemsTable = (props) => {
 
   const [expandedItems, setExpandedItems] = useState(new Set());
 
-  function toggleExpandGroup(item) {
+  function toggleExpandGroup(item: Item) {
     const clone = new Set(expandedItems);
     if (clone.has(item.key)) {
       clone.delete(item.key);
@@ -196,10 +213,10 @@ export const ItemsTable = (props) => {
     setExpandedItems(clone);
   }
 
-  function createTable(groupedItems, isTop) {
-    const params = {
+  function createTable(groupedItems: any, isTop?: boolean) {
+    const params: any = {
       items: groupedItems.items,
-      columns: groupedItems.columns.map(v => all_columns[v]),
+      columns: groupedItems.columns.map((v: string) => all_columns[v]),
       itemId: 'key',
       sorting: true,
     };

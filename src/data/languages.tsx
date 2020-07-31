@@ -1,8 +1,9 @@
-import { EuiToastProps } from '@elastic/eui/src/components/toast/toast';
 import { ReactChild } from 'react';
+import { EuiToastProps } from '@elastic/eui/src/components/toast/toast';
 
 /**
  * This overrides Eui's own toast interface to remove the ID requirement (auto-added later)
+ * FIXME: Can this be done with importing Toast from @elastic/eui/src/components/toast/global_toast_list and using Exclude<> ?
  */
 export interface Toast extends EuiToastProps {
   // id: string;
@@ -10,11 +11,14 @@ export interface Toast extends EuiToastProps {
   toastLifeTimeMs?: number;
 }
 
+export type LangInfo = { name: string, autonym: string } ;
+export type LangInfoDict = { [key: string]: LangInfo };
+
 const url = 'https://www.mediawiki.org/w/api.php?action=query&meta=languageinfo&liprop=name|autonym&format=json&formatversion=2&origin=*';
 
-let cache: { name: string };
+let cache: LangInfoDict;
 
-export const getLanguages = async (addToast: (toast: Toast) => void) => {
+export async function getLanguages(addToast: (toast: Toast) => void): Promise<LangInfoDict> {
   if (cache) {
     return cache;
   }
@@ -41,4 +45,4 @@ export const getLanguages = async (addToast: (toast: Toast) => void) => {
     });
   }
   return {};
-};
+}

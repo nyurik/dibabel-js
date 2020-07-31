@@ -1,26 +1,32 @@
 import React, { useEffect, useState } from 'react';
 
-import { getUser, User, userPending } from './User';
+import {
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiHeaderLink,
+  EuiHeaderLogo,
+  EuiHeaderSectionItem,
+  EuiPage,
+  EuiPageBody,
+  EuiPageHeader,
+  EuiPageHeaderSection
+} from '@elastic/eui';
+
+import { ItemViewer } from './ItemViewer';
 import { Settings } from './Settings';
 import { WorkArea } from './WorkArea';
-
-import { EuiPage } from '@elastic/eui/es/components/page';
-import { EuiPageBody } from '@elastic/eui/es/components/page/page_body';
-import { EuiPageHeader, EuiPageHeaderSection } from '@elastic/eui/es/components/page/page_header';
-import { EuiHeaderSectionItem } from '@elastic/eui/es/components/header/header_section';
-import { EuiHeaderLogo } from '@elastic/eui/es/components/header';
-import { EuiHeaderLink } from '@elastic/eui/es/components/header/header_links';
 import { addToast, Toasts } from './Toasts';
-import { ItemViewer } from './ItemViewer';
-import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui/es/components/flex';
+import { getUser, User } from './User';
 import { siteIcons } from '../data/icons';
+import { Item } from '../data/Store';
+import { UserInfo, userPending } from '../data/users';
 
 export function App() {
 
-  const [item, setItem] = useState(null);
+  const [item, setItem] = useState<Item | null>();
   const closeItem = () => setItem(null);
 
-  const [user, setUser] = useState(userPending);
+  const [user, setUser] = useState<UserInfo>(userPending);
   useEffect(() => {
     if (user === userPending) {
       getUser(addToast).then(setUser);

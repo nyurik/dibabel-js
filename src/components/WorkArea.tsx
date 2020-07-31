@@ -1,20 +1,28 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { defaultSearchFields, getItems } from '../data/Store';
+
+import {
+  EuiButton,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiHealth,
+  EuiIcon,
+  EuiPopover,
+  EuiSearchBar,
+  EuiSelectable,
+  EuiSelectableOption,
+  EuiSpacer,
+  SearchFilterConfig
+} from '@elastic/eui';
+
+import { defaultSearchableFields, getItems, Item } from '../data/Store';
 import groupBy from 'lodash/groupBy';
 import uniq from 'lodash/uniq';
 import map from 'lodash/map';
-import { EuiButton } from '@elastic/eui/es/components/button';
 import { ItemsTable } from './ItemsTable';
-import { EuiFlexGroup, EuiFlexItem } from '@elastic/eui/es/components/flex';
-import { EuiSearchBar } from '@elastic/eui/es/components/search_bar';
-import { EuiIcon } from '@elastic/eui/es/components/icon';
 import { siteIcons, typeIcons } from '../data/icons';
-import { EuiHealth } from '@elastic/eui/es/components/health';
-import { getLanguages } from '../data/languages';
-import { EuiSpacer } from '@elastic/eui/es/components/spacer';
-import { EuiSelectable } from '@elastic/eui/es/components/selectable';
-import { EuiPopover } from '@elastic/eui/es/components/popover';
+import { getLanguages, Toast } from '../data/languages';
 import { usePersistedJsonState } from '../utils';
+import { UserInfo } from '../data/users';
 
 const initialQuery = EuiSearchBar.Query.MATCH_ALL;
 
@@ -41,13 +49,17 @@ const schema = {
   },
 };
 
-export const WorkArea = (props) => {
+export const WorkArea = (props: {
+  addToast: (toast: Toast) => void,
+  setItem: (item?: Item) => void,
+  user: UserInfo,
+}) => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const [selectedItems, setSelectedItems] = useState(new Set());
+  const [selectedItems, setSelectedItems] = useState<Set<Item>>(new Set());
   const [query, setQuery] = useState(initialQuery);
 
-  const [allItems, setAllItems] = useState([]);
+  const [allItems, setAllItems] = useState<Array<Item>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isGroupListOpen, setIsGroupListOpen] = useState(false);
 
@@ -83,11 +95,16 @@ export const WorkArea = (props) => {
     // } catch (e) {
     //   console.error(`error in esQueryString: ${e}`);
     // }
-    return EuiSearchBar.Query.execute(query, allItems, { defaultSearchFields });
+    return EuiSearchBar.Query.execute(query, allItems, { defaultSearchableFields });
   }, [allItems, query]);
+
   // console.log('filtered data', filteredItems);
 
-  const [groupSelection, setGroupSelection] = usePersistedJsonState(
+  function getSelectedGroupNames(groupSelection: Array<EuiSelectableOption>): Array<string> {
+    return groupSelection.filter(v => v.checked).map((v: any) => v['data-group']);
+  }
+
+  const [groupSelection, setGroupSelection] = usePersistedJsonState<Array<EuiSelectableOption>, any>(
     'groupSelection',
     ['srcTitleUrl'],
     (selection) => {
@@ -98,10 +115,10 @@ export const WorkArea = (props) => {
         { label: 'by page', 'data-group': 'srcTitleUrl' }
       ].map(v => selection.includes(v['data-group']) ? Object.assign(v, { checked: 'on' }) : v);
     },
-    (val) => val.filter(v => v.checked === 'on').map(v => v['data-group']));
+    getSelectedGroupNames);
 
   const groupedItems = useMemo(() => {
-    const groupDefs = {
+    const groupDefs: any = {
       'lang': {
         columns: ['lang'],
         fields: ['lang']
@@ -120,9 +137,9 @@ export const WorkArea = (props) => {
       },
     };
 
-    const groupings = groupSelection.filter(v => v.checked).map(v => v['data-group']);
+    const groupings = getSelectedGroupNames(groupSelection);
 
-    function organizeItemsInGroups(groupIndex, itemList, parentColumns, parentKey = '') {
+    function organizeItemsInGroups(groupIndex: number, itemList: Array<Item>, parentColumns: Array<string>, parentKey = '') {
       if (itemList.length === 1 || groupIndex === groupings.length) {
         return { items: itemList, columns: ['selector', 'actions'].concat(parentColumns), isLastGroup: true };
       }
@@ -131,7 +148,7 @@ export const WorkArea = (props) => {
       const groupDef = groupDefs[groupKey];
       const columns = parentColumns.filter(v => !groupDef.columns.includes(v));
 
-      const items = map(groupBy(itemList, v => v[groupKey]), allSubItems => {
+      const items: Array<Item> = map(groupBy(itemList, v => v[groupKey]), allSubItems => {
         const first = allSubItems[0];
         const key = parentKey + '/' + first[groupKey];
         return {
@@ -141,7 +158,7 @@ export const WorkArea = (props) => {
           countOk: allSubItems.filter(v => v.ok).length,
           countOutdated: allSubItems.filter(v => v.outdated).length,
           countDiverged: allSubItems.filter(v => v.diverged).length,
-          ...Object.fromEntries(groupDef.fields.map(v => [v, first[v]])),
+          ...Object.fromEntries(groupDef.fields.map((v: string) => [v, first[v]])),
           ...organizeItemsInGroups(groupIndex + 1, allSubItems, columns, key)
         };
       });
@@ -156,7 +173,7 @@ export const WorkArea = (props) => {
     return organizeItemsInGroups(0, filteredItems, ['type', 'dstSite', 'dstTitle', 'status']);
   }, [filteredItems, groupSelection]);
 
-  const getOptions = async (iconsMap) => {
+  const getOptions = async (iconsMap: any) => {
     // FIXME: Switch to real data once available. For now keep showing all for demo.
     // const values = uniq(allItems.map(v => v.project));
     // values.sort();
@@ -202,7 +219,7 @@ export const WorkArea = (props) => {
     }));
   };
 
-  const filters = [
+  const filters: Array<SearchFilterConfig> = [
     {
       type: 'field_value_selection',
       field: 'status',
@@ -233,7 +250,7 @@ export const WorkArea = (props) => {
     },
   ];
 
-  const onQueryChange = ({ query, error }) => {
+  const onQueryChange = ({ query, error }: any) => {
     if (error) {
       setError(error.message);
     } else {
@@ -315,7 +332,7 @@ export const WorkArea = (props) => {
       <EuiSpacer size={'l'}/>
       <ItemsTable
         groupedItems={groupedItems}
-        loading={isLoading}
+        isLoading={isLoading}
         message={message}
         error={error}
         selectedItems={selectedItems}

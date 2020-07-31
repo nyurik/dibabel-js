@@ -1,4 +1,4 @@
-import {DependencyList, useEffect, useMemo, useState} from 'react';
+import { DependencyList, useEffect, useMemo, useState } from 'react';
 
 /**
  * React hook to store state in the local storage
@@ -9,60 +9,60 @@ import {DependencyList, useEffect, useMemo, useState} from 'react';
  * @param deps optional list of dependencies
  */
 export function usePersistedState<T>(
-    key: string,
-    initValue: string,
-    deserializer: (value: string) => T,
-    serializer: (value: T) => string,
-    deps?: DependencyList
+  key: string,
+  initValue: string,
+  deserializer: (value: string) => T,
+  serializer: (value: T) => string,
+  deps?: DependencyList
 ): [T, (value: T) => void] {
 
-    // default value creation could be expensive, cache it
-    const defaultValue = useMemo(
-        () => deserializer(localStorage.getItem(key) ?? initValue),
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        []
-    );
+  // default value creation could be expensive, cache it
+  const defaultValue = useMemo(
+    () => deserializer(localStorage.getItem(key) ?? initValue),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
-    const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState(defaultValue);
 
-    useEffect(
-        () => {
-            try {
-                localStorage.setItem(key, serializer(value));
-            } catch {
-                // ignore any errors when storing, i.e. ignore Safari privacy mode issues
-            }
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        deps ? [value, ...deps] : [value]);
+  useEffect(
+    () => {
+      try {
+        localStorage.setItem(key, serializer(value));
+      } catch {
+        // ignore any errors when storing, i.e. ignore Safari privacy mode issues
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    deps ? [value, ...deps] : [value]);
 
-    return [value, setValue];
+  return [value, setValue];
 }
 
 export function usePersistedJsonState<TValue, TJson>(
-    key: string,
-    initValue: TJson,
-    deserializer?: (value: TJson) => TValue,
-    serializer?: (value: TValue) => TJson,
-    deps?: DependencyList
+  key: string,
+  initValue: TJson,
+  deserializer?: (value: TJson) => TValue,
+  serializer?: (value: TValue) => TJson,
+  deps?: DependencyList
 ): [TValue, (value: TValue) => void] {
-    return usePersistedState(
-        key,
-        '',
-        (val) => {
-            let result;
-            if (val === '') {
-                result = initValue;
-            } else {
-                try {
-                    result = JSON.parse(val);
-                } catch {
-                    result = initValue;
-                }
-            }
-            return deserializer ? deserializer(result) : result;
-        },
-        (val) => JSON.stringify(serializer ? serializer(val) : val),
-        deps
-    );
+  return usePersistedState(
+    key,
+    '',
+    (val) => {
+      let result;
+      if (val === '') {
+        result = initValue;
+      } else {
+        try {
+          result = JSON.parse(val);
+        } catch {
+          result = initValue;
+        }
+      }
+      return deserializer ? deserializer(result) : result;
+    },
+    (val) => JSON.stringify(serializer ? serializer(val) : val),
+    deps
+  );
 }
