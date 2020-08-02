@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { EuiGlobalToastList } from '@elastic/eui';
 import { Toast } from '@elastic/eui/src/components/toast/global_toast_list';
-import { Toast as ToastNoId } from '../data/languages';
+import { Toast as ToastNoId } from '../data/types';
 
 let addToastHandler: (toast: ToastNoId) => void;
 let toastId = 0;
@@ -12,7 +12,7 @@ export function addToast(toast: ToastNoId) {
 }
 
 export function Toasts() {
-  const [toasts, setToasts] = useState<Array<Toast>>([]);
+  const [toasts, setToasts] = useState<Array<Toast>>(() => []);
 
   const removeToast = (removedToast: ToastNoId) => {
     setToasts(toasts.filter(toast => toast.id !== removedToast.id));

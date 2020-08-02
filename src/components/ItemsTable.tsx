@@ -7,11 +7,12 @@ import {
   EuiHealth,
   EuiIcon,
   EuiInMemoryTable,
-  EuiLink
+  EuiLink,
+  EuiInMemoryTableProps
 } from '@elastic/eui';
 
+import { AddToast } from '../data/types';
 import { typeIcons } from '../data/icons';
-import { AddToast } from '../data/languages';
 import { Item } from '../data/Store';
 
 export const ItemsTable = (
@@ -201,7 +202,7 @@ export const ItemsTable = (
     },
   };
 
-  const [expandedItems, setExpandedItems] = useState(new Set());
+  const [expandedItems, setExpandedItems] = useState(() => new Set());
 
   function toggleExpandGroup(item: Item) {
     const clone = new Set(expandedItems);
@@ -214,11 +215,15 @@ export const ItemsTable = (
   }
 
   function createTable(groupedItems: any, isTop?: boolean) {
-    const params: any = {
+    const params: EuiInMemoryTableProps<Item> = {
       items: groupedItems.items,
       columns: groupedItems.columns.map((v: string) => all_columns[v]),
       itemId: 'key',
       sorting: true,
+      pagination: {
+        initialPageSize: 15,
+        hidePerPageOptions: true,
+      }
     };
     if (isTop) {
       params.loading = props.isLoading;

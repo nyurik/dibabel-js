@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
-import { EuiButtonIcon, EuiPopover, EuiPopoverTitle, EuiSwitch } from '@elastic/eui';
+import { EuiButtonIcon, EuiHeaderLink, EuiPopover, EuiPopoverTitle, EuiSpacer, EuiSwitch } from '@elastic/eui';
+import { ThemeContext } from '../themes/ThemeContext';
+import { UserContext, UserState } from '../data/UserContext';
 
 export function Settings() {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -18,13 +20,21 @@ export function Settings() {
     isOpen={isPopoverOpen}
     closePopover={() => setIsPopoverOpen(false)}>
     <EuiPopoverTitle>Options</EuiPopoverTitle>
-    <div className="guideOptionsPopover">
-      <EuiSwitch
+    <ThemeContext.Consumer>
+      {context => (<EuiSwitch
         label="Night mode"
-        checked
+        checked={context.isDarkTheme}
         disabled
-        onChange={() => alert('NOT IMPLEMENTED')}
-      />
-    </div>
+        onChange={e => context.setIsDarkTheme(e.target.checked)}
+      />)}
+    </ThemeContext.Consumer>
+    <UserContext.Consumer>
+      {context => context.user.state === UserState.LoggedIn
+        ? (<>
+          <EuiSpacer size={"s"}/>
+          <EuiHeaderLink href="oauth_api.php?oauth_logout">Logout...</EuiHeaderLink>
+        </>)
+        : null}
+    </UserContext.Consumer>
   </EuiPopover>;
 }

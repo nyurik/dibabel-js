@@ -1,4 +1,4 @@
-import { DependencyList, useEffect, useMemo, useState } from 'react';
+import { DependencyList, useEffect, useState } from 'react';
 
 /**
  * React hook to store state in the local storage
@@ -16,14 +16,8 @@ export function usePersistedState<T>(
   deps?: DependencyList
 ): [T, (value: T) => void] {
 
-  // default value creation could be expensive, cache it
-  const defaultValue = useMemo(
-    () => deserializer(localStorage.getItem(key) ?? initValue),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
-
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState(
+    () => deserializer(localStorage.getItem(key) ?? initValue));
 
   useEffect(
     () => {

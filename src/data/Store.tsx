@@ -36,7 +36,9 @@
 //   }
 // }
 
-import { AddToast } from './languages';
+import { AddToast } from './types';
+
+// import fauxData from './fauxData.small.json';
 import fauxData from './fauxData.json';
 
 const domainSuffix = '.org';

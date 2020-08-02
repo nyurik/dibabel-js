@@ -6,21 +6,21 @@ import {
   EuiFlexItem,
   EuiHealth,
   EuiIcon,
-  EuiPopover,
   EuiSearchBar,
-  EuiSelectable,
   EuiSelectableOption,
-  EuiSpacer,
-  SearchFilterConfig
+  EuiSpacer
 } from '@elastic/eui';
+
+import { AddToast, SetType } from '../data/types';
 
 import { defaultSearchableFields, getItems, Item } from '../data/Store';
 import { groupBy, map, uniq } from 'lodash';
 import { ItemsTable } from './ItemsTable';
 import { siteIcons, typeIcons } from '../data/icons';
-import { AddToast, getLanguages } from '../data/languages';
+import { getLanguages } from '../data/languages';
 import { usePersistedJsonState } from '../utils';
-import { UserInfo } from '../data/users';
+import { GroupSelector } from './GroupSelector';
+import { SyncButton } from './SyncButton';
 
 const initialQuery = EuiSearchBar.Query.MATCH_ALL;
 
@@ -47,19 +47,31 @@ const schema = {
   },
 };
 
+async function getOptions(allItems: Array<Item>, optionsMap: any) {
+  const values = uniq(allItems.map(v => v.project)).filter(v => v);
+  values.sort();
+  // const values = Object.keys(optionsMap);
+
+  return values.map(value => ({
+    value: value,
+    view: (<EuiFlexGroup>
+      <EuiFlexItem grow={false}><EuiIcon color={'#FFFFFF'} type={optionsMap[value]} size={'m'}/></EuiFlexItem>
+      <EuiFlexItem grow={false}>{value[0].toUpperCase() + value.substring(1)}</EuiFlexItem>
+    </EuiFlexGroup>)
+  }));
+}
+
 export const WorkArea = (props: {
   addToast: AddToast,
-  setItem: (item?: Item) => void,
-  user: UserInfo,
+  setItem: SetType,
 }) => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const [selectedItems, setSelectedItems] = useState<Set<Item>>(new Set());
+  const [selectedItems, setSelectedItems] = useState<Set<Item>>(() => new Set());
   const [query, setQuery] = useState(initialQuery);
 
-  const [allItems, setAllItems] = useState<Array<Item>>([]);
+  const [allItems, setAllItems] = useState<Array<Item>>(() => []);
   const [isLoading, setIsLoading] = useState(true);
-  const [isGroupListOpen, setIsGroupListOpen] = useState(false);
 
   useEffect(() => {
     if (isLoading) {
@@ -111,7 +123,10 @@ export const WorkArea = (props: {
         { label: 'by project', 'data-group': 'project' },
         { label: 'by wiki', 'data-group': 'dstSite' },
         { label: 'by page', 'data-group': 'srcTitleUrl' }
-      ].map(v => selection.includes(v['data-group']) ? Object.assign(v, { checked: 'on' }) : v);
+      ].map(v =>
+        selection.includes(v['data-group'])
+          ? Object.assign(v, { checked: 'on' })
+          : v);
     },
     getSelectedGroupNames);
 
@@ -180,170 +195,121 @@ export const WorkArea = (props: {
     return organizeItemsInGroups(0, filteredItems, ['type', 'dstSite', 'dstTitle', 'status']);
   }, [filteredItems, groupSelection]);
 
-  const getOptions = async (iconsMap: any) => {
-    const values = uniq(allItems.map(v => v.project)).filter(v => v);
-    values.sort();
-    // const values = Object.keys(iconsMap);
+  const itemsTable = useMemo(() => {
+    return (<ItemsTable
+      groupedItems={groupedItems}
+      isLoading={isLoading}
+      message={message}
+      error={error}
+      selectedItems={selectedItems}
+      setSelectedItems={setSelectedItems}
+      {...props}
+    />);
+  }, [props, error, groupedItems, isLoading, message, selectedItems]);
 
-    return values.map(value => ({
-      value: value,
-      view: (<EuiFlexGroup>
-        <EuiFlexItem grow={false}><EuiIcon color={'#FFFFFF'} type={iconsMap[value]} size={'m'}/></EuiFlexItem>
-        <EuiFlexItem grow={false}>{value[0].toUpperCase() + value.substring(1)}</EuiFlexItem>
-      </EuiFlexGroup>)
-    }));
-  };
+  const toolbar = useMemo(() => {
+    const searchBar = (<EuiSearchBar
+      defaultQuery={initialQuery}
+      box={{
+        isClearable: true,
+        // placeholder: '',
+        incremental: true,
+        fullWidth: true,
+        schema,
+      }}
+      filters={[
+        {
+          type: 'field_value_selection',
+          field: 'status',
+          name: 'Status',
+          multiSelect: 'or',
+          options: async () => {
+            return map({
+              'ok': 'success',
+              'outdated': 'warning',
+              'diverged': 'danger'
+            }, (v, k) => ({
+              value: k,
+              view: <EuiHealth color={v}>{k}</EuiHealth>,
+            }));
+          },
+        },
+        {
+          type: 'field_value_selection',
+          field: 'type',
+          name: 'Type',
+          multiSelect: 'or',
+          options: () => getOptions(allItems, typeIcons),
+        },
+        {
+          type: 'field_value_selection',
+          field: 'project',
+          name: 'Project',
+          multiSelect: 'or',
+          options: () => getOptions(allItems, siteIcons),
+        },
+        {
+          type: 'field_value_selection',
+          field: 'lang',
+          name: 'Language',
+          multiSelect: 'or',
+          options: async () => {
+            const values = uniq(allItems.map(v => v.lang));
+            values.sort();
+            const allLangs = await getLanguages(props.addToast);
+            return values.map(lang => {
+              const langInfo = allLangs[lang] || { name: 'Unknown' };
+              let name = langInfo.name;
+              if (langInfo.autonym && langInfo.autonym !== langInfo.name) {
+                name += ` - ${langInfo.autonym}`;
+              }
+              return {
+                value: lang,
+                view: <EuiFlexGroup>
+                  <EuiFlexItem grow={false} className={'lang-code'}>{lang}</EuiFlexItem>
+                  <EuiFlexItem grow={false}>{name}</EuiFlexItem>
+                </EuiFlexGroup>
+              };
+            });
+          },
+        },
+      ]}
+      onChange={({ query, error }: any) => {
+        if (error) {
+          setError(error.message);
+        } else {
+          setError('');
+          setQuery(query);
+        }
+      }}
+    />);
 
-  const getLangOptions = async () => {
-    const values = uniq(allItems.map(v => v.lang));
-    values.sort();
-    const allLangs = await getLanguages(props.addToast);
-    return values.map(lang => {
-      const langInfo = allLangs[lang] || { name: 'Unknown' };
-      let name = langInfo.name;
-      if (langInfo.autonym && langInfo.autonym !== langInfo.name) {
-        name += ` - ${langInfo.autonym}`;
-      }
-      return {
-        value: lang,
-        view: <EuiFlexGroup>
-          <EuiFlexItem grow={false} className={'lang-code'}>{lang}</EuiFlexItem>
-          <EuiFlexItem grow={false}>{name}</EuiFlexItem>
-        </EuiFlexGroup>
-      };
-    });
-  };
+    const refreshButton = (<EuiButton
+      key="loadItems"
+      iconType="refresh"
+      isDisabled={isLoading}
+      isLoading={isLoading}
+      onClick={() => setIsLoading(true)}
+    >
+      {isLoading ? 'Refreshing...' : 'Refresh'}
+    </EuiButton>);
 
-  const getStatuses = async () => {
-    return map({
-      'ok': 'success',
-      'outdated': 'warning',
-      'diverged': 'danger'
-    }, (v, k) => ({
-      value: k,
-      view: <EuiHealth color={v}>{k}</EuiHealth>,
-    }));
-  };
-
-  const filters: Array<SearchFilterConfig> = [
-    {
-      type: 'field_value_selection',
-      field: 'status',
-      name: 'Status',
-      multiSelect: 'or',
-      options: () => getStatuses(),
-    },
-    {
-      type: 'field_value_selection',
-      field: 'type',
-      name: 'Type',
-      multiSelect: 'or',
-      options: () => getOptions(typeIcons),
-    },
-    {
-      type: 'field_value_selection',
-      field: 'project',
-      name: 'Project',
-      multiSelect: 'or',
-      options: () => getOptions(siteIcons),
-    },
-    {
-      type: 'field_value_selection',
-      field: 'lang',
-      name: 'Language',
-      multiSelect: 'or',
-      options: () => getLangOptions(),
-    },
-  ];
-
-  const onQueryChange = ({ query, error }: any) => {
-    if (error) {
-      setError(error.message);
-    } else {
-      setError('');
-      setQuery(query);
-    }
-  };
-
-  const renderToolsLeft = () => {
-    const results = [];
-    if (selectedItems.size > 0) {
-      const onClick = async () => {
-        // store.processItems(...);
-        setSelectedItems(new Set());
-      };
-      results.push(
+    return (<EuiFlexGroup alignItems="center">
         <EuiFlexItem grow={false}>
-          <EuiButton color="danger" iconType="trash" onClick={onClick}>
-            Sync {selectedItems.size} items
-          </EuiButton>
+          <SyncButton selectedItems={selectedItems} setSelectedItems={setSelectedItems}/></EuiFlexItem>
+        <EuiFlexItem grow={false}>
+          <GroupSelector groupSelection={groupSelection} setGroupSelection={setGroupSelection}/>
         </EuiFlexItem>
-      );
-    }
-
-    results.push(
-      <EuiFlexItem grow={false}>
-        <EuiPopover
-          button={<EuiButton
-            iconType="arrowDown"
-            iconSide="right"
-            onClick={() => setIsGroupListOpen(!isGroupListOpen)}
-          >Group by...</EuiButton>}
-          isOpen={isGroupListOpen}
-          closePopover={() => setIsGroupListOpen(false)}>
-          <EuiSelectable
-            searchable={false}
-            style={{ width: 200 }}
-            onChange={groupChoices => setGroupSelection(groupChoices)}
-            options={groupSelection}>
-            {(list) => (<>{list}</>)}
-          </EuiSelectable>
-        </EuiPopover>
-      </EuiFlexItem>
+        <EuiFlexItem>{searchBar}</EuiFlexItem>
+        <EuiFlexItem grow={false}>{refreshButton}</EuiFlexItem>
+      </EuiFlexGroup>
     );
-
-    return <>{results}</>;
-  };
+  }, [allItems, groupSelection, isLoading, props.addToast, selectedItems, setGroupSelection]);
 
   return (
     <>
-      <EuiFlexGroup alignItems="center">
-        {renderToolsLeft()}
-        <EuiFlexItem>
-          <EuiSearchBar
-            defaultQuery={initialQuery}
-            box={{
-              isClearable: true,
-              // placeholder: '',
-              incremental: true,
-              fullWidth: true,
-              schema,
-            }}
-            filters={filters}
-            onChange={onQueryChange}
-          />
-        </EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <EuiButton
-            key="loadItems"
-            iconType="refresh"
-            isDisabled={isLoading}
-            isLoading={isLoading}
-            onClick={() => setIsLoading(true)}
-          >
-            {isLoading ? 'Refreshing...' : 'Refresh'}
-          </EuiButton>
-        </EuiFlexItem>
-      </EuiFlexGroup>
+      {toolbar}
       <EuiSpacer size={'l'}/>
-      <ItemsTable
-        groupedItems={groupedItems}
-        isLoading={isLoading}
-        message={message}
-        error={error}
-        selectedItems={selectedItems}
-        setSelectedItems={setSelectedItems}
-        {...props}
-      />
+      {itemsTable}
     </>);
 };
