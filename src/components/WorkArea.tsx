@@ -2,9 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiHealth, EuiIcon, EuiSearchBar, EuiSpacer } from '@elastic/eui';
 
-import { AddToast, GroupDefsType, SetType } from '../data/types';
+import { AddToast, Group, GroupDefsType, Item, SetType } from '../data/types';
 
-import { defaultSearchableFields, getItems, Item } from '../data/Store';
+import { defaultSearchableFields, getItems } from '../data/Store';
 import { groupBy, map, uniq } from 'lodash';
 import { ItemsTable } from './ItemsTable';
 import { siteIcons, typeIcons } from '../data/icons';
@@ -63,8 +63,8 @@ const groupDefs: GroupDefsType = {
   },
 };
 
-async function getOptions(allItems: Array<Item>, optionsMap: any) {
-  const values = uniq(allItems.map(v => v.project)).filter(v => v);
+async function getOptions(allItems: Array<Item>, field: ('type' | 'project'), optionsMap: any) {
+  const values = uniq(allItems.map(v => v[field])).filter(v => v);
   values.sort();
   // const values = Object.keys(optionsMap);
 
@@ -125,7 +125,7 @@ export const WorkArea = (props: {
   }, [allItems, query]);
   // console.log('filtered data', filteredItems);
 
-  const [rawGroupSelection, setGroupSelection] = usePersistedJsonState('groupSelection', ['srcTitleUrl']);
+  const [rawGroupSelection, setGroupSelection] = usePersistedJsonState<Array<keyof Item>>('groupSelection', ['srcTitleUrl']);
   // Just in case local store has some weird values, filter them out
   const groupSelection = rawGroupSelection.filter(v => groupDefs.hasOwnProperty(v));
 
@@ -134,8 +134,7 @@ export const WorkArea = (props: {
       return { items, columns: ['selector', 'actions'].concat(parentColumns), isLastGroup: true };
     }
 
-    function organizeItemsInGroups(groupIndex: number, itemList: Array<Item>, parentColumns: Array<string>, parentKey = '') {
-      debugger;
+    function organizeItemsInGroups(groupIndex: number, itemList: Array<Item>, parentColumns: Array<keyof Item>, parentKey = '') {
       if (itemList.length === 1 || groupIndex === groupSelection.length) {
         return makeLastItem(itemList, parentColumns);
       }
@@ -150,11 +149,10 @@ export const WorkArea = (props: {
         return makeLastItem(itemList, parentColumns);
       }
 
-      const items: Array<Item> = map(groupedData, allSubItems => {
+      const items: Array<Group> = map(groupedData, allSubItems => {
         const first = allSubItems[0];
         const key = parentKey + '/' + first[groupKey];
         return {
-          isGroup: true,
           key: key,
           allSubItems: allSubItems,
           countOk: allSubItems.filter(v => v.ok).length,
@@ -220,14 +218,14 @@ export const WorkArea = (props: {
           field: 'type',
           name: 'Type',
           multiSelect: 'or',
-          options: () => getOptions(allItems, typeIcons),
+          options: () => getOptions(allItems, 'type', typeIcons),
         },
         {
           type: 'field_value_selection',
           field: 'project',
           name: 'Project',
           multiSelect: 'or',
-          options: () => getOptions(allItems, siteIcons),
+          options: () => getOptions(allItems, 'project', siteIcons),
         },
         {
           type: 'field_value_selection',

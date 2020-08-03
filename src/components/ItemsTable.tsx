@@ -7,16 +7,15 @@ import {
   EuiHealth,
   EuiIcon,
   EuiInMemoryTable,
-  EuiLink,
   EuiInMemoryTableProps
 } from '@elastic/eui';
 
-import { AddToast } from '../data/types';
+import { AddToast, Group, Item } from '../data/types';
 import { typeIcons } from '../data/icons';
-import { Item } from '../data/Store';
+import { ItemDstLink, ItemSrcLink } from './ItemLink';
 
 export const ItemsTable = (
-  props: {
+  { addToast, error, groupedItems, isLoading, message, selectedItems, setItem, setSelectedItems }: {
     isLoading: boolean,
     message: string,
     error: string,
@@ -31,10 +30,11 @@ export const ItemsTable = (
     selector: {
       name: '',
       width: '2em',
-      render: (item: Item) => {
-        const items: Array<Item> = item.isGroup ? item.allSubItems : [item];
-        const selectable = items.filter(v => v.behind > 0);
-        const selectedCount = selectable.filter(v => props.selectedItems.has(v)).length;
+      render: (item: Group | Item) => {
+        // @ts-ignore
+        const items: Array<Item> = item.allSubItems ?? [item];
+        const selectable = items.filter(v => v.behind && v.behind > 0);
+        const selectedCount = selectable.filter(v => selectedItems.has(v)).length;
         const checked = selectedCount > 0 && selectable.length === selectedCount;
         const disabled = selectable.length === 0;
         const indeterminate = selectedCount > 0 && selectable.length > selectedCount;
@@ -44,7 +44,7 @@ export const ItemsTable = (
           disabled={disabled}
           indeterminate={indeterminate}
           onChange={() => {
-            const clone = new Set(props.selectedItems);
+            const clone = new Set(selectedItems);
             for (let itm of selectable) {
               if (selectedCount === 0) {
                 clone.add(itm);
@@ -52,7 +52,7 @@ export const ItemsTable = (
                 clone.delete(itm);
               }
             }
-            props.setSelectedItems(clone);
+            setSelectedItems(clone);
           }}
         />;
       },
@@ -79,7 +79,7 @@ export const ItemsTable = (
           type: 'icon',
           color: 'danger',
           available: ({ outdated }: Item) => outdated,
-          onClick: () => props.addToast({
+          onClick: () => addToast({
             title: 'Copying...',
             color: 'danger',
             iconType: 'alert',
@@ -91,7 +91,7 @@ export const ItemsTable = (
           icon: 'inputOutput', // 'magnifyWithPlus' ?
           type: 'icon',
           available: ({ ok }: Item) => !ok,
-          onClick: props.setItem,
+          onClick: setItem,
         },
       ],
     },
@@ -112,9 +112,7 @@ export const ItemsTable = (
       field: 'srcFullTitle',
       name: 'Primary Page',
       sortable: true,
-      render: (srcFullTitle: string, item: Item) => (
-        <EuiLink href={item.srcTitleUrl} target="_blank">{srcFullTitle}</EuiLink>
-      ),
+      render: (_: string, item: Item) => (<ItemSrcLink item={item}/>),
     },
     lang: {
       field: 'lang',
@@ -134,9 +132,7 @@ export const ItemsTable = (
     dstTitle: {
       field: 'dstFullTitle',
       name: 'Wiki page',
-      render: (dstFullTitle, item: Item) => (
-        <EuiLink href={item.dstTitleUrl} target="_blank">{dstFullTitle}</EuiLink>
-      ),
+      render: (_: string, item: Item) => (<ItemDstLink item={item}/>),
     },
     status: {
       field: 'status',
@@ -227,9 +223,9 @@ export const ItemsTable = (
       }
     };
     if (isTop) {
-      params.loading = props.isLoading;
-      params.message = props.message;
-      params.error = props.error;
+      params.loading = isLoading;
+      params.message = message;
+      params.error = error;
     } else {
       params.className = 'sub-table';
     }
@@ -247,5 +243,5 @@ export const ItemsTable = (
     return (<EuiInMemoryTable {...params} />);
   }
 
-  return createTable(props.groupedItems, true);
+  return createTable(groupedItems, true);
 };

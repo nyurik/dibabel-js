@@ -18,7 +18,7 @@ import { WorkArea } from './WorkArea';
 import { addToast, Toasts } from './Toasts';
 import { User } from './User';
 import { siteIcons } from '../data/icons';
-import { Item } from '../data/Store';
+import { Item } from '../data/types';
 import { UserProvider } from '../data/UserContext';
 import { ThemeProvider } from '../themes/ThemeContext';
 
@@ -63,7 +63,7 @@ export function App() {
             </EuiPageHeader>
             <WorkArea addToast={addToast} setItem={setItem}/>
           </EuiPageBody>
-          <ItemViewer item={item} close={closeItem}/>
+          <ItemViewer item={item} onClose={closeItem}/>
           <Toasts/>
         </EuiPage>
       </UserProvider>

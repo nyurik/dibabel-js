@@ -36,7 +36,7 @@
 //   }
 // }
 
-import { AddToast } from './types';
+import { AddToast, Item, ItemTypeType } from './types';
 
 // import fauxData from './fauxData.small.json';
 import fauxData from './fauxData.json';
@@ -44,7 +44,7 @@ import fauxData from './fauxData.json';
 const domainSuffix = '.org';
 const titleUrlSuffix = '/wiki/';
 
-export async function getItems(addToast: AddToast) {
+export async function getItems(addToast: AddToast): Promise<Array<Item>> {
 
   const srcLuaText = `
 --    {{#invoke:TNT | doc | Graph:Lines }}
@@ -117,10 +117,10 @@ is not.
 
   const data = await getData(addToast);
 
-  function * flatten(data: Array<{ primarySite: string, primaryTitle: string, copies: any }>) {
-    const splitNs = (t: string) => {
+  function * flatten(data: Array<{ primarySite: string, primaryTitle: string, copies: any }>): Generator<Item> {
+    const splitNs = (t: string): [ItemTypeType, string] => {
       const pos = t.indexOf(':');
-      return [t.substring(0, pos).toLowerCase(), t.substring(pos + 1)];
+      return [t.substring(0, pos).toLowerCase() as ItemTypeType, t.substring(pos + 1)];
     };
     for (let src of data) {
       const [type, title] = splitNs(src.primaryTitle);
@@ -163,10 +163,6 @@ is not.
   }
 
   return Array.from(flatten(data));
-}
-
-export interface Item {
-  [prop: string]: any
 }
 
 export const defaultSearchableFields: Array<string> = [

@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 import { EuiComboBox, EuiComboBoxOptionOption } from '@elastic/eui';
-import { GroupDefsType } from '../data/types';
+import { GroupDefsType, Item } from '../data/types';
 import { sortBy } from 'lodash';
 
 export const GroupSelector = (props: {
   groupDefs: GroupDefsType,
-  groupSelection: Array<string>,
-  setGroupSelection: (value: Array<string>) => void,
+  groupSelection: Array<keyof Item>,
+  setGroupSelection: (value: Array<keyof Item>) => void,
 }) => {
   const [options, optsAsMap]: [
     Array<EuiComboBoxOptionOption<string>>,
