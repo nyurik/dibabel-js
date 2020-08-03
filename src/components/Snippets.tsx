@@ -1,5 +1,5 @@
 import React from 'react';
-import { EuiIcon, EuiLink } from '@elastic/eui';
+import { EuiIcon, EuiLink, IconSize } from '@elastic/eui';
 import { Item } from '../data/types';
 import { siteIcons } from '../icons/icons';
 
@@ -15,10 +15,11 @@ export const ItemDstLink = ({ item: { dstTitleUrl, dstFullTitle } }: {
   return (<EuiLink href={dstTitleUrl} target="_blank">{dstFullTitle}</EuiLink>);
 };
 
-export const ProjectIcon = ({ item: { project } }: {
+export const ProjectIcon = ({ item: { project }, size }: {
   item: Item,
+  size?: IconSize,
 }) => {
   // @ts-ignore
   const siteIcon = siteIcons[project];
-  return (<EuiIcon type={siteIcon} size={'m'}/>);
+  return (<EuiIcon type={siteIcon} size={size ?? 'm'}/>);
 };

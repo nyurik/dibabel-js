@@ -8,11 +8,13 @@ import {
   EuiSpacer,
   EuiText,
   EuiTitle,
-  useEuiTextDiff
+  useEuiTextDiff,
+  EuiFlexItem,
+  EuiFlexGroup
 } from '@elastic/eui';
 
 import { Item } from '../data/types';
-import { ItemDstLink, ItemSrcLink } from './Snippets';
+import { ItemDstLink, ItemSrcLink, ProjectIcon } from './Snippets';
 
 interface ItemViewerParams<TItem> {
   item: TItem;
@@ -48,7 +50,10 @@ const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
           <h3>{item.srcFullTitle}</h3>
         </EuiTitle>
         <EuiSpacer size={'s'}/>
-        {infoSubHeader}
+        <EuiFlexGroup alignItems={'center'} gutterSize={'s'}>
+          <EuiFlexItem grow={false}><ProjectIcon item={item} size={'xl'}/></EuiFlexItem>
+          <EuiFlexItem grow={true}>{infoSubHeader}</EuiFlexItem>
+        </EuiFlexGroup>
       </EuiFlyoutHeader>
       <EuiFlyoutBody>
         <EuiCodeBlock language={item.type === 'module' ? 'lua' : 'text'}>{rendered}</EuiCodeBlock>
