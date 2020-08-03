@@ -8,6 +8,10 @@ import { Props } from '../data/types';
 // FIXME: remove this css and use the .unuse() / .use() methods below
 import '@elastic/eui/dist/eui_theme_amsterdam_dark.css';
 
+// This should come last to override the defaults from EUI
+import '../App.css';
+
+
 // Modeled after https://www.carlrippon.com/react-context-with-typescript-p2/
 export type ThemeContextType = {
   isDarkTheme: boolean

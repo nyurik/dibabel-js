@@ -6,3 +6,18 @@
     width: 1.8em;
     font-weight: bold;
 }
+
+/*
+* Fixes https://github.com/elastic/eui/issues/3854
+*/
+@keyframes growExpandedRow {
+    0% {
+        max-height: 0;
+    }
+    90% {
+        max-height: 1000px;
+    }
+    100% {
+        max-height: max-content;
+    }
+}
