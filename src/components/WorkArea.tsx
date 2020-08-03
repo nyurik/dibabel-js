@@ -145,7 +145,8 @@ export const WorkArea = (props: {
       const columns = parentColumns.filter(v => !groupDef.columns.includes(v));
 
       const groupedData = groupBy(itemList, v => v[groupKey]);
-      if (Object.values(groupedData).every(v => v.length === 1)) {
+      const values = Object.values(groupedData);
+      if (values.length === 1 || values.every(v => v.length === 1)) {
         return makeLastItem(itemList, parentColumns);
       }
 

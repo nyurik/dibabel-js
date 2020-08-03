@@ -167,7 +167,7 @@ export const ItemsTable = (
       description: 'Number of up to date pages.',
       render: (value: number) => {
         if (value > 0) {
-          return <EuiHealth title={'Number of up to date pages.'}
+          return <EuiHealth title={`${value} pages are up to date.`}
                             color={'success'}>{`${value} pages`}</EuiHealth>;
         } else {
           return '-';

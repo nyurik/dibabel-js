@@ -13,7 +13,7 @@ export const SyncButton = (props: {
       props.setSelectedItems(new Set());
     };
     return (<EuiButton color="danger" iconType="trash" onClick={onClick}>
-      Sync {props.selectedItems.size} items
+      Sync {props.selectedItems.size} pages
     </EuiButton>);
   } else {
     return null;
