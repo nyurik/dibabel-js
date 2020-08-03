@@ -1,17 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import {
-  EuiButton,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiHealth,
-  EuiIcon,
-  EuiSearchBar,
-  EuiSelectableOption,
-  EuiSpacer
-} from '@elastic/eui';
+import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiHealth, EuiIcon, EuiSearchBar, EuiSpacer } from '@elastic/eui';
 
-import { AddToast, SetType } from '../data/types';
+import { AddToast, GroupDefsType, SetType } from '../data/types';
 
 import { defaultSearchableFields, getItems, Item } from '../data/Store';
 import { groupBy, map, uniq } from 'lodash';
@@ -44,6 +35,29 @@ const schema = {
     dstTitleUrl: { type: 'string' },
     srcText: { type: 'string' },
     dstText: { type: 'string' },
+  },
+};
+
+const groupDefs: GroupDefsType = {
+  'lang': {
+    columns: ['lang'],
+    fields: ['lang'],
+    groupName: 'by language',
+  },
+  'project': {
+    columns: ['project'],
+    fields: ['dstSite', 'project', 'lang'],
+    groupName: 'by project',
+  },
+  'srcTitleUrl': {
+    columns: ['type', 'title'],
+    fields: ['type', 'srcSite', 'srcFullTitle', 'title', 'srcTitleUrl'],
+    groupName: 'by page',
+  },
+  'dstSite': {
+    columns: ['dstSite'],
+    fields: ['lang', 'project', 'dstSite'],
+    groupName: 'by wiki',
   },
 };
 
@@ -107,61 +121,23 @@ export const WorkArea = (props: {
     // }
     return EuiSearchBar.Query.execute(query, allItems, { defaultSearchableFields });
   }, [allItems, query]);
-
   // console.log('filtered data', filteredItems);
 
-  function getSelectedGroupNames(groupSelection: Array<EuiSelectableOption>): Array<string> {
-    return groupSelection.filter(v => v.checked).map((v: any) => v['data-group']);
-  }
-
-  const [groupSelection, setGroupSelection] = usePersistedJsonState<Array<EuiSelectableOption>, any>(
-    'groupSelection',
-    ['srcTitleUrl'],
-    (selection) => {
-      return [
-        { label: 'by language', 'data-group': 'lang' },
-        { label: 'by project', 'data-group': 'project' },
-        { label: 'by wiki', 'data-group': 'dstSite' },
-        { label: 'by page', 'data-group': 'srcTitleUrl' }
-      ].map(v =>
-        selection.includes(v['data-group'])
-          ? Object.assign(v, { checked: 'on' })
-          : v);
-    },
-    getSelectedGroupNames);
+  const [rawGroupSelection, setGroupSelection] = usePersistedJsonState('groupSelection', ['srcTitleUrl']);
+  // Just in case local store has some weird values, filter them out
+  const groupSelection = rawGroupSelection.filter(v => groupDefs.hasOwnProperty(v));
 
   const groupedItems = useMemo(() => {
-    const groupDefs: any = {
-      'lang': {
-        columns: ['lang'],
-        fields: ['lang']
-      },
-      'project': {
-        columns: ['project'],
-        fields: ['dstSite', 'project', 'lang']
-      },
-      'srcTitleUrl': {
-        columns: ['type', 'title'],
-        fields: ['type', 'srcSite', 'srcFullTitle', 'title', 'srcTitleUrl']
-      },
-      'dstSite': {
-        columns: ['dstSite'],
-        fields: ['lang', 'project', 'dstSite']
-      },
-    };
-
-    const groupings = getSelectedGroupNames(groupSelection);
-
     function makeLastItem(items: Array<Item>, parentColumns: Array<string>) {
       return { items, columns: ['selector', 'actions'].concat(parentColumns), isLastGroup: true };
     }
 
     function organizeItemsInGroups(groupIndex: number, itemList: Array<Item>, parentColumns: Array<string>, parentKey = '') {
-      if (itemList.length === 1 || groupIndex === groupings.length) {
+      if (itemList.length === 1 || groupIndex === groupSelection.length) {
         return makeLastItem(itemList, parentColumns);
       }
 
-      const groupKey = groupings[groupIndex];
+      const groupKey = groupSelection[groupIndex];
       const groupDef = groupDefs[groupKey];
       const columns = parentColumns.filter(v => !groupDef.columns.includes(v));
 
@@ -297,8 +273,8 @@ export const WorkArea = (props: {
     return (<EuiFlexGroup alignItems="center">
         <EuiFlexItem grow={false}>
           <SyncButton selectedItems={selectedItems} setSelectedItems={setSelectedItems}/></EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <GroupSelector groupSelection={groupSelection} setGroupSelection={setGroupSelection}/>
+        <EuiFlexItem style={{ minWidth: '10em' }} grow={false}>
+          <GroupSelector groupDefs={groupDefs} groupSelection={groupSelection} setGroupSelection={setGroupSelection}/>
         </EuiFlexItem>
         <EuiFlexItem>{searchBar}</EuiFlexItem>
         <EuiFlexItem grow={false}>{refreshButton}</EuiFlexItem>

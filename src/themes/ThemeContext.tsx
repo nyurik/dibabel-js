@@ -19,7 +19,7 @@ export const ThemeProvider = ({ children }: Props) => {
   const [isDarkTheme, setIsDarkTheme] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    const newTheme = (localStorage.getItem('theme') ?? 'light') !== 'light';
+    const newTheme = (localStorage.getItem('theme') ?? 'dark') !== 'light';
     setIsDarkTheme(newTheme);
   }, []);
 

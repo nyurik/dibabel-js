@@ -132,9 +132,10 @@ export const ItemsTable = (
       sortable: true,
     },
     dstTitle: {
+      field: 'dstFullTitle',
       name: 'Wiki page',
-      render: (item: Item) => (
-        <EuiLink href={item.dstTitleUrl} target="_blank">{item.dstFullTitle}</EuiLink>
+      render: (dstFullTitle, item: Item) => (
+        <EuiLink href={item.dstTitleUrl} target="_blank">{dstFullTitle}</EuiLink>
       ),
     },
     status: {

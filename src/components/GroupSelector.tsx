@@ -1,29 +1,36 @@
-import React, { useState } from 'react';
-
-import { EuiButton, EuiPopover, EuiSelectable, EuiSelectableOption } from '@elastic/eui';
+import React, { useMemo } from 'react';
+import { EuiComboBox, EuiComboBoxOptionOption } from '@elastic/eui';
+import { GroupDefsType } from '../data/types';
 
 export const GroupSelector = (props: {
-  groupSelection: Array<EuiSelectableOption>,
-  setGroupSelection: (value: Array<EuiSelectableOption>) => void,
+  groupDefs: GroupDefsType,
+  groupSelection: Array<string>,
+  setGroupSelection: (value: Array<string>) => void,
 }) => {
-  const [isGroupListOpen, setIsGroupListOpen] = useState(false);
+  const [options, optsAsMap]: [
+    Array<EuiComboBoxOptionOption<string>>,
+    { [key: string]: EuiComboBoxOptionOption<string> }
+  ] = useMemo(() => {
 
-  return (
-    <EuiPopover
-      button={<EuiButton
-        iconType="arrowDown"
-        iconSide="right"
-        onClick={() => setIsGroupListOpen(!isGroupListOpen)}
-      >Group by...</EuiButton>}
-      isOpen={isGroupListOpen}
-      closePopover={() => setIsGroupListOpen(false)}>
-      <EuiSelectable
-        searchable={false}
-        style={{ width: 200 }}
-        onChange={groupChoices => props.setGroupSelection(groupChoices)}
-        options={props.groupSelection}>
-        {(list) => (<>{list}</>)}
-      </EuiSelectable>
-    </EuiPopover>
-  );
+    const optsAsMap = Object.fromEntries(
+      Object.entries(props.groupDefs).map(
+        ([k, v]) => [k, { label: v.groupName, 'data-group': k }]
+      )
+    );
+    return [Object.values(optsAsMap), optsAsMap];
+  }, [props.groupDefs]);
+
+  const onChange = (groupChoices: Array<EuiComboBoxOptionOption<string>>) => {
+    props.setGroupSelection(groupChoices.map((v: any) => v['data-group']));
+  };
+
+  return (<EuiComboBox
+    fullWidth={true}
+    placeholder="Group by ..."
+    options={options}
+    selectedOptions={props.groupSelection.map(v => optsAsMap[v])}
+    onChange={onChange}
+    isClearable={true}
+  />);
+
 };

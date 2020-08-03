@@ -19,3 +19,11 @@ export type LangInfoDict = { [key: string]: LangInfo };
 export type AddToast = (toast: Toast) => void;
 
 export type Props = { children: React.ReactNode };
+
+export type GroupDefsType = {
+  [key: string]: {
+    columns: Array<string>,
+    fields: Array<string>,
+    groupName: string
+  }
+};

@@ -33,12 +33,10 @@ export function usePersistedState<T>(
   return [value, setValue];
 }
 
-export function usePersistedJsonState<TValue, TJson>(
+export function usePersistedJsonState<TValue>(
   key: string,
-  initValue: TJson,
-  deserializer?: (value: TJson) => TValue,
-  serializer?: (value: TValue) => TJson,
-  deps?: DependencyList
+  initValue: TValue,
+  deps?: DependencyList,
 ): [TValue, (value: TValue) => void] {
   return usePersistedState(
     key,
@@ -54,9 +52,9 @@ export function usePersistedJsonState<TValue, TJson>(
           result = initValue;
         }
       }
-      return deserializer ? deserializer(result) : result;
+      return result;
     },
-    (val) => JSON.stringify(serializer ? serializer(val) : val),
+    (val) => JSON.stringify(val),
     deps
   );
 }
