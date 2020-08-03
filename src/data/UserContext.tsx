@@ -40,6 +40,7 @@ function login(addToast: AddToast, setUser: Dispatch<UserType>) {
           iconType: 'alert',
           text: await userInfo.text(),
         });
+        setUser(loggedOutState);
       }
     } catch (err) {
       addToast({
@@ -49,8 +50,8 @@ function login(addToast: AddToast, setUser: Dispatch<UserType>) {
         text: `${err}`,
         toastLifeTimeMs: 15000,
       });
+      setUser(loggedOutState);
     }
-    setUser(loggedOutState);
   })();
 }
 
