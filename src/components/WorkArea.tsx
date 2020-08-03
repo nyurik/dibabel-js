@@ -7,7 +7,7 @@ import { AddToast, Group, GroupDefsType, Item, SetType } from '../data/types';
 import { defaultSearchableFields, getItems } from '../data/Store';
 import { groupBy, map, uniq } from 'lodash';
 import { ItemsTable } from './ItemsTable';
-import { siteIcons, typeIcons } from '../data/icons';
+import { siteIcons, typeIcons } from '../icons/icons';
 import { getLanguages } from '../data/languages';
 import { usePersistedJsonState } from '../utils';
 import { GroupSelector } from './GroupSelector';
@@ -63,15 +63,14 @@ const groupDefs: GroupDefsType = {
   },
 };
 
-async function getOptions(allItems: Array<Item>, field: ('type' | 'project'), optionsMap: any) {
+async function getOptions(allItems: Array<Item>, field: ('type' | 'project'), optionsMap: { [key: string]: any }) {
   const values = uniq(allItems.map(v => v[field])).filter(v => v);
   values.sort();
-  // const values = Object.keys(optionsMap);
 
   return values.map(value => ({
     value: value,
     view: (<EuiFlexGroup>
-      <EuiFlexItem grow={false}><EuiIcon color={'#FFFFFF'} type={optionsMap[value]} size={'m'}/></EuiFlexItem>
+      <EuiFlexItem grow={false}><EuiIcon type={optionsMap[value]} size={'m'}/></EuiFlexItem>
       <EuiFlexItem grow={false}>{value[0].toUpperCase() + value.substring(1)}</EuiFlexItem>
     </EuiFlexGroup>)
   }));

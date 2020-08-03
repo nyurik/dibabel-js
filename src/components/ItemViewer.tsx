@@ -12,7 +12,7 @@ import {
 } from '@elastic/eui';
 
 import { Item } from '../data/types';
-import { ItemDstLink, ItemSrcLink } from './ItemLink';
+import { ItemDstLink, ItemSrcLink } from './Snippets';
 
 interface ItemViewerParams<TItem> {
   item: TItem;

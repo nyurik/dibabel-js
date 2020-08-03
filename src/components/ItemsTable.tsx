@@ -11,8 +11,8 @@ import {
 } from '@elastic/eui';
 
 import { AddToast, Group, Item } from '../data/types';
-import { typeIcons } from '../data/icons';
-import { ItemDstLink, ItemSrcLink } from './ItemLink';
+import { typeIcons } from '../icons/icons';
+import { ItemDstLink, ItemSrcLink, ProjectIcon } from './Snippets';
 
 export const ItemsTable = (
   { addToast, error, groupedItems, isLoading, message, selectedItems, setItem, setSelectedItems }: {
@@ -26,6 +26,7 @@ export const ItemsTable = (
     setItem: (item: Item) => void,
   }
 ) => {
+  // @ts-ignore
   const all_columns: { [key: string]: EuiBasicTableColumn<any> } = {
     selector: {
       name: '',
@@ -123,11 +124,13 @@ export const ItemsTable = (
       field: 'project',
       name: 'Project',
       sortable: true,
+      render: (_: string, item: Item) => (<><ProjectIcon item={item}/>&nbsp;&nbsp;{item.project}</>),
     },
     dstSite: {
       field: 'dstSite',
       name: 'Wiki site',
       sortable: true,
+      render: (_: string, item: Item) => (<><ProjectIcon item={item}/>&nbsp;&nbsp;{item.dstSite}</>),
     },
     dstTitle: {
       field: 'dstFullTitle',

@@ -17,10 +17,10 @@ import { Settings } from './Settings';
 import { WorkArea } from './WorkArea';
 import { addToast, Toasts } from './Toasts';
 import { User } from './User';
-import { siteIcons } from '../data/icons';
 import { Item } from '../data/types';
 import { UserProvider } from '../data/UserContext';
 import { ThemeProvider } from '../themes/ThemeContext';
+import { siteIcons } from '../icons/icons';
 
 export function App() {
   const [item, setItem] = useState<Item | null>(null);
