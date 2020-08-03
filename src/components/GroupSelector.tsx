@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { EuiComboBox, EuiComboBoxOptionOption } from '@elastic/eui';
 import { GroupDefsType } from '../data/types';
+import { sortBy } from 'lodash';
 
 export const GroupSelector = (props: {
   groupDefs: GroupDefsType,
@@ -14,14 +15,16 @@ export const GroupSelector = (props: {
 
     const optsAsMap = Object.fromEntries(
       Object.entries(props.groupDefs).map(
-        ([k, v]) => [k, { label: v.groupName, 'data-group': k }]
+        ([k, v]) => [k, { label: v.groupName, 'data-group': k, 'data-order': v.order }]
       )
     );
     return [Object.values(optsAsMap), optsAsMap];
   }, [props.groupDefs]);
 
   const onChange = (groupChoices: Array<EuiComboBoxOptionOption<string>>) => {
-    props.setGroupSelection(groupChoices.map((v: any) => v['data-group']));
+    // perform stable sort to keep values with the same order value as is
+    props.setGroupSelection(
+      sortBy(groupChoices, (v: any) => parseInt(v['data-order'])).map((v: any) => v['data-group']));
   };
 
   return (<EuiComboBox

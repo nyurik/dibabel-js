@@ -118,7 +118,7 @@ export const ItemsTable = (
     },
     lang: {
       field: 'lang',
-      name: 'Lang',
+      name: 'Language',
       sortable: true,
     },
     project: {
@@ -128,7 +128,7 @@ export const ItemsTable = (
     },
     dstSite: {
       field: 'dstSite',
-      name: 'Wiki',
+      name: 'Wiki site',
       sortable: true,
     },
     dstTitle: {
@@ -180,7 +180,7 @@ export const ItemsTable = (
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
-          return <EuiHealth title={`${value} pages are behind`}
+          return <EuiHealth title={`${value} pages are behind the primary and can be synchronized automatically.`}
                             color={'warning'}>{`${value} pages`}</EuiHealth>;
         } else {
           return '-';
@@ -194,7 +194,7 @@ export const ItemsTable = (
       description: 'Number of pages with local modifications.',
       render: (value: number) => {
         if (value > 0) {
-          return <EuiHealth title={'Number of pages with local modifications.'}
+          return <EuiHealth title={`${value} pages have local modifications and must be synchronized individually.`}
                             color={'danger'}>{`${value} pages`}</EuiHealth>;
         } else {
           return '-';

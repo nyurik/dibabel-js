@@ -40,24 +40,26 @@ const schema = {
 
 const groupDefs: GroupDefsType = {
   'lang': {
+    order: 1,
     columns: ['lang'],
-    fields: ['lang'],
     groupName: 'by language',
   },
   'project': {
+    order: 1,
     columns: ['project'],
-    fields: ['dstSite', 'project', 'lang'],
     groupName: 'by project',
   },
-  'srcTitleUrl': {
-    columns: ['type', 'title'],
-    fields: ['type', 'srcSite', 'srcFullTitle', 'title', 'srcTitleUrl'],
-    groupName: 'by page',
-  },
   'dstSite': {
+    order: 2,
     columns: ['dstSite'],
-    fields: ['lang', 'project', 'dstSite'],
+    extra_columns: ['lang', 'project'],
     groupName: 'by wiki',
+  },
+  'srcTitleUrl': {
+    order: 3,
+    columns: ['type', 'title'],
+    extra_columns: ['srcSite', 'srcFullTitle', 'srcTitleUrl'],
+    groupName: 'by title',
   },
 };
 
@@ -133,6 +135,7 @@ export const WorkArea = (props: {
     }
 
     function organizeItemsInGroups(groupIndex: number, itemList: Array<Item>, parentColumns: Array<string>, parentKey = '') {
+      debugger;
       if (itemList.length === 1 || groupIndex === groupSelection.length) {
         return makeLastItem(itemList, parentColumns);
       }
@@ -156,7 +159,8 @@ export const WorkArea = (props: {
           countOk: allSubItems.filter(v => v.ok).length,
           countOutdated: allSubItems.filter(v => v.outdated).length,
           countDiverged: allSubItems.filter(v => v.diverged).length,
-          ...Object.fromEntries(groupDef.fields.map((v: string) => [v, first[v]])),
+          ...Object.fromEntries(groupDef.columns.map(v => [v, first[v]])),
+          ...Object.fromEntries((groupDef.extra_columns ?? []).map(v => [v, first[v]])),
           ...organizeItemsInGroups(groupIndex + 1, allSubItems, columns, key)
         };
       });

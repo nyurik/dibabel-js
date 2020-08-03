@@ -127,9 +127,16 @@ is not.
       const srcTitleUrl = `https://${src.primarySite}${domainSuffix}${titleUrlSuffix}${src.primaryTitle}`;
       for (let dstSite of Object.keys(src.copies)) {
         const dstLangSiteParts = dstSite.split('.');
-        const isWikimedia = dstLangSiteParts[1] === 'wikimedia';
+        let ind = dstLangSiteParts.length - 1;
+        if (dstLangSiteParts[ind] === 'wikimedia') {
+          ind--;  // Multiple sites, look at the subdomain
+        }
+        const project = dstLangSiteParts[ind--];
+        const lang = (ind >= 0 && dstLangSiteParts[ind] !== 'www') ? dstLangSiteParts[ind] : '-';
+
         const dst = src.copies[dstSite];
-        let dstTitleUrl = `https://${dstSite}${domainSuffix}${titleUrlSuffix}${dst.title}`;
+        const domain = `${dstSite}${domainSuffix}`;
+        const dstTitleUrl = `https://${domain}${titleUrlSuffix}${dst.title}`;
         yield {
           key: dstTitleUrl,
           type,
@@ -137,9 +144,9 @@ is not.
           srcFullTitle: src.primaryTitle,
           title,
           srcTitleUrl,
-          project: isWikimedia ? dstLangSiteParts[0] : dstLangSiteParts[1],
-          lang: isWikimedia ? '-' : dstLangSiteParts[0],
-          dstSite,
+          project,
+          lang,
+          dstSite: domain,
           dstFullTitle: dst.title,
           dstTitle: splitNs(dst.title)[1],
           dstTitleUrl: dstTitleUrl,

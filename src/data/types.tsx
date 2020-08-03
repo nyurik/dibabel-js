@@ -23,7 +23,8 @@ export type Props = { children: React.ReactNode };
 export type GroupDefsType = {
   [key: string]: {
     columns: Array<string>,
-    fields: Array<string>,
-    groupName: string
+    extra_columns?: Array<string>,
+    groupName: string,
+    order: number,
   }
 };
