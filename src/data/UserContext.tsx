@@ -33,14 +33,14 @@ function login(addToast: AddToast, setUser: Dispatch<UserType>) {
           iconType: 'check',
         });
         setUser({ state: UserState.LoggedIn, ...json });
+      } else {
+        addToast({
+          title: `${userInfo.status}: ${userInfo.statusText}`,
+          color: 'danger',
+          iconType: 'alert',
+          text: await userInfo.text(),
+        });
       }
-      addToast({
-        title: `${userInfo.status}: ${userInfo.statusText}`,
-        color: 'danger',
-        iconType: 'alert',
-        text: await userInfo.text(),
-      });
-
     } catch (err) {
       addToast({
         title: `Unable to parse user login`,
