@@ -9,7 +9,8 @@ import {
   EuiPage,
   EuiPageBody,
   EuiPageHeader,
-  EuiPageHeaderSection
+  EuiPageHeaderSection,
+  EuiBadge
 } from '@elastic/eui';
 
 import { ItemViewer } from './ItemViewer';
@@ -38,6 +39,9 @@ export function App() {
                     iconType={siteIcons.wikipedia}>
                     Dibabel - keeps it in sync
                   </EuiHeaderLogo>
+                </EuiHeaderSectionItem>
+                <EuiHeaderSectionItem>
+                  <EuiBadge color={'accent'}>Demo site, editing is disabled for now.</EuiBadge>
                 </EuiHeaderSectionItem>
               </EuiPageHeaderSection>
               <EuiPageHeaderSection>

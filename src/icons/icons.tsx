@@ -1,7 +1,23 @@
+/**
+ * https://commons.wikimedia.org/wiki/File:Incubator-logo.svg
+ * NielsF / CC BY-SA (https://creativecommons.org/licenses/by-sa/3.0)
+ */
 import { ReactComponent as incubatorIcon } from './site_incubator.svg';
+
+
 import { ReactComponent as mediawikiIcon } from './site_mediawiki.svg';
 import { ReactComponent as metaIcon } from './site_meta.svg';
+
+/**
+ * https://commons.wikimedia.org/wiki/File:Wikibooks-logo.svg
+ * User:Bastique, User:Ramac et al. / CC BY-SA (https://creativecommons.org/licenses/by-sa/3.0)
+ */
 import { ReactComponent as wikibooksIcon } from './site_wikibooks.svg';
+
+/**
+ * https://commons.wikimedia.org/wiki/File:Wikidata-logo.svg
+ * User:Planemad / Public domain
+ */
 import { ReactComponent as wikidataIcon } from './site_wikidata.svg';
 import { ReactComponent as wikinewsIcon } from './site_wikinews.svg';
 import wikipediaIconUrl from './site_wikipedia.svg'; // SVG uses namespaces that do not parse well in React
