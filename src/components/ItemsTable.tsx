@@ -27,7 +27,7 @@ export const ItemsTable = (
   }
 ) => {
   // @ts-ignore
-  const all_columns: { [key: string]: EuiBasicTableColumn<any> } = {
+  const all_columns: { [key: string]: EuiBasicTableColumn<Item> } = {
     selector: {
       name: '',
       width: '2em',
@@ -124,13 +124,13 @@ export const ItemsTable = (
       field: 'project',
       name: 'Project',
       sortable: true,
-      render: (_: string, item: Item) => (<><ProjectIcon item={item}/>&nbsp;&nbsp;{item.project}</>),
+      render: (_: string, item: Item) => (<><ProjectIcon item={item}/>&nbsp;&nbsp;&nbsp;{item.project}</>),
     },
     dstSite: {
       field: 'dstSite',
       name: 'Wiki site',
       sortable: true,
-      render: (_: string, item: Item) => (<><ProjectIcon item={item}/>&nbsp;&nbsp;{item.dstSite}</>),
+      render: (_: string, item: Item) => (<><ProjectIcon item={item}/>&nbsp;&nbsp;&nbsp;{item.dstSite}</>),
     },
     dstTitle: {
       field: 'dstFullTitle',
@@ -145,13 +145,13 @@ export const ItemsTable = (
         let color, label, title;
         switch (status) {
           case 'ok':
-            [color, label, title] = ['success', status, 'The target page is up to date with the primary'];
+            [color, label, title] = ['success', 'Same', 'The target page is up to date with the primary'];
             break;
           case 'outdated':
             [color, label, title] = ['warning', `Outdated by ${item.behind} rev`, `The target page is outdated by ${item.behind} versions, and can be updated.`];
             break;
           case 'diverged':
-            [color, label, title] = ['danger', status, 'The target page has been modified and cannot be updated automatically.'];
+            [color, label, title] = ['danger', 'Diverged', 'The target page has been modified and cannot be updated automatically.'];
             break;
           default:
             throw new Error(`Unknown status ${status}`);
@@ -160,7 +160,7 @@ export const ItemsTable = (
       },
     },
     countOk: {
-      name: 'OK',
+      name: 'Same',
       field: 'countOk',
       sortable: true,
       description: 'Number of up to date pages.',

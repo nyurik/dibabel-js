@@ -6,6 +6,11 @@ import { ReactComponent as incubatorIcon } from './site_incubator.svg';
 
 
 import { ReactComponent as mediawikiIcon } from './site_mediawiki.svg';
+
+/**
+ * https://commons.wikimedia.org/wiki/File:Wikimedia_Community_Logo.svg
+ * real name: Artur Jan Fijałkowskipl.wiki: WarXcommons: WarXmail: [1]jabber: WarX@jabber.orgirc: [2] / Public domain
+ */
 import { ReactComponent as metaIcon } from './site_meta.svg';
 
 /**
@@ -20,13 +25,21 @@ import { ReactComponent as wikibooksIcon } from './site_wikibooks.svg';
  */
 import { ReactComponent as wikidataIcon } from './site_wikidata.svg';
 import { ReactComponent as wikinewsIcon } from './site_wikinews.svg';
-import wikipediaIconUrl from './site_wikipedia.svg'; // SVG uses namespaces that do not parse well in React
-import { ReactComponent as wikiquoteIcon } from './site_wikiquote.svg';
+import { ReactComponent as wikipediaIcon } from './site_wikipedia.svg';
 import { ReactComponent as wikisourceIcon } from './site_wikisource.svg';
 import { ReactComponent as wikispeciesIcon } from './site_wikispecies.svg';
 import { ReactComponent as wikiversityIcon } from './site_wikiversity.svg';
 import { ReactComponent as wikivoyageIcon } from './site_wikivoyage.svg';
-import { ReactComponent as wiktionaryIcon } from './site_wiktionary.svg';
+
+/**
+ * Does not show correctly in React
+ */
+import wikiquoteIconUrl from './site_wikiquote.svg';
+
+/**
+ * Does not show correctly in React
+ */
+import wiktionaryIconUrl from './site_wiktionary.svg';
 
 /**
  * https://commons.wikimedia.org/wiki/File:Commons-icon.svg
@@ -37,12 +50,13 @@ import { ReactComponent as commonsIcon } from './site_commons.svg';
 /**
  * https://commons.wikimedia.org/wiki/File:Wikimania.svg
  * User:Tlogmer / CC BY-SA (https://creativecommons.org/licenses/by-sa/3.0)
+ * heavily modified
  */
-import wikimaniaIconUrl from './site_wikimania.svg';
+import { ReactComponent as wikimaniaIcon } from './site_wikimania.svg';
 
 
-import templateIconUrl from './type_template.svg';
-import moduleIconUrl from './type_module.svg';
+import { ReactComponent as templateIcon } from './type_template.svg';
+import { ReactComponent as moduleIcon } from './type_module.svg';
 
 export const siteIcons = {
   commons: commonsIcon,
@@ -52,17 +66,17 @@ export const siteIcons = {
   species: wikispeciesIcon,
   wikibooks: wikibooksIcon,
   wikidata: wikidataIcon,
-  wikimania: wikimaniaIconUrl,
+  wikimania: wikimaniaIcon,
   wikinews: wikinewsIcon,
-  wikipedia: wikipediaIconUrl,
-  wikiquote: wikiquoteIcon,
+  wikipedia: wikipediaIcon,
+  wikiquote: wikiquoteIconUrl,
   wikisource: wikisourceIcon,
   wikiversity: wikiversityIcon,
   wikivoyage: wikivoyageIcon,
-  wiktionary: wiktionaryIcon,
+  wiktionary: wiktionaryIconUrl,
 };
 
 export const typeIcons = {
-  module: moduleIconUrl,
-  template: templateIconUrl,
+  module: moduleIcon,
+  template: templateIcon,
 };

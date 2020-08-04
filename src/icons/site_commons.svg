@@ -3,23 +3,7 @@
 	 xmlns="http://www.w3.org/2000/svg"
 	 x="0px" y="0px" width="512px" height="512px" viewBox="5.211 4.801 512 512"
 	 enable-background="new 5.211 4.801 512 512" xml:space="preserve">
-<defs>
-</defs>
-<g>
-
-
-	<g>
-		<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="261.2109" y1="516.8013" x2="261.2109" y2="4.8013">
-			<stop  offset="0" style="stop-color:#FFFFFF"/>
-			<stop  offset="0.3266" style="stop-color:#F7F7F7"/>
-			<stop  offset="0.8275" style="stop-color:#E2E2E2"/>
-			<stop  offset="1" style="stop-color:#D9D9D9"/>
-		</linearGradient>
-		<path fill="url(#SVGID_1_)" d="M517.211,488.455c0,15.59-12.756,28.346-28.347,28.346H33.558
-			c-15.591,0-28.347-12.756-28.347-28.346V33.147c0-15.59,12.756-28.346,28.347-28.346h455.307
-			c15.591,0,28.347,12.756,28.347,28.346V488.455z"/>
-	</g>
-</g>
+<rect width="100%" height="100%" rx="15%" fill="#ffffff" fill-opacity=".8" />
 <path fill="#970000" d="M261.211,261.743c26.803,0,48.533,21.724,48.533,48.522c0,26.811-21.73,48.531-48.533,48.531
 	s-48.536-21.72-48.536-48.531C212.675,283.467,234.408,261.743,261.211,261.743z"/>
 <path fill="none" d="M261.211,165.653c79.874,0,144.613,64.746,144.613,144.612c0,79.876-64.739,144.622-144.613,144.622
