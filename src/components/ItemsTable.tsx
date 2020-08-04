@@ -135,6 +135,7 @@ export const ItemsTable = (
     dstTitle: {
       field: 'dstFullTitle',
       name: 'Wiki page',
+      sortable: true,
       render: (_: string, item: Item) => (<ItemDstLink item={item}/>),
     },
     status: {
