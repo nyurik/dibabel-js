@@ -62,14 +62,14 @@ class QueryCache:
         self.update_template_cache(dependencies)
 
         qid_site_info = defaultdict(dict)
-        for site, titles in self.site_title_qid.items():
+        for site, titles in sorted(self.site_title_qid.items(), key=lambda v: (v[0].lang, v[0].project)):
             for page in site.download_content(titles.keys(), refresh):
                 qid = self.site_title_qid[site][page.title]
                 qid_site_info[qid][site] = self.qid_primary_page[qid].find_new_revisions(self.template_map, qid, page)
         self.qid_site_info = dict(qid_site_info)
 
         self.site_cache.diskcache['last_refresh'] = datetime.utcnow().timestamp()
-        # self.site_cache.diskcache.close()
+        print('Refresh complete')
 
     def find_pages_to_sync(self, items: List[str] = None) -> Dict[str, List[str]]:
         """
@@ -143,7 +143,7 @@ WHERE {{
 
         self.template_map = cache
 
-    async def get_data(self):
+    def get_data(self):
         def info_obj(p: SyncInfo):
             res = dict(title=p.dst.title)
             if p.no_changes:
@@ -172,7 +172,7 @@ WHERE {{
             copies={site.domain: info_obj(info) for site, info in site_info.items()}
         ) for qid, site_info in self.qid_site_info.items()]
 
-    async def get_page(self, qid: str, site: str):
+    def get_page(self, qid: str, site: str):
         self.refresh_data()
         info = self.qid_site_info[qid][self.site_cache.sites['https://' + site]]
         return dict(

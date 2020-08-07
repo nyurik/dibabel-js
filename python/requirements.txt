@@ -2,7 +2,7 @@
 
 pywikiapi>=4.3.0
 requests>=2.24.0
-quart>=0.13.0
+flask>=1.1.2
 toolforge>=4.3.1
 sqlitedict>=1.6.0
 mwoauth>=0.3.7

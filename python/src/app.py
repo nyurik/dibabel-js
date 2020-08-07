@@ -5,10 +5,10 @@ from pathlib import Path
 import mwoauth
 from dibabel.QueryCache import QueryCache
 from dibabel.SiteCache import SiteCache
-from quart import Quart, send_file, jsonify, session, flash
-from quart import redirect, request, url_for
+from flask import Flask, send_file, jsonify, session, flash
+from flask import redirect, request, url_for
 
-app = Quart(__name__,
+app = Flask(__name__,
             static_url_path='',
             static_folder='../dibabel-js/build')
 
@@ -26,11 +26,11 @@ class OauthSecret:
 
 
 with Path('../secret.json').open('r', encoding='utf-8') as stream:
-    secrets = OauthSecret(**json.load(stream))
+    config = OauthSecret(**json.load(stream))
 
 
 def create_consumer_token():
-    return mwoauth.ConsumerToken(secrets.consumer_token, secrets.secret_token)
+    return mwoauth.ConsumerToken(config.consumer_token, config.secret_token)
 
 
 @app.after_request
@@ -40,24 +40,24 @@ def after_request(response):
 
 
 @app.route("/")
-async def index():
-    return await send_file('../dibabel-js/build/index.html')
+def index():
+    return send_file('../dibabel-js/build/index.html')
 
 
 @app.route("/data")
-async def data():
-    return jsonify(await cache.get_data())
+def data():
+    return jsonify(cache.get_data())
 
 
 @app.route("/page/<qid>/<site>")
-async def page(qid: str, site: str):
-    return jsonify(await cache.get_page(qid, site))
+def page(qid: str, site: str):
+    return jsonify(cache.get_page(qid, site))
 
 
 @app.route('/login')
 def login():
     try:
-        redirect_url, request_token = mwoauth.initiate(secrets.url, create_consumer_token())
+        redirect_url, request_token = mwoauth.initiate(config.url, create_consumer_token())
     except:
         app.logger.exception('mwoauth.initiate failed')
         return redirect(url_for('index'))
@@ -68,7 +68,7 @@ def login():
 
 @app.route('/userinfo')
 def userinfo():
-    return jsonify(mwoauth.identify(secrets.url, create_consumer_token(), session['access_token']))
+    return jsonify(mwoauth.identify(config.url, create_consumer_token(), session['access_token']))
 
 
 @app.route('/oauth-callback')
@@ -80,12 +80,12 @@ def oauth_callback():
     consumer_token = create_consumer_token()
     try:
         access_token = mwoauth.complete(
-            secrets.url,
+            config.url,
             consumer_token,
             mwoauth.RequestToken(**session['request_token']),
             request.query_string)
 
-        identity = mwoauth.identify(secrets.url, consumer_token, access_token)
+        identity = mwoauth.identify(config.url, consumer_token, access_token)
     except:
         flash('OAuth callback caused an exception, aborting')
         app.logger.exception('OAuth callback failed')
