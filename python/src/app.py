@@ -71,7 +71,7 @@ def userinfo():
     return jsonify(mwoauth.identify(config.url, create_consumer_token(), session['access_token']))
 
 
-@app.route('/oauth-callback')
+@app.route('/oauth_callback.php')
 def oauth_callback():
     if 'request_token' not in session:
         flash('OAuth callback failed, do you have your cookies disabled?')

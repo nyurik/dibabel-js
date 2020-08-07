@@ -25,7 +25,7 @@ export const UserContext = React.createContext<UserContextType>({} as UserContex
 function login(addToast: AddToast, setUser: Dispatch<UserType>) {
   (async () => {
     try {
-      let userInfo = await fetch(`${rootUrl}oauth_api.php?oauth_identity`);
+      let userInfo = await fetch(`${rootUrl}userinfo`);
       if (userInfo.ok) {
         const json = await userInfo.json();
         addToast({

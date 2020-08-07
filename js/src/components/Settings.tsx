@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { EuiButtonIcon, EuiHeaderLink, EuiPopover, EuiPopoverTitle, EuiSpacer, EuiSwitch } from '@elastic/eui';
 import { ThemeContext } from '../themes/ThemeContext';
 import { UserContext, UserState } from '../data/UserContext';
+import { rootUrl } from '../utils';
 
 export function Settings() {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -32,7 +33,7 @@ export function Settings() {
       {context => context.user.state === UserState.LoggedIn
         ? (<>
           <EuiSpacer size={"s"}/>
-          <EuiHeaderLink href="oauth_api.php?oauth_logout">Logout...</EuiHeaderLink>
+          <EuiHeaderLink href={`${rootUrl}logout`}>Logout...</EuiHeaderLink>
         </>)
         : null}
     </UserContext.Consumer>

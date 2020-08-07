@@ -1,6 +1,6 @@
 import { DependencyList, useEffect, useState } from 'react';
 
-export const rootUrl = 'http://localhost:5000/';
+export const rootUrl = '/';
 
 /**
  * React hook to store state in the local storage

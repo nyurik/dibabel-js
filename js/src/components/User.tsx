@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { EuiHeaderLink, EuiLoadingSpinner, EuiText } from '@elastic/eui';
 import { UserContext, UserState } from '../data/UserContext';
+import { rootUrl } from '../utils';
 
 export const User = () => {
   const { user } = useContext(UserContext);
@@ -9,7 +10,7 @@ export const User = () => {
     case UserState.Unknown:
       return <EuiLoadingSpinner size="m"/>;
     case UserState.LoggedOut:
-      return <EuiHeaderLink href="oauth_api.php?oauth_login">Login</EuiHeaderLink>;
+      return <EuiHeaderLink href={`${rootUrl}login`}>Login</EuiHeaderLink>;
     case UserState.LoggedIn:
       return <EuiText>{user.username}</EuiText>;
     default:
