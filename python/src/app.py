@@ -10,7 +10,7 @@ from flask import redirect, request, url_for
 
 app = Flask(__name__,
             static_url_path='',
-            static_folder='../dibabel-js/build')
+            static_folder='../../static')
 
 app.config['JSON_SORT_KEYS'] = False
 app.config['JSON_AS_ASCII'] = False
@@ -41,7 +41,7 @@ def after_request(response):
 
 @app.route("/")
 def index():
-    return send_file('../dibabel-js/build/index.html')
+    return send_file('../../static/index.html')
 
 
 @app.route("/data")
