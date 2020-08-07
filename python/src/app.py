@@ -25,7 +25,7 @@ class OauthSecret:
     secret_token: str
 
 
-with Path('./.secret.json').open('r', encoding='utf-8') as stream:
+with Path('../secret.json').open('r', encoding='utf-8') as stream:
     secrets = OauthSecret(**json.load(stream))
 
 
