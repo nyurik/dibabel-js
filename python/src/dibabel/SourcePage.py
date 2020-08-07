@@ -1,6 +1,7 @@
 import hashlib
 import re
 from datetime import datetime
+from sys import intern
 from typing import Tuple, List, Dict, Set
 
 from .ContentPage import ContentPage
@@ -62,7 +63,7 @@ class SourcePage(ContentPage):
                  the new content for the target, and a set of the missing templates/modules
         """
         changes = []
-        result = SyncInfo(qid, self, target)
+        result = SyncInfo(qid, self, target.site, target.title)
 
         cur_content = target.get_content()
         if cur_content is None:
@@ -72,7 +73,7 @@ class SourcePage(ContentPage):
             adj, missing_on_dst, not_shared = self.replace_templates(template_map, hist.content, target.site)
             if result.new_content is None:
                 # Comparing current revision of the primary page
-                result.new_content = adj
+                result.new_content = intern(adj)
                 result.multisite_deps_not_on_dst = list(missing_on_dst)
                 result.not_multisite_deps = list(not_shared)
                 # Latest revision must match adjusted content

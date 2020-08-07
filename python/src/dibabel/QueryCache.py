@@ -145,7 +145,7 @@ WHERE {{
 
     def get_data(self):
         def info_obj(p: SyncInfo):
-            res = dict(title=p.dst.title)
+            res = dict(title=p.dst_title)
             if p.no_changes:
                 res['status'] = 'ok'
             elif p.diverged is not None:
@@ -157,7 +157,7 @@ WHERE {{
                 res['status'] = 'outdated'
                 res['behind'] = p.behind
             else:
-                raise ValueError(f"Unexpected item status {p.dst}")
+                raise ValueError(f"Unexpected item status for {p}")
             if p.not_multisite_deps:
                 res['not_multisite_deps'] = p.not_multisite_deps
             if p.multisite_deps_not_on_dst:
@@ -175,9 +175,10 @@ WHERE {{
     def get_page(self, qid: str, site: str):
         self.refresh_data()
         info = self.qid_site_info[qid][self.site_cache.sites['https://' + site]]
+        current = info.dst_site.download_content([info.dst_title])
         return dict(
-            currentText=info.dst.get_content(),
-            currentRevId=info.dst.revid,
+            currentText=current.get_content(),
+            currentRevId=current.revid,
             newText=info.new_content,
             changed_by_users=info.changed_by_users,
             all_comments=info.all_comments,

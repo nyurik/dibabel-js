@@ -41,7 +41,8 @@ class RevComment:
 class SyncInfo:
     qid: str
     src: 'SourcePage'
-    dst: 'ContentPage'
+    dst_site: 'Site'
+    dst_title: str
     new_content: Union[str, None] = None
     no_changes: bool = False
     needs_refresh: bool = False
@@ -51,6 +52,9 @@ class SyncInfo:
     diverged: Union[str, None] = None
     not_multisite_deps: Union[List[str], None] = None
     multisite_deps_not_on_dst: Union[List[str], None] = None
+
+    def __str__(self) -> str:
+        return f"{self.src} -> {self.dst_site}/wiki/{self.dst_title}"
 
 
 def list_to_dict_of_sets(items, key, value=None):
