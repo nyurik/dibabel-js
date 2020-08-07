@@ -1,12 +1,12 @@
-from dataclasses import dataclass, asdict
+import json
+from dataclasses import dataclass
 from pathlib import Path
 
 import mwoauth
 from dibabel.QueryCache import QueryCache
 from dibabel.SiteCache import SiteCache
-from quart import Quart, send_file, jsonify, abort, session, flash
+from quart import Quart, send_file, jsonify, session, flash
 from quart import redirect, request, url_for
-import yaml
 
 app = Quart(__name__,
             static_url_path='',
@@ -25,8 +25,8 @@ class OauthSecret:
     secret_token: str
 
 
-with Path('./.secret.yaml').open('r', encoding='utf-8') as stream:
-    secrets = OauthSecret(**yaml.safe_load(stream))
+with Path('./.secret.json').open('r', encoding='utf-8') as stream:
+    secrets = OauthSecret(**json.load(stream))
 
 
 def create_consumer_token():
@@ -100,32 +100,6 @@ def oauth_callback():
 def logout():
     session.clear()
     return redirect(url_for('index'))
-
-
-# @app.route("/oauth_api.php")
-# async def oauth_identity():
-#     if request.args.get('oauth_identity') is not None:
-#         return jsonify({
-#             "username": "Yurik",
-#             "editcount": 871,
-#             "confirmed_email": True,
-#             "blocked": False,
-#             "registered": None,
-#             "groups": ["autopatrolled", "*", "user", "autoconfirmed"],
-#             "rights": ["autopatrol", "createaccount", "read", "edit", "createpage", "createtalk", "writeapi",
-#                        "viewmywatchlist", "editmywatchlist", "viewmyprivateinfo", "editmyprivateinfo", "editmyoptions",
-#                        "abusefilter-log-detail", "translate", "urlshortener-create-url", "centralauth-merge",
-#                        "abusefilter-view", "abusefilter-log", "vipsscaler-test", "move-rootuserpages",
-#                        "move-categorypages", "minoredit", "editmyusercss", "editmyuserjson", "editmyuserjs", "purge",
-#                        "sendemail", "applychangetags", "changetags", "translate-messagereview", "translate-groupreview",
-#                        "mwoauthproposeconsumer", "mwoauthupdateownconsumer", "spamblacklistlog",
-#                        "mwoauthmanagemygrants",
-#                        "move", "collectionsaveasuserpage", "collectionsaveascommunitypage", "autoconfirmed",
-#                        "editsemiprotected", "skipcaptcha", "transcode-reset"],
-#             "grants": ["basic", "highvolume", "editpage", "editprotected", "createeditmovepage"],
-#         })
-#     abort(404)
-
 
 if __name__ == "__main__":
     app.run()
