@@ -13,25 +13,15 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-      - run: yarn
-      - run: yarn build
-      - run: composer install --no-dev
+      - run: cd js && yarn
+      - run: cd js && yarn build
       - name: Fix remote file permissions
         uses: appleboy/ssh-action@v0.1.2
         with:
           host: "tools-dev.wmflabs.org"
           username: ${{ secrets.TOOLFORGE_USER }}
           key: ${{ secrets.TOOLFORGE_KEY }}
-          script: become dibabel bash -c 'mkdir -p public_html && mkdir -p vendor && take public_html && take vendor && chmod 2775 -R  public_html && chmod 2775 -R  vendor'
-      - name: Deploy to vendor dir
-        uses: easingthemes/ssh-deploy@v2.1.1
-        env:
-            REMOTE_HOST: "tools-dev.wmflabs.org"
-            REMOTE_USER: ${{ secrets.TOOLFORGE_USER }}
-            SSH_PRIVATE_KEY: ${{ secrets.TOOLFORGE_KEY }}
-            ARGS: "-rltgoDzvO --delete"
-            SOURCE: "vendor/"
-            TARGET: "/data/project/dibabel/vendor"
+          script: become dibabel bash -c 'mkdir -p public_html && take public_html && chmod 2775 -R  public_html'
       - name: Deploy to public_html dir
         uses: easingthemes/ssh-deploy@v2.1.1
         env:
@@ -39,7 +29,7 @@ jobs:
             REMOTE_USER: ${{ secrets.TOOLFORGE_USER }}
             SSH_PRIVATE_KEY: ${{ secrets.TOOLFORGE_KEY }}
             ARGS: "-rltgoDzvO --delete"
-            SOURCE: "build/"
+            SOURCE: "js/build/"
             TARGET: "/data/project/dibabel/public_html"
       - name: Take file ownership to the tool
         uses: appleboy/ssh-action@v0.1.2
@@ -47,4 +37,4 @@ jobs:
           host: "tools-dev.wmflabs.org"
           username: ${{ secrets.TOOLFORGE_USER }}
           key: ${{ secrets.TOOLFORGE_KEY }}
-          script: become dibabel bash -c 'take public_html && take vendor'
+          script: become dibabel bash -c 'take public_html'

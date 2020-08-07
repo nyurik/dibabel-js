@@ -28,12 +28,17 @@ export type GroupDefsType = {
   }
 };
 
-export type StatusType = 'diverged' | 'ok' | 'outdated';
+export type StatusType = 'diverged' | 'ok' | 'outdated' | 'needs_refresh';
 
 export type ItemTypeType = 'module' | 'template';
 
+export interface TitleLink {
+  url: string,
+  title: string,
+}
 export interface Item {
   key: string,
+  qid: string,
   type: ItemTypeType,
   srcSite: string,
   srcFullTitle: string,
@@ -46,22 +51,20 @@ export interface Item {
   dstTitle: string,
   dstTitleUrl: string,
   status: StatusType,
-  ok: boolean,
-  outdated: boolean,
-  diverged: boolean,
-  srcText: string,
-  dstText: string,
   behind?: number,
+  not_multisite_deps?: Array<string>,
+  multisite_deps_not_on_dst?: Array<string>,
 }
 
 export interface Group {
   key: string,
   allSubItems: Array<Item>,
   countOk: number,
+  countNotLocalized: number,
   countOutdated: number,
   countDiverged: number,
   columns: Array<string>,
-  items: Array<Item|Group>,
+  items: Array<Item | Group>,
   type?: ItemTypeType,
   srcSite?: string,
   srcFullTitle?: string,

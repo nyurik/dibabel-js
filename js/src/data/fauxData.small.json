@@ -1,62 +1,62 @@
 [
   {
     "id": "Q3926051",
-    "primarySite": "mediawiki",
+    "primarySite": "www.mediawiki.org",
     "primaryTitle": "Template:Tl",
     "copies": {
-      "ab.wikipedia": {
+      "ab.wikipedia.org": {
         "title": "Ашаблон:Ш",
         "diverged": "hash-2"
       },
-      "ace.wikipedia": {
+      "ace.wikipedia.org": {
         "title": "Seunaleuëk:Tl",
         "behind": 4
       },
-      "ady.wikipedia": {
+      "ady.wikipedia.org": {
         "title": "Template:Tl",
         "behind": 1
       },
-      "af.wikibooks": {
+      "af.wikibooks.org": {
         "title": "Sjabloon:Tl",
         "behind": 2
       },
-      "af.wikipedia": {
+      "af.wikipedia.org": {
         "title": "Sjabloon:Sj",
         "behind": 3
       },
-      "af.wikiquote": {
+      "af.wikiquote.org": {
         "title": "Sjabloon:SL",
         "behind": 1
       },
-      "af.wiktionary": {
+      "af.wiktionary.org": {
         "title": "Sjabloon:Tl",
         "diverged": "hash-2"
       },
-      "ak.wikipedia": {
+      "ak.wikipedia.org": {
         "title": "Nhwɛsode:Tl",
         "behind": 4
       },
-      "als.wikipedia": {
+      "als.wikipedia.org": {
         "title": "Vorlage:Template link",
         "behind": 4
       },
-      "am.wikipedia": {
+      "am.wikipedia.org": {
         "title": "መለጠፊያ:Tl",
         "behind": 3
       },
-      "am.wiktionary": {
+      "am.wiktionary.org": {
         "title": "መለጠፊያ:Tl",
         "behind": 1
       },
-      "an.wikipedia": {
+      "an.wikipedia.org": {
         "title": "Plantilla:Tl",
         "behind": 4
       },
-      "an.wiktionary": {
+      "an.wiktionary.org": {
         "title": "Plantilla:tl",
         "diverged": "hash-2"
       },
-      "ang.wikipedia": {
+      "ang.wikipedia.org": {
         "title": "Bysen:Tl",
         "behind": 3
       }
@@ -65,138 +65,138 @@
   },
   {
     "id": "Q7253814",
-    "primarySite": "mediawiki",
+    "primarySite": "www.mediawiki.org",
     "primaryTitle": "Module:String",
     "copies": {
-      "it.wikibooks": {
+      "it.wikibooks.org": {
         "title": "Modulo:String",
         "behind": 3
       },
-      "it.wikipedia": {
+      "it.wikipedia.org": {
         "title": "Modulo:String",
         "behind": 1
       },
-      "it.wikiversity": {
+      "it.wikiversity.org": {
         "title": "Modulo:String",
         "diverged": "hash-1"
       },
-      "it.wikivoyage": {
+      "it.wikivoyage.org": {
         "title": "Modulo:String",
         "behind": 3
       },
-      "ja.wikipedia": {
+      "ja.wikipedia.org": {
         "title": "モジュール:String",
         "behind": 4
       },
-      "ja.wikisource": {
+      "ja.wikisource.org": {
         "title": "モジュール:String",
         "behind": 0
       },
-      "ja.wiktionary": {
+      "ja.wiktionary.org": {
         "title": "モジュール:string",
         "behind": 0
       },
-      "jv.wikipedia": {
+      "jv.wikipedia.org": {
         "title": "Modhul:String",
         "behind": 3
       },
-      "jv.wiktionary": {
+      "jv.wiktionary.org": {
         "title": "Modhul:string",
         "behind": 2
       },
-      "ka.wikipedia": {
+      "ka.wikipedia.org": {
         "title": "მოდული:String",
         "behind": 3
       },
-      "ka.wiktionary": {
+      "ka.wiktionary.org": {
         "title": "მოდული:String",
         "behind": 3
       },
-      "kg.wikipedia": {
+      "kg.wikipedia.org": {
         "title": "Module:String",
         "behind": 4
       },
-      "kk.wikipedia": {
+      "kk.wikipedia.org": {
         "title": "Module:String",
         "diverged": "hash-1"
       },
-      "ko.wikipedia": {
+      "ko.wikipedia.org": {
         "title": "모듈:String",
         "diverged": "hash-2"
       },
-      "ko.wikiquote": {
+      "ko.wikiquote.org": {
         "title": "모듈:String",
         "behind": 0
       },
-      "ko.wikisource": {
+      "ko.wikisource.org": {
         "title": "모듈:String",
         "behind": 1
       },
-      "ku.wikipedia": {
+      "ku.wikipedia.org": {
         "title": "Modul:String",
         "behind": 3
       },
-      "kv.wikipedia": {
+      "kv.wikipedia.org": {
         "title": "Модуль:String",
         "behind": 2
       },
-      "ky.wikipedia": {
+      "ky.wikipedia.org": {
         "title": "Module:String",
         "behind": 3
       },
-      "la.wikipedia": {
+      "la.wikipedia.org": {
         "title": "Module:String",
         "diverged": "hash-1"
       },
-      "lad.wikipedia": {
+      "lad.wikipedia.org": {
         "title": "Módulo:String",
         "behind": 3
       },
-      "lb.wikipedia": {
+      "lb.wikipedia.org": {
         "title": "Modul:String",
         "behind": 1
       },
-      "lez.wikipedia": {
+      "lez.wikipedia.org": {
         "title": "Модуль:String",
         "behind": 0
       },
-      "lo.wikipedia": {
+      "lo.wikipedia.org": {
         "title": "Module:String",
         "behind": 1
       },
-      "lrc.wikipedia": {
+      "lrc.wikipedia.org": {
         "title": "ماجول:String",
         "behind": 4
       },
-      "lt.wikipedia": {
+      "lt.wikipedia.org": {
         "title": "Module:String",
         "behind": 2
       },
-      "ltg.wikipedia": {
+      "ltg.wikipedia.org": {
         "title": "Modulis:String",
         "behind": 0
       },
-      "lv.wikipedia": {
+      "lv.wikipedia.org": {
         "title": "Modulis:String",
         "behind": 0
       },
-      "mai.wikipedia": {
+      "mai.wikipedia.org": {
         "title": "मोड्युल:String",
         "diverged": "hash-1"
       },
-      "map-bms.wikipedia": {
+      "map-bms.wikipedia.org": {
         "title": "Modul:String",
         "diverged": "hash-2"
       },
-      "meta.wikimedia": {
+      "meta.wikimedia.org": {
         "title": "Module:String",
         "behind": 3
       },
-      "mg.wikipedia": {
+      "mg.wikipedia.org": {
         "title": "Module:String",
         "behind": 2
       },
-      "mhr.wikipedia": {
+      "mhr.wikipedia.org": {
         "title": "Модуль:String",
         "behind": 0
       }
@@ -205,78 +205,78 @@
   },
   {
     "id": "Q5615175",
-    "primarySite": "mediawiki",
+    "primarySite": "www.mediawiki.org",
     "primaryTitle": "Template:Category other",
     "copies": {
-      "fa.wikipedia": {
+      "fa.wikipedia.org": {
         "title": "الگو:Category other",
         "diverged": "hash-2"
       },
-      "fa.wikivoyage": {
+      "fa.wikivoyage.org": {
         "title": "الگو:Category other",
         "behind": 3
       },
-      "gl.wikipedia": {
+      "gl.wikipedia.org": {
         "title": "Modelo:Category other",
         "behind": 0
       },
-      "gv.wikipedia": {
+      "gv.wikipedia.org": {
         "title": "Clowan:Ronney elley",
         "behind": 3
       },
-      "hak.wikipedia": {
+      "hak.wikipedia.org": {
         "title": "模板:Category other",
         "diverged": "hash-2"
       },
-      "hsb.wikipedia": {
+      "hsb.wikipedia.org": {
         "title": "Předłoha:Jenož w kategorijach",
         "diverged": "hash-1"
       },
-      "hy.wikipedia": {
+      "hy.wikipedia.org": {
         "title": "Կաղապար:Category other",
         "diverged": "hash-2"
       },
-      "ne.wikipedia": {
+      "ne.wikipedia.org": {
         "title": "ढाँचा:Category other",
         "diverged": "hash-2"
       },
-      "ny.wikipedia": {
+      "ny.wikipedia.org": {
         "title": "Template:Category other",
         "behind": 1
       },
-      "or.wikipedia": {
+      "or.wikipedia.org": {
         "title": "ଛାଞ୍ଚ:Category other",
         "behind": 4
       },
-      "ps.wikipedia": {
+      "ps.wikipedia.org": {
         "title": "کينډۍ:تصنيف آخر",
         "diverged": "hash-1"
       },
-      "pt.wikipedia": {
+      "pt.wikipedia.org": {
         "title": "Predefinição:Category other",
         "behind": 3
       },
-      "sv.wikipedia": {
+      "sv.wikipedia.org": {
         "title": "Mall:Kategori annan",
         "behind": 0
       },
-      "szy.wikipedia": {
+      "szy.wikipedia.org": {
         "title": "taazihan mitudung:Category other",
         "diverged": "hash-2"
       },
-      "ta.wikipedia": {
+      "ta.wikipedia.org": {
         "title": "வார்ப்புரு:பகுப்பு வேறு",
         "diverged": "hash-2"
       },
-      "th.wikipedia": {
+      "th.wikipedia.org": {
         "title": "แม่แบบ:Category other",
         "behind": 0
       },
-      "tr.wikipedia": {
+      "tr.wikipedia.org": {
         "title": "Şablon:Kategori diğer",
         "diverged": "hash-2"
       },
-      "uk.wikipedia": {
+      "uk.wikipedia.org": {
         "title": "Шаблон:Category other",
         "behind": 3
       }

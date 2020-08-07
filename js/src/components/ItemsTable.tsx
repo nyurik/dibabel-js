@@ -79,7 +79,7 @@ export const ItemsTable = (
           icon: 'save',
           type: 'icon',
           color: 'danger',
-          available: ({ outdated }: Item) => outdated,
+          available: ({ status }) => status === 'outdated' || status === 'needs_refresh',
           onClick: () => addToast({
             title: 'Copying...',
             color: 'danger',
@@ -91,7 +91,7 @@ export const ItemsTable = (
           description: 'Compare with the primary',
           icon: 'inputOutput', // 'magnifyWithPlus' ?
           type: 'icon',
-          available: ({ ok }: Item) => !ok,
+          available: ({ status }) => status !== 'ok',
           onClick: setItem,
         },
       ],
@@ -148,6 +148,9 @@ export const ItemsTable = (
           case 'ok':
             [color, label, title] = ['success', 'Same', 'The target page is up to date with the primary'];
             break;
+          case 'needs_refresh':
+            [color, label, title] = ['warning', `Non-localized`, `The target page has exactly the same content as original instead of using localized values, and needs to be updated.`];
+            break;
           case 'outdated':
             [color, label, title] = ['warning', `Outdated by ${item.behind} rev`, `The target page is outdated by ${item.behind} versions, and can be updated.`];
             break;
@@ -169,6 +172,19 @@ export const ItemsTable = (
         if (value > 0) {
           return <EuiHealth title={`${value} pages are up to date.`}
                             color={'success'}>{`${value} pages`}</EuiHealth>;
+        } else {
+          return '-';
+        }
+      },
+    },
+    countNotLocalized: {
+      name: 'Non-localized',
+      field: 'countNotLocalized',
+      sortable: true,
+      render: (value: number) => {
+        if (value > 0) {
+          return <EuiHealth title={`${value} pages are identical to primary instead of being localized, and can be synchronized automatically.`}
+                            color={'warning'}>{`${value} pages`}</EuiHealth>;
         } else {
           return '-';
         }

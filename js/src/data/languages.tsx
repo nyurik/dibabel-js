@@ -1,6 +1,6 @@
 import { AddToast, LangInfoDict } from './types';
 
-const url = 'https://www.mediawiki.org/w/api.php?action=query&meta=languageinfo&liprop=name|autonym&format=json&formatversion=2&origin=*';
+const mw_languages_query = 'https://www.mediawiki.org/w/api.php?action=query&meta=languageinfo&liprop=name|autonym&format=json&formatversion=2&origin=*';
 
 let cache: LangInfoDict;
 
@@ -10,7 +10,7 @@ export async function getLanguages(addToast: AddToast): Promise<LangInfoDict> {
     return cache;
   }
   try {
-    let userInfo = await fetch(url);
+    let userInfo = await fetch(mw_languages_query);
     if (userInfo.ok) {
       cache = (await userInfo.json()).query.languageinfo;
       return cache;

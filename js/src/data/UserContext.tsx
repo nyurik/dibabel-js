@@ -1,5 +1,6 @@
 import React, { Dispatch, useEffect } from 'react';
 import { AddToast } from './types';
+import { rootUrl } from '../utils';
 
 export enum UserState {
   Unknown,
@@ -24,7 +25,7 @@ export const UserContext = React.createContext<UserContextType>({} as UserContex
 function login(addToast: AddToast, setUser: Dispatch<UserType>) {
   (async () => {
     try {
-      let userInfo = await fetch('oauth_api.php?oauth_identity');
+      let userInfo = await fetch(`${rootUrl}oauth_api.php?oauth_identity`);
       if (userInfo.ok) {
         const json = await userInfo.json();
         addToast({

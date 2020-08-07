@@ -33,8 +33,6 @@ const schema = {
     dstFullTitle: { type: 'string' },
     dstTitle: { type: 'string' },
     dstTitleUrl: { type: 'string' },
-    srcText: { type: 'string' },
-    dstText: { type: 'string' },
   },
 };
 
@@ -154,9 +152,10 @@ export const WorkArea = (props: {
         return {
           key: key,
           allSubItems: allSubItems,
-          countOk: allSubItems.filter(v => v.ok).length,
-          countOutdated: allSubItems.filter(v => v.outdated).length,
-          countDiverged: allSubItems.filter(v => v.diverged).length,
+          countOk: allSubItems.filter(v => v.status === 'ok').length,
+          countNotLocalized: allSubItems.filter(v => v.status === 'needs_refresh').length,
+          countOutdated: allSubItems.filter(v => v.status === 'outdated').length,
+          countDiverged: allSubItems.filter(v => v.status === 'diverged').length,
           ...Object.fromEntries(groupDef.columns.map(v => [v, first[v]])),
           ...Object.fromEntries((groupDef.extra_columns ?? []).map(v => [v, first[v]])),
           ...organizeItemsInGroups(groupIndex + 1, allSubItems, columns, key)
@@ -165,7 +164,7 @@ export const WorkArea = (props: {
       items.sort((a, b) => a.key.localeCompare(b.key));
 
       return {
-        columns: ['expander', 'selector'].concat(groupDef.columns, 'countOk', 'countOutdated', 'countDiverged'),
+        columns: ['expander', 'selector'].concat(groupDef.columns, 'countOk', 'countNotLocalized', 'countOutdated', 'countDiverged'),
         items: items
       };
     }
@@ -205,6 +204,7 @@ export const WorkArea = (props: {
             return map({
               'ok': 'success',
               'outdated': 'warning',
+              'needs_refresh': 'warning',
               'diverged': 'danger'
             }, (v, k) => ({
               value: k,
