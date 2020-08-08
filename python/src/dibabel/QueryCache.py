@@ -179,7 +179,8 @@ WHERE {{
         self.template_map = cache
 
     def get_data(self):
-        pass
+        self.refresh_data()
+        return self.all_data
 
     def get_page(self, qid: str, site: str):
         self.refresh_data(ensure_pages=True)
