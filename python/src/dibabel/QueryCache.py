@@ -24,20 +24,23 @@ class QueryCache:
         self.qid_site_info: Dict[str, Dict[Site, SyncInfo]] = {}
         self.site_title_qid: Dict[Site, Dict[str, str]] = {}
         self.qid_site_title: Dict[str, Dict[Site, str]] = {}
+        self.all_data = self.site_cache.diskcache.get('all-data')
 
         # Template name -> dict( language code -> localized template name )
         self.template_map: Dict[str, Dict[Site, str]] = {}
 
-        self.refresh_data()
+        self.refresh_data(ensure_pages=False)
 
-    def refresh_data(self):
+    def refresh_data(self, ensure_pages=False):
         # Only refresh if older than N minutes, or if running first time
         # If first time, don't refresh database unless it is very old too
         last_refresh = datetime.utcfromtimestamp(
             self.site_cache.diskcache.get('last_refresh', 0))
         refresh = (datetime.utcnow() - last_refresh) > timedelta(minutes=self.max_stale_minutes)
-        if self.qid_site_title and not refresh:
-            return
+        if not refresh:
+            # if refresh is not needed and running first time, exit only if all data is present
+            if self.qid_site_title or (not ensure_pages and self.all_data):
+                return
 
         raw_data = self.find_pages_to_sync()
         # Tuple[qid:str, sourceTitle:str, targets:Dict[str,str], bad_urls:List[str]]
@@ -68,6 +71,9 @@ class QueryCache:
                 qid_site_info[qid][site] = self.qid_primary_page[qid].find_new_revisions(self.template_map, qid, page)
         self.qid_site_info = dict(qid_site_info)
 
+        self.all_data = self.generate_all_data()
+        self.site_cache.diskcache['all-data'] = self.all_data
+
         self.site_cache.diskcache['last_refresh'] = datetime.utcnow().timestamp()
         print('Refresh complete')
 
@@ -85,6 +91,35 @@ class QueryCache:
                                     key=lambda v: v['id']['value'][len('http://www.wikidata.org/entity/'):],
                                     value=lambda v: v['sl']['value'])
         return todo
+
+    def generate_all_data(self):
+        def info_obj(p: SyncInfo):
+            res = dict(title=p.dst_title)
+            if p.no_changes:
+                res['status'] = 'ok'
+            elif p.diverged is not None:
+                res['status'] = 'diverged'
+                res['diverged'] = p.diverged
+            elif p.needs_refresh:
+                res['status'] = 'needs_refresh'
+            elif p.behind:
+                res['status'] = 'outdated'
+                res['behind'] = p.behind
+            else:
+                raise ValueError(f"Unexpected item status for {p}")
+            if p.not_multisite_deps:
+                res['not_multisite_deps'] = p.not_multisite_deps
+            if p.multisite_deps_not_on_dst:
+                res['multisite_deps_not_on_dst'] = p.multisite_deps_not_on_dst
+            return res
+
+        self.refresh_data()
+        return [dict(
+            id=qid,
+            primarySite='www.mediawiki.org',
+            primaryTitle=self.qid_primary_page[qid].title,
+            copies={site.domain: info_obj(info) for site, info in site_info.items()}
+        ) for qid, site_info in self.qid_site_info.items()]
 
     def update_template_cache(self, titles: Iterable[str]):
         cache = {}
@@ -144,38 +179,12 @@ WHERE {{
         self.template_map = cache
 
     def get_data(self):
-        def info_obj(p: SyncInfo):
-            res = dict(title=p.dst_title)
-            if p.no_changes:
-                res['status'] = 'ok'
-            elif p.diverged is not None:
-                res['status'] = 'diverged'
-                res['diverged'] = p.diverged
-            elif p.needs_refresh:
-                res['status'] = 'needs_refresh'
-            elif p.behind:
-                res['status'] = 'outdated'
-                res['behind'] = p.behind
-            else:
-                raise ValueError(f"Unexpected item status for {p}")
-            if p.not_multisite_deps:
-                res['not_multisite_deps'] = p.not_multisite_deps
-            if p.multisite_deps_not_on_dst:
-                res['multisite_deps_not_on_dst'] = p.multisite_deps_not_on_dst
-            return res
-
-        self.refresh_data()
-        return [dict(
-            id=qid,
-            primarySite='www.mediawiki.org',
-            primaryTitle=self.qid_primary_page[qid].title,
-            copies={site.domain: info_obj(info) for site, info in site_info.items()}
-        ) for qid, site_info in self.qid_site_info.items()]
+        pass
 
     def get_page(self, qid: str, site: str):
-        self.refresh_data()
+        self.refresh_data(ensure_pages=True)
         info = self.qid_site_info[qid][self.site_cache.sites['https://' + site]]
-        current = info.dst_site.download_content([info.dst_title])
+        (current,) = info.dst_site.download_content([info.dst_title])
         return dict(
             currentText=current.get_content(),
             currentRevId=current.revid,

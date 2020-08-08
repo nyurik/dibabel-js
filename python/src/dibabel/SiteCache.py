@@ -1,4 +1,8 @@
+import pickle
+import sqlite3
+import zlib
 from json import dumps, loads
+from json.decoder import JSONDecodeError
 from pathlib import Path
 
 from requests import Session
@@ -29,12 +33,20 @@ class SiteCache:
         # self.diskcache = Cache(cache_dir)
 
         def my_encode(obj):
-            if isinstance(obj, list) and obj and isinstance(obj[0], RevComment):
-                obj = [v.encode() for v in obj]
-            return dumps(obj, ensure_ascii=False)
+            try:
+                if isinstance(obj, list) and obj and isinstance(obj[0], RevComment):
+                    enc_obj = [v.encode() for v in obj]
+                else:
+                    enc_obj = obj
+                return dumps(enc_obj, ensure_ascii=False)
+            except TypeError:
+                return sqlite3.Binary(zlib.compress(pickle.dumps(obj, pickle.HIGHEST_PROTOCOL)))
 
         def my_decode(obj):
-            obj = loads(obj)
+            try:
+                obj = loads(obj)
+            except JSONDecodeError:
+                return pickle.loads(zlib.decompress(bytes(obj)))
             if isinstance(obj, list) and obj and isinstance(obj[0], dict) and 'comment' in obj[0]:
                 obj = [RevComment.decode(v) for v in obj]
             return obj
