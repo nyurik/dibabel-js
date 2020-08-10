@@ -3,19 +3,17 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import mwoauth
-from dibabel.QueryCache import QueryCache
-from dibabel.SiteCache import SiteCache
-from flask import Flask, send_file, jsonify, session, flash
+from flask import Flask, jsonify, session, flash
 from flask import redirect, request, url_for
 
-app = Flask(__name__,
-            static_url_path='',
-            static_folder='../../static')
+from dibabel.QueryCache import QueryCache
+
+app = Flask(__name__)
 
 app.config['JSON_SORT_KEYS'] = False
 app.config['JSON_AS_ASCII'] = False
 
-cache = QueryCache(SiteCache('www.mediawiki.org', '../cache'))
+cache = QueryCache('../cache')
 
 
 @dataclass
@@ -37,11 +35,6 @@ def create_consumer_token():
 def after_request(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
-
-
-@app.route("/")
-def index():
-    return send_file('../../static/index.html')
 
 
 @app.route("/data")

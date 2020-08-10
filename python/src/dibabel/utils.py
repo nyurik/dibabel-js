@@ -1,60 +1,21 @@
 import re
 from collections import defaultdict
-from dataclasses import dataclass
-from datetime import datetime
-from typing import Iterable, Union, List
+from datetime import datetime, timedelta
+from typing import Iterable, List, Optional, TypeVar, Callable, Dict
+from urllib.parse import unquote, quote
 
-from urllib.parse import unquote
+from pywikiapi.utils import to_timestamp, to_datetime
+# noinspection PyUnresolvedReferences
+from requests.packages.urllib3.util.retry import Retry
 
-reUrl = re.compile(r'^(?P<site>https://[a-z0-9-_.]+)/wiki/(?P<title>[^?#]+)$', re.IGNORECASE)
+from .DataTypes import Timestamp, RevComment
+from .DataTypes import WdSitelink, \
+    WdWarning
 
-
-@dataclass
-class RevComment:
-    user: str
-    ts: datetime
-    comment: str
-    content: str
-    revid: int
-
-    def encode(self):
-        return dict(
-            user=self.user,
-            ts=self.ts.timestamp(),
-            comment=self.comment,
-            content=self.content,
-            revid=self.revid,
-        )
-
-    @staticmethod
-    def decode(obj):
-        return RevComment(
-            obj['user'],
-            datetime.utcfromtimestamp(obj['ts']),
-            obj['comment'],
-            obj['content'],
-            obj['revid'],
-        )
-
-
-@dataclass
-class SyncInfo:
-    qid: str
-    src: 'SourcePage'
-    dst_site: 'Site'
-    dst_title: str
-    new_content: Union[str, None] = None
-    no_changes: bool = False
-    needs_refresh: bool = False
-    changed_by_users: List[str] = None
-    all_comments: List[str] = None
-    behind: Union[int, None] = None
-    diverged: Union[str, None] = None
-    not_multisite_deps: Union[List[str], None] = None
-    multisite_deps_not_on_dst: Union[List[str], None] = None
-
-    def __str__(self) -> str:
-        return f"{self.src} -> {self.dst_site}/wiki/{self.dst_title}"
+T = TypeVar('T')
+T1 = TypeVar('T1')
+T2 = TypeVar('T2')
+T3 = TypeVar('T3')
 
 
 def list_to_dict_of_sets(items, key, value=None):
@@ -66,28 +27,6 @@ def list_to_dict_of_sets(items, key, value=None):
     return result
 
 
-def parse_page_urls(sites, page_urls: Iterable[str], qid=None, silent=False):
-    bad_urls = []
-    source = None
-    targets = {}
-    for url in sorted(page_urls):
-        match = reUrl.match(url)
-        if not match:
-            bad_urls.append(url)
-            continue
-        site_url = match.group('site')
-        title = unquote(match.group('title')).replace('_', ' ')
-        if site_url == 'https://www.mediawiki.org':
-            source = title
-        else:
-            targets[sites.get_site(site_url)] = title
-    if not source:
-        raise ValueError(f'Unable to find source page for {qid}')
-    if bad_urls and not silent:
-        print(f'WARN: unable to parse urls:\n  ' + '\n  '.join(bad_urls))
-    return source, targets, bad_urls
-
-
 def batches(items: Iterable, batch_size: int):
     res = []
     for value in items:
@@ -97,3 +36,51 @@ def batches(items: Iterable, batch_size: int):
             res = []
     if res:
         yield res
+
+
+def is_older_than(timestamp: Timestamp, value: timedelta) -> bool:
+    return (datetime.utcnow() - to_datetime(timestamp)) > value
+
+
+def now_ts() -> Timestamp:
+    return to_timestamp(datetime.utcnow())
+
+
+def title_to_url(domain: str, title: str):
+    return f'https://{domain}/wiki/' + quote(title.replace(" ", "_"), ": &=+/")
+
+
+reUrl = re.compile(r'^https://(?P<site>[a-z0-9-_.]+)/wiki/(?P<title>[^?#]+)$', re.IGNORECASE)
+
+
+def parse_wd_sitelink(qid: str, url: str, warnings: List[WdWarning] = None) -> Optional[WdSitelink]:
+    match = reUrl.match(url)
+    if match:
+        return WdSitelink(qid, match.group('site'), unquote(match.group('title')).replace('_', ' '))
+    if warnings:
+        warnings.append(WdWarning(qid, url))
+    return None
+
+
+def update_dict_of_dicts(dictionary: Dict[T1, Dict[T2, T3]], key1: T1, key2: T2, value: T3) -> None:
+    obj = dictionary.get(key1)
+    if obj:
+        obj[key2] = value
+    else:
+        dictionary[key1] = {key2: value}
+
+
+def dict_of_dicts(items: Iterable[T],
+                  extract_key1: Callable[[T], T1],
+                  extract_key2: Callable[[T], T2],
+                  extract_value: Callable[[T], T3] = None
+                  ) -> Dict[T1, Dict[T2, T3]]:
+    result = {}
+    for v in items:
+        k1 = extract_key1(v)
+        k2 = extract_key2(v)
+        if k1 is None or k2 is None:
+            continue
+        val = extract_value(v) if extract_value else v
+        update_dict_of_dicts(result, k1, k2, val)
+    return result
