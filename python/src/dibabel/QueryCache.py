@@ -23,48 +23,98 @@ from .utils import batches, title_to_url, parse_wd_sitelink, dict_of_dicts, upda
 
 known_unshared = {'Template:Documentation'}
 
+primary_domain = 'www.mediawiki.org'
 
-class QueryCache:
-    max_stale_minutes = 60 * 24 * 5
 
-    def __init__(self, cache_dir):
-        self.primary_domain = 'www.mediawiki.org'
-        self.diskcache = self._open_diskcache(cache_dir)
+class SessionState:
+    @staticmethod
+    def my_encode(obj):
+        try:
+            if isinstance(obj, list) and obj and isinstance(obj[0], RevComment):
+                enc_obj = [v.encode() for v in obj]
+            else:
+                enc_obj = obj
+            return dumps(enc_obj, ensure_ascii=False)
+        except TypeError:
+            return sqlite3.Binary(zlib.compress(pickle.dumps(obj, pickle.HIGHEST_PROTOCOL)))
 
-        self.sites = {}
+    @staticmethod
+    def my_decode(obj):
+        try:
+            obj = loads(obj)
+        except:
+            return pickle.loads(zlib.decompress(bytes(obj)))
+        if isinstance(obj, list) and obj and isinstance(obj[0], dict) and 'comment' in obj[0]:
+            obj = [RevComment.decode(v) for v in obj]
+        return obj
 
+    def __init__(self, cache_file: str):
+        self.cache = SqliteDict(cache_file, autocommit=True,
+                                encode=self.my_encode, decode=self.my_decode)
         self.session = Session()
         # noinspection PyTypeChecker
         self.session.mount(
             'https://',
             HTTPAdapter(max_retries=Retry(total=3, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])))
+        self.sites = {}
 
-        self.primary_site = self.get_site(self.primary_domain)
-        self.sites_metadata: Dict[str, SiteMetadata] = self.diskcache.get('sites_metadata', {})
+    def __enter__(self):
+        return self
 
-        self.wikidata = Sparql()
+    def __exit__(self, typ, value, traceback):
+        self.cache.close()
+        self.session.close()
 
-        # Template name -> domain -> localized template name
-        self.template_map: TemplateCache = self.diskcache.get('template_map') or {}
+    def get_site(self, domain: str) -> WikiSite:
+        try:
+            return self.sites[domain]
+        except KeyError:
+            # noinspection PyTypeChecker
+            site = WikiSite(domain, self.session, domain == primary_domain)
+            self.sites[domain] = site
+            return site
 
-        self.primary_pages_by_qid: Dict[str, PagePrimary] = self.diskcache.get('primary_pages_by_qid') or {}
-        self.primary_pages_by_title: Dict[str, PagePrimary] = {v.title: v for v in self.primary_pages_by_qid.values()}
-        self.syncinfo_by_qid_domain: Dict[str, Dict[str, SyncInfo]] = {
-            v[len('info_by_qid:'):]: self.diskcache[v]
-            for v in self.diskcache.keys()
-            if v.startswith('info_by_qid:')}
 
-        # Get sitelinks, and update self.primary_pages_by_qid
-        wd_warnings = []
-        sitelinks = self.query_wd_multilingual_pages(wd_warnings)
-        # Update primary pages and templates cache
-        self.update_primary_pages()
-        # Download clones and compute sync info
-        self.update_syncinfo(sitelinks, False)
+class QueryCache:
+    max_stale_minutes = 60 * 24 * 5
+
+    def __init__(self, cache_dir):
+        cache_dir = Path(cache_dir)
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        self.cache_file = str(cache_dir / 'cache.sqlite')
+
+        with self.create_session() as state:
+            self.primary_site = state.get_site(primary_domain)
+            self.sites_metadata: Dict[str, SiteMetadata] = state.cache.get('sites_metadata', {})
+
+            self.wikidata = Sparql()
+
+            # Template name -> domain -> localized template name
+            self.template_map: TemplateCache = state.cache.get('template_map') or {}
+
+            self.primary_pages_by_qid: Dict[str, PagePrimary] = state.cache.get('primary_pages_by_qid') or {}
+            self.primary_pages_by_title: Dict[str, PagePrimary] = {v.title: v for v in
+                                                                   self.primary_pages_by_qid.values()}
+            self.syncinfo_by_qid_domain: Dict[str, Dict[str, SyncInfo]] = {
+                v[len('info_by_qid:'):]: state.cache[v]
+                for v in state.cache.keys()
+                if v.startswith('info_by_qid:')}
+
+            # Get sitelinks, and update self.primary_pages_by_qid
+            wd_warnings = []
+            sitelinks = self.query_wd_multilingual_pages(state, wd_warnings)
+            # Update primary pages and templates cache
+            self.update_primary_pages(state)
+            # Download clones and compute sync info
+            self.update_syncinfo(state, sitelinks, False)
 
         print('Done initializing')
 
+    def create_session(self):
+        return SessionState(self.cache_file)
+
     def query_wd_multilingual_pages(self,
+                                    state: SessionState,
                                     warnings: List[WdWarning],
                                     qids: List[str] = None
                                     ) -> List[WdSitelink]:
@@ -83,7 +133,7 @@ class QueryCache:
             qid = row['id']['value'][len('http://www.wikidata.org/entity/'):]
             res = parse_wd_sitelink(qid, row['sl']['value'], warnings)
             if res:
-                if res.domain != self.primary_domain:
+                if res.domain != primary_domain:
                     copies.append(res)
                 else:
                     primaries.append(qid)
@@ -99,16 +149,16 @@ class QueryCache:
         self.primary_pages_by_title = {v.title: v for v in self.primary_pages_by_qid.values()}
 
         if not qids:
-            self.diskcache['primary_pages_by_qid'] = self.primary_pages_by_qid
+            state.cache['primary_pages_by_qid'] = self.primary_pages_by_qid
 
         return copies
 
-    def update_primary_pages(self, page: Optional[PagePrimary] = None):
+    def update_primary_pages(self, state: SessionState, page: Optional[PagePrimary] = None):
         pages_to_update = self.primary_pages_by_qid.values() if page is None else [page]
         # Load primary page revision history from cache if needed
         for page in pages_to_update:
             if not page.history:
-                page.history = self.diskcache.get(f"primary:{page.title}") or []
+                page.history = state.cache.get(f"primary:{page.title}") or []
         # Find latest available revisions for primary pages, and cleanup if don't exist
         latest_primary_revids: Dict[str, int] = {}
         for title, revid in self.primary_site.query_pages_revid((v.title for v in pages_to_update)):
@@ -122,19 +172,27 @@ class QueryCache:
             revid = latest_primary_revids[page.title]
             if not page.history or page.history[-1].revid != revid:
                 self.primary_site.load_page_history(page.title, page.history, revid)
-                self.diskcache[f"primary:{page.title}"] = page.history
+                state.cache[f"primary:{page.title}"] = page.history
         # Load dependencies of the primary pages
-        self.update_template_cache(pages_to_update)
+        self.update_template_cache(state, pages_to_update)
 
-    def update_syncinfo(self, sitelinks: Iterable[WdSitelink], refresh) -> List[Tuple[str, str, PageContent]]:
+    def update_syncinfo(self,
+                        state: SessionState,
+                        sitelinks: Iterable[WdSitelink],
+                        refresh) -> List[Tuple[str, str, PageContent]]:
         infos = self.syncinfo_by_qid_domain
         if not refresh:
             sitelinks = filter(lambda v: v.qid not in infos or v.domain not in infos[v.qid], sitelinks)
         qid_by_domain_title = dict_of_dicts(sitelinks, lambda v: v.domain, lambda v: v.title, lambda v: v.qid)
+        # print(f" ** qid_by_domain_title len = {len(qid_by_domain_title)}")
+        self.update_metadata(state, qid_by_domain_title.keys())
+        # print(f" ** got metadata")
         result = []
         changed_qid = set()
         for domain, titles_qid in sorted(qid_by_domain_title.items(), key=lambda v: v[0]):
-            for title, page in self.get_page_content(domain, titles_qid.keys(), refresh):
+            # print(f" ** getting {domain} / {titles_qid}")
+            for title, page in self.get_page_content(state, domain, titles_qid.keys(), refresh):
+                # print(f" ** got {title} / {page}")
                 result.append((domain, title, page))
                 qid = titles_qid[title]
                 old_revid = 0 if qid not in infos or domain not in infos[qid] else infos[qid][domain].dst_revid
@@ -147,11 +205,13 @@ class QueryCache:
                     else:
                         info = primary.compute_sync_info(primary.qid, page, self.sites_metadata[domain])
                     update_dict_of_dicts(infos, primary.qid, domain, info)
+        # print(f" ** finished updating")
         for qid in changed_qid:
-            self.diskcache[f'info_by_qid:{qid}'] = infos[qid]
+            state.cache[f'info_by_qid:{qid}'] = infos[qid]
+        # print(f" ** saved")
         return result
 
-    def update_template_cache(self, pages: Iterable[PagePrimary]):
+    def update_template_cache(self, state: SessionState, pages: Iterable[PagePrimary]):
         # Template name -> domain -> localized template name
         titles: Set[str] = set()
         for page in pages:
@@ -179,7 +239,7 @@ class QueryCache:
 
         if unknowns:
             vals = " ".join(
-                {v: f'<{title_to_url(self.primary_domain, v)}>'
+                {v: f'<{title_to_url(primary_domain, v)}>'
                  for v in unknowns}.values())
             query = f'''\
     SELECT ?id ?sl ?ismult
@@ -197,7 +257,7 @@ class QueryCache:
                 is_multi = bool(row['ismult']['value'])
                 res = parse_wd_sitelink(qid, row['sl']['value'])
                 if res:
-                    if res.domain == self.primary_domain:
+                    if res.domain == primary_domain:
                         qid_primary[qid] = res.title
                         self.template_map[res.title] = TemplateReplacements(qid, is_multi, {})
                     else:
@@ -218,54 +278,20 @@ class QueryCache:
             if t not in self.template_map:
                 self.template_map[t] = TemplateReplacements(None, False, {})
 
-        self.diskcache['template_map'] = self.template_map
+        state.cache['template_map'] = self.template_map
 
     @staticmethod
-    def _open_diskcache(cache_dir):
-        cache_dir = Path(cache_dir)
-        cache_dir.mkdir(parents=True, exist_ok=True)
-
-        def my_encode(obj):
-            try:
-                if isinstance(obj, list) and obj and isinstance(obj[0], RevComment):
-                    enc_obj = [v.encode() for v in obj]
-                else:
-                    enc_obj = obj
-                return dumps(enc_obj, ensure_ascii=False)
-            except TypeError:
-                return sqlite3.Binary(zlib.compress(pickle.dumps(obj, pickle.HIGHEST_PROTOCOL)))
-
-        def my_decode(obj):
-            try:
-                obj = loads(obj)
-            except:
-                return pickle.loads(zlib.decompress(bytes(obj)))
-            if isinstance(obj, list) and obj and isinstance(obj[0], dict) and 'comment' in obj[0]:
-                obj = [RevComment.decode(v) for v in obj]
-            return obj
-
-        return SqliteDict(cache_dir / 'cache.sqlite', autocommit=True, encode=my_encode, decode=my_decode)
-
-    def get_site(self, domain: str) -> WikiSite:
-        try:
-            return self.sites[domain]
-        except KeyError:
-            # noinspection PyTypeChecker
-            site = WikiSite(domain, self.session, domain == self.primary_domain)
-            self.sites[domain] = site
-            return site
-
-    def get_page_content(self,
+    def get_page_content(state: SessionState,
                          domain: str,
                          titles: Iterable[str],
                          refresh=False
                          ) -> Generator[TitlePagePair, None, None]:
-        site = self.get_site(domain)
+        site = state.get_site(domain)
 
         cached_pages = {}
         unresolved: Set[str] = set()
         for title in titles:
-            page = self.diskcache.get(title_to_url(site.domain, title))
+            page = state.cache.get(title_to_url(site.domain, title))
             if page:
                 cached_pages[title] = page
             else:
@@ -277,10 +303,10 @@ class QueryCache:
                     cache_title = title_to_url(site.domain, title)
                     page = cached_pages.pop(title)
                     if revid == 0:
-                        del self.diskcache[cache_title]
+                        del state.cache[cache_title]
                         yield title, None
                     elif revid != page.revid:
-                        del self.diskcache[cache_title]
+                        del state.cache[cache_title]
                         unresolved.add(title)
                     else:
                         yield page.title, page
@@ -293,26 +319,23 @@ class QueryCache:
             for title, page in site.query_pages_content(unresolved):
                 cache_title = title_to_url(site.domain, title)
                 if page is None:
-                    del self.diskcache[cache_title]
+                    del state.cache[cache_title]
                 else:
-                    self.diskcache[cache_title] = page
+                    state.cache[cache_title] = page
                 yield title, page
 
-    def get_metadata(self, domain: str) -> SiteMetadata:
-        self.update_metadata([domain])
-        return self.sites_metadata[domain]
-
-    def update_metadata(self, domains: Iterable[str]) -> None:
+    def update_metadata(self, state: SessionState, domains: Iterable[str]) -> None:
         updated = False
         for domain in domains:
             md = self.sites_metadata.get(domain)
             if not md or (datetime.utcnow() - md.last_updated) > timedelta(days=30):
-                self.sites_metadata[domain] = self.get_site(domain).query_metadata()
+                self.sites_metadata[domain] = state.get_site(domain).query_metadata()
                 updated = True
         if updated:
-            self.diskcache['sites_metadata'] = self.sites_metadata
+            state.cache['sites_metadata'] = self.sites_metadata
 
-    def get_data(self):
+    # noinspection PyUnusedLocal
+    def get_data(self, state: SessionState) -> List[dict]:
         def info_obj(p: SyncInfo):
             res = dict(title=p.dst_title)
             if p.no_changes:
@@ -336,15 +359,17 @@ class QueryCache:
         print(f"Getting sync info")
         return [dict(
             id=qid,
-            primarySite=self.primary_domain,
+            primarySite=primary_domain,
             primaryTitle=self.primary_pages_by_qid[qid].title,
             copies={domain: info_obj(info) for domain, info in obj.items()}
         ) for qid, obj in self.syncinfo_by_qid_domain.items()]
 
-    def get_page(self, qid: str, domain: str):
+    def get_page(self, state: SessionState, qid: str, domain: str) -> Optional[dict]:
         print(f"Getting page {qid} / {domain}")
         info = self.syncinfo_by_qid_domain[qid][domain]
-        _, _, page = self.update_syncinfo([WdSitelink(qid, domain, info.dst_title)], True)[0]
+        print(f"-- info {info}")
+        _, _, page = self.update_syncinfo(state, [WdSitelink(qid, domain, info.dst_title)], True)[0]
+        print(f"-- page {page}")
         if page is None:
             return None
         # sync info might have changed, re-get it

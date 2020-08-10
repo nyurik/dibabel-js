@@ -39,12 +39,14 @@ def after_request(response):
 
 @app.route("/data")
 def data():
-    return jsonify(cache.get_data())
+    with cache.create_session() as state:
+        return jsonify(cache.get_data(state))
 
 
 @app.route("/page/<qid>/<site>")
 def page(qid: str, site: str):
-    return jsonify(cache.get_page(qid, site))
+    with cache.create_session() as state:
+        return jsonify(cache.get_page(state, qid, site))
 
 
 @app.route('/login')
