@@ -17,7 +17,7 @@ import {
 } from '@elastic/eui';
 
 import { Item } from '../data/types';
-import { ItemDstLink, ItemSrcLink, ItemWikidataLink, ProjectIcon } from './Snippets';
+import { ItemDiffLink, ItemDstLink, ItemSrcLink, ItemWikidataLink, ProjectIcon } from './Snippets';
 import { rootUrl } from '../utils';
 
 interface ItemViewerParams<TItem> {
@@ -76,7 +76,7 @@ const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
       break;
     case 'outdated':
       infoSubHeader = (
-        <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}({item.dstSite}) is {item.behind} revisions behind the
+        <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}({item.dstSite}) is{' '}<ItemDiffLink item={item}>{item.behind} revisions</ItemDiffLink>{' '}behind the
           primary{' '}<ItemSrcLink item={item}/>.</EuiText>);
       break;
     case 'unlocalized':

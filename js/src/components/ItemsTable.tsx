@@ -7,13 +7,12 @@ import {
   EuiHealth,
   EuiIcon,
   EuiInMemoryTable,
-  EuiInMemoryTableProps,
-  EuiLink
+  EuiInMemoryTableProps
 } from '@elastic/eui';
 
 import { AddToast, Group, Item } from '../data/types';
 import { typeIcons } from '../icons/icons';
-import { ItemDstLink, ItemSrcLink, ProjectIcon } from './Snippets';
+import { ItemDiffLink, ItemDstLink, ItemSrcLink, ProjectIcon } from './Snippets';
 
 export const ItemsTable = (
   { addToast, error, groupedItems, isLoading, message, selectedItems, setItem, setSelectedItems }: {
@@ -154,8 +153,7 @@ export const ItemsTable = (
             break;
           case 'outdated':
             color = 'warning';
-            const href = `https://www.mediawiki.org/w/index.php?title=${encodeURIComponent(item.dstTitle)}&type=revision&diff=${item.srcRevId}&oldid=${item.matchedRevId}`;
-            label = (<EuiLink href={href} target={'_blank'}>{`Outdated by ${item.behind} rev`}</EuiLink>);
+            label = (<ItemDiffLink item={item}>{`Outdated by ${item.behind} rev`}</ItemDiffLink>);
             title = `The target page is outdated by ${item.behind} versions, and can be updated.  Click to see changes.`;
             break;
           case 'diverged':
@@ -188,7 +186,7 @@ export const ItemsTable = (
       render: (value: number) => {
         if (value > 0) {
           return <EuiHealth
-            title={`${value} pages are identical to primary instead of being localized, and can be synchronized automatically.`}
+            title={`${value} pages are identical to the original. These pages need to be localized because some dependent templates may have different names on that wiki. This can be done automatically.`}
             color={'warning'}>{`${value} pages`}</EuiHealth>;
         } else {
           return '-';
