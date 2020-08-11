@@ -1,34 +1,25 @@
-import json
 from dataclasses import dataclass
 from pathlib import Path
 
 import mwoauth
-from flask import Flask, jsonify, session, flash
-from flask import redirect, request, url_for
-
+import yaml
 from dibabel.QueryCache import QueryCache
+from flask import Flask, jsonify, session, flash
+from flask import redirect, request
 
 app = Flask(__name__)
 
-app.config['JSON_SORT_KEYS'] = False
-app.config['JSON_AS_ASCII'] = False
+for file in ('default.yaml', 'secret.yaml'):
+    path = Path(__file__).parent / '..' / file
+    print(f"Reading config from {path}")
+    with path.open('r', encoding='utf-8') as stream:
+        app.config.update(yaml.safe_load(stream))
 
 cache = QueryCache('../cache')
 
 
-@dataclass
-class OauthSecret:
-    url: str
-    consumer_token: str
-    secret_token: str
-
-
-with Path('../secret.json').open('r', encoding='utf-8') as stream:
-    config = OauthSecret(**json.load(stream))
-
-
 def create_consumer_token():
-    return mwoauth.ConsumerToken(config.consumer_token, config.secret_token)
+    return mwoauth.ConsumerToken(app.config["CONSUMER_KEY"], app.config["CONSUMER_SECRET"])
 
 
 @app.after_request
@@ -52,10 +43,10 @@ def page(qid: str, site: str):
 @app.route('/login')
 def login():
     try:
-        redirect_url, request_token = mwoauth.initiate(config.url, create_consumer_token())
+        redirect_url, request_token = mwoauth.initiate(app.config["OAUTH_MWURI"], create_consumer_token())
     except:
         app.logger.exception('mwoauth.initiate failed')
-        return redirect(url_for('index'))
+        return redirect('/')
     else:
         session['request_token'] = dict(zip(request_token._fields, request_token))
         return redirect(redirect_url)
@@ -63,24 +54,24 @@ def login():
 
 @app.route('/userinfo')
 def userinfo():
-    return jsonify(mwoauth.identify(config.url, create_consumer_token(), session['access_token']))
+    return jsonify(mwoauth.identify(app.config["OAUTH_MWURI"], create_consumer_token(), session['access_token']))
 
 
 @app.route('/oauth_callback.php')
 def oauth_callback():
     if 'request_token' not in session:
         flash('OAuth callback failed, do you have your cookies disabled?')
-        return redirect(url_for('index'))
+        return redirect('/')
 
     consumer_token = create_consumer_token()
     try:
         access_token = mwoauth.complete(
-            config.url,
+            app.config["OAUTH_MWURI"],
             consumer_token,
             mwoauth.RequestToken(**session['request_token']),
             request.query_string)
 
-        identity = mwoauth.identify(config.url, consumer_token, access_token)
+        identity = mwoauth.identify(app.config["OAUTH_MWURI"], consumer_token, access_token)
     except:
         flash('OAuth callback caused an exception, aborting')
         app.logger.exception('OAuth callback failed')
@@ -88,13 +79,14 @@ def oauth_callback():
         session['access_token'] = dict(zip(access_token._fields, access_token))
         session['username'] = identity['username']
 
-    return redirect(url_for('index'))
+    return redirect('/')
 
 
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('index'))
+    return redirect('/')
+
 
 if __name__ == "__main__":
     app.run()

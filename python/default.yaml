@@ -1,0 +1,42 @@
+---
+# Default configuration values for My first Flask OAuth tool.
+#
+# Taken from https://phabricator.wikimedia.org/source/tool-my-first-flask-oauth-tool/
+#
+# This YAML file provides default settings for the Flask application. Rather
+# than editing this file directly, create a file named 'config.yaml' in the
+# same directory containing the keys and values that you wish to override.
+#
+# Some settings are commented out. These are used to show secret settings
+# that MUST be provided in a 'config.yaml' file. Secret settings like
+# password, OAuth tokens, and cryptographic seeds should never be commited to
+# version control.
+#
+# See http://flask.pocoo.org/docs/0.12/config/ for other settings that may be
+# useful.
+
+# Session cookies should only be sent over HTTPS secured connections
+SESSION_COOKIE_SECURE: True
+
+# Only send the cookie header to the client when its content changes
+SESSION_REFRESH_EACH_REQUEST: False
+
+# Generate https://... links by default
+PREFERRED_URL_SCHEME: https
+
+JSON_SORT_KEYS: False
+JSON_AS_ASCII: False
+
+
+# Flask secret key. Used to create secure session cookies among other things.
+# This should be a complex random value.
+# Generate from bash:      < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32};echo;
+#SECRET_KEY:
+
+# OAuth key and secret. These are generated for you by
+# [[Special:OAuthConsumerRegistration/propose]]
+#CONSUMER_KEY:
+#CONSUMER_SECRET:
+
+# Base URI to use when making OAuth requests to MediaWiki
+OAUTH_MWURI: https://meta.wikimedia.org/w/index.php

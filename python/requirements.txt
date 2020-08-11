@@ -6,3 +6,4 @@ flask>=1.1.2
 toolforge>=4.3.1
 sqlitedict>=1.6.0
 mwoauth>=0.3.7
+pyyaml>=5.3.1
