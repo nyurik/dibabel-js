@@ -93,8 +93,8 @@ class QueryCache:
             self.template_map: TemplateCache = state.cache.get('template_map') or {}
 
             self.primary_pages_by_qid: Dict[str, PagePrimary] = state.cache.get('primary_pages_by_qid') or {}
-            self.primary_pages_by_title: Dict[str, PagePrimary] = {v.title: v for v in
-                                                                   self.primary_pages_by_qid.values()}
+            self.primary_pages_by_title: Dict[str, PagePrimary] = {
+                v.title: v for v in self.primary_pages_by_qid.values()}
             self.syncinfo_by_qid_domain: Dict[str, Dict[str, SyncInfo]] = {
                 v[len('info_by_qid:'):]: state.cache[v]
                 for v in state.cache.keys()

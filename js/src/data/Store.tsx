@@ -1,7 +1,7 @@
 import { AddToast, Item, ItemTypeType } from './types';
 
-// import fauxData from './fauxData.small.json';
-import fauxData from './fauxData.json';
+// import fauxData from './faux/fauxData.small.json';
+import fauxData from './faux/fauxData.json';
 import { rootUrl } from '../utils';
 
 const titleUrlSuffix = '/wiki/';
@@ -57,7 +57,8 @@ export async function getItems(addToast: AddToast): Promise<Array<Item>> {
       const srcTitleUrl = `https://${src.primarySite}${titleUrlSuffix}${src.primaryTitle}`;
       for (let dstSite of Object.keys(src.copies)) {
         const dstLangSiteParts = dstSite.split('.');
-        let ind = dstLangSiteParts.length - 1;
+        // Skip .org
+        let ind = dstLangSiteParts.length - 2;
         if (dstLangSiteParts[ind] === 'wikimedia') {
           ind--;  // Multiple sites, look at the subdomain
         }
