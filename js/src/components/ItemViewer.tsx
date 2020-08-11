@@ -31,7 +31,7 @@ interface ItemViewerParams<TItem> {
 
 const ItemDiffBlock = ({ type, oldText, newText }: { type: string, oldText: string, newText: string }) => {
   const [rendered] = useEuiTextDiff({
-    beforeText: oldText  ,
+    beforeText: oldText,
     afterText: newText,
     timeout: 0.5,
   });
@@ -76,7 +76,8 @@ const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
       break;
     case 'outdated':
       infoSubHeader = (
-        <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}({item.dstSite}) is{' '}<ItemDiffLink item={item}>{item.behind} revisions</ItemDiffLink>{' '}behind the
+        <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}({item.dstSite}) is{' '}<ItemDiffLink
+          item={item}>{item.behind} revisions</ItemDiffLink>{' '}behind the
           primary{' '}<ItemSrcLink item={item}/>.</EuiText>);
       break;
     case 'unlocalized':
@@ -89,36 +90,33 @@ const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
   }
 
   function formatLinks(site: string, links: Array<string>) {
-    return links
-      .reduce<any>((acc, el) => {
-        if (!acc) {
-          acc.push(', ');
-        }
-        acc.push(<EuiLink href={`https://${site}/wiki/${el}`} target="_blank">{el}</EuiLink>);
-        return acc;
-      }, []);
+    return (<ul>
+      {links.map(el => (<li><EuiLink href={`https://${site}/wiki/${el}`} target="_blank">{el}</EuiLink></li>))}
+    </ul>);
   }
 
   const warnings = [];
   if (item.not_multisite_deps) {
     warnings.push(<EuiSpacer size={'m'}/>);
-    warnings.push(<EuiCallOut title="This page has dependencies which are not enabled for synchronization"
-                              color="warning" iconType="alert">
-      <p>Most of the time this means that page <ItemSrcLink item={item}/> is not ready yet for synchronization, and
-        should not have a multi-site type in <ItemWikidataLink item={item}/>.<br/>
-        Alternatively it could also mean that the page was edited to use a new template/module, and that the new
-        page is not enabled for synchronization.</p>
-      <p>{formatLinks(item.dstSite, item.not_multisite_deps)}</p>
+    warnings.push(<EuiCallOut title="Dependencies are not enabled for synchronization" color="warning" iconType="alert">
+      <EuiText>This page depends on templates or modules that have not been tagged as "multi-site" in Wikidata.
+        Most of the time this means that page <ItemSrcLink item={item}/> is not yet ready for synchronization, and
+        should not have a multi-site type in <ItemWikidataLink item={item}/>. Alternatively it could also mean that the
+        page was edited to use a new template/module, and that the new page is not enabled for
+        synchronization.</EuiText>
+      <EuiSpacer size={'s'}/>
+      <EuiText>{formatLinks(item.dstSite, item.not_multisite_deps)}</EuiText>
     </EuiCallOut>);
   }
   if (item.multisite_deps_not_on_dst) {
     warnings.push(<EuiSpacer size={'m'}/>);
-    warnings.push(<EuiCallOut title={`This page dependencies do not exist in ${item.dstSite}`} color="warning"
-                              iconType="alert">
-      <p>This page depends on one or more synchronizable pages that are not present on the destination site. Copy the
-        content of these pages to <EuiLink href={`https://${item.dstSite}`} target="_blank">{item.dstSite}</EuiLink> and
-        make sure they are listed in the <ItemWikidataLink item={item}/>.</p>
-      <p>{formatLinks(item.srcSite, item.multisite_deps_not_on_dst)}</p>
+    warnings.push(<EuiCallOut title={`Dependencies do not exist in ${item.dstSite}`} color="warning" iconType="alert">
+      <EuiText>This page depends on templates or modules that are not present on the destination site. Copy
+        the content of these pages to
+        <EuiLink href={`https://${item.dstSite}`} target="_blank">{item.dstSite}</EuiLink> and make sure they are listed
+        in the <ItemWikidataLink item={item}/>.</EuiText>
+      <EuiSpacer size={'s'}/>
+      <EuiText>{formatLinks(item.srcSite, item.multisite_deps_not_on_dst)}</EuiText>
     </EuiCallOut>);
   }
 
