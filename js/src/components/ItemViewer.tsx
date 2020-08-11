@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
 import {
+  EuiButton,
   EuiCallOut,
   EuiCodeBlock,
+  EuiFieldText,
   EuiFlexGroup,
   EuiFlexItem,
   EuiFlyout,
   EuiFlyoutBody,
+  EuiFlyoutFooter,
   EuiFlyoutHeader,
   EuiLink,
   EuiProgress,
@@ -36,6 +39,23 @@ const ItemDiffBlock = ({ type, oldText, newText }: { type: string, oldText: stri
     timeout: 0.5,
   });
   return <EuiCodeBlock language={type === 'module' ? 'lua' : 'text'}>{rendered}</EuiCodeBlock>;
+};
+
+const Comment = () => {
+  const [value, setValue] = useState('');
+
+  const onChange = (e: any) => {
+    setValue(e.target.value);
+  };
+
+  return (<EuiFieldText
+    placeholder={'Edit summary'}
+    isInvalid={!value.trim()}
+    value={value}
+    onChange={e => onChange(e)}
+    aria-label={'Edit summary'}
+    fullWidth={true}
+  />);
 };
 
 const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
@@ -128,21 +148,35 @@ const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
       aria-labelledby="flyoutTitle">
       <EuiFlyoutHeader hasBorder>
         <EuiTitle size="m">
-          <h3>{item.srcFullTitle}</h3>
+          <EuiFlexGroup alignItems={'center'} gutterSize={'s'}>
+            <EuiFlexItem grow={false}><ProjectIcon item={item} size={'xl'}/></EuiFlexItem>&nbsp;
+            <h3>{item.srcFullTitle}</h3>
+          </EuiFlexGroup>
         </EuiTitle>
         <EuiSpacer size={'s'}/>
-        <EuiFlexGroup alignItems={'center'} gutterSize={'s'}>
-          <EuiFlexItem grow={false}><ProjectIcon item={item} size={'xl'}/></EuiFlexItem>
-          <EuiFlexItem grow={true}>{infoSubHeader}</EuiFlexItem>
-        </EuiFlexGroup>
+        <EuiFlexItem grow={true}>{infoSubHeader}</EuiFlexItem>
         {warnings}
       </EuiFlyoutHeader>
       <EuiFlyoutBody>
         {body}
       </EuiFlyoutBody>
+      <EuiFlyoutFooter>
+        <EuiFlexGroup justifyContent={'spaceBetween'} alignItems={'center'}>
+          <EuiFlexItem grow={false}>
+            <EuiText>Summary:</EuiText>
+          </EuiFlexItem>
+          <EuiFlexItem grow={true}>
+            <Comment/>
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <EuiButton color={'danger'} onClick={onClose} fill>
+              Copy!
+            </EuiButton>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+      </EuiFlyoutFooter>
     </EuiFlyout>
   );
-
 };
 
 export const ItemViewer = (props: ItemViewerParams<Item | null | undefined>) => {

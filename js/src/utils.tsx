@@ -60,3 +60,13 @@ export function usePersistedJsonState<TValue>(
     deps
   );
 }
+
+export async function postToApi(domain: string, data: { [key: string]: string }) {
+  const response = await fetch(`/api/${domain}`, {
+    method: 'POST',
+    mode: 'cors', // TODO: possibly use a different mode here?  no-cors, cors, same-origin
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  return response.json();
+}

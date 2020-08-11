@@ -75,7 +75,7 @@ def call_api(domain):
                   client_secret=consumer_token.secret,
                   resource_owner_key=access_token.key,
                   resource_owner_secret=access_token.secret)
-    r = requests.post(f"https://{domain}/w/api.php", auth=auth, data=request.data)
+    r = requests.post(f"https://{domain}/w/api.php", auth=auth, data=request.get_json())
     r.raise_for_status()
     return jsonify(r.json())
 
