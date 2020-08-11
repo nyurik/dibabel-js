@@ -79,7 +79,7 @@ const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
         <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}({item.dstSite}) is {item.behind} revisions behind the
           primary{' '}<ItemSrcLink item={item}/>.</EuiText>);
       break;
-    case 'needs_refresh':
+    case 'unlocalized':
       infoSubHeader = (
         <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}({item.dstSite}) is identical with the original <ItemSrcLink
           item={item}/>, but needs to have some localizations.</EuiText>);

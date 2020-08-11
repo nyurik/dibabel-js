@@ -80,7 +80,7 @@ export const ItemsTable = (
           icon: 'save',
           type: 'icon',
           color: 'danger',
-          available: ({ status }) => status === 'outdated' || status === 'needs_refresh',
+          available: ({ status }) => status === 'outdated' || status === 'unlocalized',
           onClick: () => addToast({
             title: 'Copying...',
             color: 'danger',
@@ -149,8 +149,8 @@ export const ItemsTable = (
           case 'ok':
             [color, label, title] = ['success', 'Same', 'The target page is up to date with the primary'];
             break;
-          case 'needs_refresh':
-            [color, label, title] = ['warning', `Non-localized`, `The target page has exactly the same content as original instead of using localized values, and needs to be updated.`];
+          case 'unlocalized':
+            [color, label, title] = ['warning', `Unlocalized`, `The target page has exactly the same content as original instead of using localized values, and needs to be updated.`];
             break;
           case 'outdated':
             color = 'warning';
@@ -181,9 +181,9 @@ export const ItemsTable = (
         }
       },
     },
-    countNotLocalized: {
-      name: 'Non-localized',
-      field: 'countNotLocalized',
+    countUnlocalized: {
+      name: 'Unlocalized',
+      field: 'countUnlocalized',
       sortable: true,
       render: (value: number) => {
         if (value > 0) {

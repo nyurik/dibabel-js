@@ -153,7 +153,7 @@ export const WorkArea = (props: {
           key: key,
           allSubItems: allSubItems,
           countOk: allSubItems.filter(v => v.status === 'ok').length,
-          countNotLocalized: allSubItems.filter(v => v.status === 'needs_refresh').length,
+          countUnlocalized: allSubItems.filter(v => v.status === 'unlocalized').length,
           countOutdated: allSubItems.filter(v => v.status === 'outdated').length,
           countDiverged: allSubItems.filter(v => v.status === 'diverged').length,
           ...Object.fromEntries(groupDef.columns.map(v => [v, first[v]])),
@@ -164,7 +164,7 @@ export const WorkArea = (props: {
       items.sort((a, b) => a.key.localeCompare(b.key));
 
       return {
-        columns: ['expander', 'selector'].concat(groupDef.columns, 'countOk', 'countNotLocalized', 'countOutdated', 'countDiverged'),
+        columns: ['expander', 'selector'].concat(groupDef.columns, 'countOk', 'countUnlocalized', 'countOutdated', 'countDiverged'),
         items: items
       };
     }
@@ -204,7 +204,7 @@ export const WorkArea = (props: {
             return map({
               'ok': 'success',
               'outdated': 'warning',
-              'needs_refresh': 'warning',
+              'unlocalized': 'warning',
               'diverged': 'danger'
             }, (v, k) => ({
               value: k,

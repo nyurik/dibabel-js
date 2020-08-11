@@ -46,7 +46,7 @@ export async function getItems(addToast: AddToast): Promise<Array<Item>> {
     primarySite: string,
     primaryTitle: string,
     primaryRevId: number,
-    copies: any
+    copies: {[key:string]: any}
   }>): Generator<Item> {
     const splitNs = (t: string): [ItemTypeType, string] => {
       const pos = t.indexOf(':');

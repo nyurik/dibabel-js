@@ -28,7 +28,7 @@ export type GroupDefsType = {
   }
 };
 
-export type StatusType = 'diverged' | 'ok' | 'outdated' | 'needs_refresh';
+export type StatusType = 'diverged' | 'ok' | 'outdated' | 'unlocalized';
 
 export type ItemTypeType = 'module' | 'template';
 
@@ -62,7 +62,7 @@ export interface Group {
   key: string,
   allSubItems: Array<Item>,
   countOk: number,
-  countNotLocalized: number,
+  countUnlocalized: number,
   countOutdated: number,
   countDiverged: number,
   columns: Array<string>,

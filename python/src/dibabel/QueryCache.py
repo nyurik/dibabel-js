@@ -344,7 +344,7 @@ class QueryCache:
                 res['status'] = 'diverged'
                 res['diverged'] = p.diverged
             elif p.needs_refresh:
-                res['status'] = 'needs_refresh'
+                res['status'] = 'unlocalized'
             elif p.behind:
                 res['status'] = 'outdated'
                 res['behind'] = p.behind

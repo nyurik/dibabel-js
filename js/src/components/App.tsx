@@ -11,7 +11,8 @@ import {
   EuiPageHeader,
   EuiPageHeaderSection,
   EuiBadge,
-  EuiLink
+  EuiLink,
+  EuiSpacer
 } from '@elastic/eui';
 
 import { ItemViewer } from './ItemViewer';
@@ -40,8 +41,11 @@ export function App() {
                     iconType={siteIcons.wikipedia}>
                     Dibabel
                   </EuiHeaderLogo>
-                  from [[<EuiLink href={'https://www.mediawiki.org/wiki/User:Yurik'} target={'_blank'}>User:Yurik</EuiLink>]] helps keep it in sync
                 </EuiHeaderSectionItem>
+                <EuiHeaderSectionItem>
+                  Helps wikis synchronize modules and templates across languages. Written by&nbsp;<EuiLink href={'https://www.mediawiki.org/wiki/User:Yurik'} target={'_blank'}>User:Yurik</EuiLink>.
+                </EuiHeaderSectionItem>
+                <EuiSpacer size={'s'} />
                 <EuiHeaderSectionItem>
                   <EuiBadge color={'accent'}>Demo site, editing is disabled for now.</EuiBadge>
                 </EuiHeaderSectionItem>
