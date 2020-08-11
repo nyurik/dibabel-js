@@ -1,5 +1,6 @@
 secret.*
 cache/
+static/
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template

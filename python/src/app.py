@@ -54,7 +54,8 @@ def login():
 
 @app.route('/userinfo')
 def userinfo():
-    return jsonify(mwoauth.identify(app.config["OAUTH_MWURI"], create_consumer_token(), session['access_token']))
+    access_token = mwoauth.AccessToken(**session['access_token'])
+    return jsonify(mwoauth.identify(app.config["OAUTH_MWURI"], create_consumer_token(), access_token))
 
 
 @app.route('/oauth_callback.php')
