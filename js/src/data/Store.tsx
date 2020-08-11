@@ -41,7 +41,13 @@ export async function getItems(addToast: AddToast): Promise<Array<Item>> {
 
   const data = await getData(addToast);
 
-  function * flatten(data: Array<{ id: string, primarySite: string, primaryTitle: string, copies: any }>): Generator<Item> {
+  function * flatten(data: Array<{
+    id: string,
+    primarySite: string,
+    primaryTitle: string,
+    primaryRevId: number,
+    copies: any
+  }>): Generator<Item> {
     const splitNs = (t: string): [ItemTypeType, string] => {
       const pos = t.indexOf(':');
       return [t.substring(0, pos).toLowerCase() as ItemTypeType, t.substring(pos + 1)];
@@ -65,12 +71,14 @@ export async function getItems(addToast: AddToast): Promise<Array<Item>> {
           qid: src.id,
           type,
           srcSite: src.primarySite,
+          srcRevId: src.primaryRevId,
           srcFullTitle: src.primaryTitle,
           title,
           srcTitleUrl,
           project,
           lang,
           dstSite: dstSite,
+          matchedRevId: dst.matchedRevId,
           dstFullTitle: dst.title,
           dstTitle: splitNs(dst.title)[1],
           dstTitleUrl: dstTitleUrl,

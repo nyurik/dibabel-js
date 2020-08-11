@@ -348,6 +348,7 @@ class QueryCache:
             elif p.behind:
                 res['status'] = 'outdated'
                 res['behind'] = p.behind
+                res['matchedRevId'] = p.matched_revid
             else:
                 raise ValueError(f"Unexpected item status for {p}")
             if p.not_multisite_deps:
@@ -361,6 +362,7 @@ class QueryCache:
             id=qid,
             primarySite=primary_domain,
             primaryTitle=self.primary_pages_by_qid[qid].title,
+            primaryRevId=self.primary_pages_by_qid[qid].history[-1].revid,
             copies={domain: info_obj(info) for domain, info in obj.items()}
         ) for qid, obj in self.syncinfo_by_qid_domain.items()]
 

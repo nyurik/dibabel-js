@@ -10,7 +10,8 @@ import {
   EuiPageBody,
   EuiPageHeader,
   EuiPageHeaderSection,
-  EuiBadge
+  EuiBadge,
+  EuiLink
 } from '@elastic/eui';
 
 import { ItemViewer } from './ItemViewer';
@@ -37,8 +38,9 @@ export function App() {
                 <EuiHeaderSectionItem border="right">
                   <EuiHeaderLogo
                     iconType={siteIcons.wikipedia}>
-                    Dibabel - keeps it in sync
+                    Dibabel
                   </EuiHeaderLogo>
+                  from [[<EuiLink href={'https://www.mediawiki.org/wiki/User:Yurik'} target={'_blank'}>User:Yurik</EuiLink>]] helps keep it in sync
                 </EuiHeaderSectionItem>
                 <EuiHeaderSectionItem>
                   <EuiBadge color={'accent'}>Demo site, editing is disabled for now.</EuiBadge>
@@ -47,7 +49,7 @@ export function App() {
               <EuiPageHeaderSection>
                 <EuiHeaderLink iconType="help"
                                target="_blank"
-                               href="https://www.mediawiki.org/w/index.php?title=WP:TNT">Help</EuiHeaderLink>
+                               href="https://www.mediawiki.org/wiki/WP:TNT">Help</EuiHeaderLink>
                 <EuiHeaderLink iconType="logoGithub"
                                target="_blank"
                                href="https://github.com/nyurik/dibabel-js">Source</EuiHeaderLink>
@@ -58,10 +60,8 @@ export function App() {
                   gutterSize="s"
                   responsive={false}
                   wrap>
-                  <EuiFlexItem grow={false}> <User/> </EuiFlexItem>
-                  <EuiFlexItem grow={false}>
-                    <Settings/>
-                  </EuiFlexItem>
+                  <EuiFlexItem grow={false}><User/></EuiFlexItem>
+                  <EuiFlexItem grow={false}><Settings/></EuiFlexItem>
                 </EuiFlexGroup>
               </EuiPageHeaderSection>
             </EuiPageHeader>

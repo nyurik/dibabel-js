@@ -72,6 +72,7 @@ class SyncInfo:
     changed_by_users: Optional[List[str]] = None
     all_comments: Optional[List[str]] = None
     behind: Union[int, None] = None
+    matched_revid: Union[int, None] = None
     diverged: Optional[str] = None
     not_multisite_deps: Optional[List[str]] = None
     multisite_deps_not_on_dst: Union[List[str], None] = None

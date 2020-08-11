@@ -7,7 +7,8 @@ import {
   EuiHealth,
   EuiIcon,
   EuiInMemoryTable,
-  EuiInMemoryTableProps
+  EuiInMemoryTableProps,
+  EuiLink
 } from '@elastic/eui';
 
 import { AddToast, Group, Item } from '../data/types';
@@ -152,7 +153,10 @@ export const ItemsTable = (
             [color, label, title] = ['warning', `Non-localized`, `The target page has exactly the same content as original instead of using localized values, and needs to be updated.`];
             break;
           case 'outdated':
-            [color, label, title] = ['warning', `Outdated by ${item.behind} rev`, `The target page is outdated by ${item.behind} versions, and can be updated.`];
+            color = 'warning';
+            const href = `https://www.mediawiki.org/w/index.php?title=${encodeURIComponent(item.dstTitle)}&type=revision&diff=${item.srcRevId}&oldid=${item.matchedRevId}`;
+            label = (<EuiLink href={href} target={'_blank'}>{`Outdated by ${item.behind} rev`}</EuiLink>);
+            title = `The target page is outdated by ${item.behind} versions, and can be updated.  Click to see changes.`;
             break;
           case 'diverged':
             [color, label, title] = ['danger', 'Diverged', 'The target page has been modified and cannot be updated automatically.'];
@@ -183,8 +187,9 @@ export const ItemsTable = (
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
-          return <EuiHealth title={`${value} pages are identical to primary instead of being localized, and can be synchronized automatically.`}
-                            color={'warning'}>{`${value} pages`}</EuiHealth>;
+          return <EuiHealth
+            title={`${value} pages are identical to primary instead of being localized, and can be synchronized automatically.`}
+            color={'warning'}>{`${value} pages`}</EuiHealth>;
         } else {
           return '-';
         }

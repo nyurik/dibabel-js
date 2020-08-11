@@ -1,10 +1,9 @@
-from dataclasses import dataclass
 from pathlib import Path
 
 import mwoauth
 import yaml
 from dibabel.QueryCache import QueryCache
-from flask import Flask, jsonify, session, flash
+from flask import Flask, jsonify, session, flash, abort, Response
 from flask import redirect, request
 
 app = Flask(__name__)
@@ -54,8 +53,12 @@ def login():
 
 @app.route('/userinfo')
 def userinfo():
-    access_token = mwoauth.AccessToken(**session['access_token'])
-    return jsonify(mwoauth.identify(app.config["OAUTH_MWURI"], create_consumer_token(), access_token))
+    try:
+        access_token = mwoauth.AccessToken(**session['access_token'])
+    except KeyError:
+        return abort(Response('Not authenticated', 403))
+    else:
+        return jsonify(mwoauth.identify(app.config["OAUTH_MWURI"], create_consumer_token(), access_token))
 
 
 @app.route('/oauth_callback.php')

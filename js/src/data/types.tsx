@@ -42,6 +42,7 @@ export interface Item {
   type: ItemTypeType,
   srcSite: string,
   srcFullTitle: string,
+  srcRevId: number,
   title: string,
   srcTitleUrl: string,
   project: string,
@@ -52,6 +53,7 @@ export interface Item {
   dstTitleUrl: string,
   status: StatusType,
   behind?: number,
+  matchedRevId?: number,
   not_multisite_deps?: Array<string>,
   multisite_deps_not_on_dst?: Array<string>,
 }

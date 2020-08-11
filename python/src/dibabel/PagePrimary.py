@@ -70,6 +70,10 @@ class PagePrimary:
                     break
             elif adj.rstrip() == current_content or hist.content.rstrip() == current_content:
                 # One of the previous revisions matches current state of the target
+                result.matched_revid = hist.revid
+                result.behind = len(changes)
+                result.changed_by_users = list({v.user: '' for v in changes}.keys())
+                result.all_comments = list({v.comment: '' for v in changes if v.comment}.keys())
                 break
             changes.append(hist)
         else:
@@ -77,12 +81,6 @@ class PagePrimary:
             m = hashlib.sha256()
             m.update(current_content.encode())
             result.diverged = m.hexdigest()
-
-        if not result.diverged:
-            result.behind = len(changes)
-            if changes:
-                result.changed_by_users = list({v.user: '' for v in changes}.keys())
-                result.all_comments = list({v.comment: '' for v in changes if v.comment}.keys())
 
         return result
 
