@@ -45,7 +45,7 @@ class PagePrimary:
         changes = []
         result = SyncInfo(qid, self.title, page.domain, page.title)
         current_content = page.content.rstrip()
-        for hist in self.history:
+        for hist in reversed(self.history):
             if self.is_module:
                 adj, missing_on_dst, not_shared = self.replace_module_deps(
                     hist.content, page.domain)
