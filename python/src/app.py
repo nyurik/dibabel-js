@@ -1,10 +1,12 @@
 from pathlib import Path
 
 import mwoauth
+import requests
 import yaml
 from dibabel.QueryCache import QueryCache
 from flask import Flask, jsonify, session, flash, abort, Response
 from flask import redirect, request
+from requests_oauthlib import OAuth1
 
 app = Flask(__name__)
 
@@ -28,13 +30,13 @@ def after_request(response):
 
 
 @app.route("/data")
-def data():
+def get_data():
     with cache.create_session() as state:
         return jsonify(cache.get_data(state))
 
 
 @app.route("/page/<qid>/<site>")
-def page(qid: str, site: str):
+def get_page(qid: str, site: str):
     with cache.create_session() as state:
         return jsonify(cache.get_page(state, qid, site))
 
@@ -57,8 +59,25 @@ def userinfo():
         access_token = mwoauth.AccessToken(**session['access_token'])
     except KeyError:
         return abort(Response('Not authenticated', 403))
-    else:
-        return jsonify(mwoauth.identify(app.config["OAUTH_MWURI"], create_consumer_token(), access_token))
+    return jsonify(mwoauth.identify(app.config["OAUTH_MWURI"], create_consumer_token(), access_token))
+
+
+@app.route('/api/{domain}', methods=['POST'])
+def call_api(domain):
+    if domain not in cache.sites_metadata:
+        return abort(Response('Unsupported domain', 400))
+    try:
+        access_token = mwoauth.AccessToken(**session['access_token'])
+    except KeyError:
+        return abort(Response('Not authenticated', 403))
+    consumer_token = create_consumer_token()
+    auth = OAuth1(consumer_token.key,
+                  client_secret=consumer_token.secret,
+                  resource_owner_key=access_token.key,
+                  resource_owner_secret=access_token.secret)
+    r = requests.post(f"https://{domain}/w/api.php", auth=auth, data=request.data)
+    r.raise_for_status()
+    return jsonify(r.json())
 
 
 @app.route('/oauth_callback.php')

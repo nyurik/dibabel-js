@@ -184,15 +184,11 @@ class QueryCache:
         if not refresh:
             sitelinks = filter(lambda v: v.qid not in infos or v.domain not in infos[v.qid], sitelinks)
         qid_by_domain_title = dict_of_dicts(sitelinks, lambda v: v.domain, lambda v: v.title, lambda v: v.qid)
-        # print(f" ** qid_by_domain_title len = {len(qid_by_domain_title)}")
         self.update_metadata(state, qid_by_domain_title.keys())
-        # print(f" ** got metadata")
         result = []
         changed_qid = set()
         for domain, titles_qid in sorted(qid_by_domain_title.items(), key=lambda v: v[0]):
-            # print(f" ** getting {domain} / {titles_qid}")
             for title, page in self.get_page_content(state, domain, titles_qid.keys(), refresh):
-                # print(f" ** got {title} / {page}")
                 result.append((domain, title, page))
                 qid = titles_qid[title]
                 old_revid = 0 if qid not in infos or domain not in infos[qid] else infos[qid][domain].dst_revid
@@ -205,10 +201,8 @@ class QueryCache:
                     else:
                         info = primary.compute_sync_info(primary.qid, page, self.sites_metadata[domain])
                     update_dict_of_dicts(infos, primary.qid, domain, info)
-        # print(f" ** finished updating")
         for qid in changed_qid:
             state.cache[f'info_by_qid:{qid}'] = infos[qid]
-        # print(f" ** saved")
         return result
 
     def update_template_cache(self, state: SessionState, pages: Iterable[PagePrimary]):
