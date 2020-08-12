@@ -31,13 +31,13 @@ def after_request(response):
 
 @app.route("/data")
 def get_data():
-    with cache.create_session() as state:
+    with cache.create_session(user_requested=True) as state:
         return jsonify(cache.get_data(state))
 
 
 @app.route("/page/<qid>/<site>")
 def get_page(qid: str, site: str):
-    with cache.create_session() as state:
+    with cache.create_session(user_requested=True) as state:
         return jsonify(cache.get_page(state, qid, site))
 
 

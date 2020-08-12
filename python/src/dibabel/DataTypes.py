@@ -65,12 +65,11 @@ class SyncInfo:
     src_title: str
     dst_domain: str
     dst_title: str
+    dst_protection: Optional[List[str]] = None
     dst_revid: Optional[int] = None
     new_content: Optional[str] = None
     no_changes: bool = False
     needs_refresh: bool = False
-    changed_by_users: Optional[List[str]] = None
-    all_comments: Optional[List[str]] = None
     behind: Union[int, None] = None
     matched_revid: Union[int, None] = None
     diverged: Optional[str] = None
@@ -84,3 +83,5 @@ class SyncInfo:
 TemplateCache = Dict[str, TemplateReplacements]
 
 Timestamp = str
+
+Translations = Dict[str, Dict[str, str]]

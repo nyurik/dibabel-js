@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, FunctionComponent } from 'react';
 
 import {
   EuiButton,
@@ -41,14 +41,15 @@ const ItemDiffBlock = ({ type, oldText, newText }: { type: string, oldText: stri
   return <EuiCodeBlock language={type === 'module' ? 'lua' : 'text'}>{rendered}</EuiCodeBlock>;
 };
 
-const Comment = () => {
-  const [value, setValue] = useState('');
+const Comment: FunctionComponent<{ readOnly: boolean, text: string }> = ({ readOnly, text }) => {
+  const [value, setValue] = useState(text);
 
   const onChange = (e: any) => {
     setValue(e.target.value);
   };
 
   return (<EuiFieldText
+    readOnly={readOnly}
     placeholder={'Edit summary'}
     isInvalid={!value.trim()}
     value={value}
@@ -60,32 +61,26 @@ const Comment = () => {
 
 const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
 
-  const [content, setContent] = useState<React.ReactElement | undefined>();
+  const [content, setContent] = useState<{ status: 'loading' | 'error' | 'ok', data?: any }>({ status: 'loading' });
 
   useEffect(() => {
     (async () => {
-      let newContent;
       try {
         const result = await fetch(`${rootUrl}page/${item.qid}/${item.dstSite}`);
         if (result.ok) {
           let data = await result.json();
-          newContent = (<ItemDiffBlock type={item.type} oldText={data.currentText} newText={data.newText}/>);
+          setContent({ status: 'ok', data });
         } else {
-          const msg = `Unable to get the page. ${result.status}: ${result.statusText}\n${await result.text()}`;
-          newContent = (<EuiCallOut title="Error loading content..." color="danger" iconType="alert">
-            <p>{msg}</p>
-          </EuiCallOut>);
+          setContent({
+            status: 'error',
+            data: `Unable to get the page. ${result.status}: ${result.statusText}\n${await result.text()}`
+          });
         }
       } catch (err) {
-        newContent = (<EuiCallOut title="Error loading content..." color="danger" iconType="alert">
-          <p>{err.toString()}</p>
-        </EuiCallOut>);
+        setContent({ status: 'error', data: err.toString() });
       }
-      setContent(newContent);
     })();
   }, [item]);
-
-  const body = content ?? (<EuiProgress size="s" color="accent" label={'Loading page content...'}/>);
 
   let infoSubHeader;
   switch (item.status) {
@@ -117,7 +112,6 @@ const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
 
   const warnings = [];
   if (item.not_multisite_deps) {
-    warnings.push(<EuiSpacer size={'m'}/>);
     warnings.push(<EuiCallOut title="Dependencies are not enabled for synchronization" color="warning" iconType="alert">
       <EuiText>This page depends on templates or modules that have not been tagged as "multi-site" in Wikidata.
         Most of the time this means that page <ItemSrcLink item={item}/> is not yet ready for synchronization, and
@@ -127,9 +121,10 @@ const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
       <EuiSpacer size={'s'}/>
       <EuiText>{formatLinks(item.dstSite, item.not_multisite_deps)}</EuiText>
     </EuiCallOut>);
-  }
-  if (item.multisite_deps_not_on_dst) {
     warnings.push(<EuiSpacer size={'m'}/>);
+  }
+
+  if (item.multisite_deps_not_on_dst) {
     warnings.push(<EuiCallOut title={`Dependencies do not exist in ${item.dstSite}`} color="warning" iconType="alert">
       <EuiText>This page depends on templates or modules that are not present on the destination site. Copy
         the content of these pages to
@@ -138,6 +133,24 @@ const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
       <EuiSpacer size={'s'}/>
       <EuiText>{formatLinks(item.srcSite, item.multisite_deps_not_on_dst)}</EuiText>
     </EuiCallOut>);
+    warnings.push(<EuiSpacer size={'m'}/>);
+  }
+
+  let body;
+  switch (content.status) {
+    case 'loading':
+      body = (<EuiProgress size="s" color="accent" label={'Loading page content...'}/>);
+      break;
+    case 'error':
+      body = (<EuiCallOut title="Error loading content..." color="danger" iconType="alert">
+        <p>{content.data}</p>
+      </EuiCallOut>);
+      break;
+    case 'ok':
+      body = (<ItemDiffBlock type={item.type} oldText={content.data.currentText} newText={content.data.newText}/>);
+      break;
+    default:
+      throw new Error(content.status);
   }
 
   return (
@@ -155,9 +168,9 @@ const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
         </EuiTitle>
         <EuiSpacer size={'s'}/>
         <EuiFlexItem grow={true}>{infoSubHeader}</EuiFlexItem>
-        {warnings}
       </EuiFlyoutHeader>
       <EuiFlyoutBody>
+        {warnings}
         {body}
       </EuiFlyoutBody>
       <EuiFlyoutFooter>
@@ -166,10 +179,10 @@ const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
             <EuiText>Summary:</EuiText>
           </EuiFlexItem>
           <EuiFlexItem grow={true}>
-            <Comment/>
+            <Comment readOnly={content.status !== 'ok'} text={content?.data?.summary || ''}/>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton color={'danger'} onClick={onClose} fill>
+            <EuiButton disabled={content.status !== 'ok'} color={'danger'} onClick={onClose} fill>
               Copy!
             </EuiButton>
           </EuiFlexItem>

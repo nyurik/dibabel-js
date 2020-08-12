@@ -1,19 +1,27 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiHealth, EuiIcon, EuiSearchBar, EuiSpacer } from '@elastic/eui';
+import {
+  EuiButton,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiHealth,
+  EuiIcon,
+  EuiSearchBar,
+  EuiSpacer,
+  Query,
+  EuiText
+} from '@elastic/eui';
 
 import { AddToast, Group, GroupDefsType, Item, SetType } from '../data/types';
 
 import { defaultSearchableFields, getItems } from '../data/Store';
-import { groupBy, map, uniq } from 'lodash';
+import { groupBy, map, uniq, flatten } from 'lodash';
 import { ItemsTable } from './ItemsTable';
 import { siteIcons, typeIcons } from '../icons/icons';
 import { getLanguages } from '../data/languages';
-import { usePersistedJsonState } from '../utils';
+import { usePersistedJsonState, usePersistedState } from '../utils';
 import { GroupSelector } from './GroupSelector';
 import { SyncButton } from './SyncButton';
-
-const initialQuery = EuiSearchBar.Query.MATCH_ALL;
 
 const schema = {
   strict: true,
@@ -33,6 +41,7 @@ const schema = {
     dstFullTitle: { type: 'string' },
     dstTitle: { type: 'string' },
     dstTitleUrl: { type: 'string' },
+    protection: { type: 'string' }
   },
 };
 
@@ -81,8 +90,7 @@ export const WorkArea = (props: {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [selectedItems, setSelectedItems] = useState<Set<Item>>(() => new Set());
-  const [query, setQuery] = useState(initialQuery);
-
+  const [query, setQuery] = usePersistedState<Query>('query', '', Query.parse, v => v.text);
   const [allItems, setAllItems] = useState<Array<Item>>(() => []);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -107,20 +115,8 @@ export const WorkArea = (props: {
   }, [isLoading, props.addToast]);
 
   const filteredItems = useMemo(() => {
-    // console.log('original data', allItems);
-    // try {
-    //   console.log('esQueryDsl', EuiSearchBar.Query.toESQuery(query));
-    // } catch (e) {
-    //   console.error(`error in esQueryDsl: ${e}`);
-    // }
-    // try {
-    //   console.log('esQueryString', EuiSearchBar.Query.toESQueryString(query));
-    // } catch (e) {
-    //   console.error(`error in esQueryString: ${e}`);
-    // }
     return EuiSearchBar.Query.execute(query, allItems, { defaultSearchableFields });
   }, [allItems, query]);
-  // console.log('filtered data', filteredItems);
 
   const [rawGroupSelection, setGroupSelection] = usePersistedJsonState<Array<keyof Item>>('groupSelection', ['srcTitleUrl']);
   // Just in case local store has some weird values, filter them out
@@ -169,7 +165,7 @@ export const WorkArea = (props: {
       };
     }
 
-    return organizeItemsInGroups(0, filteredItems, ['type', 'dstSite', 'dstTitle', 'status']);
+    return organizeItemsInGroups(0, filteredItems, ['type', 'protection', 'dstSite', 'dstTitle', 'status']);
   }, [filteredItems, groupSelection]);
 
   const itemsTable = useMemo(() => {
@@ -185,8 +181,8 @@ export const WorkArea = (props: {
   }, [props, error, groupedItems, isLoading, message, selectedItems]);
 
   const toolbar = useMemo(() => {
-    const searchBar = (<EuiSearchBar
-      defaultQuery={initialQuery}
+    const searchBar = <EuiSearchBar
+      query={query}
       box={{
         isClearable: true,
         // placeholder: '',
@@ -228,6 +224,20 @@ export const WorkArea = (props: {
         },
         {
           type: 'field_value_selection',
+          field: 'protection',
+          name: 'Lock',
+          multiSelect: 'or',
+          options: async () => {
+            const values = uniq(flatten(allItems.map(v => v.protectionArray))).map(v => v || '').filter(v => v !== '');
+            values.sort();
+            return values.map(val => ({
+              value: val,
+              view: (<EuiText>{val}</EuiText>),
+            }));
+          },
+        },
+        {
+          type: 'field_value_selection',
           field: 'lang',
           name: 'Language',
           multiSelect: 'or',
@@ -260,7 +270,7 @@ export const WorkArea = (props: {
           setQuery(query);
         }
       }}
-    />);
+    />;
 
     const refreshButton = (<EuiButton
       key="loadItems"
@@ -282,7 +292,7 @@ export const WorkArea = (props: {
         <EuiFlexItem grow={false}>{refreshButton}</EuiFlexItem>
       </EuiFlexGroup>
     );
-  }, [allItems, groupSelection, isLoading, props.addToast, selectedItems, setGroupSelection]);
+  }, [allItems, groupSelection, isLoading, props.addToast, query, selectedItems, setGroupSelection, setQuery]);
 
   return (
     <>

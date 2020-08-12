@@ -5,12 +5,14 @@ from typing import Iterable, Optional
 from typing import List
 from typing import Tuple, Set
 
-from .DataTypes import RevComment, SyncInfo
+from .DataTypes import RevComment, SyncInfo, Translations
 from .DataTypes import TemplateCache, SiteMetadata
 from .PageContent import PageContent
+from .WikiSite import WikiSite
 
 # Find any string that is a template name
 # Must be preceded by two {{ (not 3!), must be followed by either "|" or "}", must not include any funky characters
+
 reTemplateName = re.compile(r'''((?:^|[^{]){{\s*)([^|{}<>&#:]*[^|{}<>&#: ])(\s*[|}])''')
 
 # Find any require('Module:name') and mw.loadData('Module:name')
@@ -43,7 +45,7 @@ class PagePrimary:
             raise ValueError(f"History has not been populated for {self}")
 
         changes = []
-        result = SyncInfo(qid, self.title, page.domain, page.title)
+        result = SyncInfo(qid, self.title, page.domain, page.title, page.protection)
         current_content = page.content.rstrip()
         for hist in reversed(self.history):
             if self.is_module:
@@ -72,8 +74,6 @@ class PagePrimary:
                 # One of the previous revisions matches current state of the target
                 result.matched_revid = hist.revid
                 result.behind = len(changes)
-                result.changed_by_users = list({v.user: '' for v in changes}.keys())
-                result.all_comments = list({v.comment: '' for v in changes if v.comment}.keys())
                 break
             changes.append(hist)
         else:
@@ -84,29 +84,34 @@ class PagePrimary:
 
         return result
 
-    # def create_summary(self, changes: List[RevComment], lang: str, summary_i18n: Dict[str, str]) -> str:
-    #     summary_link = f'[[mw:{self.title}]]'
-    #     if changes:
-    #         # dict keeps the order
-    #         users = list({v.user: '' for v in changes}.keys())
-    #         comments = list({v.comment: '' for v in changes if v.comment}.keys())
-    #         # Copying $1 changes by $2: "$3" from $4
-    #         text = summary_i18n[lang if lang in summary_i18n else 'en']
-    #         text = text.replace('$1', str(len(changes)))
-    #         text = text.replace('$2', ','.join(users))
-    #         text = text.replace('$3', ', '.join(comments))
-    #         text = text.replace('$4', summary_link)
-    #
-    #         res = self.site(
-    #             action='expandtemplates',
-    #             text=text,
-    #             prop='wikitext')
-    #
-    #         # for some reason template expansions add \n in some places
-    #         return res.expandtemplates.wikitext.replace('\n', '')
-    #     else:
-    #         # Restoring to the current version of {0}
-    #         return f'Restoring to the current version of {summary_link}'
+    def create_summary(self, site: WikiSite, info: SyncInfo, i18n_messages: Translations) -> str:
+        summary_link = f'[[mw:{self.title}]]'
+        lang = info.dst_domain.split('.', 1)[0]
+
+        if info.behind:
+            changes = self.history[-info.behind:]
+            # dict keeps the order
+            users = list({v.user: '' for v in changes}.keys())
+            comments = list({v.comment: '' for v in changes if v.comment}.keys())
+            # Copying $1 changes by $2: "$3" from $4
+            i18n = i18n_messages['edit_summary']
+            text = i18n[lang if lang in i18n else 'en']
+            text = text.replace('$1', str(len(changes)))
+            text = text.replace('$2', ','.join(users))
+            text = text.replace('$3', ', '.join(comments))
+            text = text.replace('$4', summary_link)
+        elif info.needs_refresh or info.diverged:
+            i18n = i18n_messages['localized_summary' if info.needs_refresh else 'reset_summary']
+            text = i18n[lang if lang in i18n else 'en']
+            text = text.replace('$1', summary_link)
+        else:
+            raise ValueError(f'no changes for {info}')
+
+        res = site(action='expandtemplates',
+                   text=text,
+                   prop='wikitext')
+        # for some reason template expansions add \n in some places
+        return res.expandtemplates.wikitext.replace('\n', '')
 
     def parse_dependencies(self, content) -> Iterable[str]:
         if self.is_module:

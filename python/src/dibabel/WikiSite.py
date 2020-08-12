@@ -17,6 +17,7 @@ class WikiSite(Site):
 
     def __init__(self, domain: str, session: Session, is_primary: bool):
         super().__init__(f'http://{domain}/w/api.php', session=session, json_object_hook=AttrDict)
+        self.retry_on_lag_error = 30
         self.is_primary = is_primary
         self.domain = domain
 
@@ -53,13 +54,15 @@ class WikiSite(Site):
         # if self.get_metadata().flagged_revisions:
         #     props.append('flagged')
         for page in self.query_pages(
-                prop=['revisions'],
+                prop=['revisions', 'info'],
                 rvprop=props,
+                inprop=['protection'],
                 rvslots='main',
                 titles=titles):
             if 'missing' in page:
                 yield page.title, None
                 continue
+            protection = [p.level for p in page.protection if p.type == 'edit']
             rev = page.revisions[0]
             # if self.get_metadata().flagged_revisions:
             #     TODO
@@ -68,7 +71,8 @@ class WikiSite(Site):
                 page.title,
                 rev.revid,
                 rev.slots.main.content,
-                datetime.fromisoformat(rev.timestamp.rstrip('Z'))
+                datetime.fromisoformat(rev.timestamp.rstrip('Z')),
+                protection=list(set(protection)) or None,
             )
 
     def load_page_history(self, title: str, history: List[RevComment], current_revid: int) -> None:

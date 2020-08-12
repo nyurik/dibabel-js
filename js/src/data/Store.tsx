@@ -46,7 +46,7 @@ export async function getItems(addToast: AddToast): Promise<Array<Item>> {
     primarySite: string,
     primaryTitle: string,
     primaryRevId: number,
-    copies: {[key:string]: any}
+    copies: { [key: string]: any }
   }>): Generator<Item> {
     const splitNs = (t: string): [ItemTypeType, string] => {
       const pos = t.indexOf(':');
@@ -87,6 +87,8 @@ export async function getItems(addToast: AddToast): Promise<Array<Item>> {
           behind: dst.behind > 0 ? dst.behind : undefined,
           not_multisite_deps: dst.not_multisite_deps,
           multisite_deps_not_on_dst: dst.multisite_deps_not_on_dst,
+          protection: dst.protection ? dst.protection.join(', ') : '',
+          protectionArray: dst.protection,
         };
       }
     }
@@ -96,7 +98,7 @@ export async function getItems(addToast: AddToast): Promise<Array<Item>> {
 }
 
 export const defaultSearchableFields: Array<string> = [
-  'status', 'type', 'dstSite', 'behind', 'lang', 'title', 'dstTitle',
+  'status', 'dstSite', 'lang', 'title', 'dstTitle',
 ];
 
 export async function fetchContent(site: string, title: string): Promise<string> {

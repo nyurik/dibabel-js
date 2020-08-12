@@ -4,7 +4,6 @@
  */
 import { ReactComponent as incubatorIcon } from './site_incubator.svg';
 
-
 import { ReactComponent as mediawikiIcon } from './site_mediawiki.svg';
 
 /**
@@ -54,9 +53,14 @@ import { ReactComponent as commonsIcon } from './site_commons.svg';
  */
 import { ReactComponent as wikimaniaIcon } from './site_wikimania.svg';
 
-
 import { ReactComponent as templateIcon } from './type_template.svg';
 import { ReactComponent as moduleIcon } from './type_module.svg';
+
+/**
+ * https://commons.wikimedia.org/wiki/File:Create-protection-shackle-no-text.svg
+ * XYZtSpace (talk · contribs) / Public domain
+ */
+export { ReactComponent as lockIcon } from './lock.svg';
 
 export const siteIcons = {
   commons: commonsIcon,

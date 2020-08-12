@@ -1,3 +1,4 @@
+import json
 import pickle
 import sqlite3
 import zlib
@@ -14,7 +15,8 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from sqlitedict import SqliteDict
 
-from .DataTypes import RevComment, TemplateCache, SyncInfo, SiteMetadata, WdWarning, WdSitelink, TemplateReplacements
+from .DataTypes import RevComment, TemplateCache, SyncInfo, SiteMetadata, WdWarning, WdSitelink, TemplateReplacements, \
+    Translations
 from .PageContent import TitlePagePair, PageContent
 from .PagePrimary import PagePrimary
 from .Sparql import Sparql
@@ -48,7 +50,8 @@ class SessionState:
             obj = [RevComment.decode(v) for v in obj]
         return obj
 
-    def __init__(self, cache_file: str):
+    def __init__(self, cache_file: str, user_requested=False):
+        self.user_requested = user_requested
         self.cache = SqliteDict(cache_file, autocommit=True,
                                 encode=self.my_encode, decode=self.my_decode)
         self.session = Session()
@@ -71,6 +74,8 @@ class SessionState:
         except KeyError:
             # noinspection PyTypeChecker
             site = WikiSite(domain, self.session, domain == primary_domain)
+            if self.user_requested:
+                site.maxlag = None
             self.sites[domain] = site
             return site
 
@@ -83,7 +88,7 @@ class QueryCache:
         cache_dir.mkdir(parents=True, exist_ok=True)
         self.cache_file = str(cache_dir / 'cache.sqlite')
 
-        with self.create_session() as state:
+        with self.create_session(user_requested=False) as state:
             self.primary_site = state.get_site(primary_domain)
             self.sites_metadata: Dict[str, SiteMetadata] = state.cache.get('sites_metadata', {})
 
@@ -107,11 +112,13 @@ class QueryCache:
             self.update_primary_pages(state)
             # Download clones and compute sync info
             self.update_syncinfo(state, sitelinks, False)
+            # Update localization strings
+            self.summary_i18n = self.get_translation_table(state)
 
         print('Done initializing')
 
-    def create_session(self):
-        return SessionState(self.cache_file)
+    def create_session(self, user_requested):
+        return SessionState(self.cache_file, user_requested)
 
     def query_wd_multilingual_pages(self,
                                     state: SessionState,
@@ -320,13 +327,19 @@ class QueryCache:
 
     def update_metadata(self, state: SessionState, domains: Iterable[str]) -> None:
         updated = False
-        for domain in domains:
+        for domain in sorted(domains):
             md = self.sites_metadata.get(domain)
             if not md or (datetime.utcnow() - md.last_updated) > timedelta(days=30):
                 self.sites_metadata[domain] = state.get_site(domain).query_metadata()
                 updated = True
         if updated:
             state.cache['sites_metadata'] = self.sites_metadata
+
+    def get_translation_table(self, state: SessionState) -> Translations:
+        title, page = next(self.get_page_content(state, 'commons.wikimedia.org', ['Data:I18n/DiBabel.tab']))
+        if not page:
+            raise ValueError(f"Unable to load {title} from commons.wikimedia.org")
+        return {k: v for k, v in json.loads(page.content)['data']}
 
     # noinspection PyUnusedLocal
     def get_data(self, state: SessionState) -> List[dict]:
@@ -349,9 +362,10 @@ class QueryCache:
                 res['not_multisite_deps'] = p.not_multisite_deps
             if p.multisite_deps_not_on_dst:
                 res['multisite_deps_not_on_dst'] = p.multisite_deps_not_on_dst
+            if p.dst_protection:
+                res['protection'] = p.dst_protection
             return res
 
-        print(f"Getting sync info")
         return [dict(
             id=qid,
             primarySite=primary_domain,
@@ -361,19 +375,18 @@ class QueryCache:
         ) for qid, obj in self.syncinfo_by_qid_domain.items()]
 
     def get_page(self, state: SessionState, qid: str, domain: str) -> Optional[dict]:
-        print(f"Getting page {qid} / {domain}")
+        primary = self.primary_pages_by_qid[qid]
         info = self.syncinfo_by_qid_domain[qid][domain]
-        print(f"-- info {info}")
         _, _, page = self.update_syncinfo(state, [WdSitelink(qid, domain, info.dst_title)], True)[0]
-        print(f"-- page {page}")
         if page is None:
-            return None
+            raise ValueError(f"Unable to load {qid}/{domain}")
         # sync info might have changed, re-get it
         info = self.syncinfo_by_qid_domain[qid][domain]
+        summary = primary.create_summary(state.get_site(domain), info, self.summary_i18n)
         return dict(
             currentText=page.content,
             currentRevId=page.revid,
             newText=info.new_content,
-            changed_by_users=info.changed_by_users,
-            all_comments=info.all_comments,
+            protection=page.protection,
+            summary=summary,
         )

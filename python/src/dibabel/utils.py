@@ -8,7 +8,7 @@ from pywikiapi.utils import to_timestamp, to_datetime
 # noinspection PyUnresolvedReferences
 from requests.packages.urllib3.util.retry import Retry
 
-from .DataTypes import Timestamp, RevComment
+from .DataTypes import Timestamp
 from .DataTypes import WdSitelink, \
     WdWarning
 

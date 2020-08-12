@@ -7,11 +7,12 @@ import {
   EuiHealth,
   EuiIcon,
   EuiInMemoryTable,
-  EuiInMemoryTableProps
+  EuiInMemoryTableProps,
+  EuiText
 } from '@elastic/eui';
 
 import { AddToast, Group, Item } from '../data/types';
-import { typeIcons } from '../icons/icons';
+import { lockIcon, typeIcons } from '../icons/icons';
 import { ItemDiffLink, ItemDstLink, ItemSrcLink, ProjectIcon } from './Snippets';
 
 export const ItemsTable = (
@@ -98,49 +99,66 @@ export const ItemsTable = (
     },
     type: {
       field: 'type',
-      name: 'Type',
-      width: '3.3em',
+      name: (<EuiText title={'Type of the page (template or module)'}>Type</EuiText>),
+      width: '3.8em',
       sortable: true,
       mobileOptions: { show: false },
       render: (type: 'module' | 'template') => (
         <EuiIcon
           type={typeIcons[type]}
-          size="l"
+          size={'m'}
           title={type}
         />),
     },
+    protection: {
+      field: 'protection',
+      name: (<EuiIcon
+        type={lockIcon}
+        size={'m'}
+        title={`Indicate if special rights are required to edit.`}
+      />),
+      width: '3.8em',
+      sortable: true,
+      render: (rights: string) => rights ? (
+        <EuiIcon
+          type={lockIcon}
+          size={'m'}
+          title={`Rights required to edit: ${rights}`}
+        />) : '',
+    },
     title: {
       field: 'srcFullTitle',
-      name: 'Primary Page',
+      name: (<EuiText title={'Title of the page at mediawiki.org'}>Primary Page</EuiText>),
       sortable: true,
       render: (_: string, item: Item) => (<ItemSrcLink item={item}/>),
     },
     lang: {
       field: 'lang',
-      name: 'Language',
+      name: (<EuiText title={'The language of the wiki'}>Language</EuiText>),
       sortable: true,
     },
     project: {
       field: 'project',
-      name: 'Project',
+      name: (<EuiText title={'Wiki project, e.g. wikipedia, wikibooks, ...'}>Project</EuiText>),
       sortable: true,
       render: (_: string, item: Item) => (<><ProjectIcon item={item}/>&nbsp;&nbsp;&nbsp;{item.project}</>),
     },
     dstSite: {
       field: 'dstSite',
-      name: 'Wiki site',
+      name: (<EuiText title={'The wiki site where the copied page is located.'}>Wiki site</EuiText>),
       sortable: true,
       render: (_: string, item: Item) => (<><ProjectIcon item={item}/>&nbsp;&nbsp;&nbsp;{item.dstSite}</>),
     },
     dstTitle: {
       field: 'dstFullTitle',
-      name: 'Wiki page',
+      name: (<EuiText title={'Title of the copied page as it appears on the destination wiki.'}>Wiki page</EuiText>),
       sortable: true,
       render: (_: string, item: Item) => (<ItemDstLink item={item}/>),
     },
     status: {
       field: 'status',
-      name: 'Status',
+      name: (<EuiText
+        title={'Show if the copied page is in sync with the original, has fallen behind, or has been modified locally (diverged).'}>Status</EuiText>),
       sortable: true,
       render: (status: string, item: Item) => {
         let color, label, title;
@@ -166,10 +184,9 @@ export const ItemsTable = (
       },
     },
     countOk: {
-      name: 'Same',
       field: 'countOk',
+      name: (<EuiText title={'Number of up to date pages.'}>Same</EuiText>),
       sortable: true,
-      description: 'Number of up to date pages.',
       render: (value: number) => {
         if (value > 0) {
           return <EuiHealth title={`${value} pages are up to date.`}
@@ -180,8 +197,9 @@ export const ItemsTable = (
       },
     },
     countUnlocalized: {
-      name: 'Unlocalized',
       field: 'countUnlocalized',
+      name: (<EuiText
+        title={'Number of pages that are identical to the original. These pages need to be localized (e.g. rename dependent templates)'}>Unlocalized</EuiText>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
@@ -194,8 +212,8 @@ export const ItemsTable = (
       },
     },
     countOutdated: {
-      name: 'Outdated',
       field: 'countOutdated',
+      name: (<EuiText title={'Number of pages that has fallen behind with the primary.'}>Outdated</EuiText>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
@@ -207,10 +225,9 @@ export const ItemsTable = (
       },
     },
     countDiverged: {
-      name: 'Diverged',
       field: 'countDiverged',
+      name: (<EuiText title={'Number of pages with local modifications.'}>Diverged</EuiText>),
       sortable: true,
-      description: 'Number of pages with local modifications.',
       render: (value: number) => {
         if (value > 0) {
           return <EuiHealth title={`${value} pages have local modifications and must be synchronized individually.`}

@@ -19,7 +19,18 @@ export function usePersistedState<T>(
 ): [T, (value: T) => void] {
 
   const [value, setValue] = useState(
-    () => deserializer(localStorage.getItem(key) ?? initValue));
+    () => {
+      const val = localStorage.getItem(key);
+      if (val !== null) {
+        try {
+          return deserializer(val);
+        } catch (err) {
+          console.error(`Unable to parse value from local store: ${key}="${val}"`)
+        }
+      }
+      // Use default in case of an error or if there is nothing stored
+      return deserializer(initValue);
+    });
 
   useEffect(
     () => {

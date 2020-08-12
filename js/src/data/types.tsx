@@ -56,6 +56,8 @@ export interface Item {
   matchedRevId?: number,
   not_multisite_deps?: Array<string>,
   multisite_deps_not_on_dst?: Array<string>,
+  protection?: string,
+  protectionArray?: Array<string>,
 }
 
 export interface Group {

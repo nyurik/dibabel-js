@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 20 20" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" stroke-linejoin="round" stroke-linecap="round">
+<rect x = "5" y="1.25" width = "10" height = "15" rx = "5" ry = "5" fill = "none" stroke = "#808080" stroke-width = "2.5"/>
+<rect x = "2.5" y = "7.5" width ="15" height = "12.5" rx = "1.25" ry = "1.25" style="fill:#0078b8"/>
+</svg>
