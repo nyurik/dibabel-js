@@ -62,9 +62,9 @@ def userinfo():
     return jsonify(mwoauth.identify(app.config["OAUTH_MWURI"], create_consumer_token(), access_token))
 
 
-@app.route('/api/{domain}', methods=['POST'])
-def call_api(domain):
-    if domain not in cache.sites_metadata:
+@app.route('/api/<site>', methods=['POST'])
+def call_api(site: str):
+    if site not in cache.sites_metadata:
         return abort(Response('Unsupported domain', 400))
     try:
         access_token = mwoauth.AccessToken(**session['access_token'])
@@ -75,7 +75,7 @@ def call_api(domain):
                   client_secret=consumer_token.secret,
                   resource_owner_key=access_token.key,
                   resource_owner_secret=access_token.secret)
-    r = requests.post(f"https://{domain}/w/api.php", auth=auth, data=request.get_json())
+    r = requests.post(f"https://{site}/w/api.php", auth=auth, data=request.get_json())
     r.raise_for_status()
     return jsonify(r.json())
 
