@@ -70,8 +70,8 @@ class WikiSite(Site):
                 self.domain,
                 page.title,
                 rev.revid,
-                rev.slots.main.content,
-                datetime.fromisoformat(rev.timestamp.rstrip('Z')),
+                content=rev.slots.main.content,
+                content_ts=rev.timestamp.rstrip('Z'),
                 protection=list(set(protection)) or None,
             )
 

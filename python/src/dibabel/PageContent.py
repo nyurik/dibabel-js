@@ -4,7 +4,7 @@ from typing import Tuple, Union, Optional, List
 
 
 class PageContent:
-    def __init__(self, domain: str, title: str, revid: int, content: str, content_ts: datetime,
+    def __init__(self, domain: str, title: str, revid: int, content: str, content_ts: str,
                  protection: Optional[List[str]]):
         self.domain = domain
         self.title = title

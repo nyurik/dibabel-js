@@ -84,3 +84,7 @@ def dict_of_dicts(items: Iterable[T],
         val = extract_value(v) if extract_value else v
         update_dict_of_dicts(result, k1, k2, val)
     return result
+
+
+def limit_ellipsis(text: str, max_len: int) -> str:
+    return text if len(text) < max_len else (text[:max_len] + '…')

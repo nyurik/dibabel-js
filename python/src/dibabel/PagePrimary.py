@@ -5,6 +5,8 @@ from typing import Iterable, Optional
 from typing import List
 from typing import Tuple, Set
 
+from pywikiapi import ApiError
+
 from .DataTypes import RevComment, SyncInfo, Translations
 from .DataTypes import TemplateCache, SiteMetadata
 from .PageContent import PageContent
@@ -12,6 +14,7 @@ from .WikiSite import WikiSite
 
 # Find any string that is a template name
 # Must be preceded by two {{ (not 3!), must be followed by either "|" or "}", must not include any funky characters
+from .utils import limit_ellipsis
 
 reTemplateName = re.compile(r'''((?:^|[^{]){{\s*)([^|{}<>&#:]*[^|{}<>&#: ])(\s*[|}])''')
 
@@ -97,8 +100,8 @@ class PagePrimary:
             i18n = i18n_messages['edit_summary']
             text = i18n[lang if lang in i18n else 'en']
             text = text.replace('$1', str(len(changes)))
-            text = text.replace('$2', ','.join(users))
-            text = text.replace('$3', ', '.join(comments))
+            text = text.replace('$2', limit_ellipsis(','.join(users), 80))
+            text = text.replace('$3', limit_ellipsis(','.join(comments), 210))
             text = text.replace('$4', summary_link)
         elif info.needs_refresh or info.diverged:
             i18n = i18n_messages['localized_summary' if info.needs_refresh else 'reset_summary']
@@ -107,9 +110,14 @@ class PagePrimary:
         else:
             raise ValueError(f'no changes for {info}')
 
-        res = site(action='expandtemplates',
-                   text=text,
-                   prop='wikitext')
+        try:
+            res = site(action='expandtemplates',
+                       text=text,
+                       prop='wikitext')
+        except ApiError as err:
+            print(err)
+            raise err
+
         # for some reason template expansions add \n in some places
         return res.expandtemplates.wikitext.replace('\n', '')
 

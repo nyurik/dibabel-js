@@ -115,6 +115,7 @@ export const ItemsTable = (
       name: (<EuiIcon
         type={lockIcon}
         size={'m'}
+        color={'#C6C7C7'}
         title={`Indicate if special rights are required to edit.`}
       />),
       width: '3.8em',
@@ -123,6 +124,7 @@ export const ItemsTable = (
         <EuiIcon
           type={lockIcon}
           size={'m'}
+          color={'#0078b8'}
           title={`Rights required to edit: ${rights}`}
         />) : '',
     },

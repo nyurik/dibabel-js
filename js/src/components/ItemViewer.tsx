@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 
 import {
   EuiButton,
@@ -21,7 +21,8 @@ import {
 
 import { Item } from '../data/types';
 import { ItemDiffLink, ItemDstLink, ItemSrcLink, ItemWikidataLink, ProjectIcon } from './Snippets';
-import { rootUrl } from '../utils';
+import { postToApi, rootUrl } from '../utils';
+import { UserContext, UserState } from '../data/UserContext';
 
 interface ItemViewerParams<TItem> {
   item: TItem;
@@ -41,19 +42,13 @@ const ItemDiffBlock = ({ type, oldText, newText }: { type: string, oldText: stri
   return <EuiCodeBlock language={type === 'module' ? 'lua' : 'text'}>{rendered}</EuiCodeBlock>;
 };
 
-const Comment: FunctionComponent<{ readOnly: boolean, text: string }> = ({ readOnly, text }) => {
-  const [value, setValue] = useState(text);
-
-  const onChange = (e: any) => {
-    setValue(e.target.value);
-  };
-
+const Comment: FunctionComponent<{ readOnly: boolean, value: string, setValue: (value: string) => void }> = ({ readOnly, value, setValue }) => {
   return (<EuiFieldText
     readOnly={readOnly}
     placeholder={'Edit summary'}
     isInvalid={!value.trim()}
     value={value}
-    onChange={e => onChange(e)}
+    onChange={e => setValue(e.target.value)}
     aria-label={'Edit summary'}
     fullWidth={true}
   />);
@@ -63,6 +58,10 @@ const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
 
   const [content, setContent] = useState<{ status: 'loading' | 'error' | 'ok', data?: any }>({ status: 'loading' });
 
+  // FIXME! changes to the comment force full refresh of this component!
+  // TODO: lookup how to do this better (share state with subcomponent, refernce, etc)
+  const [comment, setComment] = useState('');
+
   useEffect(() => {
     (async () => {
       try {
@@ -70,6 +69,7 @@ const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
         if (result.ok) {
           let data = await result.json();
           setContent({ status: 'ok', data });
+          setComment(data.summary || '');
         } else {
           setContent({
             status: 'error',
@@ -153,6 +153,32 @@ const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
       throw new Error(content.status);
   }
 
+  const onCopy = async () => {
+    try {
+      let res = await postToApi(item.dstSite, {
+        meta: 'tokens',
+        type: 'csrf',
+      });
+
+      const token = res.tokens.csrftoken;
+
+      res = await postToApi(item.dstSite, {
+        action: 'edit',
+        title: item.dstTitle,
+        text: content.data.newText,
+        summary: comment,
+        basetimestamp: content.data.contentTimestamp,
+        nocreate: '1',
+        token: token,
+      });
+      if (res.edit.result !== 'Success') {
+        setContent({ status: 'error', data: res.edit.info || JSON.stringify(res.edit) });
+      }
+    } catch (err) {
+      setContent({ status: 'error', data: err.toString() });
+    }
+  };
+
   return (
     <EuiFlyout
       ownFocus
@@ -179,12 +205,18 @@ const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
             <EuiText>Summary:</EuiText>
           </EuiFlexItem>
           <EuiFlexItem grow={true}>
-            <Comment readOnly={content.status !== 'ok'} text={content?.data?.summary || ''}/>
+            <Comment readOnly={content.status !== 'ok'} value={comment} setValue={setComment}/>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton disabled={content.status !== 'ok'} color={'danger'} onClick={onClose} fill>
-              Copy!
-            </EuiButton>
+            <UserContext.Consumer>
+              {context => context.user.state === UserState.LoggedIn && context.user.username === 'Yurik'
+                ? (<EuiButton fill disabled={content.status !== 'ok'} color={'danger'} onClick={onCopy}>
+                    Copy!
+                  </EuiButton>)
+                : (<EuiButton fill disabled={content.status !== 'ok'} color={'danger'} onClick={onClose}>
+                  Copy (disabled)
+                </EuiButton>)}
+            </UserContext.Consumer>
           </EuiFlexItem>
         </EuiFlexGroup>
       </EuiFlyoutFooter>

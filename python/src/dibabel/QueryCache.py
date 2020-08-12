@@ -386,6 +386,7 @@ class QueryCache:
         return dict(
             currentText=page.content,
             currentRevId=page.revid,
+            contentTimestamp=page.content_ts,
             newText=info.new_content,
             protection=page.protection,
             summary=summary,
