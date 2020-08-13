@@ -113,23 +113,23 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
   switch (item.status) {
     case 'diverged':
       infoSubHeader = (<EuiHealth color={'danger'}>
-        <EuiText>The current version of{' '}<ItemDstLink item={item}/>{' '}({item.dstSite}) was not found in the history
+        <EuiText>The current version of{' '}<ItemDstLink item={item}/>{' '}was not found in the history
           of the primary page <ItemSrcLink item={item}/>.</EuiText></EuiHealth>);
       break;
     case 'outdated':
       infoSubHeader = (<EuiHealth color={'warning'}>
-        <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}({item.dstSite}) is{' '}
+        <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}is{' '}
           <EuiLink href={itemDiffLink(item)} target={'_blank'}>{item.behind} revisions</EuiLink>{' '}behind the
           primary{' '}<ItemSrcLink item={item}/>.</EuiText></EuiHealth>);
       break;
     case 'unlocalized':
       infoSubHeader = (<EuiHealth color={'warning'}>
-        <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}({item.dstSite}) is identical with the original <ItemSrcLink
+        <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}is identical with the original <ItemSrcLink
           item={item}/>, but needs to have some localizations.</EuiText></EuiHealth>);
       break;
     case 'ok':
       infoSubHeader = (<EuiHealth color={'success'}>
-        <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}({item.dstSite}) is identical with the original <ItemSrcLink
+        <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}is a localized version of the original <ItemSrcLink
           item={item}/>.</EuiText></EuiHealth>);
       break;
     default:

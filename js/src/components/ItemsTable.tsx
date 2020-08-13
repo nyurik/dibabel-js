@@ -12,7 +12,7 @@ import {
 
 import { Group, Item, ItemTypeType } from '../data/types';
 import { lockIcon, typeIcons } from '../icons/icons';
-import { ExternalLink, ItemDstLink, ItemSrcLink, ProjectIcon } from './Snippets';
+import { ExternalLink, ProjectIcon } from './Snippets';
 import { itemDiffLink } from '../utils';
 
 export const ItemsTable = (
@@ -96,7 +96,7 @@ export const ItemsTable = (
       field: 'srcFullTitle',
       name: (<EuiText title={'Title of the page at mediawiki.org'}>Primary Page</EuiText>),
       sortable: true,
-      render: (_: string, item: Item) => (<ItemSrcLink item={item}/>),
+      render: (_: string, item: Item) => (<><ExternalLink href={item.srcTitleUrl}/>{item.srcFullTitle}</>),
     },
     lang: {
       field: 'lang',
@@ -119,7 +119,7 @@ export const ItemsTable = (
       field: 'dstFullTitle',
       name: (<EuiText title={'Title of the copied page as it appears on the destination wiki.'}>Wiki page</EuiText>),
       sortable: true,
-      render: (_: string, item: Item) => (<ItemDstLink item={item}/>),
+      render: (_: string, item: Item) => (<><ExternalLink href={item.dstTitleUrl}/>{item.dstFullTitle}</>),
     },
     status: {
       field: 'status',
