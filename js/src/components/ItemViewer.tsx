@@ -287,8 +287,8 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <UserContext.Consumer>
-                {context => context.user.state === UserState.LoggedIn || 1
-                  ? (<EuiButton fill // disabled={content.status !== 'ok'} color={'danger'}
+                {context => context.user.state === UserState.LoggedIn
+                  ? (<EuiButton fill disabled={content.status !== 'ok'} color={'danger'}
                                 onClick={() => setIsConfirmationVisible(true)}>
                     Copy!
                   </EuiButton>)
