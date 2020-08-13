@@ -19,16 +19,15 @@ import {
   useEuiTextDiff
 } from '@elastic/eui';
 
-import { Item, SyncContentType } from '../data/types';
+import { Item, SyncContentType, UpdateItems } from '../data/types';
 import { ItemDiffLink, ItemDstLink, ItemSrcLink, ItemWikidataLink, ProjectIcon } from './Snippets';
 import { getToken, postToApi, rootUrl, sleep } from '../utils';
 import { UserContext, UserState } from '../data/UserContext';
-import { createItem } from '../data/Store';
 import { ToastsContext } from './Toasts';
 
 interface ItemViewerParams<TItem> {
   item: TItem;
-  updateItem: Dispatch<Item>;
+  updateItem: UpdateItems;
   onClose: (
     event?:
       | React.KeyboardEvent<HTMLDivElement>
@@ -36,19 +35,9 @@ interface ItemViewerParams<TItem> {
   ) => void
 }
 
-const updateItemIfChanged = (item: Item, data: SyncContentType, updateItem: Dispatch<Item>): boolean => {
+const updateItemIfChanged = (item: Item, data: SyncContentType, updateItem: UpdateItems): boolean => {
   if (item.dstTimestamp !== data.syncInfo.timestamp) {
-    updateItem(createItem(
-      item.qid,
-      item.srcSite,
-      item.srcRevId,
-      item.srcFullTitle,
-      item.type,
-      item.title,
-      item.srcTitleUrl,
-      item.dstSite,
-      data.syncInfo,
-    ));
+    updateItem(item.key, data.syncInfo);
     return true;
   }
   return false;

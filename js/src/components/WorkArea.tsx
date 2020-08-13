@@ -12,9 +12,9 @@ import {
   EuiText
 } from '@elastic/eui';
 
-import { Group, GroupDefsType, Item } from '../data/types';
+import { Group, GroupDefsType, Item, SyncContentType, SyncItemType } from '../data/types';
 
-import { defaultSearchableFields, getItems } from '../data/Store';
+import { defaultSearchableFields, getItems, updateSyncInfo } from '../data/Store';
 import { groupBy, map, uniq, flatten } from 'lodash';
 import { ItemsTable } from './ItemsTable';
 import { siteIcons, typeIcons } from '../icons/icons';
@@ -296,9 +296,13 @@ export const WorkArea = () => {
     );
   }, [addToast, allItems, groupSelection, isLoading, query, selectedItems, setGroupSelection, setQuery]);
 
-  const updateItem = (items: Array<Item>, item: Item) => {
-    items.filter(v => v.key !== item.key);
-    items.push(item);
+  const updateItems = (items: Array<Item>, key: string, info: SyncItemType) => {
+    for(let i = 0; i < items.length; i++) {
+      if(items[i].key === key) {
+        updateSyncInfo(items[i], info);
+        break;
+      }
+    }
     return items;
   };
 
@@ -309,6 +313,6 @@ export const WorkArea = () => {
       {itemsTable}
       <ItemViewer item={item}
                   onClose={closeItem}
-                  updateItem={(item: Item) => { setAllItems((items) => updateItem(items, item)); }}/>
+                  updateItem={(key: string, info: SyncItemType) => { setAllItems((items) => updateItems(items, key, info)); }}/>
     </>);
 };

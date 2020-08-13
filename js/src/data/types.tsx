@@ -11,8 +11,6 @@ export interface Toast extends EuiToastProps {
   toastLifeTimeMs?: number;
 }
 
-export type SetType = (item: Item | null) => void;
-
 export type LangInfo = { name: string, autonym: string } ;
 export type LangInfoDict = { [key: string]: LangInfo };
 // export type AddToast = Dispatch<Toast>;
@@ -96,3 +94,4 @@ export type SyncContentType = {
   syncInfo: SyncItemType,
 };
 
+export type UpdateItems = (key: string, info: SyncItemType) => void;

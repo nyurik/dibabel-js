@@ -36,22 +36,27 @@ export const createItem = (
   const lang = (ind >= 0 && dstLangSiteParts[ind] !== 'www') ? dstLangSiteParts[ind] : '-';
 
   const dstTitleUrl = `https://${dstSite}${titleUrlSuffix}${dst.title}`;
-  return {
+  return updateSyncInfo({
     key: dstTitleUrl,
     qid, type, srcSite, srcRevId, srcFullTitle, title, srcTitleUrl, project, lang,
     dstSite: dstSite,
-    matchedRevId: dst.matchedRevId,
     dstFullTitle: dst.title,
     dstTitle: splitNs(dst.title)[1],
     dstTitleUrl: dstTitleUrl,
-    dstTimestamp: dst.timestamp,
-    status: dst.status,
-    behind: dst.behind && dst.behind > 0 ? dst.behind : undefined,
-    notMultisiteDeps: dst.notMultisiteDeps,
-    multisiteDepsNotOnDst: dst.multisiteDepsNotOnDst,
-    protection: dst.protection ? dst.protection.join(', ') : '',
-    protectionArray: dst.protection,
-  };
+  } as Item, dst);
+};
+
+export const updateSyncInfo = (item: Item, dst: SyncItemType): Item => {
+  item.matchedRevId = dst.matchedRevId;
+  item.dstTimestamp = dst.timestamp;
+  item.status = dst.status;
+  item.behind = dst.behind && dst.behind > 0 ? dst.behind : undefined;
+  item.notMultisiteDeps = dst.notMultisiteDeps;
+  item.multisiteDepsNotOnDst = dst.multisiteDepsNotOnDst;
+  item.protection = dst.protection ? dst.protection.join(', ') : '';
+  item.protectionArray = dst.protection;
+
+  return item;
 };
 
 export async function getItems(addToast: Dispatch<Toast>): Promise<Array<Item>> {
