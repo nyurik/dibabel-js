@@ -1,4 +1,4 @@
-import React, { useState, useContext, Dispatch } from 'react';
+import React, { Dispatch, useState } from 'react';
 
 import {
   EuiBasicTableColumn,
@@ -14,7 +14,7 @@ import {
 import { Group, Item, ItemTypeType } from '../data/types';
 import { lockIcon, typeIcons } from '../icons/icons';
 import { ItemDiffLink, ItemDstLink, ItemSrcLink, ProjectIcon } from './Snippets';
-import { ToastsContext } from './Toasts';
+// import { ToastsContext } from './Toasts';
 
 export const ItemsTable = (
   { error, groupedItems, isLoading, message, selectedItems, setItem, setSelectedItems }: {
@@ -27,7 +27,7 @@ export const ItemsTable = (
     setItem: Dispatch<Item>,
   }
 ) => {
-  const addToast = useContext(ToastsContext);
+  // const addToast = useContext(ToastsContext);
 
   const all_columns: { [key: string]: EuiBasicTableColumn<Item> } = {
     selector: {
@@ -72,30 +72,40 @@ export const ItemsTable = (
       ),
     },
     actions: {
-      name: 'Actions',
-      width: '70px',
+      name: 'Action',
+      width: '4em',
       actions: [
-        {
-          name: 'Copy',
-          description: 'Update code from primary source',
-          icon: 'save',
-          type: 'icon',
-          color: 'danger',
-          available: ({ status }) => status === 'outdated' || status === 'unlocalized',
-          onClick: () => addToast({
-            title: 'Copying...',
-            color: 'danger',
-            iconType: 'alert',
-          }),
-        },
+        // {
+        //   name: 'Copy',
+        //   description: 'Update code from primary source',
+        //   icon: 'save',
+        //   type: 'icon',
+        //   color: 'danger',
+        //   available: ({ status }) => status === 'outdated' || status === 'unlocalized',
+        //   onClick: () => addToast({
+        //     title: 'Copying...',
+        //     color: 'danger',
+        //     iconType: 'alert',
+        //   }),
+        // },
         {
           name: 'Diff',
           description: 'Compare with the primary',
-          icon: 'inputOutput', // 'magnifyWithPlus' ?
+          icon: 'magnifyWithPlus',
           type: 'icon',
           available: ({ status }) => status !== 'ok',
           onClick: setItem,
         },
+        // {
+        //   render: (item: Item) => item.status !== 'ok' ?
+        //     (<EuiIcon
+        //       title={'Compare with the primary'}
+        //       type={diffIcon}
+        //       size={'m'}
+        //       color={'#0078b8'}
+        //       onClick={() => setItem(item)}/>)
+        //     : (<></>),
+        // },
       ],
     },
     type: {
@@ -282,6 +292,7 @@ export const ItemsTable = (
       }
     } else {
       params.hasActions = true;
+      // params.onClick = (item: any) => setItem(item.target);
     }
     return (<EuiInMemoryTable {...params} />);
   }

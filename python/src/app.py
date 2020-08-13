@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import mwoauth
-import requests
 import yaml
 from dibabel.QueryCache import QueryCache
 from flask import Flask, jsonify, session, flash, abort, Response
@@ -16,6 +15,8 @@ for file in ('default.yaml', 'secret.yaml'):
     print(f"Reading config from {path}")
     with path.open('r', encoding='utf-8') as stream:
         app.config.update(yaml.safe_load(stream))
+
+print(f"Running as {app.config['CONSUMER_KEY']}")
 
 cache = QueryCache('../cache')
 

@@ -62,6 +62,13 @@ import { ReactComponent as moduleIcon } from './type_module.svg';
  */
 export { ReactComponent as lockIcon } from './lock.svg';
 
+/**
+ * https://commons.wikimedia.org/wiki/File:Octicons-git-compare.svg
+ * GitHub [MIT (http://opensource.org/licenses/mit-license.php) or OFL (http://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web)]
+ */
+export { ReactComponent as diffIcon } from './diff.svg';
+
+
 export const siteIcons = {
   commons: commonsIcon,
   incubator: incubatorIcon,

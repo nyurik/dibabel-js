@@ -43,7 +43,7 @@ export function App() {
                   </EuiHeaderSectionItem>
                   <EuiSpacer size={'s'}/>
                   <EuiHeaderSectionItem>
-                    <EuiBadge color={'accent'}>Demo site, editing is disabled for now.</EuiBadge>
+                    <EuiBadge color={'accent'}>Alpha version! Please verify all changes.</EuiBadge>
                   </EuiHeaderSectionItem>
                 </EuiPageHeaderSection>
                 <EuiPageHeaderSection>

@@ -123,6 +123,11 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
         <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}({item.dstSite}) is identical with the original <ItemSrcLink
           item={item}/>, but needs to have some localizations.</EuiText>);
       break;
+    case 'ok':
+      infoSubHeader = (
+        <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}({item.dstSite}) is identical with the original <ItemSrcLink
+          item={item}/>.</EuiText>);
+      break;
     default:
       throw new Error(`Unhandled ${item.status}`);
   }
@@ -255,12 +260,12 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <UserContext.Consumer>
-              {context => context.user.state === UserState.LoggedIn && context.user.username === 'Yurik'
+              {context => context.user.state === UserState.LoggedIn
                 ? (<EuiButton fill disabled={content.status !== 'ok'} color={'danger'} onClick={onCopy}>
                   Copy!
                 </EuiButton>)
-                : (<EuiButton fill disabled={content.status !== 'ok'} color={'danger'} onClick={onClose}>
-                  Copy (disabled)
+                : (<EuiButton fill disabled={true} title={'Please login in the upper right corner before copying.'} color={'danger'} onClick={onClose}>
+                  Copy!
                 </EuiButton>)}
             </UserContext.Consumer>
           </EuiFlexItem>

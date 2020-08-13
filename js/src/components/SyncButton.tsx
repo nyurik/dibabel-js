@@ -12,7 +12,7 @@ export const SyncButton = (props: {
       // store.processItems(...);
       props.setSelectedItems(new Set());
     };
-    return (<EuiButton color={'danger'} iconType={'trash'} onClick={onClick}>
+    return (<EuiButton disabled title={'Multi-page sync is not yet implemented'} color={'danger'} iconType={'trash'} onClick={onClick}>
       Sync {props.selectedItems.size} pages
     </EuiButton>);
   } else {
