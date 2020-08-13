@@ -1,4 +1,4 @@
-import React, { Dispatch, FunctionComponent, useEffect, useMemo, useState, useContext } from 'react';
+import React, { Dispatch, FunctionComponent, useContext, useEffect, useMemo, useState } from 'react';
 
 import {
   EuiButton,
@@ -20,8 +20,8 @@ import {
 } from '@elastic/eui';
 
 import { Item, SyncContentType, UpdateItems } from '../data/types';
-import { ItemDiffLink, ItemDstLink, ItemSrcLink, ItemWikidataLink, ProjectIcon } from './Snippets';
-import { getToken, postToApi, rootUrl, sleep } from '../utils';
+import { ItemDstLink, ItemSrcLink, ItemWikidataLink, ProjectIcon } from './Snippets';
+import { getToken, itemDiffLink, postToApi, rootUrl, sleep } from '../utils';
 import { UserContext, UserState } from '../data/UserContext';
 import { ToastsContext } from './Toasts';
 
@@ -114,8 +114,8 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
       break;
     case 'outdated':
       infoSubHeader = (
-        <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}({item.dstSite}) is{' '}<ItemDiffLink
-          item={item}>{item.behind} revisions</ItemDiffLink>{' '}behind the
+        <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}({item.dstSite}) is{' '}
+          <EuiLink href={itemDiffLink(item)} target={'_blank'}>{item.behind} revisions</EuiLink>{' '}behind the
           primary{' '}<ItemSrcLink item={item}/>.</EuiText>);
       break;
     case 'unlocalized':
@@ -139,6 +139,14 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
   }
 
   const warnings = [];
+  if (item.status === 'diverged') {
+    warnings.push(<EuiCallOut title={'Unrecognized content'} color={'warning'} iconType={'alert'}>
+      <EuiText>This page was modified by the {item.dstSite} community. Do not override it unless it was done by mistake
+        or if the local changes are now included in the primary page.</EuiText>
+    </EuiCallOut>);
+    warnings.push(<EuiSpacer size={'m'}/>);
+  }
+
   if (item.notMultisiteDeps) {
     warnings.push(<EuiCallOut title={'Dependencies are not enabled for synchronization'} color={'warning'}
                               iconType={'alert'}>
@@ -156,11 +164,10 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
   if (item.multisiteDepsNotOnDst) {
     warnings.push(<EuiCallOut title={`Dependencies do not exist in ${item.dstSite}`} color={'warning'}
                               iconType={'alert'}>
-      <EuiText>This page depends on templates or modules that are not present on the destination site. Copy
-        the content of these pages to
-        <EuiLink href={`https://${item.dstSite}`} target={'_blank'}>{item.dstSite}</EuiLink> and make sure they are
-        listed
-        in the <ItemWikidataLink item={item}/>.</EuiText>
+      <EuiText>This page depends on templates or modules that are not present on the destination site.
+        Copy the content of these pages to
+        {' '}<EuiLink href={`https://${item.dstSite}`} target={'_blank'}>{item.dstSite}</EuiLink>{' '}
+        and make sure they are listed in the <ItemWikidataLink item={item}/>.</EuiText>
       <EuiSpacer size={'s'}/>
       <EuiText>{formatLinks(item.srcSite, item.multisiteDepsNotOnDst)}</EuiText>
     </EuiCallOut>);
@@ -264,7 +271,8 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
                 ? (<EuiButton fill disabled={content.status !== 'ok'} color={'danger'} onClick={onCopy}>
                   Copy!
                 </EuiButton>)
-                : (<EuiButton fill disabled={true} title={'Please login in the upper right corner before copying.'} color={'danger'} onClick={onClose}>
+                : (<EuiButton fill disabled={true} title={'Please login in the upper right corner before copying.'}
+                              color={'danger'} onClick={onClose}>
                   Copy!
                 </EuiButton>)}
             </UserContext.Consumer>

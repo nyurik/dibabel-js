@@ -1,23 +1,28 @@
-import React, { ReactNode } from 'react';
-import { EuiIcon, EuiLink, IconSize } from '@elastic/eui';
+import React from 'react';
+import { EuiButtonIcon, EuiIcon, IconSize } from '@elastic/eui';
 import { Item } from '../data/types';
 import { siteIcons } from '../icons/icons';
 
+export const ExternalLink = ({ href }: { href: string }) => {
+  return (<EuiButtonIcon
+    color={'text'}
+    href={href}
+    target={'_blank'}
+    iconType="symlink"
+    aria-label="Open external link in a new tab"
+  />);
+};
+
 export const ItemSrcLink = ({ item: { srcTitleUrl, srcFullTitle } }: { item: Item }) => {
-  return (<EuiLink href={srcTitleUrl} target={'_blank'}>{srcFullTitle}</EuiLink>);
+  return <><ExternalLink href={srcTitleUrl}/>{srcFullTitle}</>;
 };
 
 export const ItemDstLink = ({ item: { dstTitleUrl, dstFullTitle } }: { item: Item }) => {
-  return (<EuiLink href={dstTitleUrl} target={'_blank'}>{dstFullTitle}</EuiLink>);
+  return <><ExternalLink href={dstTitleUrl}/>{dstFullTitle}</>;
 };
 
 export const ItemWikidataLink = ({ item: { qid } }: { item: Item }) => {
-  return (<EuiLink href={`https://wikidata.org/wiki/${qid}`} target={'_blank'}>{qid}</EuiLink>);
-};
-
-export const ItemDiffLink = ({ item: { dstTitle, srcRevId, matchedRevId }, children }: { item: Item, children: ReactNode }) => {
-  const href = `https://www.mediawiki.org/w/index.php?title=${encodeURIComponent(dstTitle)}&type=revision&diff=${srcRevId}&oldid=${matchedRevId}`;
-  return (<EuiLink href={href} target={'_blank'}>{children}</EuiLink>);
+  return <><ExternalLink href={`https://wikidata.org/wiki/${qid}`}/>{qid}</>;
 };
 
 export const ProjectIcon = ({ item: { project }, size }: {

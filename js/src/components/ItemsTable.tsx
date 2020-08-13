@@ -2,7 +2,6 @@ import React, { Dispatch, useState } from 'react';
 
 import {
   EuiBasicTableColumn,
-  EuiButtonIcon,
   EuiCheckbox,
   EuiHealth,
   EuiIcon,
@@ -13,8 +12,8 @@ import {
 
 import { Group, Item, ItemTypeType } from '../data/types';
 import { lockIcon, typeIcons } from '../icons/icons';
-import { ItemDiffLink, ItemDstLink, ItemSrcLink, ProjectIcon } from './Snippets';
-// import { ToastsContext } from './Toasts';
+import { ExternalLink, ItemDstLink, ItemSrcLink, ProjectIcon } from './Snippets';
+import { itemDiffLink } from '../utils';
 
 export const ItemsTable = (
   { error, groupedItems, isLoading, message, selectedItems, setItem, setSelectedItems }: {
@@ -27,8 +26,6 @@ export const ItemsTable = (
     setItem: Dispatch<Item>,
   }
 ) => {
-  // const addToast = useContext(ToastsContext);
-
   const all_columns: { [key: string]: EuiBasicTableColumn<Item> } = {
     selector: {
       name: '',
@@ -41,7 +38,7 @@ export const ItemsTable = (
         const checked = selectedCount > 0 && selectable.length === selectedCount;
         const disabled = selectable.length === 0;
         const indeterminate = selectedCount > 0 && selectable.length > selectedCount;
-        return <EuiCheckbox
+        return (<EuiCheckbox
           id={`check-${item.key}`}
           checked={checked}
           disabled={disabled}
@@ -57,56 +54,12 @@ export const ItemsTable = (
             }
             setSelectedItems(clone);
           }}
-        />;
+        />);
       },
     },
     expander: {
       width: '2.5em',
-      isExpander: true,
-      render: (item: Item) => (
-        <EuiButtonIcon
-          onClick={() => toggleExpandGroup(item)}
-          aria-label={expandedItems.has(item.key) ? 'Collapse' : 'Expand'}
-          iconType={expandedItems.has(item.key) ? 'arrowUp' : 'arrowDown'}
-        />
-      ),
-    },
-    actions: {
-      name: 'Action',
-      width: '4em',
-      actions: [
-        // {
-        //   name: 'Copy',
-        //   description: 'Update code from primary source',
-        //   icon: 'save',
-        //   type: 'icon',
-        //   color: 'danger',
-        //   available: ({ status }) => status === 'outdated' || status === 'unlocalized',
-        //   onClick: () => addToast({
-        //     title: 'Copying...',
-        //     color: 'danger',
-        //     iconType: 'alert',
-        //   }),
-        // },
-        {
-          name: 'Diff',
-          description: 'Compare with the primary',
-          icon: 'magnifyWithPlus',
-          type: 'icon',
-          available: ({ status }) => status !== 'ok',
-          onClick: setItem,
-        },
-        // {
-        //   render: (item: Item) => item.status !== 'ok' ?
-        //     (<EuiIcon
-        //       title={'Compare with the primary'}
-        //       type={diffIcon}
-        //       size={'m'}
-        //       color={'#0078b8'}
-        //       onClick={() => setItem(item)}/>)
-        //     : (<></>),
-        // },
-      ],
+      render: (item: Item) => (<EuiIcon type={expandedItems.has(item.key) ? 'arrowUp' : 'arrowDown'}/>),
     },
     type: {
       field: 'type',
@@ -127,7 +80,7 @@ export const ItemsTable = (
         type={lockIcon}
         size={'m'}
         color={'#C6C7C7'}
-        title={`Indicate if special rights are required to edit.`}
+        title={`Indicate if the page has protection and requires special edit rights.`}
       />),
       width: '3.8em',
       sortable: true,
@@ -174,26 +127,27 @@ export const ItemsTable = (
         title={'Show if the copied page is in sync with the original, has fallen behind, or has been modified locally (diverged).'}>Status</EuiText>),
       sortable: true,
       render: (status: string, item: Item) => {
-        let color, label, title;
         switch (status) {
           case 'ok':
-            [color, label, title] = ['success', 'Same', 'The target page is up to date with the primary'];
-            break;
+            return (<EuiHealth
+              title={'The target page is up to date with the primary'}
+              color={'success'}>Same</EuiHealth>);
           case 'unlocalized':
-            [color, label, title] = ['warning', `Unlocalized`, `The target page has exactly the same content as original instead of using localized values, and needs to be updated.`];
-            break;
+            return (<EuiHealth
+              title={`The target page has exactly the same content as original instead of using localized values, and needs to be updated.`}
+              color={'warning'}>Unlocalized</EuiHealth>);
           case 'outdated':
-            color = 'warning';
-            label = (<ItemDiffLink item={item}>{`Outdated by ${item.behind} rev`}</ItemDiffLink>);
-            title = `The target page is outdated by ${item.behind} versions, and can be updated.  Click to see changes.`;
-            break;
+            const href = itemDiffLink(item);
+            return (<EuiHealth
+              title={`The target page is outdated by ${item.behind} versions, and can be updated.  Click to see changes.`}
+              color={'warning'}><span>Outdated by {item.behind} rev<ExternalLink href={href}/></span></EuiHealth>);
           case 'diverged':
-            [color, label, title] = ['danger', 'Diverged', 'The target page has been modified and cannot be updated automatically.'];
-            break;
+            return (
+              <EuiHealth title={'The target page has been modified and cannot be updated automatically.'}
+                         color={'danger'}>Diverged</EuiHealth>);
           default:
             throw new Error(`Unknown status ${status}`);
         }
-        return <EuiHealth title={title} color={color}>{label}</EuiHealth>;
       },
     },
     countOk: {
@@ -290,9 +244,22 @@ export const ItemsTable = (
           params.itemIdToExpandedRowMap[item.key] = createTable(item);
         }
       }
+      params.rowProps = (item: Item) => ({
+        onClick: (v: any) => {
+          if (v.target.nodeName !== 'INPUT' && v.target.nodeName !== 'A') {
+            toggleExpandGroup(item);
+          }
+        }
+      });
     } else {
-      params.hasActions = true;
-      // params.onClick = (item: any) => setItem(item.target);
+      // noinspection JSUnusedGlobalSymbols
+      params.rowProps = (item: Item) => ({
+        onClick: (v: any) => {
+          if (v.target.nodeName !== 'INPUT' && v.target.nodeName !== 'A') {
+            setItem(item);
+          }
+        },
+      });
     }
     return (<EuiInMemoryTable {...params} />);
   }

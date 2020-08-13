@@ -107,3 +107,7 @@ export const splitNs = (title: string): [ItemTypeType, string] => {
 export const sleep = (durationsMs: number) => {
   return new Promise(r => setTimeout(r, durationsMs));
 };
+
+export const itemDiffLink = ({ dstTitle, srcRevId, matchedRevId }: Item) => {
+  return `https://www.mediawiki.org/w/index.php?title=${encodeURIComponent(dstTitle)}&type=revision&diff=${srcRevId}&oldid=${matchedRevId}`;
+};

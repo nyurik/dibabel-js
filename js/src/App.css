@@ -21,3 +21,10 @@
         max-height: max-content;
     }
 }
+
+/*
+ * Fix nested tables hover highlighting
+ */
+.euiTableRow.euiTableRow-isExpandedRow table .euiTableRowCell {
+    background-color: inherit;
+}

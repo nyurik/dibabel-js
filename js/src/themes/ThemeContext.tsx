@@ -6,11 +6,11 @@ import { Props } from '../data/types';
 // import themeDark from '@elastic/eui/dist/eui_theme_amsterdam_dark.css';
 
 // FIXME: remove this css and use the .unuse() / .use() methods below
-import '@elastic/eui/dist/eui_theme_amsterdam_dark.css';
+import '@elastic/eui/dist/eui_theme_light.css';
 
 // This should come last to override the defaults from EUI
 import '../App.css';
-
+import { usePersistedState } from '../utils';
 
 // Modeled after https://www.carlrippon.com/react-context-with-typescript-p2/
 export type ThemeContextType = {
@@ -20,28 +20,16 @@ export type ThemeContextType = {
 export const ThemeContext = React.createContext<ThemeContextType>({} as ThemeContextType);
 
 export const ThemeProvider = ({ children }: Props) => {
-  const [isDarkTheme, setIsDarkTheme] = React.useState<boolean>(false);
+  const [isDarkTheme, setIsDarkTheme] = usePersistedState<boolean>(
+    'theme', 'light', v => v === 'light', v => v ? 'dark' : 'light');
 
-  React.useEffect(() => {
-    const newTheme = (localStorage.getItem('theme') ?? 'dark') !== 'light';
-    setIsDarkTheme(newTheme);
-  }, []);
-
-  if (isDarkTheme) {
-    // // @ts-ignore
-    // [(isDarkTheme ? themeLight : themeDark)].unuse();
-    // // @ts-ignore
-    // [(isDarkTheme ? themeDark : themeLight)].use();
-
-    try {
-      localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light')
-    } catch {
-      // Ignore when unable to store theme usage to local store - could be in privacy mode
-    }
-  }
+  // // @ts-ignore
+  // [(isDarkTheme ? themeLight : themeDark)].unuse();
+  // // @ts-ignore
+  // [(isDarkTheme ? themeDark : themeLight)].use();
 
   return (
-    <ThemeContext.Provider value={{isDarkTheme, setIsDarkTheme}}>
+    <ThemeContext.Provider value={{ isDarkTheme, setIsDarkTheme }}>
       {children}
     </ThemeContext.Provider>
   );

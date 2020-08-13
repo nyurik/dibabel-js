@@ -127,7 +127,7 @@ export const WorkArea = () => {
 
   const groupedItems = useMemo(() => {
     function makeLastItem(items: Array<Item>, parentColumns: Array<string>) {
-      return { items, columns: ['selector', 'actions'].concat(parentColumns), isLastGroup: true };
+      return { items, columns: ['selector'/*, 'actions'*/].concat(parentColumns), isLastGroup: true };
     }
 
     function organizeItemsInGroups(groupIndex: number, itemList: Array<Item>, parentColumns: Array<keyof Item>, parentKey = '') {
@@ -186,6 +186,20 @@ export const WorkArea = () => {
   const toolbar = useMemo(() => {
     const filters: Array<SearchFilterConfig> = [
       {
+        type: 'field_value_toggle_group',
+        field: 'type',
+        items: [
+          {
+            value: 'module',
+            name: (<EuiIcon title={'Limit to modules'} type={typeIcons.module} size={'l'}/>) as any,
+          },
+          {
+            value: 'template',
+            name: (<EuiIcon title={'Limit to templates'} type={typeIcons.template} size={'l'}/>) as any,
+          },
+        ],
+      },
+      {
         type: 'field_value_selection',
         field: 'status',
         name: 'Status',
@@ -204,31 +218,10 @@ export const WorkArea = () => {
       },
       {
         type: 'field_value_selection',
-        field: 'type',
-        name: 'Type',
-        multiSelect: 'or',
-        options: () => getOptions(allItems, 'type', typeIcons),
-      },
-      {
-        type: 'field_value_selection',
         field: 'project',
         name: 'Project',
         multiSelect: 'or',
         options: () => getOptions(allItems, 'project', siteIcons),
-      },
-      {
-        type: 'field_value_selection',
-        field: 'protection',
-        name: 'Lock',
-        multiSelect: 'or',
-        options: async () => {
-          const values = uniq(flatten(allItems.map(v => v.protectionArray))).map(v => v || '').filter(v => v !== '');
-          values.sort();
-          return values.map(val => ({
-            value: val,
-            view: (<EuiText>{val}</EuiText>),
-          }));
-        },
       },
       {
         type: 'field_value_selection',
@@ -253,6 +246,20 @@ export const WorkArea = () => {
               </EuiFlexGroup>
             };
           });
+        },
+      },
+      {
+        type: 'field_value_selection',
+        field: 'protection',
+        name: 'Lock',
+        multiSelect: 'or',
+        options: async () => {
+          const values = uniq(flatten(allItems.map(v => v.protectionArray))).map(v => v || '').filter(v => v !== '');
+          values.sort();
+          return values.map(val => ({
+            value: val,
+            view: (<EuiText>{val}</EuiText>),
+          }));
         },
       },
     ];
