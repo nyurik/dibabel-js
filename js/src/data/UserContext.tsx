@@ -1,6 +1,7 @@
-import React, { Dispatch, useEffect } from 'react';
-import { AddToast } from './types';
+import React, { Dispatch, useContext, useEffect, useState } from 'react';
+import { Props, Toast } from './types';
 import { rootUrl } from '../utils';
+import { ToastsContext } from '../components/Toasts';
 
 export enum UserState {
   Unknown,
@@ -22,7 +23,7 @@ export const loggedOutState = { state: UserState.LoggedOut };
 
 export const UserContext = React.createContext<UserContextType>({} as UserContextType);
 
-function login(addToast: AddToast, setUser: Dispatch<UserType>) {
+function login(addToast: Dispatch<Toast>, setUser: Dispatch<UserType>) {
   (async () => {
     try {
       let userInfo = await fetch(`${rootUrl}userinfo`);
@@ -56,15 +57,12 @@ function login(addToast: AddToast, setUser: Dispatch<UserType>) {
   })();
 }
 
-// FIXME: addToast: AddToast does not work for some reason
-export const UserProvider = (props: {
-  children: React.ReactNode,
-  addToast: AddToast,
-}) => {
-  const [user, setUser] = React.useState<UserType>(defaultUserState);
+export const UserProvider = (props: Props) => {
+  const addToast = useContext(ToastsContext);
+  const [user, setUser] = useState<UserType>(defaultUserState);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => login(props.addToast, setUser), []);
+  useEffect(() => login(addToast, setUser), []);
 
   return (
     <UserContext.Provider value={{ user }}>

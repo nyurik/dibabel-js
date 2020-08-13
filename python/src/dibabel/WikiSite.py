@@ -16,7 +16,7 @@ reDomain = re.compile(r'^(?P<lang>[a-z0-9-_]+)\.(?P<project>[a-z0-9-_]+)\.org$',
 class WikiSite(Site):
 
     def __init__(self, domain: str, session: Session, is_primary: bool):
-        super().__init__(f'http://{domain}/w/api.php', session=session, json_object_hook=AttrDict)
+        super().__init__(f'https://{domain}/w/api.php', session=session, json_object_hook=AttrDict)
         self.retry_on_lag_error = 30
         self.is_primary = is_primary
         self.domain = domain
@@ -71,7 +71,7 @@ class WikiSite(Site):
                 page.title,
                 rev.revid,
                 content=rev.slots.main.content,
-                content_ts=rev.timestamp.rstrip('Z'),
+                content_ts=rev.timestamp,
                 protection=list(set(protection)) or None,
             )
 
@@ -103,5 +103,8 @@ class WikiSite(Site):
 
     # FIXME: remove this
     def request(self, method, force_ssl=False, headers=None, **request_kw):
-        print(f'{self}: {dumps(request_kw, ensure_ascii=False)}')
+        clone = dict(**request_kw)
+        if 'auth' in clone:
+            del clone['auth']
+        print(f'{self}: {dumps(clone, ensure_ascii=False)}')
         return super().request(method, force_ssl, headers, **request_kw)

@@ -1,4 +1,5 @@
-import { DependencyList, useEffect, useState } from 'react';
+import { DependencyList, useEffect, useState, Dispatch } from 'react';
+import { ItemTypeType } from './data/types';
 
 export const rootUrl = '/';
 
@@ -16,7 +17,7 @@ export function usePersistedState<T>(
   deserializer: (value: string) => T,
   serializer: (value: T) => string,
   deps?: DependencyList
-): [T, (value: T) => void] {
+): [T, Dispatch<T>] {
 
   const [value, setValue] = useState(
     () => {
@@ -25,7 +26,7 @@ export function usePersistedState<T>(
         try {
           return deserializer(val);
         } catch (err) {
-          console.error(`Unable to parse value from local store: ${key}="${val}"`)
+          console.error(`Unable to parse value from local store: ${key}="${val}"`);
         }
       }
       // Use default in case of an error or if there is nothing stored
@@ -50,7 +51,7 @@ export function usePersistedJsonState<TValue>(
   key: string,
   initValue: TValue,
   deps?: DependencyList,
-): [TValue, (value: TValue) => void] {
+): [TValue, Dispatch<TValue>] {
   return usePersistedState(
     key,
     '',
@@ -73,7 +74,7 @@ export function usePersistedJsonState<TValue>(
 }
 
 export async function postToApi(domain: string, data: { [key: string]: string }) {
-  const response = await fetch(`/api/${domain}`, {
+  const response = await fetch(`${rootUrl}api/${domain}`, {
     method: 'POST',
     mode: 'cors', // TODO: possibly use a different mode here?  no-cors, cors, same-origin
     headers: { 'Content-Type': 'application/json' },
@@ -81,3 +82,28 @@ export async function postToApi(domain: string, data: { [key: string]: string })
   });
   return response.json();
 }
+
+const tokenCache: { [key: string]: string } = {};
+
+export async function getToken(domain: string) {
+  let token = tokenCache[domain];
+  if (!token) {
+    let res = await postToApi(domain, {
+      action: 'query',
+      meta: 'tokens',
+      type: 'csrf',
+    });
+    token = res.query.tokens.csrftoken;
+    tokenCache[domain] = token;
+  }
+  return token;
+}
+
+export const splitNs = (title: string): [ItemTypeType, string] => {
+  const pos = title.indexOf(':');
+  return [title.substring(0, pos).toLowerCase() as ItemTypeType, title.substring(pos + 1)];
+};
+
+export const sleep = (durationsMs: number) => {
+  return new Promise(r => setTimeout(r, durationsMs));
+};

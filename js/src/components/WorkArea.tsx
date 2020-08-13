@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useContext } from 'react';
 
 import {
   EuiButton,
@@ -12,7 +12,7 @@ import {
   EuiText
 } from '@elastic/eui';
 
-import { AddToast, Group, GroupDefsType, Item, SetType } from '../data/types';
+import { Group, GroupDefsType, Item } from '../data/types';
 
 import { defaultSearchableFields, getItems } from '../data/Store';
 import { groupBy, map, uniq, flatten } from 'lodash';
@@ -22,6 +22,8 @@ import { getLanguages } from '../data/languages';
 import { usePersistedJsonState, usePersistedState } from '../utils';
 import { GroupSelector } from './GroupSelector';
 import { SyncButton } from './SyncButton';
+import { ItemViewer } from './ItemViewer';
+import { ToastsContext } from './Toasts';
 
 const schema = {
   strict: true,
@@ -83,16 +85,16 @@ async function getOptions(allItems: Array<Item>, field: ('type' | 'project'), op
   }));
 }
 
-export const WorkArea = (props: {
-  addToast: AddToast,
-  setItem: SetType,
-}) => {
+export const WorkArea = () => {
+  const addToast = useContext(ToastsContext);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [selectedItems, setSelectedItems] = useState<Set<Item>>(() => new Set());
   const [query, setQuery] = usePersistedState<Query>('query', '', Query.parse, v => v.text);
   const [allItems, setAllItems] = useState<Array<Item>>(() => []);
   const [isLoading, setIsLoading] = useState(true);
+  const [item, setItem] = useState<Item | null>(null);
+  const closeItem = () => setItem(null);
 
   useEffect(() => {
     if (isLoading) {
@@ -102,7 +104,7 @@ export const WorkArea = (props: {
         setError('');
 
         try {
-          setAllItems(await getItems(props.addToast));
+          setAllItems(await getItems(addToast));
         } catch (err) {
           setError(`Unable to load data. ${err}`);
         }
@@ -112,7 +114,7 @@ export const WorkArea = (props: {
         setSelectedItems(new Set());
       })();
     }
-  }, [isLoading, props.addToast]);
+  }, [addToast, isLoading]);
 
   const filteredItems = useMemo(() => {
     return EuiSearchBar.Query.execute(query, allItems, { defaultSearchableFields });
@@ -176,9 +178,9 @@ export const WorkArea = (props: {
       error={error}
       selectedItems={selectedItems}
       setSelectedItems={setSelectedItems}
-      {...props}
+      setItem={setItem}
     />);
-  }, [props, error, groupedItems, isLoading, message, selectedItems]);
+  }, [error, groupedItems, isLoading, message, selectedItems]);
 
   const toolbar = useMemo(() => {
     const searchBar = <EuiSearchBar
@@ -244,7 +246,7 @@ export const WorkArea = (props: {
           options: async () => {
             const values = uniq(allItems.map(v => v.lang));
             values.sort();
-            const allLangs = await getLanguages(props.addToast);
+            const allLangs = await getLanguages(addToast);
             return values.map(lang => {
               const langInfo = allLangs[lang] || { name: 'Unknown' };
               let name = langInfo.name;
@@ -273,8 +275,8 @@ export const WorkArea = (props: {
     />;
 
     const refreshButton = (<EuiButton
-      key="loadItems"
-      iconType="refresh"
+      key={'loadItems'}
+      iconType={'refresh'}
       isDisabled={isLoading}
       isLoading={isLoading}
       onClick={() => setIsLoading(true)}
@@ -282,7 +284,7 @@ export const WorkArea = (props: {
       {isLoading ? 'Refreshing...' : 'Refresh'}
     </EuiButton>);
 
-    return (<EuiFlexGroup alignItems="center">
+    return (<EuiFlexGroup alignItems={'center'}>
         <EuiFlexItem grow={false}>
           <SyncButton selectedItems={selectedItems} setSelectedItems={setSelectedItems}/></EuiFlexItem>
         <EuiFlexItem style={{ minWidth: '10em' }} grow={false}>
@@ -292,12 +294,21 @@ export const WorkArea = (props: {
         <EuiFlexItem grow={false}>{refreshButton}</EuiFlexItem>
       </EuiFlexGroup>
     );
-  }, [allItems, groupSelection, isLoading, props.addToast, query, selectedItems, setGroupSelection, setQuery]);
+  }, [addToast, allItems, groupSelection, isLoading, query, selectedItems, setGroupSelection, setQuery]);
+
+  const updateItem = (items: Array<Item>, item: Item) => {
+    items.filter(v => v.key !== item.key);
+    items.push(item);
+    return items;
+  };
 
   return (
     <>
       {toolbar}
       <EuiSpacer size={'l'}/>
       {itemsTable}
+      <ItemViewer item={item}
+                  onClose={closeItem}
+                  updateItem={(item: Item) => { setAllItems((items) => updateItem(items, item)); }}/>
     </>);
 };

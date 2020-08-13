@@ -10,10 +10,10 @@ export function Settings() {
 
   const button = (<EuiButtonIcon
     iconSize={'m'}
-    iconType="gear"
+    iconType={'gear'}
     onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-    aria-label="Open options menu"
-    color="text"
+    aria-label={'Open options menu'}
+    color={'text'}
   />);
 
   return <EuiPopover
@@ -23,7 +23,7 @@ export function Settings() {
     <EuiPopoverTitle>Options</EuiPopoverTitle>
     <ThemeContext.Consumer>
       {context => (<EuiSwitch
-        label="Night mode"
+        label={'Night mode'}
         checked={context.isDarkTheme}
         disabled
         onChange={e => context.setIsDarkTheme(e.target.checked)}
@@ -32,7 +32,7 @@ export function Settings() {
     <UserContext.Consumer>
       {context => context.user.state === UserState.LoggedIn
         ? (<>
-          <EuiSpacer size={"s"}/>
+          <EuiSpacer size={'s'}/>
           <EuiHeaderLink href={`${rootUrl}logout`}>Logout...</EuiHeaderLink>
         </>)
         : null}

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { Dispatch, FunctionComponent, useEffect, useMemo, useState, useContext } from 'react';
 
 import {
   EuiButton,
@@ -19,13 +19,16 @@ import {
   useEuiTextDiff
 } from '@elastic/eui';
 
-import { Item } from '../data/types';
+import { Item, SyncContentType } from '../data/types';
 import { ItemDiffLink, ItemDstLink, ItemSrcLink, ItemWikidataLink, ProjectIcon } from './Snippets';
-import { postToApi, rootUrl } from '../utils';
+import { getToken, postToApi, rootUrl, sleep } from '../utils';
 import { UserContext, UserState } from '../data/UserContext';
+import { createItem } from '../data/Store';
+import { ToastsContext } from './Toasts';
 
 interface ItemViewerParams<TItem> {
   item: TItem;
+  updateItem: Dispatch<Item>;
   onClose: (
     event?:
       | React.KeyboardEvent<HTMLDivElement>
@@ -33,6 +36,23 @@ interface ItemViewerParams<TItem> {
   ) => void
 }
 
+const updateItemIfChanged = (item: Item, data: SyncContentType, updateItem: Dispatch<Item>): boolean => {
+  if (item.dstTimestamp !== data.syncInfo.timestamp) {
+    updateItem(createItem(
+      item.qid,
+      item.srcSite,
+      item.srcRevId,
+      item.srcFullTitle,
+      item.type,
+      item.title,
+      item.srcTitleUrl,
+      item.dstSite,
+      data.syncInfo,
+    ));
+    return true;
+  }
+  return false;
+};
 const ItemDiffBlock = ({ type, oldText, newText }: { type: string, oldText: string, newText: string }) => {
   const [rendered] = useEuiTextDiff({
     beforeText: oldText,
@@ -42,7 +62,7 @@ const ItemDiffBlock = ({ type, oldText, newText }: { type: string, oldText: stri
   return <EuiCodeBlock language={type === 'module' ? 'lua' : 'text'}>{rendered}</EuiCodeBlock>;
 };
 
-const Comment: FunctionComponent<{ readOnly: boolean, value: string, setValue: (value: string) => void }> = ({ readOnly, value, setValue }) => {
+const Comment: FunctionComponent<{ readOnly: boolean, value: string, setValue: Dispatch<string> }> = ({ readOnly, value, setValue }) => {
   return (<EuiFieldText
     readOnly={readOnly}
     placeholder={'Edit summary'}
@@ -54,33 +74,47 @@ const Comment: FunctionComponent<{ readOnly: boolean, value: string, setValue: (
   />);
 };
 
-const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
+type ContentType = {
+  status: 'loading' | 'error' | 'ok' | 'saved',
+  error?: string,
+  data?: SyncContentType
+};
 
-  const [content, setContent] = useState<{ status: 'loading' | 'error' | 'ok', data?: any }>({ status: 'loading' });
+const getPageData = async (item: Item): Promise<ContentType> => {
+  try {
+    const result = await fetch(`${rootUrl}page/${item.qid}/${item.dstSite}`);
+    if (result.ok) {
+      let data: SyncContentType = await result.json();
+      return { status: 'ok', data };
+    } else {
+      return {
+        status: 'error',
+        error: `Unable to get the page. ${result.status}: ${result.statusText}\n${await result.text()}`
+      };
+    }
+  } catch (err) {
+    return { status: 'error', error: err.toString() };
+  }
+};
+
+const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) => {
+
+  const addToast = useContext(ToastsContext);
+  const [content, setContent] = useState<ContentType>({ status: 'loading' });
 
   // FIXME! changes to the comment force full refresh of this component!
-  // TODO: lookup how to do this better (share state with subcomponent, refernce, etc)
+  // TODO: lookup how to do this better (share state with subcomponent, reference, etc)
   const [comment, setComment] = useState('');
 
   useEffect(() => {
-    (async () => {
-      try {
-        const result = await fetch(`${rootUrl}page/${item.qid}/${item.dstSite}`);
-        if (result.ok) {
-          let data = await result.json();
-          setContent({ status: 'ok', data });
-          setComment(data.summary || '');
-        } else {
-          setContent({
-            status: 'error',
-            data: `Unable to get the page. ${result.status}: ${result.statusText}\n${await result.text()}`
-          });
-        }
-      } catch (err) {
-        setContent({ status: 'error', data: err.toString() });
+    // noinspection JSIgnoredPromiseFromCall
+    getPageData(item).then(v => {
+      setContent(v);
+      if (v.status === 'ok') {
+        setComment(v.data!.summary || '');
       }
-    })();
-  }, [item]);
+    });
+  }, [item, updateItem]);
 
   let infoSubHeader;
   switch (item.status) {
@@ -106,76 +140,99 @@ const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
 
   function formatLinks(site: string, links: Array<string>) {
     return (<ul>
-      {links.map(el => (<li><EuiLink href={`https://${site}/wiki/${el}`} target="_blank">{el}</EuiLink></li>))}
+      {links.map(el => (<li><EuiLink href={`https://${site}/wiki/${el}`} target={'_blank'}>{el}</EuiLink></li>))}
     </ul>);
   }
 
   const warnings = [];
-  if (item.not_multisite_deps) {
-    warnings.push(<EuiCallOut title="Dependencies are not enabled for synchronization" color="warning" iconType="alert">
+  if (item.notMultisiteDeps) {
+    warnings.push(<EuiCallOut title={'Dependencies are not enabled for synchronization'} color={'warning'}
+                              iconType={'alert'}>
       <EuiText>This page depends on templates or modules that have not been tagged as "multi-site" in Wikidata.
         Most of the time this means that page <ItemSrcLink item={item}/> is not yet ready for synchronization, and
         should not have a multi-site type in <ItemWikidataLink item={item}/>. Alternatively it could also mean that the
         page was edited to use a new template/module, and that the new page is not enabled for
         synchronization.</EuiText>
       <EuiSpacer size={'s'}/>
-      <EuiText>{formatLinks(item.dstSite, item.not_multisite_deps)}</EuiText>
+      <EuiText>{formatLinks(item.dstSite, item.notMultisiteDeps)}</EuiText>
     </EuiCallOut>);
     warnings.push(<EuiSpacer size={'m'}/>);
   }
 
-  if (item.multisite_deps_not_on_dst) {
-    warnings.push(<EuiCallOut title={`Dependencies do not exist in ${item.dstSite}`} color="warning" iconType="alert">
+  if (item.multisiteDepsNotOnDst) {
+    warnings.push(<EuiCallOut title={`Dependencies do not exist in ${item.dstSite}`} color={'warning'}
+                              iconType={'alert'}>
       <EuiText>This page depends on templates or modules that are not present on the destination site. Copy
         the content of these pages to
-        <EuiLink href={`https://${item.dstSite}`} target="_blank">{item.dstSite}</EuiLink> and make sure they are listed
+        <EuiLink href={`https://${item.dstSite}`} target={'_blank'}>{item.dstSite}</EuiLink> and make sure they are
+        listed
         in the <ItemWikidataLink item={item}/>.</EuiText>
       <EuiSpacer size={'s'}/>
-      <EuiText>{formatLinks(item.srcSite, item.multisite_deps_not_on_dst)}</EuiText>
+      <EuiText>{formatLinks(item.srcSite, item.multisiteDepsNotOnDst)}</EuiText>
     </EuiCallOut>);
     warnings.push(<EuiSpacer size={'m'}/>);
   }
 
-  let body;
-  switch (content.status) {
-    case 'loading':
-      body = (<EuiProgress size="s" color="accent" label={'Loading page content...'}/>);
-      break;
-    case 'error':
-      body = (<EuiCallOut title="Error loading content..." color="danger" iconType="alert">
-        <p>{content.data}</p>
-      </EuiCallOut>);
-      break;
-    case 'ok':
-      body = (<ItemDiffBlock type={item.type} oldText={content.data.currentText} newText={content.data.newText}/>);
-      break;
-    default:
-      throw new Error(content.status);
-  }
+  const body = useMemo(() => {
+    switch (content.status) {
+      case 'loading':
+        return (<EuiProgress size={'s'} color={'accent'} label={'Loading page content...'}/>);
+      case 'error':
+        return (<EuiCallOut title={'Error loading content...'} color={'danger'} iconType={'alert'}>
+          <p>{content.data}</p>
+        </EuiCallOut>);
+      case 'ok':
+        return (<ItemDiffBlock type={item.type} oldText={content.data!.currentText} newText={content.data!.newText}/>);
+      default:
+        throw new Error(content.status);
+    }
+  }, [content.data, content.status, item.type]);
 
   const onCopy = async () => {
     try {
       let res = await postToApi(item.dstSite, {
-        meta: 'tokens',
-        type: 'csrf',
-      });
-
-      const token = res.tokens.csrftoken;
-
-      res = await postToApi(item.dstSite, {
         action: 'edit',
-        title: item.dstTitle,
-        text: content.data.newText,
+        title: item.dstFullTitle,
+        text: content.data!.newText,
         summary: comment,
-        basetimestamp: content.data.contentTimestamp,
+        basetimestamp: content.data!.syncInfo.timestamp,
         nocreate: '1',
-        token: token,
+        token: await getToken(item.dstSite),
       });
       if (res.edit.result !== 'Success') {
         setContent({ status: 'error', data: res.edit.info || JSON.stringify(res.edit) });
+        return;
       }
+      onClose();
+      addToast({
+        title: `${item.dstFullTitle} @ ${item.dstSite} was updated`,
+        color: 'success',
+      });
+
+      let tries = 0;
+      const maxTries = 30;
+      for (; tries < maxTries; tries++) {
+        const res = await getPageData(item);
+        if (res.status !== 'ok' || updateItemIfChanged(item, res.data!, updateItem)) {
+          break;
+        }
+        // Sleep, bot no longer than 10 seconds each time
+        await sleep(1000 * Math.min(10, tries));
+      }
+      if (tries === maxTries) {
+        addToast({
+          title: `${item.dstFullTitle} was updated, but the DiBabel server was not able to get updated information.`,
+          color: 'danger',
+          iconType: 'alert',
+        });
+      }
+
     } catch (err) {
-      setContent({ status: 'error', data: err.toString() });
+      addToast({
+        title: `Error while saving ${item.dstFullTitle}: ${err.toString()}`,
+        color: 'danger',
+        iconType: 'alert',
+      });
     }
   };
 
@@ -184,9 +241,9 @@ const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
       ownFocus
       size={'l'}
       onClose={onClose}
-      aria-labelledby="flyoutTitle">
+      aria-labelledby={'flyoutTitle'}>
       <EuiFlyoutHeader hasBorder>
-        <EuiTitle size="m">
+        <EuiTitle size={'m'}>
           <EuiFlexGroup alignItems={'center'} gutterSize={'s'}>
             <EuiFlexItem grow={false}><ProjectIcon item={item} size={'xl'}/></EuiFlexItem>&nbsp;
             <h3>{item.srcFullTitle}</h3>
@@ -211,8 +268,8 @@ const ItemDiffViewer = ({ onClose, item }: ItemViewerParams<Item>) => {
             <UserContext.Consumer>
               {context => context.user.state === UserState.LoggedIn && context.user.username === 'Yurik'
                 ? (<EuiButton fill disabled={content.status !== 'ok'} color={'danger'} onClick={onCopy}>
-                    Copy!
-                  </EuiButton>)
+                  Copy!
+                </EuiButton>)
                 : (<EuiButton fill disabled={content.status !== 'ok'} color={'danger'} onClick={onClose}>
                   Copy (disabled)
                 </EuiButton>)}

@@ -1,35 +1,41 @@
-import React, { useState } from 'react';
+import React, { Dispatch, useMemo, useState } from 'react';
 import { EuiGlobalToastList } from '@elastic/eui';
-import { Toast } from '@elastic/eui/src/components/toast/global_toast_list';
-import { Toast as ToastNoId } from '../data/types';
+import { Toast as ToastWithId } from '@elastic/eui/src/components/toast/global_toast_list';
+import { Props, Toast } from '../data/types';
 
-let addToastHandler: (toast: ToastNoId) => void;
+export type ToastContextType = Dispatch<Toast>;
+
+export const ToastsContext = React.createContext<ToastContextType>({} as ToastContextType);
+
 let toastId = 0;
 
-// FIXME: A global addToast function seems like a bad design
-export function addToast(toast: ToastNoId) {
-  addToastHandler(toast);
-}
+export function ToastsProvider({ children }: Props) {
+  const [toasts, setToasts] = useState<Array<ToastWithId>>(() => []);
 
-export function Toasts() {
-  const [toasts, setToasts] = useState<Array<Toast>>(() => []);
-
-  const removeToast = (removedToast: ToastNoId) => {
+  const removeToast = (removedToast: ToastWithId) => {
     setToasts(toasts.filter(toast => toast.id !== removedToast.id));
   };
 
-  addToastHandler = (toast) => {
-    setToasts(toasts.concat({
+  const addToast = (toast: Toast) => {
+    setToasts(toasts => toasts.concat({
       id: (toastId++).toString(),
       ...toast,
     }));
   };
 
+  // FIXME: need to stop repainting the entire screen on every added toast
+  const content = useMemo(() => (<ToastsContext.Provider value={addToast}>
+    {children}
+  </ToastsContext.Provider>), [children]);
+
   return (
-    <EuiGlobalToastList
-      toasts={toasts}
-      dismissToast={removeToast}
-      toastLifeTimeMs={6000}
-    />
+    <>
+      {content}
+      <EuiGlobalToastList
+        toasts={toasts}
+        dismissToast={removeToast}
+        toastLifeTimeMs={6000}
+      />
+    </>
   );
 }

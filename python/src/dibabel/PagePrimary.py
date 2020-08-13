@@ -48,7 +48,7 @@ class PagePrimary:
             raise ValueError(f"History has not been populated for {self}")
 
         changes = []
-        result = SyncInfo(qid, self.title, page.domain, page.title, page.protection)
+        result = SyncInfo(qid, self.title, page.domain, page.title, page.content_ts, page.protection)
         current_content = page.content.rstrip()
         for hist in reversed(self.history):
             if self.is_module:

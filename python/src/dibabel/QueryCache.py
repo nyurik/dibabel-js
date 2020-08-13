@@ -117,7 +117,7 @@ class QueryCache:
 
         print('Done initializing')
 
-    def create_session(self, user_requested):
+    def create_session(self, user_requested) -> SessionState:
         return SessionState(self.cache_file, user_requested)
 
     def query_wd_multilingual_pages(self,
@@ -341,37 +341,40 @@ class QueryCache:
             raise ValueError(f"Unable to load {title} from commons.wikimedia.org")
         return {k: v for k, v in json.loads(page.content)['data']}
 
+    @staticmethod
+    def info_obj(p: SyncInfo):
+        res = dict(title=p.dst_title)
+        if p.dst_timestamp:
+            res['timestamp'] = p.dst_timestamp
+        if p.no_changes:
+            res['status'] = 'ok'
+        elif p.diverged is not None:
+            res['status'] = 'diverged'
+            res['diverged'] = p.diverged
+        elif p.needs_refresh:
+            res['status'] = 'unlocalized'
+        elif p.behind:
+            res['status'] = 'outdated'
+            res['behind'] = p.behind
+            res['matchedRevId'] = p.matched_revid
+        else:
+            raise ValueError(f"Unexpected item status for {p}")
+        if p.not_multisite_deps:
+            res['notMultisiteDeps'] = p.not_multisite_deps
+        if p.multisite_deps_not_on_dst:
+            res['multisiteDepsNotOnDst'] = p.multisite_deps_not_on_dst
+        if p.dst_protection:
+            res['protection'] = p.dst_protection
+        return res
+
     # noinspection PyUnusedLocal
     def get_data(self, state: SessionState) -> List[dict]:
-        def info_obj(p: SyncInfo):
-            res = dict(title=p.dst_title)
-            if p.no_changes:
-                res['status'] = 'ok'
-            elif p.diverged is not None:
-                res['status'] = 'diverged'
-                res['diverged'] = p.diverged
-            elif p.needs_refresh:
-                res['status'] = 'unlocalized'
-            elif p.behind:
-                res['status'] = 'outdated'
-                res['behind'] = p.behind
-                res['matchedRevId'] = p.matched_revid
-            else:
-                raise ValueError(f"Unexpected item status for {p}")
-            if p.not_multisite_deps:
-                res['not_multisite_deps'] = p.not_multisite_deps
-            if p.multisite_deps_not_on_dst:
-                res['multisite_deps_not_on_dst'] = p.multisite_deps_not_on_dst
-            if p.dst_protection:
-                res['protection'] = p.dst_protection
-            return res
-
         return [dict(
             id=qid,
             primarySite=primary_domain,
             primaryTitle=self.primary_pages_by_qid[qid].title,
             primaryRevId=self.primary_pages_by_qid[qid].history[-1].revid,
-            copies={domain: info_obj(info) for domain, info in obj.items()}
+            copies={domain: self.info_obj(info) for domain, info in obj.items()}
         ) for qid, obj in self.syncinfo_by_qid_domain.items()]
 
     def get_page(self, state: SessionState, qid: str, domain: str) -> Optional[dict]:
@@ -382,12 +385,14 @@ class QueryCache:
             raise ValueError(f"Unable to load {qid}/{domain}")
         # sync info might have changed, re-get it
         info = self.syncinfo_by_qid_domain[qid][domain]
-        summary = primary.create_summary(state.get_site(domain), info, self.summary_i18n)
+        if info.no_changes:
+            summary = None
+        else:
+            summary = primary.create_summary(state.get_site(domain), info, self.summary_i18n)
         return dict(
             currentText=page.content,
             currentRevId=page.revid,
-            contentTimestamp=page.content_ts,
             newText=info.new_content,
-            protection=page.protection,
             summary=summary,
+            syncInfo=self.info_obj(info)
         )

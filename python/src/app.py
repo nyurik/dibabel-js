@@ -6,6 +6,7 @@ import yaml
 from dibabel.QueryCache import QueryCache
 from flask import Flask, jsonify, session, flash, abort, Response
 from flask import redirect, request
+from pywikiapi import ApiError
 from requests_oauthlib import OAuth1
 
 app = Flask(__name__)
@@ -35,10 +36,10 @@ def get_data():
         return jsonify(cache.get_data(state))
 
 
-@app.route("/page/<qid>/<site>")
-def get_page(qid: str, site: str):
+@app.route("/page/<qid>/<domain>")
+def get_page(qid: str, domain: str):
     with cache.create_session(user_requested=True) as state:
-        return jsonify(cache.get_page(state, qid, site))
+        return jsonify(cache.get_page(state, qid, domain))
 
 
 @app.route('/login')
@@ -62,10 +63,10 @@ def userinfo():
     return jsonify(mwoauth.identify(app.config["OAUTH_MWURI"], create_consumer_token(), access_token))
 
 
-@app.route('/api/<site>', methods=['POST'])
-def call_api(site: str):
-    if site not in cache.sites_metadata:
-        return abort(Response('Unsupported domain', 400))
+@app.route('/api/<domain>', methods=['POST'])
+def call_api(domain: str):
+    if domain not in cache.sites_metadata:
+        return abort(Response('Unrecognized domain', 400))
     try:
         access_token = mwoauth.AccessToken(**session['access_token'])
     except KeyError:
@@ -75,9 +76,20 @@ def call_api(site: str):
                   client_secret=consumer_token.secret,
                   resource_owner_key=access_token.key,
                   resource_owner_secret=access_token.secret)
-    r = requests.post(f"https://{site}/w/api.php", auth=auth, data=request.get_json())
-    r.raise_for_status()
-    return jsonify(r.json())
+    with cache.create_session(user_requested=True) as state:
+        site = state.get_site(domain)
+        params = request.get_json()
+        # FIXME ?
+        action = params.pop('action') if 'action' in params else 'query'
+        try:
+            result = site(action, EXTRAS=dict(auth=auth), NO_LOGIN=True, POST=True, **params)
+        except ApiError as err:
+            print("----------------------------boom")
+            print(repr(err.data))
+            print(err.data.text)
+            print("----------------------end")
+            return abort(Response('API boom', 500))
+        return jsonify(result)
 
 
 @app.route('/oauth_callback.php')

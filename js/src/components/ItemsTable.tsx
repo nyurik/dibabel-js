@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, Dispatch } from 'react';
 
 import {
   EuiBasicTableColumn,
@@ -11,23 +11,24 @@ import {
   EuiText
 } from '@elastic/eui';
 
-import { AddToast, Group, Item } from '../data/types';
+import { Group, Item, ItemTypeType } from '../data/types';
 import { lockIcon, typeIcons } from '../icons/icons';
 import { ItemDiffLink, ItemDstLink, ItemSrcLink, ProjectIcon } from './Snippets';
+import { ToastsContext } from './Toasts';
 
 export const ItemsTable = (
-  { addToast, error, groupedItems, isLoading, message, selectedItems, setItem, setSelectedItems }: {
+  { error, groupedItems, isLoading, message, selectedItems, setItem, setSelectedItems }: {
     isLoading: boolean,
     message: string,
     error: string,
     groupedItems: any,
     selectedItems: Set<Item>,
-    setSelectedItems: (value: Set<Item>) => void,
-    addToast: AddToast,
-    setItem: (item: Item) => void,
+    setSelectedItems: Dispatch<Set<Item>>,
+    setItem: Dispatch<Item>,
   }
 ) => {
-  // @ts-ignore
+  const addToast = useContext(ToastsContext);
+
   const all_columns: { [key: string]: EuiBasicTableColumn<Item> } = {
     selector: {
       name: '',
@@ -103,7 +104,7 @@ export const ItemsTable = (
       width: '3.8em',
       sortable: true,
       mobileOptions: { show: false },
-      render: (type: 'module' | 'template') => (
+      render: (type: ItemTypeType) => (
         <EuiIcon
           type={typeIcons[type]}
           size={'m'}

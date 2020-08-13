@@ -1,11 +1,12 @@
-import { AddToast, LangInfoDict } from './types';
+import { LangInfoDict, Toast } from './types';
+import { Dispatch } from 'react';
 
 const mw_languages_query = 'https://www.mediawiki.org/w/api.php?action=query&meta=languageinfo&liprop=name|autonym&format=json&formatversion=2&origin=*';
 
 let cache: LangInfoDict;
 
 
-export async function getLanguages(addToast: AddToast): Promise<LangInfoDict> {
+export async function getLanguages(addToast: Dispatch<Toast>): Promise<LangInfoDict> {
   if (cache) {
     return cache;
   }

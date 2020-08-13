@@ -15,7 +15,7 @@ export type SetType = (item: Item | null) => void;
 
 export type LangInfo = { name: string, autonym: string } ;
 export type LangInfoDict = { [key: string]: LangInfo };
-export type AddToast = (toast: Toast) => void;
+// export type AddToast = Dispatch<Toast>;
 
 export type Props = { children: React.ReactNode };
 
@@ -32,11 +32,7 @@ export type StatusType = 'diverged' | 'ok' | 'outdated' | 'unlocalized';
 
 export type ItemTypeType = 'module' | 'template';
 
-export interface TitleLink {
-  url: string,
-  title: string,
-}
-export interface Item {
+export type Item = {
   key: string,
   qid: string,
   type: ItemTypeType,
@@ -51,16 +47,17 @@ export interface Item {
   dstFullTitle: string,
   dstTitle: string,
   dstTitleUrl: string,
+  dstTimestamp: string,
   status: StatusType,
   behind?: number,
   matchedRevId?: number,
-  not_multisite_deps?: Array<string>,
-  multisite_deps_not_on_dst?: Array<string>,
+  notMultisiteDeps?: Array<string>,
+  multisiteDepsNotOnDst?: Array<string>,
   protection?: string,
   protectionArray?: Array<string>,
 }
 
-export interface Group {
+export type Group = {
   key: string,
   allSubItems: Array<Item>,
   countOk: number,
@@ -78,3 +75,24 @@ export interface Group {
   lang?: string,
   dstSite?: string,
 }
+
+export type SyncItemType = {
+  title: string,
+  timestamp: string,
+  status: StatusType,
+  diverged?: string,
+  behind?: number,
+  matchedRevId?: number,
+  notMultisiteDeps?: Array<string>,
+  multisiteDepsNotOnDst?: Array<string>,
+  protection?: Array<string>,
+}
+
+export type SyncContentType = {
+  currentText: string,
+  currentRevId: number,
+  newText: string,
+  summary: string,
+  syncInfo: SyncItemType,
+};
+

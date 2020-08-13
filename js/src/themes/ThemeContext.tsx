@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 import { Props } from '../data/types';
 // import themeLight from './theme_amsterdam-light.scss';
 // import themeDark from './theme_amsterdam-dark.scss';
@@ -15,7 +15,7 @@ import '../App.css';
 // Modeled after https://www.carlrippon.com/react-context-with-typescript-p2/
 export type ThemeContextType = {
   isDarkTheme: boolean
-  setIsDarkTheme: (value: boolean) => void
+  setIsDarkTheme: Dispatch<boolean>
 }
 export const ThemeContext = React.createContext<ThemeContextType>({} as ThemeContextType);
 
@@ -36,7 +36,7 @@ export const ThemeProvider = ({ children }: Props) => {
     try {
       localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light')
     } catch {
-      // Ignore when unable to store theme usage to local stoer - could be in privacy mode
+      // Ignore when unable to store theme usage to local store - could be in privacy mode
     }
   }
 

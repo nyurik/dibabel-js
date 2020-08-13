@@ -8,7 +8,7 @@ export const User = () => {
 
   switch (user.state) {
     case UserState.Unknown:
-      return <EuiLoadingSpinner size="m"/>;
+      return <EuiLoadingSpinner size={'m'}/>;
     case UserState.LoggedOut:
       return <EuiHeaderLink href={`${rootUrl}login`}>Login</EuiHeaderLink>;
     case UserState.LoggedIn:
