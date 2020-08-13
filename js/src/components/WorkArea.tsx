@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useContext } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 
 import {
   EuiButton,
@@ -8,14 +8,14 @@ import {
   EuiIcon,
   EuiSearchBar,
   EuiSpacer,
-  Query,
-  EuiText
+  EuiText,
+  Query
 } from '@elastic/eui';
 
-import { Group, GroupDefsType, Item, SyncContentType, SyncItemType } from '../data/types';
+import { Group, GroupDefsType, Item, SyncItemType } from '../data/types';
 
 import { defaultSearchableFields, getItems, updateSyncInfo } from '../data/Store';
-import { groupBy, map, uniq, flatten } from 'lodash';
+import { flatten, groupBy, map, uniq } from 'lodash';
 import { ItemsTable } from './ItemsTable';
 import { siteIcons, typeIcons } from '../icons/icons';
 import { getLanguages } from '../data/languages';
@@ -297,8 +297,8 @@ export const WorkArea = () => {
   }, [addToast, allItems, groupSelection, isLoading, query, selectedItems, setGroupSelection, setQuery]);
 
   const updateItems = (items: Array<Item>, key: string, info: SyncItemType) => {
-    for(let i = 0; i < items.length; i++) {
-      if(items[i].key === key) {
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].key === key) {
         updateSyncInfo(items[i], info);
         break;
       }
