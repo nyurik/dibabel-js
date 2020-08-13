@@ -93,7 +93,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
 
   const addToast = useContext(ToastsContext);
   const [content, setContent] = useState<ContentType>({ status: 'loading' });
-  const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
+  const [confirmationStatus, setConfirmationStatus] = useState<'hide' | 'show' | 'saving'>('hide');
 
   // FIXME! changes to the comment force full refresh of this component!
   // TODO: lookup how to do this better (share state with subcomponent, reference, etc)
@@ -195,6 +195,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
 
   const onCopy = async () => {
     try {
+      setConfirmationStatus('saving');
       let res = await postToApi(item.dstSite, {
         action: 'edit',
         title: item.dstFullTitle,
@@ -221,7 +222,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
         if (res.status !== 'ok' || updateItemIfChanged(item, res.data!, updateItem)) {
           break;
         }
-        // Sleep, bot no longer than 10 seconds each time
+        // Sleep, but no longer than 10 seconds each time
         await sleep(1000 * Math.min(10, tries));
       }
       if (tries === maxTries) {
@@ -238,19 +239,23 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
         color: 'danger',
         iconType: 'alert',
       });
+    } finally {
+      setConfirmationStatus('hide');
     }
   };
 
   let confirmDialog;
-  if (isConfirmationVisible) {
+  if (confirmationStatus !== 'hide') {
     confirmDialog = (<EuiOverlayMask><EuiConfirmModal
       title="Updating wiki page"
-      onCancel={() => setIsConfirmationVisible(false)}
+      onCancel={() => setConfirmationStatus('hide')}
       onConfirm={onCopy}
       cancelButtonText="No, take me back"
       confirmButtonText="Yes, do it!"
       buttonColor="danger"
-      defaultFocusedButton="confirm">
+      defaultFocusedButton="confirm"
+      confirmButtonDisabled={confirmationStatus === 'show'}
+    >
       <p>You&rsquo;re about to update wiki page.</p>
       <p>Are you sure you want to do this?</p>
     </EuiConfirmModal></EuiOverlayMask>);
@@ -269,7 +274,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
         <EuiFlexItem grow={false}>
           <UserContext.Consumer>
             {context => context.user.state === UserState.LoggedIn
-              ? (<EuiButton fill color={'danger'} onClick={() => setIsConfirmationVisible(true)}>
+              ? (<EuiButton fill color={'danger'} onClick={() => setConfirmationStatus('show')}>
                 Copy!
               </EuiButton>)
               : (<EuiButton fill disabled={true} title={'Please login in the upper right corner before copying.'}
