@@ -9,7 +9,8 @@ import {
   EuiSearchBar,
   EuiSpacer,
   EuiText,
-  Query
+  Query,
+  SearchFilterConfig
 } from '@elastic/eui';
 
 import { Group, GroupDefsType, Item, SyncItemType } from '../data/types';
@@ -183,87 +184,87 @@ export const WorkArea = () => {
   }, [error, groupedItems, isLoading, message, selectedItems]);
 
   const toolbar = useMemo(() => {
+    const filters: Array<SearchFilterConfig> = [
+      {
+        type: 'field_value_selection',
+        field: 'status',
+        name: 'Status',
+        multiSelect: 'or',
+        options: async () => {
+          return map({
+            'ok': 'success',
+            'outdated': 'warning',
+            'unlocalized': 'warning',
+            'diverged': 'danger'
+          }, (v, k) => ({
+            value: k,
+            view: <EuiHealth color={v}>{k}</EuiHealth>,
+          }));
+        },
+      },
+      {
+        type: 'field_value_selection',
+        field: 'type',
+        name: 'Type',
+        multiSelect: 'or',
+        options: () => getOptions(allItems, 'type', typeIcons),
+      },
+      {
+        type: 'field_value_selection',
+        field: 'project',
+        name: 'Project',
+        multiSelect: 'or',
+        options: () => getOptions(allItems, 'project', siteIcons),
+      },
+      {
+        type: 'field_value_selection',
+        field: 'protection',
+        name: 'Lock',
+        multiSelect: 'or',
+        options: async () => {
+          const values = uniq(flatten(allItems.map(v => v.protectionArray))).map(v => v || '').filter(v => v !== '');
+          values.sort();
+          return values.map(val => ({
+            value: val,
+            view: (<EuiText>{val}</EuiText>),
+          }));
+        },
+      },
+      {
+        type: 'field_value_selection',
+        field: 'lang',
+        name: 'Language',
+        multiSelect: 'or',
+        options: async () => {
+          const values = uniq(allItems.map(v => v.lang));
+          values.sort();
+          const allLangs = await getLanguages(addToast);
+          return values.map(lang => {
+            const langInfo = allLangs[lang] || { name: 'Unknown' };
+            let name = langInfo.name;
+            if (langInfo.autonym && langInfo.autonym !== langInfo.name) {
+              name += ` - ${langInfo.autonym}`;
+            }
+            return {
+              value: lang,
+              view: <EuiFlexGroup>
+                <EuiFlexItem grow={false} className={'lang-code'}>{lang}</EuiFlexItem>
+                <EuiFlexItem grow={false}>{name}</EuiFlexItem>
+              </EuiFlexGroup>
+            };
+          });
+        },
+      },
+    ];
     const searchBar = <EuiSearchBar
       query={query}
       box={{
         isClearable: true,
-        // placeholder: '',
         incremental: true,
         fullWidth: true,
         schema,
       }}
-      filters={[
-        {
-          type: 'field_value_selection',
-          field: 'status',
-          name: 'Status',
-          multiSelect: 'or',
-          options: async () => {
-            return map({
-              'ok': 'success',
-              'outdated': 'warning',
-              'unlocalized': 'warning',
-              'diverged': 'danger'
-            }, (v, k) => ({
-              value: k,
-              view: <EuiHealth color={v}>{k}</EuiHealth>,
-            }));
-          },
-        },
-        {
-          type: 'field_value_selection',
-          field: 'type',
-          name: 'Type',
-          multiSelect: 'or',
-          options: () => getOptions(allItems, 'type', typeIcons),
-        },
-        {
-          type: 'field_value_selection',
-          field: 'project',
-          name: 'Project',
-          multiSelect: 'or',
-          options: () => getOptions(allItems, 'project', siteIcons),
-        },
-        {
-          type: 'field_value_selection',
-          field: 'protection',
-          name: 'Lock',
-          multiSelect: 'or',
-          options: async () => {
-            const values = uniq(flatten(allItems.map(v => v.protectionArray))).map(v => v || '').filter(v => v !== '');
-            values.sort();
-            return values.map(val => ({
-              value: val,
-              view: (<EuiText>{val}</EuiText>),
-            }));
-          },
-        },
-        {
-          type: 'field_value_selection',
-          field: 'lang',
-          name: 'Language',
-          multiSelect: 'or',
-          options: async () => {
-            const values = uniq(allItems.map(v => v.lang));
-            values.sort();
-            const allLangs = await getLanguages(addToast);
-            return values.map(lang => {
-              const langInfo = allLangs[lang] || { name: 'Unknown' };
-              let name = langInfo.name;
-              if (langInfo.autonym && langInfo.autonym !== langInfo.name) {
-                name += ` - ${langInfo.autonym}`;
-              }
-              return {
-                value: lang,
-                view: <EuiFlexGroup>
-                  <EuiFlexItem grow={false} className={'lang-code'}>{lang}</EuiFlexItem>
-                  <EuiFlexItem grow={false}>{name}</EuiFlexItem>
-                </EuiFlexGroup>
-              };
-            });
-          },
-        },
-      ]}
+      filters={filters}
       onChange={({ query, error }: any) => {
         if (error) {
           setError(error.message);
@@ -300,7 +301,7 @@ export const WorkArea = () => {
     const newItems = [...items];
     for (let i = 0; i < newItems.length; i++) {
       if (newItems[i].key === key) {
-        newItems[i] = updateSyncInfo({...newItems[i]}, info);
+        newItems[i] = updateSyncInfo({ ...newItems[i] }, info);
         break;
       }
     }

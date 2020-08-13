@@ -1,9 +1,11 @@
 import { Item, ItemTypeType, SyncItemType, Toast } from './types';
+import React from 'react';
 
 // import fauxData from './faux/fauxData.small.json';
 import fauxData from './faux/fauxData.json';
 import { rootUrl, splitNs } from '../utils';
 import { Dispatch } from 'react';
+import { EuiText } from '@elastic/eui';
 
 const titleUrlSuffix = '/wiki/';
 
@@ -70,6 +72,15 @@ export async function getItems(addToast: Dispatch<Toast>): Promise<Array<Item>> 
       let itemData = await fetch(`${rootUrl}data`);
       if (itemData.ok) {
         cache = await itemData.json();
+        const total = Object.values(cache).reduce((a: number, v: any) => a + Object.keys(v.copies).length, 0);
+        addToast({
+          title: `Loaded data`,
+          color: 'success',
+          text: (<EuiText>
+            {Object.keys(cache).length} pages<br/>
+            {total} copies
+          </EuiText>),
+        });
         return cache;
       } else {
         addToast({
