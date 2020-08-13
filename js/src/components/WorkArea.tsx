@@ -297,13 +297,14 @@ export const WorkArea = () => {
   }, [addToast, allItems, groupSelection, isLoading, query, selectedItems, setGroupSelection, setQuery]);
 
   const updateItems = (items: Array<Item>, key: string, info: SyncItemType) => {
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].key === key) {
-        updateSyncInfo(items[i], info);
+    const newItems = [...items];
+    for (let i = 0; i < newItems.length; i++) {
+      if (newItems[i].key === key) {
+        newItems[i] = updateSyncInfo({...newItems[i]}, info);
         break;
       }
     }
-    return items;
+    return newItems;
   };
 
   return (
