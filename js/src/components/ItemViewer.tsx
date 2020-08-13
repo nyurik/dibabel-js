@@ -16,7 +16,10 @@ import {
   EuiSpacer,
   EuiText,
   EuiTitle,
-  useEuiTextDiff
+  useEuiTextDiff,
+  EuiConfirmModal,
+  EuiHealth,
+  EuiOverlayMask
 } from '@elastic/eui';
 
 import { Item, SyncContentType, UpdateItems } from '../data/types';
@@ -90,6 +93,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
 
   const addToast = useContext(ToastsContext);
   const [content, setContent] = useState<ContentType>({ status: 'loading' });
+  const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
 
   // FIXME! changes to the comment force full refresh of this component!
   // TODO: lookup how to do this better (share state with subcomponent, reference, etc)
@@ -108,25 +112,25 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
   let infoSubHeader;
   switch (item.status) {
     case 'diverged':
-      infoSubHeader = (
+      infoSubHeader = (<EuiHealth color={'danger'}>
         <EuiText>The current version of{' '}<ItemDstLink item={item}/>{' '}({item.dstSite}) was not found in the history
-          of the primary page <ItemSrcLink item={item}/>.</EuiText>);
+          of the primary page <ItemSrcLink item={item}/>.</EuiText></EuiHealth>);
       break;
     case 'outdated':
-      infoSubHeader = (
+      infoSubHeader = (<EuiHealth color={'warning'}>
         <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}({item.dstSite}) is{' '}
           <EuiLink href={itemDiffLink(item)} target={'_blank'}>{item.behind} revisions</EuiLink>{' '}behind the
-          primary{' '}<ItemSrcLink item={item}/>.</EuiText>);
+          primary{' '}<ItemSrcLink item={item}/>.</EuiText></EuiHealth>);
       break;
     case 'unlocalized':
-      infoSubHeader = (
+      infoSubHeader = (<EuiHealth color={'warning'}>
         <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}({item.dstSite}) is identical with the original <ItemSrcLink
-          item={item}/>, but needs to have some localizations.</EuiText>);
+          item={item}/>, but needs to have some localizations.</EuiText></EuiHealth>);
       break;
     case 'ok':
-      infoSubHeader = (
+      infoSubHeader = (<EuiHealth color={'success'}>
         <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}({item.dstSite}) is identical with the original <ItemSrcLink
-          item={item}/>.</EuiText>);
+          item={item}/>.</EuiText></EuiHealth>);
       break;
     default:
       throw new Error(`Unhandled ${item.status}`);
@@ -237,49 +241,68 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
     }
   };
 
+  let confirmDialog;
+  if (isConfirmationVisible) {
+    confirmDialog = (<EuiOverlayMask><EuiConfirmModal
+      title="Updating wiki page"
+      onCancel={() => setIsConfirmationVisible(false)}
+      onConfirm={onCopy}
+      cancelButtonText="No, don't do it"
+      confirmButtonText="Yes, do it"
+      buttonColor="danger"
+      defaultFocusedButton="confirm">
+      <p>You&rsquo;re about to update wiki page.</p>
+      <p>Are you sure you want to do this?</p>
+    </EuiConfirmModal></EuiOverlayMask>);
+  }
+
   return (
-    <EuiFlyout
-      ownFocus
-      size={'l'}
-      onClose={onClose}
-      aria-labelledby={'flyoutTitle'}>
-      <EuiFlyoutHeader hasBorder>
-        <EuiTitle size={'m'}>
-          <EuiFlexGroup alignItems={'center'} gutterSize={'s'}>
-            <EuiFlexItem grow={false}><ProjectIcon item={item} size={'xl'}/></EuiFlexItem>&nbsp;
-            <h3>{item.srcFullTitle}</h3>
+    <>
+      <EuiFlyout
+        ownFocus
+        size={'l'}
+        onClose={onClose}
+        aria-labelledby={'flyoutTitle'}>
+        <EuiFlyoutHeader hasBorder>
+          <EuiTitle size={'m'}>
+            <EuiFlexGroup alignItems={'center'} gutterSize={'s'}>
+              <EuiFlexItem grow={false}><ProjectIcon item={item} size={'xl'}/></EuiFlexItem>&nbsp;
+              <h3>{item.srcFullTitle}</h3>
+            </EuiFlexGroup>
+          </EuiTitle>
+          <EuiSpacer size={'s'}/>
+          <EuiFlexItem grow={true}>{infoSubHeader}</EuiFlexItem>
+        </EuiFlyoutHeader>
+        <EuiFlyoutBody>
+          {warnings}
+          {body}
+        </EuiFlyoutBody>
+        <EuiFlyoutFooter>
+          <EuiFlexGroup justifyContent={'spaceBetween'} alignItems={'center'}>
+            <EuiFlexItem grow={false}>
+              <EuiText>Summary:</EuiText>
+            </EuiFlexItem>
+            <EuiFlexItem grow={true}>
+              <Comment readOnly={content.status !== 'ok'} value={comment} setValue={setComment}/>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <UserContext.Consumer>
+                {context => context.user.state === UserState.LoggedIn || 1
+                  ? (<EuiButton fill // disabled={content.status !== 'ok'} color={'danger'}
+                                onClick={() => setIsConfirmationVisible(true)}>
+                    Copy!
+                  </EuiButton>)
+                  : (<EuiButton fill disabled={true} title={'Please login in the upper right corner before copying.'}
+                                color={'danger'} onClick={onClose}>
+                    Copy!
+                  </EuiButton>)}
+              </UserContext.Consumer>
+            </EuiFlexItem>
           </EuiFlexGroup>
-        </EuiTitle>
-        <EuiSpacer size={'s'}/>
-        <EuiFlexItem grow={true}>{infoSubHeader}</EuiFlexItem>
-      </EuiFlyoutHeader>
-      <EuiFlyoutBody>
-        {warnings}
-        {body}
-      </EuiFlyoutBody>
-      <EuiFlyoutFooter>
-        <EuiFlexGroup justifyContent={'spaceBetween'} alignItems={'center'}>
-          <EuiFlexItem grow={false}>
-            <EuiText>Summary:</EuiText>
-          </EuiFlexItem>
-          <EuiFlexItem grow={true}>
-            <Comment readOnly={content.status !== 'ok'} value={comment} setValue={setComment}/>
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <UserContext.Consumer>
-              {context => context.user.state === UserState.LoggedIn
-                ? (<EuiButton fill disabled={content.status !== 'ok'} color={'danger'} onClick={onCopy}>
-                  Copy!
-                </EuiButton>)
-                : (<EuiButton fill disabled={true} title={'Please login in the upper right corner before copying.'}
-                              color={'danger'} onClick={onClose}>
-                  Copy!
-                </EuiButton>)}
-            </UserContext.Consumer>
-          </EuiFlexItem>
-        </EuiFlexGroup>
-      </EuiFlyoutFooter>
-    </EuiFlyout>
+        </EuiFlyoutFooter>
+      </EuiFlyout>
+      {confirmDialog}
+    </>
   );
 };
 
