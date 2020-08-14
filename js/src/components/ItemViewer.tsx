@@ -285,7 +285,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
     const isDiverged = item.status === 'diverged';
     const btnProps: Props = {
       fill: true,
-      color: isDiverged ? 'danger' : 'warning',
+      color: isDiverged || warnings ? 'danger' : 'primary',
     };
     if (isLoggedIn) {
       btnProps.onClick = () => setConfirmationStatus('show');
