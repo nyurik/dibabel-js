@@ -273,7 +273,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
       defaultFocusedButton="confirm"
       confirmButtonDisabled={confirmationStatus !== 'show'}
     >
-      <p>You&rsquo;re about to update wiki page.</p>
+      <p>You&rsquo;re about to edit <ItemDstLink item={item}/></p>
       <p>Are you sure you want to do this?</p>
     </EuiConfirmModal></EuiOverlayMask>);
   }
