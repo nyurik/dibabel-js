@@ -188,6 +188,8 @@ export const WorkArea = () => {
       {
         type: 'field_value_toggle_group',
         field: 'type',
+        // @ts-ignore
+        operator: 'exact',
         items: [
           {
             value: 'module',
@@ -204,6 +206,8 @@ export const WorkArea = () => {
         field: 'status',
         name: 'Status',
         multiSelect: 'or',
+        // @ts-ignore
+        operator: 'exact',
         options: async () => {
           return map({
             'ok': 'success',
@@ -221,6 +225,8 @@ export const WorkArea = () => {
         field: 'project',
         name: 'Project',
         multiSelect: 'or',
+        // @ts-ignore
+        operator: 'exact',
         options: () => getOptions(allItems, 'project', siteIcons),
       },
       {
@@ -228,6 +234,8 @@ export const WorkArea = () => {
         field: 'lang',
         name: 'Language',
         multiSelect: 'or',
+        // @ts-ignore
+        operator: 'exact',
         options: async () => {
           const values = uniq(allItems.map(v => v.lang));
           values.sort();
@@ -253,6 +261,8 @@ export const WorkArea = () => {
         field: 'protection',
         name: 'Lock',
         multiSelect: 'or',
+        // @ts-ignore
+        operator: 'exact',
         options: async () => {
           const values = uniq(flatten(allItems.map(v => v.protectionArray))).map(v => v || '').filter(v => v !== '');
           values.sort();

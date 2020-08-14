@@ -31,10 +31,10 @@ export function App() {
             <EuiPageBody>
               <EuiPageHeader>
                 <EuiPageHeaderSection>
-                  <EuiHeaderSectionItem border={'right'}>
+                  <EuiHeaderSectionItem border={'none'}>
                     <EuiHeaderLogo
                       iconType={siteIcons.wikipedia}>
-                      Dibabel{' '}
+                      Dibabel&nbsp;&nbsp;
                       <EuiBetaBadge label={'BETA'} title={'Work  in progress. Please verify all changes.'}/>
                     </EuiHeaderLogo>
                   </EuiHeaderSectionItem>

@@ -92,7 +92,8 @@ def call_api(domain: str):
         except ApiError as err:
             print("----------------------------boom")
             print(repr(err.data))
-            print(err.data.text)
+            if 'text' in err.data:
+                print(err.data.text)
             print("----------------------end")
             return abort(Response('API boom', 500))
         return jsonify(result)

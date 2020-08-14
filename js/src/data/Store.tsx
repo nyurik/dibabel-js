@@ -57,6 +57,8 @@ export const updateSyncInfo = (item: Item, dst: SyncItemType): Item => {
   item.multisiteDepsNotOnDst = dst.multisiteDepsNotOnDst;
   item.protection = dst.protection ? dst.protection.join(', ') : '';
   item.protectionArray = dst.protection;
+  item.dstContentHash = dst.diverged;
+  item.sortStatus = `${dst.status}/${dst.diverged}/${dst.behind}`;
 
   return item;
 };

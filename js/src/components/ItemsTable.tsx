@@ -122,16 +122,16 @@ export const ItemsTable = (
       render: (_: string, item: Item) => (<><ExternalLink href={item.dstTitleUrl}/>{item.dstFullTitle}</>),
     },
     status: {
-      field: 'status',
+      field: 'sortStatus',
       name: (<EuiText
         title={'Show if the copied page is in sync with the original, has fallen behind, or has been modified locally (diverged).'}>Status</EuiText>),
       sortable: true,
-      render: (status: string, item: Item) => {
-        switch (status) {
+      render: (_: string, item: Item) => {
+        switch (item.status) {
           case 'ok':
             return (<EuiHealth
               title={'The target page is up to date with the primary'}
-              color={'success'}>Same</EuiHealth>);
+              color={'success'}>OK</EuiHealth>);
           case 'unlocalized':
             return (<EuiHealth
               title={`The target page has exactly the same content as original instead of using localized values, and needs to be updated.`}
@@ -143,10 +143,11 @@ export const ItemsTable = (
               color={'warning'}><span>Outdated by {item.behind} rev<ExternalLink href={href}/></span></EuiHealth>);
           case 'diverged':
             return (
-              <EuiHealth title={'The target page has been modified and cannot be updated automatically.'}
-                         color={'danger'}>Diverged</EuiHealth>);
+              <EuiHealth
+                title={'The target page has been modified and cannot be updated automatically. The hash number is a unique fingerprint of the current page content. Pages with identical hash have the same content.'}
+                color={'danger'}>Diverged #{item.dstContentHash!.substring(0, 6)}</EuiHealth>);
           default:
-            throw new Error(`Unknown status ${status}`);
+            throw new Error(`Unknown status ${item.status}`);
         }
       },
     },

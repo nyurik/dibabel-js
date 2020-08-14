@@ -46,6 +46,7 @@ export type Item = {
   dstTitle: string,
   dstTitleUrl: string,
   dstTimestamp: string,
+  dstContentHash?: string,
   status: StatusType,
   behind?: number,
   matchedRevId?: number,
@@ -53,6 +54,7 @@ export type Item = {
   multisiteDepsNotOnDst?: Array<string>,
   protection?: string,
   protectionArray?: Array<string>,
+  sortStatus: string,
 }
 
 export type Group = {
