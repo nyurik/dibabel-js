@@ -271,7 +271,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
       confirmButtonText="Yes, do it!"
       buttonColor="danger"
       defaultFocusedButton="confirm"
-      confirmButtonDisabled={confirmationStatus === 'show'}
+      confirmButtonDisabled={confirmationStatus !== 'show'}
     >
       <p>You&rsquo;re about to update wiki page.</p>
       <p>Are you sure you want to do this?</p>
