@@ -61,7 +61,10 @@ def userinfo():
         access_token = mwoauth.AccessToken(**session['access_token'])
     except KeyError:
         return abort(Response('Not authenticated', 403))
-    return jsonify(mwoauth.identify(app.config["OAUTH_MWURI"], create_consumer_token(), access_token))
+    identity = mwoauth.identify(app.config["OAUTH_MWURI"], create_consumer_token(), access_token)
+    # TODO: remove this -- needed to track any changes being done while testing
+    print(f"******************** {identity['username']}")
+    return jsonify(identity)
 
 
 @app.route('/api/<domain>', methods=['POST'])
@@ -82,6 +85,8 @@ def call_api(domain: str):
         params = request.get_json()
         # FIXME ?
         action = params.pop('action') if 'action' in params else 'query'
+        if action == 'edit':
+            print(f"Modifying page {params['title']} at {domain}")
         try:
             result = site(action, EXTRAS=dict(auth=auth), NO_LOGIN=True, POST=True, **params)
         except ApiError as err:
