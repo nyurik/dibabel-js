@@ -145,8 +145,12 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
   const warnings = [];
   if (item.status === 'diverged') {
     warnings.push(<EuiCallOut title={'Unrecognized content'} color={'warning'} iconType={'alert'}>
-      <EuiText>This page was modified by the {item.dstSite} community. Do not override it unless it was done by mistake
-        or if the local changes are now included in the primary page.</EuiText>
+      <EuiText>This page was modified by the {item.dstSite} community. Do not override it unless:
+        <ul>
+          <li>Local changes were done by mistake and should be reverted</li>
+          <li>The local changes are now included in the primary page</li>
+          <li>The local changes are no longer needed</li>
+        </ul></EuiText>
     </EuiCallOut>);
     warnings.push(<EuiSpacer size={'m'}/>);
   }
