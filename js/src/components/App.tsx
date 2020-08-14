@@ -11,7 +11,8 @@ import {
   EuiPage,
   EuiPageBody,
   EuiPageHeader,
-  EuiPageHeaderSection
+  EuiPageHeaderSection,
+  EuiText
 } from '@elastic/eui';
 import { Settings } from './Settings';
 import { WorkArea } from './WorkArea';
@@ -37,9 +38,12 @@ export function App() {
                       <EuiBetaBadge label={'BETA'} title={'Work  in progress. Please verify all changes.'}/>
                     </EuiHeaderLogo>
                   </EuiHeaderSectionItem>
+                </EuiPageHeaderSection>
+                <EuiPageHeaderSection>
                   <EuiHeaderSectionItem>
-                    Keep modules and templates the same across languages. Written by&nbsp;<EuiLink color={'text'}
-                    href={'https://www.mediawiki.org/wiki/User:Yurik'} target={'_blank'}>User:Yurik</EuiLink>.
+                    <EuiText size={'s'}>Keep modules and templates the same across languages. Written by&nbsp;<EuiLink
+                      color={'text'} href={'https://www.mediawiki.org/wiki/User:Yurik'}
+                      target={'_blank'}>User:Yurik</EuiLink></EuiText>
                   </EuiHeaderSectionItem>
                 </EuiPageHeaderSection>
                 <EuiPageHeaderSection>

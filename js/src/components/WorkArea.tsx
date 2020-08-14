@@ -266,6 +266,7 @@ export const WorkArea = () => {
     const searchBar = <EuiSearchBar
       query={query}
       box={{
+        placeholder: 'try   en.wikipedia   or   TNT',
         isClearable: true,
         incremental: true,
         fullWidth: true,
