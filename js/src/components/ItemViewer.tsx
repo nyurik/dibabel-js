@@ -229,7 +229,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
       }
       onClose();
       addToast({
-        title: `${item.dstFullTitle} @ ${item.dstSite} was updated`,
+        title: (<EuiText><ItemDstLink item={item}/>{' '}was updated</EuiText>),
         color: 'success',
       });
 
@@ -245,7 +245,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
       }
       if (tries === maxTries) {
         addToast({
-          title: `${item.dstFullTitle} was updated, but the DiBabel server was not able to get updated information.`,
+          title: (<EuiText><ItemDstLink item={item}/>{' '}was updated, but the DiBabel server was not able to get updated information.</EuiText>),
           color: 'danger',
           iconType: 'alert',
         });
@@ -253,7 +253,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
 
     } catch (err) {
       addToast({
-        title: `Error while saving ${item.dstFullTitle}: ${err.toString()}`,
+        title: (<EuiText>Error saving{' '}<ItemDstLink item={item}/>{' '}- {err.toString()}</EuiText>),
         color: 'danger',
         iconType: 'alert',
       });
