@@ -54,14 +54,15 @@ const ItemDiffBlock = ({ type, oldText, newText }: { type: ItemTypeType, oldText
   return (
     <div className={'diff-view'}>
       <ReactDiffViewer
-        leftTitle={`Current ${type} content`}
-        rightTitle={`New ${type} content`}
+        leftTitle={isSame ? '' : `Current ${type} content`}
+        rightTitle={isSame ? '' : `New ${type} content`}
         oldValue={oldText}
         newValue={newText}
         splitView={!isSame && isSplitView}
         compareMethod={DiffMethod.WORDS}
         useDarkTheme={isDarkTheme}
         showDiffOnly={!isSame}
+        hideLineNumbers={isSame}
       />
     </div>);
 };
