@@ -3,7 +3,7 @@ import React, { Dispatch, FunctionComponent, useContext, useEffect, useMemo, use
 import {
   EuiButton,
   EuiCallOut,
-  EuiCodeBlock,
+  EuiConfirmModal,
   EuiFieldText,
   EuiFlexGroup,
   EuiFlexItem,
@@ -11,22 +11,24 @@ import {
   EuiFlyoutBody,
   EuiFlyoutFooter,
   EuiFlyoutHeader,
+  EuiHealth,
   EuiLink,
+  EuiOverlayMask,
   EuiProgress,
   EuiSpacer,
   EuiText,
   EuiTitle,
-  useEuiTextDiff,
-  EuiConfirmModal,
-  EuiHealth,
-  EuiOverlayMask
 } from '@elastic/eui';
 
-import { Item, SyncContentType, UpdateItems } from '../data/types';
+import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
+
+import { Item, ItemTypeType, SyncContentType, UpdateItems } from '../data/types';
 import { ItemDstLink, ItemSrcLink, ItemWikidataLink, ProjectIcon } from './Snippets';
 import { getToken, itemDiffLink, postToApi, rootUrl, sleep } from '../utils';
 import { UserContext, UserState } from '../data/UserContext';
 import { ToastsContext } from './Toasts';
+import { SettingsContext } from './SettingsContext';
+import { Props } from '@elastic/eui/src/components/button/button';
 
 interface ItemViewerParams<TItem> {
   item: TItem;
@@ -45,13 +47,23 @@ const updateItemIfChanged = (item: Item, data: SyncContentType, updateItem: Upda
   }
   return false;
 };
-const ItemDiffBlock = ({ type, oldText, newText }: { type: string, oldText: string, newText: string }) => {
-  const [rendered] = useEuiTextDiff({
-    beforeText: oldText,
-    afterText: newText,
-    timeout: 0.5,
-  });
-  return <EuiCodeBlock language={type === 'module' ? 'lua' : 'text'}>{rendered}</EuiCodeBlock>;
+
+const ItemDiffBlock = ({ type, oldText, newText }: { type: ItemTypeType, oldText: string, newText: string }) => {
+  const { isDarkTheme, isSplitView } = useContext(SettingsContext);
+  const isSame = oldText === newText;
+  return (
+    <div className={'diff-view'}>
+      <ReactDiffViewer
+        leftTitle={`Current ${type} content`}
+        rightTitle={`New ${type} content`}
+        oldValue={oldText}
+        newValue={newText}
+        splitView={!isSame && isSplitView}
+        compareMethod={DiffMethod.WORDS}
+        useDarkTheme={isDarkTheme}
+        showDiffOnly={!isSame}
+      />
+    </div>);
 };
 
 const Comment: FunctionComponent<{ readOnly: boolean, value: string, setValue: Dispatch<string> }> = ({ readOnly, value, setValue }) => {
@@ -92,6 +104,7 @@ const getPageData = async (item: Item): Promise<ContentType> => {
 const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) => {
 
   const addToast = useContext(ToastsContext);
+  const { user } = useContext(UserContext);
   const [content, setContent] = useState<ContentType>({ status: 'loading' });
   const [confirmationStatus, setConfirmationStatus] = useState<'hide' | 'show' | 'saving'>('hide');
 
@@ -267,25 +280,28 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
 
   let footer;
   if (content.status === 'ok' && item.status !== 'ok') {
+    const isLoggedIn = user.state === UserState.LoggedIn;
+    const isDiverged = item.status === 'diverged';
+    const btnProps: Props = {
+      fill: true,
+      color: isDiverged ? 'danger' : 'warning',
+    };
+    if (isLoggedIn) {
+      btnProps.onClick = () => setConfirmationStatus('show');
+    } else {
+      btnProps.title = 'Please login in the upper right corner before copying.';
+      btnProps.disabled = true;
+    }
     footer = <EuiFlyoutFooter>
       <EuiFlexGroup justifyContent={'spaceBetween'} alignItems={'center'}>
         <EuiFlexItem grow={false}>
           <EuiText>Summary:</EuiText>
         </EuiFlexItem>
         <EuiFlexItem grow={true}>
-          <Comment readOnly={content.status !== 'ok'} value={comment} setValue={setComment}/>
+          <Comment readOnly={!isLoggedIn} value={comment} setValue={setComment}/>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <UserContext.Consumer>
-            {context => context.user.state === UserState.LoggedIn
-              ? (<EuiButton fill color={'danger'} onClick={() => setConfirmationStatus('show')}>
-                Copy!
-              </EuiButton>)
-              : (<EuiButton fill disabled={true} title={'Please login in the upper right corner before copying.'}
-                            color={'danger'} onClick={onClose}>
-                Copy!
-              </EuiButton>)}
-          </UserContext.Consumer>
+          <EuiButton {...btnProps} >Copy!</EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>
     </EuiFlyoutFooter>;

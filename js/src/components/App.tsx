@@ -19,12 +19,12 @@ import { WorkArea } from './WorkArea';
 import { ToastsProvider } from './Toasts';
 import { User } from './User';
 import { UserProvider } from '../data/UserContext';
-import { ThemeProvider } from '../themes/ThemeContext';
+import { SettingsProvider } from './SettingsContext';
 import { siteIcons } from '../icons/icons';
 
 export function App() {
   return (
-    <ThemeProvider>
+    <SettingsProvider>
       <ToastsProvider>
         <UserProvider>
           <EuiPage>
@@ -70,6 +70,6 @@ export function App() {
           </EuiPage>
         </UserProvider>
       </ToastsProvider>
-    </ThemeProvider>
+    </SettingsProvider>
   );
 }

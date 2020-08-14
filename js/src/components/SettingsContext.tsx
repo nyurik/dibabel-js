@@ -4,7 +4,6 @@ import { Props } from '../data/types';
 // import themeDark from './theme_amsterdam-dark.scss';
 // import themeLight from '@elastic/eui/dist/eui_theme_amsterdam_light.css';
 // import themeDark from '@elastic/eui/dist/eui_theme_amsterdam_dark.css';
-
 // FIXME: remove this css and use the .unuse() / .use() methods below
 import '@elastic/eui/dist/eui_theme_light.css';
 
@@ -13,15 +12,23 @@ import '../App.css';
 import { usePersistedState } from '../utils';
 
 // Modeled after https://www.carlrippon.com/react-context-with-typescript-p2/
-export type ThemeContextType = {
+export type SettingsContextType = {
   isDarkTheme: boolean
   setIsDarkTheme: Dispatch<boolean>
+  isSplitView: boolean
+  setIsSplitView: Dispatch<boolean>
 }
-export const ThemeContext = React.createContext<ThemeContextType>({} as ThemeContextType);
+export const SettingsContext = React.createContext<SettingsContextType>({} as SettingsContextType);
 
-export const ThemeProvider = ({ children }: Props) => {
+export const SettingsProvider = ({ children }: Props) => {
   const [isDarkTheme, setIsDarkTheme] = usePersistedState<boolean>(
-    'theme', 'light', v => v === 'light', v => v ? 'dark' : 'light');
+    'theme', 'light',
+    // FIXME!  currently always force to light mode. Once CSS dynamic loading is enabled, remove the `&& false`
+    v => v === 'dark' && false,
+    v => v ? 'dark' : 'light');
+
+  const [isSplitView, setIsSplitView] = usePersistedState<boolean>(
+    `diff-split`, 'true', v => v === 'true', v => v ? 'true' : 'false');
 
   // // @ts-ignore
   // [(isDarkTheme ? themeLight : themeDark)].unuse();
@@ -29,9 +36,9 @@ export const ThemeProvider = ({ children }: Props) => {
   // [(isDarkTheme ? themeDark : themeLight)].use();
 
   return (
-    <ThemeContext.Provider value={{ isDarkTheme, setIsDarkTheme }}>
+    <SettingsContext.Provider value={{ isDarkTheme, setIsDarkTheme, isSplitView, setIsSplitView }}>
       {children}
-    </ThemeContext.Provider>
+    </SettingsContext.Provider>
   );
 
 };
