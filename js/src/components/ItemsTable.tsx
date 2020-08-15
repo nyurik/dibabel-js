@@ -96,7 +96,9 @@ export const ItemsTable = (
       field: 'srcFullTitle',
       name: (<EuiText title={'Title of the page at mediawiki.org'}>Primary Page</EuiText>),
       sortable: true,
-      render: (_: string, item: Item) => (<>{item.srcFullTitle}<ExternalLink href={item.srcTitleUrl}/></>),
+      render: (_: string, item: Item) => (<>{item.srcFullTitle}<ExternalLink
+          title={`Open ${item.srcFullTitle} source page on parent project in new tab`}
+          href={item.srcTitleUrl}/></>),
     },
     lang: {
       field: 'lang',
@@ -119,7 +121,9 @@ export const ItemsTable = (
       field: 'dstFullTitle',
       name: (<EuiText title={'Title of the copied page as it appears on the destination wiki.'}>Wiki page</EuiText>),
       sortable: true,
-      render: (_: string, item: Item) => (<>{item.dstFullTitle}<ExternalLink href={item.dstTitleUrl}/></>),
+      render: (_: string, item: Item) => (<>{item.dstFullTitle}<ExternalLink
+          title={`Open ${item.dstFullTitle} source page on parent project in new tab`}
+          href={item.dstTitleUrl}/></>),
     },
     status: {
       field: 'sortStatus',
@@ -140,7 +144,9 @@ export const ItemsTable = (
             const href = itemDiffLink(item);
             return (<EuiHealth
               title={`The target page is outdated by ${item.behind} versions, and can be updated.  Click to see changes.`}
-              color={'warning'}><span>Outdated by {item.behind} rev<ExternalLink href={href}/></span></EuiHealth>);
+              color={'warning'}><span>Outdated by {item.behind} rev<ExternalLink
+                title={`Open ${item.dstFullTitle} diff page on parent project in new tab`}
+                href={href}/></span></EuiHealth>);
           case 'diverged':
             return (
               <EuiHealth
