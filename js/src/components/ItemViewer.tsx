@@ -249,7 +249,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
       onConfirm={onCopy}
       cancelButtonText="No, don't do it"
       confirmButtonText="Yes, do it"
-      buttonColor="danger"
+      buttonColor="primary"
       defaultFocusedButton="confirm">
       <p>You&rsquo;re about to update wiki page.</p>
       <p>Are you sure you want to do this?</p>
@@ -288,13 +288,13 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
             <EuiFlexItem grow={false}>
               <UserContext.Consumer>
                 {context => context.user.state === UserState.LoggedIn
-                  ? (<EuiButton fill disabled={content.status !== 'ok'} color={'danger'}
+                  ? (<EuiButton fill disabled={content.status !== 'ok'} color={'primary'}
                                 onClick={() => setIsConfirmationVisible(true)}>
-                    Copy!
+                    Update!
                   </EuiButton>)
                   : (<EuiButton fill disabled={true} title={'Please login in the upper right corner before copying.'}
-                                color={'danger'} onClick={onClose}>
-                    Copy!
+                                color={'primary'} onClick={onClose}>
+                    Update!
                   </EuiButton>)}
               </UserContext.Consumer>
             </EuiFlexItem>
