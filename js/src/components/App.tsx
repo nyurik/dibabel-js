@@ -20,7 +20,7 @@ import { ToastsProvider } from './Toasts';
 import { User } from './User';
 import { UserProvider } from '../data/UserContext';
 import { SettingsProvider } from './SettingsContext';
-import { siteIcons } from '../icons/icons';
+import { logoIcon } from '../icons/icons';
 
 export function App() {
   return (
@@ -32,8 +32,7 @@ export function App() {
               <EuiPageHeader>
                 <EuiPageHeaderSection>
                   <EuiHeaderSectionItem border={'none'}>
-                    <EuiHeaderLogo
-                      iconType={siteIcons.wikipedia}>
+                    <EuiHeaderLogo iconType={logoIcon}>
                       Dibabel&nbsp;&nbsp;
                       <EuiBetaBadge label={'BETA'} title={'Work  in progress. Please verify all changes.'}/>
                     </EuiHeaderLogo>

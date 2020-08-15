@@ -62,11 +62,20 @@ import { ReactComponent as moduleIcon } from './type_module.svg';
  */
 export { ReactComponent as lockIcon } from './lock.svg';
 
+// /**
+//  * https://commons.wikimedia.org/wiki/File:Octicons-git-compare.svg
+//  * GitHub [MIT (http://opensource.org/licenses/mit-license.php) or OFL (http://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web)]
+//  */
+// export { ReactComponent as diffIcon } from './diff.svg';
+
 /**
- * https://commons.wikimedia.org/wiki/File:Octicons-git-compare.svg
- * GitHub [MIT (http://opensource.org/licenses/mit-license.php) or OFL (http://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web)]
+ * Designed by user:Iniquity
+ * https://www.mediawiki.org/wiki/User:Iniquity
+ * partially based on
+ * https://commons.wikimedia.org/wiki/File:Wikimedia_Community_Logo.svg
+ * real name: Artur Jan Fijałkowskipl.wiki: WarXcommons: WarXmail: [1]jabber: WarX@jabber.orgirc: [2] / Public domain
  */
-export { ReactComponent as diffIcon } from './diff.svg';
+export { ReactComponent as logoIcon } from './logo.svg';
 
 
 export const siteIcons = {
