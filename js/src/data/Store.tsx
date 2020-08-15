@@ -1,4 +1,4 @@
-import { Item, ItemTypeType, SyncItemType, Toast } from './types';
+import { Item, ItemTypeType, SyncItemType, Toast, SourceDataType } from './types';
 import React from 'react';
 
 // import fauxData from './faux/fauxData.small.json';
@@ -8,14 +8,6 @@ import { Dispatch } from 'react';
 import { EuiText } from '@elastic/eui';
 
 const titleUrlSuffix = '/wiki/';
-
-type SourceDataType = {
-  id: string,
-  primarySite: string,
-  primaryTitle: string,
-  primaryRevId: number,
-  copies: { [p: string]: any }
-};
 
 export const createItem = (
   qid: string,
@@ -57,8 +49,8 @@ export const updateSyncInfo = (item: Item, dst: SyncItemType): Item => {
   item.multisiteDepsNotOnDst = dst.multisiteDepsNotOnDst;
   item.protection = dst.protection ? dst.protection.join(', ') : '';
   item.protectionArray = dst.protection;
-  item.dstContentHash = dst.diverged;
-  item.sortStatus = `${dst.status}/${dst.diverged}/${dst.behind}`;
+  item.hash = dst.hash;
+  item.sortStatus = `${dst.status}/${dst.behind}/${dst.hash}`;
 
   return item;
 };

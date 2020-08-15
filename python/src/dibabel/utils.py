@@ -1,3 +1,4 @@
+import hashlib
 import re
 from collections import defaultdict
 from datetime import datetime, timedelta
@@ -88,3 +89,9 @@ def dict_of_dicts(items: Iterable[T],
 
 def limit_ellipsis(text: str, max_len: int) -> str:
     return text if len(text) < max_len else (text[:max_len] + '…')
+
+
+def calc_hash(content):
+    m = hashlib.sha1()
+    m.update(content.encode())
+    return m.hexdigest()

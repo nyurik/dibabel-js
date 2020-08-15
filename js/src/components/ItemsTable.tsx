@@ -125,6 +125,16 @@ export const ItemsTable = (
         title={`Show ${prettyDomain(item.lang, item.project)} / ${item.dstFullTitle} in a new tab.`}
         href={item.dstTitleUrl}/></>),
     },
+    hash: {
+      field: 'hash',
+      name: (<EuiText
+        title={'The hash number is a unique fingerprint of the page content. Pages with identical hash have the same content. The hash is computed before page was localized for this wiki.'}
+      >Hash</EuiText>),
+      sortable: true,
+      render: (hash: string) => (<EuiText
+        title={`This hash number represents a unique fingerprint of the current page content. Pages with identical hash have the same content. The hash is computed before page was localized for this wiki. Full hash is ${hash}`}
+      >{hash.substring(0, 7)}</EuiText>)
+    },
     status: {
       field: 'sortStatus',
       name: (<EuiText
@@ -151,8 +161,8 @@ export const ItemsTable = (
           case 'diverged':
             return (
               <EuiHealth
-                title={'The target page has been modified and cannot be updated automatically. The hash number is a unique fingerprint of the current page content. Pages with identical hash have the same content.'}
-                color={'danger'}>Diverged #{item.dstContentHash!.substring(0, 6)}</EuiHealth>);
+                title={'The target page has been modified and cannot be updated automatically.'}
+                color={'danger'}>Diverged</EuiHealth>);
           default:
             throw new Error(`Unknown status ${item.status}`);
         }

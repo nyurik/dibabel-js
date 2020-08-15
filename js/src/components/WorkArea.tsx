@@ -37,6 +37,7 @@ const schema = {
     lang: { type: 'string' },
     project: { type: 'string' },
     title: { type: 'string' },
+    hash: { type: 'string' },
     srcSite: { type: 'string' },
     srcFullTitle: { type: 'string' },
     srcTitleUrl: { type: 'string' },
@@ -70,6 +71,11 @@ const groupDefs: GroupDefsType = {
     columns: ['type', 'title'],
     extra_columns: ['srcSite', 'srcFullTitle', 'srcTitleUrl'],
     groupName: 'by title',
+  },
+  'hash': {
+    order: 4,
+    columns: ['hash'],
+    groupName: 'by hash',
   },
 };
 
@@ -168,7 +174,7 @@ export const WorkArea = () => {
       };
     }
 
-    return organizeItemsInGroups(0, filteredItems, ['type', 'protection', 'dstSite', 'dstTitle', 'status']);
+    return organizeItemsInGroups(0, filteredItems, ['type', 'protection', 'dstSite', 'dstTitle', 'status', 'hash']);
   }, [filteredItems, groupSelection]);
 
   const itemsTable = useMemo(() => {

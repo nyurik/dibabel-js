@@ -44,7 +44,7 @@ class SessionState:
     def my_decode(obj):
         try:
             obj = loads(obj)
-        except:
+        except ValueError:
             return pickle.loads(zlib.decompress(bytes(obj)))
         if isinstance(obj, list) and obj and isinstance(obj[0], dict) and 'comment' in obj[0]:
             obj = [RevComment.decode(v) for v in obj]
@@ -204,7 +204,7 @@ class QueryCache:
                     changed_qid.add(qid)
                     primary = self.primary_pages_by_qid[qid]
                     if page is None:
-                        info = SyncInfo(primary.qid, primary.title, domain, title)
+                        info = SyncInfo('missing', primary.qid, primary.title, domain, title)
                     else:
                         info = primary.compute_sync_info(primary.qid, page, self.sites_metadata[domain])
                     update_dict_of_dicts(infos, primary.qid, domain, info)
@@ -343,22 +343,14 @@ class QueryCache:
 
     @staticmethod
     def info_obj(p: SyncInfo):
-        res = dict(title=p.dst_title)
+        res = dict(title=p.dst_title, status=p.status)
+        if p.hash:
+            res['hash'] = p.hash
         if p.dst_timestamp:
             res['timestamp'] = p.dst_timestamp
-        if p.no_changes:
-            res['status'] = 'ok'
-        elif p.diverged is not None:
-            res['status'] = 'diverged'
-            res['diverged'] = p.diverged
-        elif p.needs_refresh:
-            res['status'] = 'unlocalized'
-        elif p.behind:
-            res['status'] = 'outdated'
+        if p.behind:
             res['behind'] = p.behind
             res['matchedRevId'] = p.matched_revid
-        else:
-            raise ValueError(f"Unexpected item status for {p}")
         if p.not_multisite_deps:
             res['notMultisiteDeps'] = p.not_multisite_deps
         if p.multisite_deps_not_on_dst:
@@ -385,14 +377,10 @@ class QueryCache:
             raise ValueError(f"Unable to load {qid}/{domain}")
         # sync info might have changed, re-get it
         info = self.syncinfo_by_qid_domain[qid][domain]
-        if info.no_changes:
-            summary = None
-        else:
-            summary = primary.create_summary(state.get_site(domain), info, self.summary_i18n)
         return dict(
             currentText=page.content,
             currentRevId=page.revid,
             newText=info.new_content,
-            summary=summary,
+            summary=primary.create_summary(state.get_site(domain), info, self.summary_i18n),
             syncInfo=self.info_obj(info)
         )

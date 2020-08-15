@@ -11,9 +11,13 @@ export interface Toast extends EuiToastProps {
   toastLifeTimeMs?: number;
 }
 
+export type StatusType = 'ok' | 'outdated' | 'unlocalized' | 'diverged';
+
+export type ItemTypeType = 'module' | 'template';
+
 export type LangInfo = { name: string, autonym: string } ;
+
 export type LangInfoDict = { [key: string]: LangInfo };
-// export type AddToast = Dispatch<Toast>;
 
 export type Props = { children: React.ReactNode };
 
@@ -25,10 +29,6 @@ export type GroupDefsType = {
     order: number,
   }
 };
-
-export type StatusType = 'diverged' | 'ok' | 'outdated' | 'unlocalized';
-
-export type ItemTypeType = 'module' | 'template';
 
 export type Item = {
   key: string,
@@ -46,7 +46,7 @@ export type Item = {
   dstTitle: string,
   dstTitleUrl: string,
   dstTimestamp: string,
-  dstContentHash?: string,
+  hash?: string,
   status: StatusType,
   behind?: number,
   matchedRevId?: number,
@@ -79,8 +79,9 @@ export type Group = {
 export type SyncItemType = {
   title: string,
   timestamp: string,
+  hash: string,
   status: StatusType,
-  diverged?: string,
+  // diverged?: string,
   behind?: number,
   matchedRevId?: number,
   notMultisiteDeps?: Array<string>,
@@ -88,12 +89,22 @@ export type SyncItemType = {
   protection?: Array<string>,
 }
 
+// Endpoint /get_page gets this
 export type SyncContentType = {
   currentText: string,
   currentRevId: number,
   newText: string,
   summary: string,
   syncInfo: SyncItemType,
+};
+
+// Endpoint /data returns an array of these values is downloaded from backend
+export type SourceDataType = {
+  id: string,
+  primarySite: string,
+  primaryTitle: string,
+  primaryRevId: number,
+  copies: { [p: string]: SyncItemType }
 };
 
 export type UpdateItems = (key: string, info: SyncItemType) => void;

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Dict, Union, List, Set, Tuple, Any, Optional
+from typing import Dict, List, Set, Optional
 
 
 @dataclass
@@ -61,6 +61,7 @@ class RevComment:
 
 @dataclass
 class SyncInfo:
+    status: str  # missing | ok | outdated | diverged | unlocalized
     qid: str
     src_title: str
     dst_domain: str
@@ -69,16 +70,15 @@ class SyncInfo:
     dst_protection: Optional[List[str]] = None
     dst_revid: Optional[int] = None
     new_content: Optional[str] = None
-    no_changes: bool = False
-    needs_refresh: bool = False
     behind: Optional[int] = None
     matched_revid: Optional[int] = None
-    diverged: Optional[str] = None
     not_multisite_deps: Optional[List[str]] = None
     multisite_deps_not_on_dst: Optional[List[str]] = None
+    hash: Optional[str] = None
 
     def __str__(self) -> str:
-        return f"{self.src_title} -> {self.dst_domain}/wiki/{self.dst_title} ({self.dst_revid})"
+        return f"{self.status}: {self.src_title} -> {self.dst_domain}/wiki/{self.dst_title} " \
+               f"({self.dst_revid}, #{self.hash})"
 
 
 TemplateCache = Dict[str, TemplateReplacements]

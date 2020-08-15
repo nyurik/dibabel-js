@@ -1,4 +1,3 @@
-import hashlib
 import re
 from sys import intern
 from typing import Iterable, Optional
@@ -11,10 +10,9 @@ from .DataTypes import RevComment, SyncInfo, Translations
 from .DataTypes import TemplateCache, SiteMetadata
 from .PageContent import PageContent
 from .WikiSite import WikiSite
-
 # Find any string that is a template name
 # Must be preceded by two {{ (not 3!), must be followed by either "|" or "}", must not include any funky characters
-from .utils import limit_ellipsis
+from .utils import limit_ellipsis, calc_hash
 
 reTemplateName = re.compile(r'''((?:^|[^{]){{\s*)([^|{}<>&#:]*[^|{}<>&#: ])(\s*[|}])''')
 
@@ -48,7 +46,13 @@ class PagePrimary:
             raise ValueError(f"History has not been populated for {self}")
 
         changes = []
-        result = SyncInfo(qid, self.title, page.domain, page.title, page.content_ts, page.protection)
+        result = SyncInfo('',
+                          qid,
+                          src_title=self.title,
+                          dst_domain=page.domain,
+                          dst_title=page.title,
+                          dst_timestamp=page.content_ts,
+                          dst_protection=page.protection)
         current_content = page.content.rstrip()
         for hist in reversed(self.history):
             if self.is_module:
@@ -67,31 +71,36 @@ class PagePrimary:
                 # Latest revision must match adjusted content
                 if adj.rstrip() == current_content:
                     # Latest matches what we expect - nothing to do, stop
-                    result.no_changes = True
+                    result.hash = calc_hash(hist.content)
+                    result.status = 'ok'
                     break
                 elif hist.content.rstrip() == current_content:
                     # local template was renamed without any changes in primary
-                    result.needs_refresh = True
+                    # the hash is the same as for 'ok'
+                    result.hash = calc_hash(hist.content)
+                    result.status = 'unlocalized'
                     break
             elif adj.rstrip() == current_content or hist.content.rstrip() == current_content:
                 # One of the previous revisions matches current state of the target
                 result.matched_revid = hist.revid
                 result.behind = len(changes)
+                result.hash = calc_hash(hist.content)
+                result.status = 'outdated'
                 break
             changes.append(hist)
         else:
             # Diverged content: current target content was not found in primary's history
-            m = hashlib.sha256()
-            m.update(current_content.encode())
-            result.diverged = m.hexdigest()
+            result.hash = calc_hash(current_content)
+            result.status = 'diverged'
 
+        assert result.status != ''
         return result
 
-    def create_summary(self, site: WikiSite, info: SyncInfo, i18n_messages: Translations) -> str:
+    def create_summary(self, site: WikiSite, info: SyncInfo, i18n_messages: Translations) -> Optional[str]:
         summary_link = f'[[mw:{self.title}]]'
         lang = info.dst_domain.split('.', 1)[0]
 
-        if info.behind:
+        if info.status == 'outdated':
             changes = self.history[-info.behind:]
             # dict keeps the order
             users = list({v.user: '' for v in changes}.keys())
@@ -103,17 +112,15 @@ class PagePrimary:
             text = text.replace('$2', limit_ellipsis(','.join(users), 80))
             text = text.replace('$3', limit_ellipsis(','.join(comments), 210))
             text = text.replace('$4', summary_link)
-        elif info.needs_refresh or info.diverged:
-            i18n = i18n_messages['localized_summary' if info.needs_refresh else 'reset_summary']
+        elif info.status in ('unlocalized', 'diverged'):
+            i18n = i18n_messages['localized_summary' if info.status == 'unlocalized' else 'reset_summary']
             text = i18n[lang if lang in i18n else 'en']
             text = text.replace('$1', summary_link)
         else:
-            raise ValueError(f'no changes for {info}')
+            return None
 
         try:
-            res = site(action='expandtemplates',
-                       text=text,
-                       prop='wikitext')
+            res = site(action='expandtemplates', text=text, prop='wikitext')
         except ApiError as err:
             print(err)
             raise err
