@@ -96,7 +96,7 @@ export const ItemsTable = (
       field: 'srcFullTitle',
       name: (<EuiText title={'Title of the page at mediawiki.org'}>Primary Page</EuiText>),
       sortable: true,
-      render: (_: string, item: Item) => (<><ExternalLink href={item.srcTitleUrl}/>{item.srcFullTitle}</>),
+      render: (_: string, item: Item) => (<>{item.srcFullTitle}<ExternalLink href={item.srcTitleUrl}/></>),
     },
     lang: {
       field: 'lang',
@@ -119,7 +119,7 @@ export const ItemsTable = (
       field: 'dstFullTitle',
       name: (<EuiText title={'Title of the copied page as it appears on the destination wiki.'}>Wiki page</EuiText>),
       sortable: true,
-      render: (_: string, item: Item) => (<><ExternalLink href={item.dstTitleUrl}/>{item.dstFullTitle}</>),
+      render: (_: string, item: Item) => (<>{item.dstFullTitle}<ExternalLink href={item.dstTitleUrl}/></>),
     },
     status: {
       field: 'sortStatus',
