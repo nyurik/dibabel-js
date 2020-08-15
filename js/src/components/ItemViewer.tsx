@@ -63,6 +63,13 @@ const ItemDiffBlock = ({ type, oldText, newText }: { type: ItemTypeType, oldText
         useDarkTheme={isDarkTheme}
         showDiffOnly={!isSame}
         hideLineNumbers={isSame}
+        // Something is wrong here - somehow renderContent is called with undefined
+        renderContent={str => str === undefined ? null as any : (<pre
+          style={{ display: 'inline' }}
+          dangerouslySetInnerHTML={{
+            __html: Prism.highlight(str, type === 'module' ? Prism.languages.lua : Prism.languages.wiki),
+          }}
+        />)}
       />
     </div>);
 };
@@ -245,7 +252,9 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
       }
       if (tries === maxTries) {
         addToast({
-          title: (<EuiText><ItemDstLink item={item}/>{' '}was updated, but the DiBabel server was not able to get updated information.</EuiText>),
+          title: (
+            <EuiText><ItemDstLink item={item}/>{' '}was updated, but the DiBabel server was not able to get updated
+              information.</EuiText>),
           color: 'danger',
           iconType: 'alert',
         });
