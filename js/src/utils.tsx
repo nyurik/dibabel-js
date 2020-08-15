@@ -1,4 +1,4 @@
-import { DependencyList, Dispatch, useEffect, useState, useRef } from 'react';
+import { DependencyList, Dispatch, useEffect, useState } from 'react';
 import { Item, ItemTypeType } from './data/types';
 
 // Using full root for the ease of debugging locally. Eventually should probably use '/'
