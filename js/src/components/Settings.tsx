@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import { EuiButtonIcon, EuiHeaderLink, EuiPopover, EuiPopoverTitle, EuiSpacer, EuiSwitch } from '@elastic/eui';
-import { ThemeContext } from '../themes/ThemeContext';
+import { SettingsContext } from './SettingsContext';
 import { UserContext, UserState } from '../data/UserContext';
 import { rootUrl } from '../utils';
 
 export function Settings() {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const settings = useContext(SettingsContext);
+  const { user } = useContext(UserContext);
 
-  const button = (<EuiButtonIcon
+  const settingsButton = (<EuiButtonIcon
     iconSize={'m'}
     iconType={'gear'}
     onClick={() => setIsPopoverOpen(!isPopoverOpen)}
@@ -16,26 +18,35 @@ export function Settings() {
     color={'text'}
   />);
 
-  return <EuiPopover
-    button={button}
+  let elements = null;
+
+  if (isPopoverOpen) {
+    elements = [
+      <EuiSwitch
+        label={'Night mode'}
+        checked={settings.isDarkTheme}
+        disabled
+        onChange={e => settings.setIsDarkTheme(e.target.checked)}
+      />,
+      <EuiSpacer size={'m'}/>,
+      <EuiSwitch
+        label={'Split diff'}
+        checked={settings.isSplitView}
+        onChange={e => settings.setIsSplitView(e.target.checked)}
+      />
+    ];
+
+    if (user.state === UserState.LoggedIn) {
+      elements.push(<EuiSpacer size={'m'}/>);
+      elements.push(<EuiHeaderLink href={`${rootUrl}logout`}>Logout...</EuiHeaderLink>);
+    }
+  }
+
+  return (<EuiPopover
+    button={settingsButton}
     isOpen={isPopoverOpen}
     closePopover={() => setIsPopoverOpen(false)}>
     <EuiPopoverTitle>Options</EuiPopoverTitle>
-    <ThemeContext.Consumer>
-      {context => (<EuiSwitch
-        label={'Night mode'}
-        checked={context.isDarkTheme}
-        disabled
-        onChange={e => context.setIsDarkTheme(e.target.checked)}
-      />)}
-    </ThemeContext.Consumer>
-    <UserContext.Consumer>
-      {context => context.user.state === UserState.LoggedIn
-        ? (<>
-          <EuiSpacer size={'s'}/>
-          <EuiHeaderLink href={`${rootUrl}logout`}>Logout...</EuiHeaderLink>
-        </>)
-        : null}
-    </UserContext.Consumer>
-  </EuiPopover>;
+    {elements}
+  </EuiPopover>);
 }

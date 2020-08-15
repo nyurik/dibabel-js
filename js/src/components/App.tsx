@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  EuiBadge,
+  EuiBetaBadge,
   EuiFlexGroup,
   EuiFlexItem,
   EuiHeaderLink,
@@ -12,38 +12,38 @@ import {
   EuiPageBody,
   EuiPageHeader,
   EuiPageHeaderSection,
-  EuiSpacer
+  EuiText
 } from '@elastic/eui';
 import { Settings } from './Settings';
 import { WorkArea } from './WorkArea';
 import { ToastsProvider } from './Toasts';
 import { User } from './User';
 import { UserProvider } from '../data/UserContext';
-import { ThemeProvider } from '../themes/ThemeContext';
+import { SettingsProvider } from './SettingsContext';
 import { siteIcons } from '../icons/icons';
 
 export function App() {
   return (
-    <ThemeProvider>
+    <SettingsProvider>
       <ToastsProvider>
         <UserProvider>
           <EuiPage>
             <EuiPageBody>
               <EuiPageHeader>
                 <EuiPageHeaderSection>
-                  <EuiHeaderSectionItem border={'right'}>
+                  <EuiHeaderSectionItem border={'none'}>
                     <EuiHeaderLogo
                       iconType={siteIcons.wikipedia}>
-                      Dibabel
+                      Dibabel&nbsp;&nbsp;
+                      <EuiBetaBadge label={'BETA'} title={'Work  in progress. Please verify all changes.'}/>
                     </EuiHeaderLogo>
                   </EuiHeaderSectionItem>
+                </EuiPageHeaderSection>
+                <EuiPageHeaderSection>
                   <EuiHeaderSectionItem>
-                    Helps wikis synchronize modules and templates across languages. Written by&nbsp;<EuiLink
-                    href={'https://www.mediawiki.org/wiki/User:Yurik'} target={'_blank'}>User:Yurik</EuiLink>.
-                  </EuiHeaderSectionItem>
-                  <EuiSpacer size={'s'}/>
-                  <EuiHeaderSectionItem>
-                    <EuiBadge color={'accent'}>Alpha version! Please verify all changes.</EuiBadge>
+                    <EuiText size={'s'}>Keep modules and templates the same across languages. Written by&nbsp;<EuiLink
+                      color={'text'} href={'https://www.mediawiki.org/wiki/User:Yurik'}
+                      target={'_blank'}>User:Yurik</EuiLink></EuiText>
                   </EuiHeaderSectionItem>
                 </EuiPageHeaderSection>
                 <EuiPageHeaderSection>
@@ -70,6 +70,6 @@ export function App() {
           </EuiPage>
         </UserProvider>
       </ToastsProvider>
-    </ThemeProvider>
+    </SettingsProvider>
   );
 }

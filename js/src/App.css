@@ -28,3 +28,7 @@
 .euiTableRow.euiTableRow-isExpandedRow table .euiTableRowCell {
     background-color: inherit;
 }
+
+.diff-view {
+    tab-size: 4;
+}

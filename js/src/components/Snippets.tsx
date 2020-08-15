@@ -1,5 +1,5 @@
 import React from 'react';
-import { EuiButtonIcon, EuiIcon, IconSize } from '@elastic/eui';
+import { EuiButtonIcon, EuiIcon, IconSize, EuiLink } from '@elastic/eui';
 import { Item } from '../data/types';
 import { siteIcons } from '../icons/icons';
 
@@ -14,15 +14,16 @@ export const ExternalLink = ({ href }: { href: string }) => {
 };
 
 export const ItemSrcLink = ({ item: { srcTitleUrl, srcFullTitle } }: { item: Item }) => {
-  return <><ExternalLink href={srcTitleUrl}/>{srcFullTitle}</>;
+  return (<EuiLink href={srcTitleUrl} target={'_blank'}>{srcFullTitle}</EuiLink>);
 };
 
-export const ItemDstLink = ({ item: { dstTitleUrl, dstFullTitle } }: { item: Item }) => {
-  return <><ExternalLink href={dstTitleUrl}/>{dstFullTitle}</>;
+export const ItemDstLink = ({ item: { dstTitleUrl, lang, project, dstFullTitle } }: { item: Item }) => {
+  const site = lang !== '-' ? `${lang}.${project}` : project;
+  return (<EuiLink href={dstTitleUrl} target={'_blank'}>{site}&nbsp;/&nbsp;{dstFullTitle}</EuiLink>);
 };
 
 export const ItemWikidataLink = ({ item: { qid } }: { item: Item }) => {
-  return <><ExternalLink href={`https://wikidata.org/wiki/${qid}`}/>{qid}</>;
+  return (<EuiLink href={`https://wikidata.org/wiki/${qid}`} target={'_blank'}>{qid}</EuiLink>);
 };
 
 export const ProjectIcon = ({ item: { project }, size }: {
