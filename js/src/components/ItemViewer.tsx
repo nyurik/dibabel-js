@@ -279,7 +279,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
       onConfirm={onCopy}
       cancelButtonText="No, take me back"
       confirmButtonText="Yes, do it!"
-      buttonColor="danger"
+      buttonColor="primary"
       defaultFocusedButton="confirm"
       confirmButtonDisabled={confirmationStatus !== 'show'}
     >
@@ -294,7 +294,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
     const isDiverged = item.status === 'diverged';
     const btnProps: Props = {
       fill: true,
-      color: isDiverged || warnings ? 'danger' : 'primary',
+      color: (isDiverged || warnings.length > 0) ? 'danger' : 'primary',
     };
     if (isLoggedIn) {
       btnProps.onClick = () => setConfirmationStatus('show');
@@ -311,7 +311,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
           <Comment readOnly={!isLoggedIn} value={comment} setValue={setComment}/>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton {...btnProps} >Copy!</EuiButton>
+          <EuiButton {...btnProps} >Update!</EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>
     </EuiFlyoutFooter>;

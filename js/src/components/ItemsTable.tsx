@@ -12,7 +12,7 @@ import {
 
 import { Group, Item, ItemTypeType } from '../data/types';
 import { lockIcon, typeIcons } from '../icons/icons';
-import { ExternalLink, ProjectIcon } from './Snippets';
+import { ExternalLink, prettyDomain, ProjectIcon } from './Snippets';
 import { itemDiffLink } from '../utils';
 
 export const ItemsTable = (
@@ -96,7 +96,9 @@ export const ItemsTable = (
       field: 'srcFullTitle',
       name: (<EuiText title={'Title of the page at mediawiki.org'}>Primary Page</EuiText>),
       sortable: true,
-      render: (_: string, item: Item) => (<><ExternalLink href={item.srcTitleUrl}/>{item.srcFullTitle}</>),
+      render: (_: string, item: Item) => (<>{item.srcFullTitle}<ExternalLink
+        title={`Show primary ${item.srcFullTitle} in a new tab.`}
+        href={item.srcTitleUrl}/></>),
     },
     lang: {
       field: 'lang',
@@ -119,7 +121,9 @@ export const ItemsTable = (
       field: 'dstFullTitle',
       name: (<EuiText title={'Title of the copied page as it appears on the destination wiki.'}>Wiki page</EuiText>),
       sortable: true,
-      render: (_: string, item: Item) => (<><ExternalLink href={item.dstTitleUrl}/>{item.dstFullTitle}</>),
+      render: (_: string, item: Item) => (<>{item.dstFullTitle}<ExternalLink
+        title={`Show ${prettyDomain(item.lang, item.project)}&nbsp;&nbsp;${item.dstFullTitle}  in a new tab.`}
+        href={item.dstTitleUrl}/></>),
     },
     status: {
       field: 'sortStatus',
@@ -137,10 +141,11 @@ export const ItemsTable = (
               title={`The target page has exactly the same content as original instead of using localized values, and needs to be updated.`}
               color={'warning'}>Unlocalized</EuiHealth>);
           case 'outdated':
-            const href = itemDiffLink(item);
             return (<EuiHealth
               title={`The target page is outdated by ${item.behind} versions, and can be updated.  Click to see changes.`}
-              color={'warning'}><span>Outdated by {item.behind} rev<ExternalLink href={href}/></span></EuiHealth>);
+              color={'warning'}><span>Outdated by {item.behind} rev<ExternalLink
+              title={`Show changes of the last ${item.behind} revisions of the primary ${item.dstFullTitle} in a new tab.`}
+              href={itemDiffLink(item)}/></span></EuiHealth>);
           case 'diverged':
             return (
               <EuiHealth
