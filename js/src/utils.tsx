@@ -1,8 +1,8 @@
 import { DependencyList, Dispatch, useEffect, useState, useRef } from 'react';
 import { Item, ItemTypeType } from './data/types';
 
-export const rootUrl = 'https://dibabel.toolforge.org/';
-// export const rootUrl = '/';
+// export const rootUrl = 'https://dibabel.toolforge.org/';
+export const rootUrl = '/';
 
 /**
  * React hook to store state in the local storage
@@ -112,21 +112,3 @@ export const sleep = (durationsMs: number) => {
 export const itemDiffLink = ({ dstTitle, srcRevId, matchedRevId }: Item) => {
   return `https://www.mediawiki.org/w/index.php?title=${encodeURIComponent(dstTitle)}&type=revision&diff=${srcRevId}&oldid=${matchedRevId}`;
 };
-
-// https://stackoverflow.com/a/51082563/177275
-export function useTraceUpdate(props: any) {
-  const prev = useRef(props);
-  useEffect(() => {
-    const changedProps = Object.entries(props).reduce((ps, [k, v]) => {
-      if (prev.current[k] !== v) {
-        // @ts-ignore
-        ps[k] = [prev.current[k], v];
-      }
-      return ps;
-    }, {});
-    if (Object.keys(changedProps).length > 0) {
-      console.log('Changed props:', changedProps);
-    }
-    prev.current = props;
-  });
-}

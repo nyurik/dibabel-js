@@ -122,7 +122,7 @@ export const ItemsTable = (
       name: (<EuiText title={'Title of the copied page as it appears on the destination wiki.'}>Wiki page</EuiText>),
       sortable: true,
       render: (_: string, item: Item) => (<>{item.dstFullTitle}<ExternalLink
-        title={`Show ${prettyDomain(item.lang, item.project)}&nbsp;&nbsp;${item.dstFullTitle}  in a new tab.`}
+        title={`Show ${prettyDomain(item.lang, item.project)} / ${item.dstFullTitle} in a new tab.`}
         href={item.dstTitleUrl}/></>),
     },
     status: {
@@ -141,11 +141,13 @@ export const ItemsTable = (
               title={`The target page has exactly the same content as original instead of using localized values, and needs to be updated.`}
               color={'warning'}>Unlocalized</EuiHealth>);
           case 'outdated':
-            return (<EuiHealth
-              title={`The target page is outdated by ${item.behind} versions, and can be updated.  Click to see changes.`}
-              color={'warning'}><span>Outdated by {item.behind} rev<ExternalLink
-              title={`Show changes of the last ${item.behind} revisions of the primary ${item.dstFullTitle} in a new tab.`}
-              href={itemDiffLink(item)}/></span></EuiHealth>);
+            return (
+              <EuiHealth
+                title={`The target page is outdated by ${item.behind} versions, and can be updated.  Click to see changes.`}
+                color={'warning'}
+              ><span>Outdated by {item.behind} rev<ExternalLink
+                title={`Show changes of the last ${item.behind} revisions of the primary ${item.dstFullTitle} in a new tab.`}
+                href={itemDiffLink(item)}/></span></EuiHealth>);
           case 'diverged':
             return (
               <EuiHealth
