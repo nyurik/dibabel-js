@@ -1,8 +1,9 @@
 import { DependencyList, Dispatch, useEffect, useState, useRef } from 'react';
 import { Item, ItemTypeType } from './data/types';
 
-// export const rootUrl = 'https://dibabel.toolforge.org/';
-export const rootUrl = '/';
+// Using full root for the ease of debugging locally. Eventually should probably use '/'
+export const rootUrl = 'https://dibabel.toolforge.org/';
+// export const rootUrl = '/';
 
 /**
  * React hook to store state in the local storage
