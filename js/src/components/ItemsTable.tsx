@@ -10,7 +10,7 @@ import {
   EuiText
 } from '@elastic/eui';
 
-import { Group, Item, ItemTypeType } from '../data/types';
+import { Group, Item } from '../data/types';
 import { lockIcon, typeIcons } from '../icons/icons';
 import { ExternalLink, prettyDomain, ProjectIcon } from './Snippets';
 import { itemDiffLink } from '../utils';
@@ -61,19 +61,6 @@ export const ItemsTable = (
       width: '2.5em',
       render: (item: Item) => (<EuiIcon type={expandedItems.has(item.key) ? 'arrowUp' : 'arrowDown'}/>),
     },
-    type: {
-      field: 'type',
-      name: (<EuiText title={'Type of the page (template or module)'}>Type</EuiText>),
-      width: '3.8em',
-      sortable: true,
-      mobileOptions: { show: false },
-      render: (type: ItemTypeType) => (
-        <EuiIcon
-          type={typeIcons[type]}
-          size={'m'}
-          title={type}
-        />),
-    },
     protection: {
       field: 'protection',
       name: (<EuiIcon
@@ -82,7 +69,7 @@ export const ItemsTable = (
         color={'#C6C7C7'}
         title={`Indicate if the page has protection and requires special edit rights.`}
       />),
-      width: '3.8em',
+      width: '3.55em',
       sortable: true,
       render: (rights: string) => rights ? (
         <EuiIcon
@@ -96,7 +83,9 @@ export const ItemsTable = (
       field: 'srcFullTitle',
       name: (<EuiText title={'Title of the page at mediawiki.org'}>Primary Page</EuiText>),
       sortable: true,
-      render: (_: string, item: Item) => (<>{item.srcFullTitle}<ExternalLink
+      render: (_: string, item: Item) => (<><EuiIcon
+        type={typeIcons[item.type]} size={'m'} title={item.type}
+      />&nbsp;&nbsp;{item.srcFullTitle}<ExternalLink
         title={`Show primary ${item.srcFullTitle} in a new tab.`}
         href={item.srcTitleUrl}/></>),
     },
@@ -121,7 +110,9 @@ export const ItemsTable = (
       field: 'dstFullTitle',
       name: (<EuiText title={'Title of the copied page as it appears on the destination wiki.'}>Wiki page</EuiText>),
       sortable: true,
-      render: (_: string, item: Item) => (<>{item.dstFullTitle}<ExternalLink
+      render: (_: string, item: Item) => (<><EuiIcon
+        type={typeIcons[item.type]} size={'m'} title={item.type}
+      />&nbsp;&nbsp;{item.dstFullTitle}<ExternalLink
         title={`Show ${prettyDomain(item.lang, item.project)} / ${item.dstFullTitle} in a new tab.`}
         href={item.dstTitleUrl}/></>),
     },
@@ -156,7 +147,7 @@ export const ItemsTable = (
                 title={`The target page is outdated by ${item.behind} versions, and can be updated.  Click to see changes.`}
                 color={'warning'}
               ><span>Outdated by {item.behind} rev<ExternalLink
-                title={`Show changes of the last ${item.behind} revisions of the primary ${item.dstFullTitle} in a new tab.`}
+                title={`Show what changed in the last ${item.behind} revisions of the primary ${item.srcFullTitle} in a new tab.`}
                 href={itemDiffLink(item)}/></span></EuiHealth>);
           case 'diverged':
             return (

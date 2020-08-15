@@ -68,8 +68,8 @@ const groupDefs: GroupDefsType = {
   },
   'srcTitleUrl': {
     order: 3,
-    columns: ['type', 'title'],
-    extra_columns: ['srcSite', 'srcFullTitle', 'srcTitleUrl'],
+    columns: ['title'],
+    extra_columns: ['type', 'srcSite', 'srcFullTitle', 'srcTitleUrl'],
     groupName: 'by title',
   },
   'hash': {
@@ -174,7 +174,7 @@ export const WorkArea = () => {
       };
     }
 
-    return organizeItemsInGroups(0, filteredItems, ['type', 'protection', 'dstSite', 'dstTitle', 'status', 'hash']);
+    return organizeItemsInGroups(0, filteredItems, ['protection', 'dstSite', 'dstTitle', 'status', 'hash']);
   }, [filteredItems, groupSelection]);
 
   const itemsTable = useMemo(() => {
