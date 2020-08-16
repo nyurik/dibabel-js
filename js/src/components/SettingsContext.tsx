@@ -17,6 +17,8 @@ export type SettingsContextType = {
   setIsDarkTheme: Dispatch<boolean>
   isSplitView: boolean
   setIsSplitView: Dispatch<boolean>
+  isIncrementalSearch: boolean
+  setIsIncrementalSearch: Dispatch<boolean>
 }
 export const SettingsContext = React.createContext<SettingsContextType>({} as SettingsContextType);
 
@@ -30,13 +32,17 @@ export const SettingsProvider = ({ children }: Props) => {
   const [isSplitView, setIsSplitView] = usePersistedState<boolean>(
     `diff-split`, 'true', v => v === 'true', v => v ? 'true' : 'false');
 
+  const [isIncrementalSearch, setIsIncrementalSearch] = usePersistedState<boolean>(
+    `incremental-search`, 'true', v => v === 'true', v => v ? 'true' : 'false');
+
   // // @ts-ignore
   // [(isDarkTheme ? themeLight : themeDark)].unuse();
   // // @ts-ignore
   // [(isDarkTheme ? themeDark : themeLight)].use();
 
   return (
-    <SettingsContext.Provider value={{ isDarkTheme, setIsDarkTheme, isSplitView, setIsSplitView }}>
+    <SettingsContext.Provider
+      value={{ isDarkTheme, setIsDarkTheme, isSplitView, setIsSplitView, isIncrementalSearch, setIsIncrementalSearch }}>
       {children}
     </SettingsContext.Provider>
   );

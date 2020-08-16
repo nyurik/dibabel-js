@@ -30,10 +30,18 @@ export function Settings() {
       />,
       <EuiSpacer size={'m'}/>,
       <EuiSwitch
-        label={'Split diff'}
+        label={'Split diff view'}
+        title={'Show page comparison side by side (split) or unified.'}
         checked={settings.isSplitView}
         onChange={e => settings.setIsSplitView(e.target.checked)}
-      />
+      />,
+      <EuiSpacer size={'m'}/>,
+      <EuiSwitch
+        label={'Incremental search'}
+        title={'Search as you type. If disabled, you must press ENTER after entering the search query string. Disable when your computer is not performing fast enough when entering queries.'}
+        checked={settings.isIncrementalSearch}
+        onChange={e => settings.setIsIncrementalSearch(e.target.checked)}
+      />,
     ];
 
     if (user.state === UserState.LoggedIn) {

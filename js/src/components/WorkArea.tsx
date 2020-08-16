@@ -25,6 +25,7 @@ import { GroupSelector } from './GroupSelector';
 import { SyncButton } from './SyncButton';
 import { ItemViewer } from './ItemViewer';
 import { ToastsContext } from './Toasts';
+import { SettingsContext } from './SettingsContext';
 
 const schema = {
   strict: true,
@@ -101,6 +102,7 @@ async function getWikiOptions(allItems: Array<Item>) {
 
 export const WorkArea = () => {
   const addToast = useContext(ToastsContext);
+  const { isIncrementalSearch } = useContext(SettingsContext);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [selectedItems, setSelectedItems] = useState<Set<Item>>(() => new Set());
@@ -301,7 +303,7 @@ export const WorkArea = () => {
       box={{
         placeholder: 'examples:   en.wikipedia    TNT    lang=en',
         isClearable: true,
-        incremental: true,
+        incremental: isIncrementalSearch,
         fullWidth: true,
         schema,
       }}
