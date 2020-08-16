@@ -338,7 +338,7 @@ export const WorkArea = () => {
         <EuiFlexItem grow={false}>{refreshButton}</EuiFlexItem>
       </EuiFlexGroup>
     );
-  }, [addToast, allItems, groupSelection, isLoading, query, selectedItems, setGroupSelection, setQuery]);
+  }, [addToast, allItems, groupSelection, isIncrementalSearch, isLoading, query, selectedItems, setGroupSelection, setQuery]);
 
   const updateItems = (items: Array<Item>, key: string, info: SyncItemType) => {
     const newItems = [...items];
