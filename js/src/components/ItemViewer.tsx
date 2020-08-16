@@ -12,6 +12,7 @@ import {
   EuiFlyoutFooter,
   EuiFlyoutHeader,
   EuiHealth,
+  EuiIcon,
   EuiLink,
   EuiOverlayMask,
   EuiProgress,
@@ -23,12 +24,13 @@ import {
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
 
 import { Item, ItemTypeType, SyncContentType, UpdateItems } from '../data/types';
-import { ItemDstLink, ItemSrcLink, ItemWikidataLink, ProjectIcon } from './Snippets';
+import { ItemDstLink, ItemSrcLink, ItemWikidataLink } from './Snippets';
 import { getToken, itemDiffLink, postToApi, rootUrl, sleep } from '../utils';
 import { UserContext, UserState } from '../data/UserContext';
 import { ToastsContext } from './Toasts';
 import { SettingsContext } from './SettingsContext';
 import { Props } from '@elastic/eui/src/components/button/button';
+import { icons } from '../icons/icons';
 
 interface ItemViewerParams<TItem> {
   item: TItem;
@@ -94,7 +96,7 @@ type ContentType = {
 
 const getPageData = async (item: Item): Promise<ContentType> => {
   try {
-    const result = await fetch(`${rootUrl}page/${item.qid}/${item.dstSite}`);
+    const result = await fetch(`${rootUrl}page/${item.qid}/${item.wiki}`);
     if (result.ok) {
       let data: SyncContentType = await result.json();
       return { status: 'ok', data };
@@ -166,7 +168,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
   const warnings = [];
   if (item.status === 'diverged') {
     warnings.push(<EuiCallOut title={'Unrecognized content'} color={'warning'} iconType={'alert'}>
-      <EuiText>This page was modified by the {item.dstSite} community. Do not override it unless:
+      <EuiText>This page was modified by the {item.wiki} community. Do not override it unless:
         <ul>
           <li>Local changes were done by mistake and should be reverted</li>
           <li>The local changes are now included in the primary page</li>
@@ -185,17 +187,17 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
         page was edited to use a new template/module, and that the new page is not enabled for
         synchronization.</EuiText>
       <EuiSpacer size={'s'}/>
-      <EuiText>{formatLinks(item.dstSite, item.notMultisiteDeps)}</EuiText>
+      <EuiText>{formatLinks(item.wiki, item.notMultisiteDeps)}</EuiText>
     </EuiCallOut>);
     warnings.push(<EuiSpacer size={'m'}/>);
   }
 
   if (item.multisiteDepsNotOnDst) {
-    warnings.push(<EuiCallOut title={`Dependencies do not exist in ${item.dstSite}`} color={'warning'}
+    warnings.push(<EuiCallOut title={`Dependencies do not exist in ${item.wiki}`} color={'warning'}
                               iconType={'alert'}>
       <EuiText>This page depends on templates or modules that are not present on the destination site.
         Copy the content of these pages to
-        {' '}<EuiLink href={`https://${item.dstSite}`} target={'_blank'}>{item.dstSite}</EuiLink>{' '}
+        {' '}<EuiLink href={`https://${item.wiki}`} target={'_blank'}>{item.wiki}</EuiLink>{' '}
         and make sure they are listed in the <ItemWikidataLink item={item}/>.</EuiText>
       <EuiSpacer size={'s'}/>
       <EuiText>{formatLinks(item.srcSite, item.multisiteDepsNotOnDst)}</EuiText>
@@ -221,14 +223,14 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
   const onCopy = async () => {
     try {
       setConfirmationStatus('saving');
-      let res = await postToApi(item.dstSite, {
+      let res = await postToApi(item.wiki, {
         action: 'edit',
         title: item.dstFullTitle,
         text: content.data!.newText,
         summary: comment,
         basetimestamp: content.data!.syncInfo.timestamp,
         nocreate: '1',
-        token: await getToken(item.dstSite),
+        token: await getToken(item.wiki),
       });
       if (res.edit.result !== 'Success') {
         setContent({ status: 'error', data: res.edit.info || JSON.stringify(res.edit) });
@@ -326,7 +328,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
         <EuiFlyoutHeader hasBorder>
           <EuiTitle size={'m'}>
             <EuiFlexGroup alignItems={'center'} gutterSize={'s'}>
-              <EuiFlexItem grow={false}><ProjectIcon item={item} size={'xl'}/></EuiFlexItem>&nbsp;
+              <EuiFlexItem grow={false}><EuiIcon type={icons[item.project]} size={'xl'}/></EuiFlexItem>&nbsp;
               <h3>{item.srcFullTitle}</h3>
             </EuiFlexGroup>
           </EuiTitle>

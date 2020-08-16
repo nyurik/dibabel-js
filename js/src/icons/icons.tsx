@@ -1,3 +1,6 @@
+import React from 'react';
+import { EuiIcon } from '@elastic/eui';
+
 /**
  * https://commons.wikimedia.org/wiki/File:Incubator-logo.svg
  * NielsF / CC BY-SA (https://creativecommons.org/licenses/by-sa/3.0)
@@ -77,8 +80,8 @@ export { ReactComponent as lockIcon } from './lock.svg';
  */
 export { ReactComponent as logoIcon } from './logo.svg';
 
-
-export const siteIcons = {
+export const icons: { [name: string]: any } = {
+  // projects
   commons: commonsIcon,
   incubator: incubatorIcon,
   mediawiki: mediawikiIcon,
@@ -94,9 +97,13 @@ export const siteIcons = {
   wikiversity: wikiversityIcon,
   wikivoyage: wikivoyageIcon,
   wiktionary: wiktionaryIconUrl,
-};
-
-export const typeIcons = {
+  // Types
   module: moduleIcon,
   template: templateIcon,
 };
+
+// Cache all medium size icons as EuiIcon objects
+export const iconsEuiMedium = Object.fromEntries(Object.entries(icons).map(
+  ([name, icon]) => [name, (<EuiIcon type={icon} size={'m'} title={name[0].toUpperCase() + name.substring(1)}/>)]
+));
+

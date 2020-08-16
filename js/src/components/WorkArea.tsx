@@ -18,7 +18,7 @@ import { Group, GroupDefsType, Item, SyncItemType } from '../data/types';
 import { defaultSearchableFields, getItems, updateSyncInfo } from '../data/Store';
 import { flatten, groupBy, map, uniq } from 'lodash';
 import { ItemsTable } from './ItemsTable';
-import { siteIcons, typeIcons } from '../icons/icons';
+import { icons, iconsEuiMedium } from '../icons/icons';
 import { getLanguages } from '../data/languages';
 import { usePersistedJsonState, usePersistedState } from '../utils';
 import { GroupSelector } from './GroupSelector';
@@ -41,7 +41,7 @@ const schema = {
     srcSite: { type: 'string' },
     srcFullTitle: { type: 'string' },
     srcTitleUrl: { type: 'string' },
-    dstSite: { type: 'string' },
+    wiki: { type: 'string' },
     dstFullTitle: { type: 'string' },
     dstTitle: { type: 'string' },
     dstTitleUrl: { type: 'string' },
@@ -60,9 +60,9 @@ const groupDefs: GroupDefsType = {
     columns: ['project'],
     groupName: 'by project',
   },
-  'dstSite': {
+  'wiki': {
     order: 2,
-    columns: ['dstSite'],
+    columns: ['wiki'],
     extra_columns: ['lang', 'project'],
     groupName: 'by wiki',
   },
@@ -79,17 +79,24 @@ const groupDefs: GroupDefsType = {
   },
 };
 
-async function getOptions(allItems: Array<Item>, field: ('type' | 'project'), optionsMap: { [key: string]: any }) {
+async function getOptions(allItems: Array<Item>, field: ('project'), optionsMap: { [key: string]: any }) {
   const values = uniq(allItems.map(v => v[field])).filter(v => v);
   values.sort();
 
   return values.map(value => ({
     value: value,
     view: (<EuiFlexGroup>
-      <EuiFlexItem grow={false}><EuiIcon type={optionsMap[value]} size={'m'}/></EuiFlexItem>
+      <EuiFlexItem grow={false}>{iconsEuiMedium[optionsMap[value]]}</EuiFlexItem>
       <EuiFlexItem grow={false}>{value[0].toUpperCase() + value.substring(1)}</EuiFlexItem>
     </EuiFlexGroup>)
   }));
+}
+
+async function getWikiOptions(allItems: Array<Item>) {
+  // TODO: I tried to include iconsEuiMedium[project], but that was too slow
+  const values = uniq(allItems.map(v => v.wiki));
+  values.sort();
+  return values.map(wiki => ({ value: wiki }));
 }
 
 export const WorkArea = () => {
@@ -174,7 +181,7 @@ export const WorkArea = () => {
       };
     }
 
-    return organizeItemsInGroups(0, filteredItems, ['protection', 'dstSite', 'dstTitle', 'status', 'hash']);
+    return organizeItemsInGroups(0, filteredItems, ['protection', 'wiki', 'dstTitle', 'status', 'hash']);
   }, [filteredItems, groupSelection]);
 
   const itemsTable = useMemo(() => {
@@ -199,11 +206,11 @@ export const WorkArea = () => {
         items: [
           {
             value: 'module',
-            name: (<EuiIcon title={'Limit to modules'} type={typeIcons.module} size={'l'}/>) as any,
+            name: (<EuiIcon title={'Limit to modules'} type={icons.module} size={'l'}/>) as any,
           },
           {
             value: 'template',
-            name: (<EuiIcon title={'Limit to templates'} type={typeIcons.template} size={'l'}/>) as any,
+            name: (<EuiIcon title={'Limit to templates'} type={icons.template} size={'l'}/>) as any,
           },
         ],
       },
@@ -228,12 +235,22 @@ export const WorkArea = () => {
       },
       {
         type: 'field_value_selection',
+        field: 'wiki',
+        name: 'Wiki',
+        multiSelect: 'or',
+        filterWith: 'includes',
+        // @ts-ignore
+        operator: 'exact',
+        options: () => getWikiOptions(allItems),
+      },
+      {
+        type: 'field_value_selection',
         field: 'project',
         name: 'Project',
         multiSelect: 'or',
         // @ts-ignore
         operator: 'exact',
-        options: () => getOptions(allItems, 'project', siteIcons),
+        options: () => getOptions(allItems, 'project', icons),
       },
       {
         type: 'field_value_selection',
@@ -282,7 +299,7 @@ export const WorkArea = () => {
     const searchBar = <EuiSearchBar
       query={query}
       box={{
-        placeholder: 'try   en.wikipedia   or   TNT',
+        placeholder: 'examples:   en.wikipedia    TNT    lang=en',
         isClearable: true,
         incremental: true,
         fullWidth: true,

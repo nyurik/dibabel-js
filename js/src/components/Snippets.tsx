@@ -1,7 +1,6 @@
 import React from 'react';
-import { EuiButtonIcon, EuiIcon, IconSize, EuiLink } from '@elastic/eui';
+import { EuiButtonIcon, EuiLink } from '@elastic/eui';
 import { Item } from '../data/types';
-import { siteIcons } from '../icons/icons';
 
 export const ExternalLink = ({ href, title }: { href: string, title: string }) => {
   return (<EuiButtonIcon
@@ -25,15 +24,6 @@ export const ItemDstLink = ({ item: { dstTitleUrl, lang, project, dstFullTitle }
 
 export const ItemWikidataLink = ({ item: { qid } }: { item: Item }) => {
   return (<EuiLink href={`https://wikidata.org/wiki/${qid}`} target={'_blank'}>{qid}</EuiLink>);
-};
-
-export const ProjectIcon = ({ item: { project }, size }: {
-  item: Item,
-  size?: IconSize,
-}) => {
-  // @ts-ignore
-  const siteIcon = siteIcons[project];
-  return (<EuiIcon type={siteIcon} size={size ?? 'm'}/>);
 };
 
 export const prettyDomain = (lang: string, project: string) => {

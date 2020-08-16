@@ -52,6 +52,9 @@ export function App() {
                   <EuiHeaderLink iconType={'logoGithub'}
                                  target={'_blank'}
                                  href={'https://github.com/nyurik/dibabel-js'}>Source</EuiHeaderLink>
+                  <EuiHeaderLink iconType={'bug'}
+                                 target={'_blank'}
+                                 href={'https://github.com/nyurik/dibabel-js/issues'}>Bugs &amp; Ideas</EuiHeaderLink>
                 </EuiPageHeaderSection>
                 <EuiPageHeaderSection>
                   <EuiFlexGroup

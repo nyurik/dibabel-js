@@ -1,10 +1,9 @@
-import { Item, ItemTypeType, SyncItemType, Toast, SourceDataType } from './types';
-import React from 'react';
+import { Item, ItemTypeType, SourceDataType, SyncItemType, Toast } from './types';
+import React, { Dispatch } from 'react';
 
 // import fauxData from './faux/fauxData.small.json';
 import fauxData from './faux/fauxData.json';
 import { rootUrl, splitNs } from '../utils';
-import { Dispatch } from 'react';
 import { EuiText } from '@elastic/eui';
 
 const titleUrlSuffix = '/wiki/';
@@ -17,10 +16,10 @@ export const createItem = (
   type: ItemTypeType,
   title: string,
   srcTitleUrl: string,
-  dstSite: string,
+  wiki: string,
   dst: SyncItemType,
 ): Item => {
-  const dstLangSiteParts = dstSite.split('.');
+  const dstLangSiteParts = wiki.split('.');
   // Skip .org
   let ind = dstLangSiteParts.length - 2;
   if (dstLangSiteParts[ind] === 'wikimedia') {
@@ -29,11 +28,11 @@ export const createItem = (
   const project = dstLangSiteParts[ind--];
   const lang = (ind >= 0 && dstLangSiteParts[ind] !== 'www') ? dstLangSiteParts[ind] : '-';
 
-  const dstTitleUrl = `https://${dstSite}${titleUrlSuffix}${dst.title}`;
+  const dstTitleUrl = `https://${wiki}${titleUrlSuffix}${dst.title}`;
   return updateSyncInfo({
     key: dstTitleUrl,
     qid, type, srcSite, srcRevId, srcFullTitle, title, srcTitleUrl, project, lang,
-    dstSite: dstSite,
+    wiki: wiki,
     dstFullTitle: dst.title,
     dstTitle: splitNs(dst.title)[1],
     dstTitleUrl: dstTitleUrl,
@@ -103,15 +102,15 @@ export async function getItems(addToast: Dispatch<Toast>): Promise<Array<Item>> 
     for (let src of data) {
       const [type, title] = splitNs(src.primaryTitle);
       const srcTitleUrl = `https://${src.primarySite}${titleUrlSuffix}${src.primaryTitle}`;
-      for (let dstSite of Object.keys(src.copies)) {
+      for (let wiki of Object.keys(src.copies)) {
         yield createItem(
           src.id,
           src.primarySite,
           src.primaryRevId,
           src.primaryTitle,
           type, title, srcTitleUrl,
-          dstSite,
-          src.copies[dstSite],
+          wiki,
+          src.copies[wiki],
         );
       }
     }
@@ -121,7 +120,7 @@ export async function getItems(addToast: Dispatch<Toast>): Promise<Array<Item>> 
 }
 
 export const defaultSearchableFields: Array<string> = [
-  'status', 'dstSite', 'lang', 'title', 'dstTitle',
+  'status', 'wiki', 'lang', 'title', 'dstTitle',
 ];
 
 // export async function fetchContent(site: string, title: string): Promise<string> {

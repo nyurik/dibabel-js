@@ -11,8 +11,8 @@ import {
 } from '@elastic/eui';
 
 import { Group, Item } from '../data/types';
-import { lockIcon, typeIcons } from '../icons/icons';
-import { ExternalLink, prettyDomain, ProjectIcon } from './Snippets';
+import { iconsEuiMedium, lockIcon } from '../icons/icons';
+import { ExternalLink, prettyDomain } from './Snippets';
 import { itemDiffLink } from '../utils';
 
 export const ItemsTable = (
@@ -83,9 +83,7 @@ export const ItemsTable = (
       field: 'srcFullTitle',
       name: (<EuiText title={'Title of the page at mediawiki.org'}>Primary Page</EuiText>),
       sortable: true,
-      render: (_: string, item: Item) => (<><EuiIcon
-        type={typeIcons[item.type]} size={'m'} title={item.type}
-      />&nbsp;&nbsp;{item.srcFullTitle}<ExternalLink
+      render: (_: string, item: Item) => (<>{iconsEuiMedium[item.type]}&nbsp;&nbsp;{item.srcFullTitle}<ExternalLink
         title={`Show primary ${item.srcFullTitle} in a new tab.`}
         href={item.srcTitleUrl}/></>),
     },
@@ -98,21 +96,19 @@ export const ItemsTable = (
       field: 'project',
       name: (<EuiText title={'Wiki project, e.g. wikipedia, wikibooks, ...'}>Project</EuiText>),
       sortable: true,
-      render: (_: string, item: Item) => (<><ProjectIcon item={item}/>&nbsp;&nbsp;&nbsp;{item.project}</>),
+      render: (_: string, item: Item) => (<>{iconsEuiMedium[item.project]}&nbsp;&nbsp;&nbsp;{item.project}</>),
     },
-    dstSite: {
-      field: 'dstSite',
+    wiki: {
+      field: 'wiki',
       name: (<EuiText title={'The wiki site where the copied page is located.'}>Wiki site</EuiText>),
       sortable: true,
-      render: (_: string, item: Item) => (<><ProjectIcon item={item}/>&nbsp;&nbsp;&nbsp;{item.dstSite}</>),
+      render: (_: string, item: Item) => (<>{iconsEuiMedium[item.project]}&nbsp;&nbsp;&nbsp;{item.wiki}</>),
     },
     dstTitle: {
       field: 'dstFullTitle',
       name: (<EuiText title={'Title of the copied page as it appears on the destination wiki.'}>Wiki page</EuiText>),
       sortable: true,
-      render: (_: string, item: Item) => (<><EuiIcon
-        type={typeIcons[item.type]} size={'m'} title={item.type}
-      />&nbsp;&nbsp;{item.dstFullTitle}<ExternalLink
+      render: (_: string, item: Item) => (<>{iconsEuiMedium[item.type]}&nbsp;&nbsp;{item.dstFullTitle}<ExternalLink
         title={`Show ${prettyDomain(item.lang, item.project)} / ${item.dstFullTitle} in a new tab.`}
         href={item.dstTitleUrl}/></>),
     },

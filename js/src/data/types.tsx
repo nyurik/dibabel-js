@@ -30,6 +30,23 @@ export type GroupDefsType = {
   }
 };
 
+export type Project =
+  'commons'
+  | 'incubator'
+  | 'mediawiki'
+  | 'meta'
+  | 'species'
+  | 'wikibooks'
+  | 'wikidata'
+  | 'wikimania'
+  | 'wikinews'
+  | 'wikipedia'
+  | 'wikiquote'
+  | 'wikisource'
+  | 'wikiversity'
+  | 'wikivoyage'
+  | 'wiktionary';
+
 export type Item = {
   key: string,
   qid: string,
@@ -39,9 +56,9 @@ export type Item = {
   srcRevId: number,
   title: string,
   srcTitleUrl: string,
-  project: string,
+  project: Project,
   lang: string,
-  dstSite: string,
+  wiki: string,
   dstFullTitle: string,
   dstTitle: string,
   dstTitleUrl: string,
@@ -73,7 +90,7 @@ export type Group = {
   srcTitleUrl?: string,
   project?: string,
   lang?: string,
-  dstSite?: string,
+  wiki?: string,
 }
 
 export type SyncItemType = {
