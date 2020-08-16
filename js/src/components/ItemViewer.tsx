@@ -239,6 +239,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
       onClose();
       addToast({
         title: (<EuiText><ItemDstLink item={item}/>{' '}was updated</EuiText>),
+        iconType: 'check',
         color: 'success',
       });
 

@@ -106,5 +106,5 @@ class WikiSite(Site):
         clone = dict(**request_kw)
         if 'auth' in clone:
             del clone['auth']
-        print(f'{self}: {dumps(clone, ensure_ascii=False)}')
+        print(f'{self}: {dumps(clone, ensure_ascii=False)}'[:200])
         return super().request(method, force_ssl, headers, **request_kw)

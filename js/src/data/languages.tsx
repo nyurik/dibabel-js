@@ -11,16 +11,16 @@ export async function getLanguages(addToast: Dispatch<Toast>): Promise<LangInfoD
     return cache;
   }
   try {
-    let userInfo = await fetch(mw_languages_query);
-    if (userInfo.ok) {
-      cache = (await userInfo.json()).query.languageinfo;
+    let data = await fetch(mw_languages_query);
+    if (data.ok) {
+      cache = (await data.json()).query.languageinfo;
       return cache;
     } else {
       addToast({
-        title: `${userInfo.status}: ${userInfo.statusText}`,
+        title: `${data.status}: ${data.statusText}`,
         color: 'danger',
         iconType: 'alert',
-        text: await userInfo.text(),
+        text: await data.text(),
       });
     }
   } catch (err) {

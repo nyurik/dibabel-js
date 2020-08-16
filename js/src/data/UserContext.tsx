@@ -26,9 +26,9 @@ export const UserContext = React.createContext<UserContextType>({} as UserContex
 function login(addToast: Dispatch<Toast>, setUser: Dispatch<UserType>) {
   (async () => {
     try {
-      let userInfo = await fetch(`${rootUrl}userinfo`);
-      if (userInfo.ok) {
-        const json = await userInfo.json();
+      let data = await fetch(`${rootUrl}userinfo`);
+      if (data.ok) {
+        const json = await data.json();
         addToast({
           title: `Logged in as ${json.username}`,
           color: 'success',
@@ -36,12 +36,21 @@ function login(addToast: Dispatch<Toast>, setUser: Dispatch<UserType>) {
         });
         setUser({ state: UserState.LoggedIn, ...json });
       } else {
-        addToast({
-          title: `${userInfo.status}: ${userInfo.statusText}`,
-          color: 'danger',
-          iconType: 'alert',
-          text: await userInfo.text(),
-        });
+        if (data.status === 403) {
+          addToast({
+            title: `Not logged in`,
+            color: 'warning',
+            iconType: 'user',
+            text: 'Please login to edit pages',
+          });
+        } else {
+          addToast({
+            title: `${data.status}: ${data.statusText}`,
+            color: 'danger',
+            iconType: 'alert',
+            text: await data.text(),
+          });
+        }
         setUser(loggedOutState);
       }
     } catch (err) {
