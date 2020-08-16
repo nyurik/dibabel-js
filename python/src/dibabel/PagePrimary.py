@@ -130,6 +130,7 @@ class PagePrimary:
 
     def parse_dependencies(self, content) -> Iterable[str]:
         if self.is_module:
+            # strip first and last quote symbol
             return (v for v in (vv[1][1:-1] for vv in reModuleName.findall(content))
                     if v not in well_known_lua_modules)
         else:
@@ -151,6 +152,12 @@ class PagePrimary:
                 if not obj.is_multisite:
                     not_multisite_deps.add(fullname)
                 repl = obj.domain_to_title[target_domain]
+
+                # The "Module:" namespace should stay unlocalized in modules per user request.
+                # The domain_to_title will still be localized because it might be used in templates(?).
+                # Keeping the namespace as it was written originally (first letter casing).
+                repl = fullname.split(':', 1)[0] + ':' + repl.split(':', 1)[1]
+
                 quote = name[0]
                 if quote not in repl:
                     name = quote + repl + quote
