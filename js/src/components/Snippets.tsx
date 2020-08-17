@@ -15,8 +15,11 @@ export const ExternalLink = (
   />);
 };
 
-export const ItemSrcLink = ({ item: { srcTitleUrl, srcFullTitle } }: { item: Item }) => {
-  return (<EuiLink href={srcTitleUrl} target={'_blank'}>{srcFullTitle}</EuiLink>);
+export const ItemSrcLink = ({ item, linkToWD = true }: { item: Item, linkToWD?: boolean }) => {
+  return (<><EuiLink href={item.srcTitleUrl}
+                     target={'_blank'}>{item.srcFullTitle}</EuiLink>{
+    linkToWD ? (<>{' '}[<ItemWikidataLink item={item}/>]</>) : null
+  }</>);
 };
 
 export const ItemDstLink = ({ item: { dstTitleUrl, lang, project, dstFullTitle } }: { item: Item }) => {

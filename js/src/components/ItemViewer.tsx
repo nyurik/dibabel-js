@@ -153,7 +153,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
     case 'ok':
       infoSubHeader = (<EuiHealth color={'success'}>
         <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}is a localized version of the original{' '}<ItemSrcLink
-          item={item}/>{' '}[<ItemWikidataLink item={item}/>].</EuiText></EuiHealth>);
+          item={item}/>.</EuiText></EuiHealth>);
       break;
     default:
       throw new Error(`Unhandled ${item.status}`);
@@ -182,9 +182,9 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
     warnings.push(<EuiCallOut title={'Dependencies are not enabled for synchronization'} color={'warning'}
                               iconType={'alert'}>
       <EuiText>This page depends on templates or modules that have not been tagged as "multi-site" in Wikidata.
-        Most of the time this means that page <ItemSrcLink item={item}/> is not yet ready for synchronization, and
-        should not have a multi-site type in <ItemWikidataLink item={item}/>. Alternatively it could also mean that the
-        page was edited to use a new template/module, and that the new page is not enabled for
+        Most of the time this means that page <ItemSrcLink item={item} linkToWD={false}/> is not yet ready for
+        synchronization, and should not have a multi-site type in <ItemWikidataLink item={item}/>. Alternatively it
+        could also mean that the page was edited to use a new template/module, and that the new page is not enabled for
         synchronization.</EuiText>
       <EuiSpacer size={'s'}/>
       <EuiText>{formatLinks(item.wiki, item.notMultisiteDeps)}</EuiText>
@@ -309,7 +309,7 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
         <EuiFlexItem grow={false}>
           <span>Summary&nbsp;<ExternalLink href={'https://commons.wikimedia.org/wiki/Data:I18n/DiBabel.tab'}
                                            icon={'globe'} color={'primary'}
-                                           title={'Translate auto-generated summary messages.'}/> </span>
+                                           title={'Translate auto-generated summary messages.'}/></span>
         </EuiFlexItem>
         <EuiFlexItem grow={true}>
           <Comment readOnly={!isLoggedIn} value={comment} setValue={setComment}/>
