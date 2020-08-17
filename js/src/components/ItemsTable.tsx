@@ -69,7 +69,7 @@ export const ItemsTable = (
         color={'#C6C7C7'}
         title={`Indicate if the page has protection and requires special edit rights.`}
       />),
-      width: '3.55em',
+      width: '2.2em',
       sortable: true,
       render: (rights: string) => rights ? (
         <EuiIcon
