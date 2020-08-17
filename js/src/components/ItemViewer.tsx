@@ -24,7 +24,7 @@ import {
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
 
 import { Item, ItemTypeType, SyncContentType, UpdateItems } from '../data/types';
-import { ItemDstLink, ItemSrcLink, ItemWikidataLink } from './Snippets';
+import { ExternalLink, ItemDstLink, ItemSrcLink, ItemWikidataLink } from './Snippets';
 import { getToken, itemDiffLink, postToApi, rootUrl, sleep } from '../utils';
 import { UserContext, UserState } from '../data/UserContext';
 import { ToastsContext } from './Toasts';
@@ -152,8 +152,8 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
       break;
     case 'ok':
       infoSubHeader = (<EuiHealth color={'success'}>
-        <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}is a localized version of the original <ItemSrcLink
-          item={item}/>.</EuiText></EuiHealth>);
+        <EuiText>Page{' '}<ItemDstLink item={item}/>{' '}is a localized version of the original{' '}<ItemSrcLink
+          item={item}/>{' '}[<ItemWikidataLink item={item}/>].</EuiText></EuiHealth>);
       break;
     default:
       throw new Error(`Unhandled ${item.status}`);
@@ -195,10 +195,9 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
   if (item.multisiteDepsNotOnDst) {
     warnings.push(<EuiCallOut title={`Dependencies do not exist in ${item.wiki}`} color={'warning'}
                               iconType={'alert'}>
-      <EuiText>This page depends on templates or modules that are not present on the destination site.
-        Copy the content of these pages to
-        {' '}<EuiLink href={`https://${item.wiki}`} target={'_blank'}>{item.wiki}</EuiLink>{' '}
-        and make sure they are listed in the <ItemWikidataLink item={item}/>.</EuiText>
+      <EuiText>The following dependencies are not present on the destination site. Copy these pages to
+        {' '}<EuiLink href={`https://${item.wiki}`} target={'_blank'}>{item.wiki}</EuiLink> and make sure they are
+        linked to other wikis.</EuiText>
       <EuiSpacer size={'s'}/>
       <EuiText>{formatLinks(item.srcSite, item.multisiteDepsNotOnDst)}</EuiText>
     </EuiCallOut>);
@@ -308,7 +307,9 @@ const ItemDiffViewer = ({ onClose, updateItem, item }: ItemViewerParams<Item>) =
     footer = <EuiFlyoutFooter>
       <EuiFlexGroup justifyContent={'spaceBetween'} alignItems={'center'}>
         <EuiFlexItem grow={false}>
-          <EuiText>Summary:</EuiText>
+          <span>Summary&nbsp;<ExternalLink href={'https://commons.wikimedia.org/wiki/Data:I18n/DiBabel.tab'}
+                                           icon={'globe'} color={'primary'}
+                                           title={'Translate auto-generated summary messages.'}/> </span>
         </EuiFlexItem>
         <EuiFlexItem grow={true}>
           <Comment readOnly={!isLoggedIn} value={comment} setValue={setComment}/>

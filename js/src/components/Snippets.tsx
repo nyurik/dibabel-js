@@ -1,14 +1,16 @@
 import React from 'react';
-import { EuiButtonIcon, EuiLink } from '@elastic/eui';
+import { EuiButtonIcon, EuiLink, EuiButtonIconColor } from '@elastic/eui';
 import { Item } from '../data/types';
 
-export const ExternalLink = ({ href, title }: { href: string, title: string }) => {
+export const ExternalLink = (
+  { href, title, icon = 'symlink', color = 'text' }: { href: string, title: string, icon?: string, color?: EuiButtonIconColor }
+) => {
   return (<EuiButtonIcon
-    color={'text'}
+    color={color}
     href={href}
     target={'_blank'}
-    iconType="symlink"
-    aria-label="Open external link in a new tab"
+    iconType={icon}
+    aria-label={'Open external link in a new tab'}
     title={title}
   />);
 };
