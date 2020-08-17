@@ -5,9 +5,9 @@ import { EuiIcon } from '@elastic/eui';
  * https://commons.wikimedia.org/wiki/File:Incubator-logo.svg
  * NielsF / CC BY-SA (https://creativecommons.org/licenses/by-sa/3.0)
  */
-import { ReactComponent as incubatorIcon } from './site_incubator.svg';
+import incubatorIcon from './project_icons_small/incubator-icon-48px.png';
 
-import { ReactComponent as mediawikiIcon } from './site_mediawiki.svg';
+import mediawikiIcon from './project_icons_small/mediawiki-icon-48px.png';
 
 /**
  * https://commons.wikimedia.org/wiki/File:Wikimedia_Community_Logo.svg
@@ -25,29 +25,21 @@ import { ReactComponent as wikibooksIcon } from './site_wikibooks.svg';
  * https://commons.wikimedia.org/wiki/File:Wikidata-logo.svg
  * User:Planemad / Public domain
  */
-import { ReactComponent as wikidataIcon } from './site_wikidata.svg';
-import { ReactComponent as wikinewsIcon } from './site_wikinews.svg';
-import { ReactComponent as wikipediaIcon } from './site_wikipedia.svg';
-import { ReactComponent as wikisourceIcon } from './site_wikisource.svg';
-import { ReactComponent as wikispeciesIcon } from './site_wikispecies.svg';
-import { ReactComponent as wikiversityIcon } from './site_wikiversity.svg';
-import { ReactComponent as wikivoyageIcon } from './site_wikivoyage.svg';
-
-/**
- * Does not show correctly in React
- */
-import wikiquoteIconUrl from './site_wikiquote.svg';
-
-/**
- * Does not show correctly in React
- */
-import wiktionaryIconUrl from './site_wiktionary.svg';
+import wikidataIcon from './project_icons_small/wikidata-icon-48px.png';
+import wikinewsIcon from './project_icons_small/wikinews-icon-48px.png';
+import wikipediaIcon from './project_icons_small/wikipedia-icon-48px.png';
+import wikisourceIcon from './project_icons_small/wikisource-icon-48px.png';
+import wikispeciesIcon from './project_icons_small/wikispecies-icon-48px.png';
+import wikiversityIcon from './project_icons_small/wikiversity-icon-48px.png';
+import wikivoyageIcon from './project_icons_small/wikivoyage-icon-48px.png';
+import wikiquoteIcon from './project_icons_small/wikiquote-icon-48px.png';
+import wiktionaryIcon from './project_icons_small/wiktionary-icon-48px.png';
 
 /**
  * https://commons.wikimedia.org/wiki/File:Commons-icon.svg
  * Notnarayan / CC BY-SA (https://creativecommons.org/licenses/by-sa/3.0)
  */
-import { ReactComponent as commonsIcon } from './site_commons.svg';
+import commonsIcon from './project_icons_small/commons-icon-48px.png';
 
 /**
  * https://commons.wikimedia.org/wiki/File:Wikimania.svg
@@ -92,11 +84,11 @@ export const icons: { [name: string]: any } = {
   wikimania: wikimaniaIcon,
   wikinews: wikinewsIcon,
   wikipedia: wikipediaIcon,
-  wikiquote: wikiquoteIconUrl,
+  wikiquote: wikiquoteIcon,
   wikisource: wikisourceIcon,
   wikiversity: wikiversityIcon,
   wikivoyage: wikivoyageIcon,
-  wiktionary: wiktionaryIconUrl,
+  wiktionary: wiktionaryIcon,
   // Types
   module: moduleIcon,
   template: templateIcon,
