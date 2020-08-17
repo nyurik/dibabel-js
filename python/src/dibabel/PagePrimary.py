@@ -10,10 +10,10 @@ from .DataTypes import RevComment, SyncInfo, Translations
 from .DataTypes import TemplateCache, SiteMetadata
 from .PageContent import PageContent
 from .WikiSite import WikiSite
-# Find any string that is a template name
-# Must be preceded by two {{ (not 3!), must be followed by either "|" or "}", must not include any funky characters
 from .utils import limit_ellipsis, calc_hash
 
+# Find any string that is a template name
+# Must be preceded by two {{ (not 3!), must be followed by either "|" or "}", must not include any funky characters
 reTemplateName = re.compile(r'''((?:^|[^{]){{\s*)([^|{}<>&#:]*[^|{}<>&#: ])(\s*[|}])''')
 
 # Find any require('Module:name') and mw.loadData('Module:name')
