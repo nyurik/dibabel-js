@@ -1,7 +1,7 @@
 import React, { Dispatch, useContext, useEffect, useState } from 'react';
-import { Props, Toast } from './types';
+import { Props } from './types';
 import { rootUrl } from '../utils';
-import { ToastsContext } from '../components/Toasts';
+import { ToastNoId, ToastsContext } from '../components/Toasts';
 
 export enum UserState {
   Unknown,
@@ -23,7 +23,7 @@ export const loggedOutState = { state: UserState.LoggedOut };
 
 export const UserContext = React.createContext<UserContextType>({} as UserContextType);
 
-function login(addToast: Dispatch<Toast>, setUser: Dispatch<UserType>) {
+function login(addToast: Dispatch<ToastNoId>, setUser: Dispatch<UserType>) {
   (async () => {
     try {
       let data = await fetch(`${rootUrl}userinfo`);

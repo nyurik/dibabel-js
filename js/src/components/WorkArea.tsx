@@ -25,7 +25,7 @@ import { GroupSelector } from './GroupSelector';
 import { SyncButton } from './SyncButton';
 import { ItemViewer } from './ItemViewer';
 import { ToastsContext } from './Toasts';
-import { SettingsContext } from './SettingsContext';
+import { SettingsContext } from './Settings';
 
 const schema = {
   strict: true,
@@ -142,7 +142,7 @@ export const WorkArea = () => {
 
   const groupedItems = useMemo(() => {
     function makeLastItem(items: Array<Item>, parentColumns: Array<string>) {
-      return { items, columns: ['selector'/*, 'actions'*/].concat(parentColumns), isLastGroup: true };
+      return { items, columns: ['selector'].concat(parentColumns), isLastGroup: true };
     }
 
     function organizeItemsInGroups(groupIndex: number, itemList: Array<Item>, parentColumns: Array<keyof Item>, parentKey = '') {

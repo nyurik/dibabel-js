@@ -1,10 +1,11 @@
-import { Item, ItemTypeType, SourceDataType, SyncItemType, Toast } from './types';
+import { Item, ItemTypeType, SourceDataType, SyncItemType } from './types';
 import React, { Dispatch } from 'react';
 
 // import fauxData from './faux/fauxData.small.json';
 import fauxData from './faux/fauxData.json';
 import { rootUrl, splitNs } from '../utils';
 import { EuiText } from '@elastic/eui';
+import { ToastNoId } from '../components/Toasts';
 
 const titleUrlSuffix = '/wiki/';
 
@@ -54,10 +55,10 @@ export const updateSyncInfo = (item: Item, dst: SyncItemType): Item => {
   return item;
 };
 
-export async function getItems(addToast: Dispatch<Toast>): Promise<Array<Item>> {
+export async function getItems(addToast: Dispatch<ToastNoId>): Promise<Array<Item>> {
   let cache: any;
 
-  async function getData(addToast: Dispatch<Toast>) {
+  async function getData(addToast: Dispatch<ToastNoId>) {
     if (cache) {
       return cache;
     }

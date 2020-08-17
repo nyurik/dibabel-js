@@ -28,9 +28,9 @@ import { ItemDstLink, ItemSrcLink, ItemWikidataLink } from './Snippets';
 import { getToken, itemDiffLink, postToApi, rootUrl, sleep } from '../utils';
 import { UserContext, UserState } from '../data/UserContext';
 import { ToastsContext } from './Toasts';
-import { SettingsContext } from './SettingsContext';
 import { Props } from '@elastic/eui/src/components/button/button';
 import { icons } from '../icons/icons';
+import { SettingsContext } from './Settings';
 
 interface ItemViewerParams<TItem> {
   item: TItem;

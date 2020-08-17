@@ -1,26 +1,22 @@
 import React from 'react';
 
-import {
-  EuiBetaBadge,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiHeaderLink,
-  EuiHeaderLogo,
-  EuiHeaderSectionItem,
-  EuiLink,
-  EuiPage,
-  EuiPageBody,
-  EuiPageHeader,
-  EuiPageHeaderSection,
-  EuiText
-} from '@elastic/eui';
-import { Settings } from './Settings';
-import { WorkArea } from './WorkArea';
+// import themeLight from './theme_amsterdam-light.scss';
+// import themeDark from './theme_amsterdam-dark.scss';
+// import themeLight from '@elastic/eui/dist/eui_theme_amsterdam_light.css';
+// import themeDark from '@elastic/eui/dist/eui_theme_amsterdam_dark.css';
+// FIXME: remove this css and use the .unuse() / .use() methods below
+import '@elastic/eui/dist/eui_theme_light.css';
+
+// This should come last to override the defaults from EUI
+import '../App.css';
+
+// React component import
+import { EuiPage, EuiPageBody } from '@elastic/eui';
 import { ToastsProvider } from './Toasts';
-import { User } from './User';
 import { UserProvider } from '../data/UserContext';
-import { SettingsProvider } from './SettingsContext';
-import { logoIcon } from '../icons/icons';
+import { SettingsProvider } from './Settings';
+import { WorkArea } from './WorkArea';
+import { Header } from './Header';
 
 export function App() {
   return (
@@ -29,44 +25,7 @@ export function App() {
         <UserProvider>
           <EuiPage>
             <EuiPageBody>
-              <EuiPageHeader>
-                <EuiPageHeaderSection>
-                  <EuiHeaderSectionItem border={'none'}>
-                    <EuiHeaderLogo iconType={logoIcon}>
-                      Dibabel&nbsp;&nbsp;
-                      <EuiBetaBadge label={'BETA'} title={'Work  in progress. Please verify all changes.'}/>
-                    </EuiHeaderLogo>
-                  </EuiHeaderSectionItem>
-                </EuiPageHeaderSection>
-                <EuiPageHeaderSection>
-                  <EuiHeaderSectionItem>
-                    <EuiText size={'s'}>Keep modules and templates the same across languages. Written by&nbsp;<EuiLink
-                      color={'text'} href={'https://www.mediawiki.org/wiki/User:Yurik'}
-                      target={'_blank'}>User:Yurik</EuiLink></EuiText>
-                  </EuiHeaderSectionItem>
-                </EuiPageHeaderSection>
-                <EuiPageHeaderSection>
-                  <EuiHeaderLink iconType={'help'}
-                                 target={'_blank'}
-                                 href={'https://www.mediawiki.org/wiki/WP:TNT'}>Help</EuiHeaderLink>
-                  <EuiHeaderLink iconType={'logoGithub'}
-                                 target={'_blank'}
-                                 href={'https://github.com/nyurik/dibabel-js'}>Source</EuiHeaderLink>
-                  <EuiHeaderLink iconType={'bug'}
-                                 target={'_blank'}
-                                 href={'https://github.com/nyurik/dibabel-js/issues'}>Bugs &amp; Ideas</EuiHeaderLink>
-                </EuiPageHeaderSection>
-                <EuiPageHeaderSection>
-                  <EuiFlexGroup
-                    alignItems={'center'}
-                    gutterSize={'s'}
-                    responsive={false}
-                    wrap>
-                    <EuiFlexItem grow={false}><User/></EuiFlexItem>
-                    <EuiFlexItem grow={false}><Settings/></EuiFlexItem>
-                  </EuiFlexGroup>
-                </EuiPageHeaderSection>
-              </EuiPageHeader>
+              <Header/>
               <WorkArea/>
             </EuiPageBody>
           </EuiPage>
