@@ -80,14 +80,14 @@ const groupDefs: GroupDefsType = {
   },
 };
 
-async function getOptions(allItems: Array<Item>, field: ('project'), optionsMap: { [key: string]: any }) {
+async function getOptions(allItems: Array<Item>, field: ('project')) {
   const values = uniq(allItems.map(v => v[field])).filter(v => v);
   values.sort();
 
   return values.map(value => ({
     value: value,
     view: (<EuiFlexGroup>
-      <EuiFlexItem grow={false}>{iconsEuiMedium[optionsMap[value]]}</EuiFlexItem>
+      <EuiFlexItem grow={false}>{iconsEuiMedium[value]}</EuiFlexItem>
       <EuiFlexItem grow={false}>{value[0].toUpperCase() + value.substring(1)}</EuiFlexItem>
     </EuiFlexGroup>)
   }));
@@ -252,7 +252,7 @@ export const WorkArea = () => {
         multiSelect: 'or',
         // @ts-ignore
         operator: 'exact',
-        options: () => getOptions(allItems, 'project', icons),
+        options: () => getOptions(allItems, 'project'),
       },
       {
         type: 'field_value_selection',
