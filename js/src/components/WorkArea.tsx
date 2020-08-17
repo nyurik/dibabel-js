@@ -328,9 +328,9 @@ export const WorkArea = () => {
       {isLoading ? 'Refreshing...' : 'Refresh'}
     </EuiButton>);
 
-    return (<EuiFlexGroup alignItems={'center'}>
-        <EuiFlexItem grow={false}>
-          <SyncButton selectedItems={selectedItems} setSelectedItems={setSelectedItems}/></EuiFlexItem>
+    return (
+      <EuiFlexGroup alignItems={'center'}>
+        <SyncButton selectedItems={selectedItems} setSelectedItems={setSelectedItems}/>
         <EuiFlexItem style={{ minWidth: '10em' }} grow={false}>
           <GroupSelector groupDefs={groupDefs} groupSelection={groupSelection} setGroupSelection={setGroupSelection}/>
         </EuiFlexItem>

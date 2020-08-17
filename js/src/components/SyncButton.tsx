@@ -1,6 +1,6 @@
 import React, { Dispatch } from 'react';
 
-import { EuiButton } from '@elastic/eui';
+import { EuiButton, EuiFlexItem } from '@elastic/eui';
 import { Item } from '../data/types';
 
 export const SyncButton = (props: {
@@ -12,9 +12,14 @@ export const SyncButton = (props: {
       // store.processItems(...);
       props.setSelectedItems(new Set());
     };
-    return (<EuiButton disabled title={'Multi-page sync is not yet implemented'} color={'danger'} iconType={'trash'} onClick={onClick}>
-      Sync {props.selectedItems.size} pages
-    </EuiButton>);
+    return (
+      <EuiFlexItem grow={false}>
+        <EuiButton disabled title={'Multi-page sync is not yet implemented'} color={'danger'} iconType={'trash'}
+                   onClick={onClick}>
+          Sync {props.selectedItems.size} pages
+        </EuiButton>
+      </EuiFlexItem>
+    );
   } else {
     return null;
   }

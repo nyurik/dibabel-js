@@ -232,7 +232,7 @@ export const ItemsTable = (
       pagination: {
         initialPageSize: 15,
         hidePerPageOptions: true,
-      }
+      },
     };
     if (isTop) {
       params.loading = isLoading;
