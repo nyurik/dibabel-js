@@ -15,11 +15,11 @@ import { groupDefs, Item, schema } from '../types';
 import { AllDataContext } from '../contexts/AllData';
 import { flatten, map, uniq } from 'lodash';
 import { iconsEuiMedium } from '../icons/icons';
-import { getLanguages } from '../languages';
 import { GroupSelector } from './GroupSelector';
 import { SyncButton } from './SyncButton';
 import { ToastsContext } from '../contexts/Toasts';
-import { SettingsContext } from '../contexts/Settings';
+import { getLanguageData, SettingsContext } from '../contexts/Settings';
+import { error } from '../utils';
 
 async function getOptions(allItems: Array<Item>, field: ('project')) {
   const values = uniq(allItems.map(v => v[field])).filter(v => v);
@@ -118,23 +118,21 @@ export const SearchBar = (
       // @ts-ignore
       operator: 'exact',
       options: async () => {
-        const values = uniq(allItems.map(v => v.lang));
-        values.sort();
-        const allLangs = await getLanguages(addToast);
-        return values.map(lang => {
-          const langInfo = allLangs[lang] || { name: 'Unknown' };
-          let name = langInfo.name;
-          if (langInfo.autonym && langInfo.autonym !== langInfo.name) {
-            name += ` - ${langInfo.autonym}`;
-          }
-          return {
+        try {
+          const values = uniq(allItems.map(v => v.lang));
+          values.sort();
+          const allLangs = await getLanguageData();
+          return values.map(lang => ({
             value: lang,
             view: <EuiFlexGroup>
               <EuiFlexItem grow={false} className={'lang-code'}>{lang}</EuiFlexItem>
-              <EuiFlexItem grow={false}>{name}</EuiFlexItem>
+              <EuiFlexItem grow={false}>{allLangs[lang] || 'Unknown'}</EuiFlexItem>
             </EuiFlexGroup>
-          };
-        });
+          }));
+        } catch (err) {
+          addToast(error({ title: 'Unable to load language data', text: err.toString() }));
+          return [];
+        }
       },
     },
     {

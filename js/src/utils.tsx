@@ -3,6 +3,7 @@ import { Item, ItemTypeType, ToastNoId } from './types';
 
 // Using full root for the ease of debugging locally. Eventually should probably use '/'
 export const rootUrl = 'https://dibabel.toolforge.org/';
+export const rootUrlI18n = '/';
 
 // export const rootUrl = '/';
 
@@ -130,6 +131,7 @@ export const error = (toast: ToastNoId): ToastNoId => ({
 export function dbg(log: string, fn: any): any {
   return function () {
     console.log(`++++++ ${log}`, arguments);
+    // debugger;
     return fn.apply(arguments);
   };
 }

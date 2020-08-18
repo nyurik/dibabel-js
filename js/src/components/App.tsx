@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useMemo } from 'react';
 
 // import themeLight from './theme_amsterdam-light.scss';
 // import themeDark from './theme_amsterdam-dark.scss';
@@ -14,15 +14,18 @@ import '../App.css';
 import { EuiPage, EuiPageBody } from '@elastic/eui';
 import { ToastsProvider } from '../contexts/Toasts';
 import { UserProvider } from '../contexts/UserContext';
-import { SettingsProvider } from '../contexts/Settings';
+import { SettingsContext, SettingsProvider } from '../contexts/Settings';
 import { WorkArea } from './WorkArea';
 import { Header } from './Header';
 import { AllDataProvider } from '../contexts/AllData';
 import { CurrentItemProvider } from '../contexts/CurrentItem';
+import { IntlProvider } from '@wikimedia/react.i18n';
 
-export function App() {
-  return (
-    <SettingsProvider>
+export function AppWithSettings() {
+  const { locale, messages } = useContext(SettingsContext);
+
+  return useMemo(() => (
+    <IntlProvider locale={locale} messages={messages}>
       <ToastsProvider>
         <UserProvider>
           <EuiPage>
@@ -37,6 +40,14 @@ export function App() {
           </EuiPage>
         </UserProvider>
       </ToastsProvider>
+    </IntlProvider>
+  ), [locale, messages]);
+}
+
+export function App() {
+  return (
+    <SettingsProvider>
+      <AppWithSettings/>
     </SettingsProvider>
   );
 }

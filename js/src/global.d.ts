@@ -4,3 +4,5 @@ declare module '*.scss' {
 }
 
 declare var Prism: any;
+
+declare module '@wikimedia/react.i18n'; // {  export = { BananaContext, IntlProvider };}
