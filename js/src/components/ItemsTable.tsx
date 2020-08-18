@@ -69,7 +69,7 @@ export const ItemsTable = (
         type={lockIcon}
         size={'m'}
         color={'#C6C7C7'}
-        title={`Indicate if the page has protection and requires special edit rights.`}
+        title={`i18n.dibabel-table-icons-protection--title`}
       />),
       width: '2.2em',
       sortable: true,
@@ -78,25 +78,25 @@ export const ItemsTable = (
           type={lockIcon}
           size={'m'}
           color={'#0078b8'}
-          title={`Rights required to edit: ${rights}`}
+          title={`i18n.dibabel-table-icons-protection--rights ${rights}`}
         />) : '',
     },
     title: {
       field: 'srcFullTitle',
-      name: (<EuiText title={'Title of the page at mediawiki.org'}>Primary Page</EuiText>),
+      name: (<EuiText title={'i18n.dibabel-table-th-primary--title'}>i18n.dibabel-table-th-primary--label</EuiText>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.type]}&nbsp;&nbsp;{item.srcFullTitle}<ExternalLink
-        title={`Show primary ${item.srcFullTitle} in a new tab.`}
+        title={`i18n.dibabel-table-td-primary--title, ${item.srcFullTitle}`}
         href={item.srcTitleUrl}/></>),
     },
     lang: {
       field: 'lang',
-      name: (<EuiText title={'The language of the wiki'}>Language</EuiText>),
+      name: (<EuiText title={'i18n.dibabel-table-th-language--title'}>i18n.dibabel-table-th-language--label</EuiText>),
       sortable: true,
     },
     project: {
       field: 'project',
-      name: (<EuiText title={'Wiki project, e.g. wikipedia, wikibooks, ...'}>Project</EuiText>),
+      name: (<EuiText title={'i18n.dibabel-table-th-project--title'}>i18n.dibabel-table-th-project--label</EuiText>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.project]}&nbsp;&nbsp;&nbsp;{item.project}</>),
     },
@@ -108,44 +108,44 @@ export const ItemsTable = (
     },
     dstTitle: {
       field: 'dstFullTitle',
-      name: (<EuiText title={'Title of the copied page as it appears on the destination wiki.'}>Wiki page</EuiText>),
+      name: (<EuiText title={'i18n.dibabel-table-th-wikipage--title'}>i18n.dibabel-table-th-wikipage--label</EuiText>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.type]}&nbsp;&nbsp;{item.dstFullTitle}<ExternalLink
-        title={`Show ${prettyDomain(item.lang, item.project)} / ${item.dstFullTitle} in a new tab.`}
+        title={`i18n.dibabel-table-th-wikipage--link, ${prettyDomain(item.lang, item.project)} / ${item.dstFullTitle}`}
         href={item.dstTitleUrl}/></>),
     },
     hash: {
       field: 'hash',
       name: (<EuiText
-        title={'The hash number is a unique fingerprint of the page content. Pages with identical hash have the same content. The hash is computed before page was localized for this wiki.'}
-      >Hash</EuiText>),
+        title={'i18n.dibabel-table-th-hash--title'}
+      >i18n.dibabel-table-th-hash--label</EuiText>),
       sortable: true,
       render: (hash: string) => (<EuiText
-        title={`This hash number represents a unique fingerprint of the current page content. Pages with identical hash have the same content. The hash is computed before page was localized for this wiki. Full hash is ${hash}`}
+        title={`i18n.dibabel-table-td-hash--title, ${hash}`}
       >{hash.substring(0, 7)}</EuiText>)
     },
     status: {
       field: 'sortStatus',
       name: (<EuiText
-        title={'Show if the copied page is in sync with the original, has fallen behind, or has been modified locally (diverged).'}>Status</EuiText>),
+        title={'i18n.dibabel-table-th-status--title'}>i18n.dibabel-table-th-status--label</EuiText>),
       sortable: true,
       render: (_: string, item: Item) => {
         switch (item.status) {
           case 'ok':
             return (<EuiHealth
-              title={'The target page is up to date with the primary'}
-              color={'success'}>OK</EuiHealth>);
+              title={'i18n.dibabel-table-td-status--ok-title'}
+              color={'success'}>i18n.dibabel-table-td-status--ok-label</EuiHealth>);
           case 'unlocalized':
             return (<EuiHealth
-              title={`The target page has exactly the same content as original instead of using localized values, and needs to be updated.`}
-              color={'warning'}>Unlocalized</EuiHealth>);
+              title={`i18n.dibabel-table-td-status--unlocalized-title`}
+              color={'warning'}>i18n.dibabel-table-td-status--unlocalized-label</EuiHealth>);
           case 'outdated':
             return (
               <EuiHealth
-                title={`The target page is outdated by ${item.behind} versions, and can be updated.  Click to see changes.`}
+                title={`i18n.dibabel-table-td-status--outdated-title, ${item.behind}`}
                 color={'warning'}
-              ><span>Outdated by {item.behind} rev<ExternalLink
-                title={`Show what changed in the last ${item.behind} revisions of the primary ${item.srcFullTitle} in a new tab.`}
+              ><span>i18n.dibabel-table-td-status--outdated-label, {item.behind}<ExternalLink
+                title={`i18n.dibabel-table-td-status--outdated-link, ${item.behind}, ${item.srcFullTitle}`}
                 href={itemDiffLink(item)}/></span></EuiHealth>);
           case 'diverged':
             return (
@@ -153,18 +153,18 @@ export const ItemsTable = (
                 title={'The target page has been modified and cannot be updated automatically.'}
                 color={'danger'}>Diverged</EuiHealth>);
           default:
-            throw new Error(`Unknown status ${item.status}`);
+            throw new Error(`i18n.dibabel-table-td-status--error-label, ${item.status}`);
         }
       },
     },
     countOk: {
       field: 'countOk',
-      name: (<EuiText title={'Number of up to date pages.'}>Same</EuiText>),
+      name: (<EuiText title={'i18n.dibabel-table-th-updated--title'}>i18n.dibabel-table-th-updated--label</EuiText>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
-          return <EuiHealth title={`${value} pages are up to date.`}
-                            color={'success'}>{`${value} pages`}</EuiHealth>;
+          return <EuiHealth title={`i18n.dibabel-table-td-updated--title ${value}`}
+                            color={'success'}>{`i18n.dibabel-table-pagecount, ${value}`}</EuiHealth>;
         } else {
           return '-';
         }
@@ -173,13 +173,13 @@ export const ItemsTable = (
     countUnlocalized: {
       field: 'countUnlocalized',
       name: (<EuiText
-        title={'Number of pages that are identical to the original. These pages need to be localized (e.g. rename dependent templates)'}>Unlocalized</EuiText>),
+        title={'i18n.dibabel-table-th-unlocalized--title'}>i18n.dibabel-table-th-unlocalized--label</EuiText>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
           return <EuiHealth
-            title={`${value} pages are identical to the original. These pages need to be localized because some dependent templates may have different names on that wiki. This can be done automatically.`}
-            color={'warning'}>{`${value} pages`}</EuiHealth>;
+            title={`i18n.dibabel-table-td-unlocalized--title,  ${value}`}
+            color={'warning'}>{`i18n.dibabel-table-pagecount, ${value}`}</EuiHealth>;
         } else {
           return '-';
         }
@@ -187,12 +187,12 @@ export const ItemsTable = (
     },
     countOutdated: {
       field: 'countOutdated',
-      name: (<EuiText title={'Number of pages that has fallen behind with the primary.'}>Outdated</EuiText>),
+      name: (<EuiText title={'i18n.dibabel-table-th-outdated--title'}>i18n.dibabel-table-th-outdated--label</EuiText>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
-          return <EuiHealth title={`${value} pages are behind the primary and can be synchronized automatically.`}
-                            color={'warning'}>{`${value} pages`}</EuiHealth>;
+          return <EuiHealth title={`i18n.dibabel-table-td-outdated--label, ${value}`}
+                            color={'warning'}>{`i18n.dibabel-table-pagecount, ${value}`}</EuiHealth>;
         } else {
           return '-';
         }
@@ -200,12 +200,12 @@ export const ItemsTable = (
     },
     countDiverged: {
       field: 'countDiverged',
-      name: (<EuiText title={'Number of pages with local modifications.'}>Diverged</EuiText>),
+      name: (<EuiText title={'i18n.dibabel-table-th-diverged--title'}>i18n.dibabel-table-th-diverged--label</EuiText>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
-          return <EuiHealth title={`${value} pages have local modifications and must be synchronized individually.`}
-                            color={'danger'}>{`${value} pages`}</EuiHealth>;
+          return <EuiHealth title={`i18n.dibabel-table-th-diverged--title, ${value}`}
+                            color={'danger'}>{`i18n.dibabel-table-pagecount, ${value}`}</EuiHealth>;
         } else {
           return '-';
         }

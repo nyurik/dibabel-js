@@ -22,8 +22,8 @@ export const GroupSelector = (props: {
 
   return (<EuiComboBox
     fullWidth={true}
-    placeholder={'Group by ...'}
-    title={'Group table by one or more fields.'}
+    placeholder={'i18n.dibabel-filters-groupby--placeholder'}
+    title={'i18n.dibabel-filters-groupby--title'}
     options={Object.values(optsAsMap)}
     selectedOptions={props.groupSelection.map(v => optsAsMap[v])}
     onChange={onChange}

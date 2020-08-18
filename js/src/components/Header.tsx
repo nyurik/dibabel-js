@@ -22,27 +22,25 @@ export function Header() {
       <EuiPageHeaderSection>
         <EuiHeaderSectionItem border={'none'}>
           <EuiHeaderLogo iconType={logoIcon}>
-            Dibabel&nbsp;&nbsp;<EuiBetaBadge label={'BETA'} title={'Work in progress. Please verify your changes.'}/>
+            Dibabel&nbsp;&nbsp;<EuiBetaBadge label={'i18n.dibabel-header-beta--label'} title={'i18n.dibabel-header-beta--title'}/>
           </EuiHeaderLogo>
         </EuiHeaderSectionItem>
       </EuiPageHeaderSection>
       <EuiPageHeaderSection>
         <EuiHeaderSectionItem>
-          <EuiText size={'s'}>Keep modules and templates the same across languages. Written by&nbsp;<EuiLink
-            color={'text'} href={'https://www.mediawiki.org/wiki/User:Yurik'}
-            target={'_blank'}>User:Yurik</EuiLink></EuiText>
+          <EuiText size={'s'}>i18n.dibabel-header-description</EuiText>
         </EuiHeaderSectionItem>
       </EuiPageHeaderSection>
       <EuiPageHeaderSection>
         <EuiHeaderLink iconType={'help'}
                        target={'_blank'}
-                       href={'https://www.mediawiki.org/wiki/WP:TNT'}>Help</EuiHeaderLink>
+                       href={'https://www.mediawiki.org/wiki/WP:TNT'}>i18n.dibabel-header-links--help</EuiHeaderLink>
         <EuiHeaderLink iconType={'logoGithub'}
                        target={'_blank'}
-                       href={'https://github.com/nyurik/dibabel-js'}>Source</EuiHeaderLink>
+                       href={'https://github.com/nyurik/dibabel-js'}>i18n.dibabel-header-links--source</EuiHeaderLink>
         <EuiHeaderLink iconType={'bug'}
                        target={'_blank'}
-                       href={'https://github.com/nyurik/dibabel-js/issues'}>Bugs &amp; Ideas</EuiHeaderLink>
+                       href={'https://github.com/nyurik/dibabel-js/issues'}>i18n.dibabel-header-links--bugs</EuiHeaderLink>
       </EuiPageHeaderSection>
       <EuiPageHeaderSection>
         <EuiFlexGroup
