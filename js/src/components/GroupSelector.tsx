@@ -1,6 +1,6 @@
 import React from 'react';
 import { EuiComboBox, EuiComboBoxOptionOption } from '@elastic/eui';
-import { GroupDefsType, Item } from '../data/types';
+import { GroupDefsType, Item } from '../types';
 import { sortBy } from 'lodash';
 
 export const GroupSelector = (props: {

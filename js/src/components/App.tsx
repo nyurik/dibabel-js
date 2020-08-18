@@ -12,11 +12,13 @@ import '../App.css';
 
 // React component import
 import { EuiPage, EuiPageBody } from '@elastic/eui';
-import { ToastsProvider } from './Toasts';
-import { UserProvider } from '../data/UserContext';
-import { SettingsProvider } from './Settings';
+import { ToastsProvider } from '../contexts/Toasts';
+import { UserProvider } from '../contexts/UserContext';
+import { SettingsProvider } from '../contexts/Settings';
 import { WorkArea } from './WorkArea';
 import { Header } from './Header';
+import { AllDataProvider } from '../contexts/AllData';
+import { CurrentItemProvider } from '../contexts/CurrentItem';
 
 export function App() {
   return (
@@ -26,7 +28,11 @@ export function App() {
           <EuiPage>
             <EuiPageBody>
               <Header/>
-              <WorkArea/>
+              <AllDataProvider>
+                <CurrentItemProvider>
+                  <WorkArea/>
+                </CurrentItemProvider>
+              </AllDataProvider>
             </EuiPageBody>
           </EuiPage>
         </UserProvider>

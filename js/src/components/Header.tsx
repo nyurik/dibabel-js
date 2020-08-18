@@ -12,7 +12,7 @@ import {
   EuiPageHeaderSection,
   EuiText
 } from '@elastic/eui';
-import { Settings } from './Settings';
+import { Settings } from '../contexts/Settings';
 import { User } from './User';
 import { logoIcon } from '../icons/icons';
 

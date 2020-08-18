@@ -1,18 +1,7 @@
-import React, { Dispatch, ReactChild, useReducer } from 'react';
+import React, { Dispatch, useReducer } from 'react';
 import { EuiGlobalToastList } from '@elastic/eui';
 import { Toast as ToastWithId } from '@elastic/eui/src/components/toast/global_toast_list';
-import { Props } from '../data/types';
-import { EuiToastProps } from '@elastic/eui/src/components/toast/toast';
-
-/**
- * This overrides EUI's own toast interface to remove the ID requirement (auto-added later)
- * FIXME: Can this be done with importing Toast from @elastic/eui/src/components/toast/global_toast_list and using Exclude<> ?
- */
-export interface ToastNoId extends EuiToastProps {
-  // id: string;
-  text?: ReactChild;
-  toastLifeTimeMs?: number;
-}
+import { Props, ToastNoId } from '../types';
 
 type ToastContextType = Dispatch<ToastNoId | ToastWithId>;
 
@@ -20,7 +9,10 @@ export const ToastsContext = React.createContext<ToastContextType>({} as ToastCo
 
 let toastId = 0;
 
-const reducer = (toasts: ToastWithId[], newOrExistingToast: ToastNoId | ToastWithId) => {
+/**
+ * Add a new toast, or if toast has an ID, remove it
+ */
+const applyToastChange = (toasts: ToastWithId[], newOrExistingToast: ToastNoId | ToastWithId) => {
   if (newOrExistingToast.id === undefined) {
     // Adding a new toast
     return toasts.concat({
@@ -42,7 +34,7 @@ const ToastsViewer = ({ toasts, doToast }: { toasts: ToastWithId[], doToast: Toa
 };
 
 export const ToastsProvider = ({ children }: Props) => {
-  const [toasts, doToast] = useReducer(reducer, []);
+  const [toasts, doToast] = useReducer(applyToastChange, []);
 
   return (
     <>

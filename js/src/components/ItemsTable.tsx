@@ -1,4 +1,4 @@
-import React, { Dispatch, useState } from 'react';
+import React, { Dispatch, useContext, useState } from 'react';
 
 import {
   EuiBasicTableColumn,
@@ -10,22 +10,24 @@ import {
   EuiText
 } from '@elastic/eui';
 
-import { Group, Item } from '../data/types';
+import { Group, Item } from '../types';
 import { iconsEuiMedium, lockIcon } from '../icons/icons';
 import { ExternalLink, prettyDomain } from './Snippets';
 import { itemDiffLink } from '../utils';
+import { CurrentItemContext } from '../contexts/CurrentItem';
 
 export const ItemsTable = (
-  { error, groupedItems, isLoading, message, selectedItems, setItem, setSelectedItems }: {
+  { error, groupedItems, isLoading, message, selectedItems, setSelectedItems }: {
     isLoading: boolean,
     message: string,
-    error: string,
+    error?: string,
     groupedItems: any,
     selectedItems: Set<Item>,
     setSelectedItems: Dispatch<Set<Item>>,
-    setItem: Dispatch<Item>,
   }
 ) => {
+  const { setCurrentItem } = useContext(CurrentItemContext);
+
   const all_columns: { [key: string]: EuiBasicTableColumn<Item> } = {
     selector: {
       name: '',
@@ -261,7 +263,7 @@ export const ItemsTable = (
       params.rowProps = (item: Item) => ({
         onClick: (v: any) => {
           if (v.target.nodeName !== 'INPUT' && v.target.nodeName !== 'A') {
-            setItem(item);
+            setCurrentItem(item);
           }
         },
       });

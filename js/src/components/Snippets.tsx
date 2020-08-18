@@ -1,6 +1,6 @@
 import React from 'react';
 import { EuiButtonIcon, EuiLink, EuiButtonIconColor } from '@elastic/eui';
-import { Item } from '../data/types';
+import { Item } from '../types';
 
 export const ExternalLink = (
   { href, title, icon = 'symlink', color = 'text' }: { href: string, title: string, icon?: string, color?: EuiButtonIconColor }

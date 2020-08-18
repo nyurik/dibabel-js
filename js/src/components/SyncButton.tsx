@@ -1,7 +1,7 @@
 import React, { Dispatch } from 'react';
 
 import { EuiButton, EuiFlexItem } from '@elastic/eui';
-import { Item } from '../data/types';
+import { Item } from '../types';
 
 export const SyncButton = (props: {
   selectedItems: Set<Item>,

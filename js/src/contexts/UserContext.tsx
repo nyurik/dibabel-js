@@ -1,7 +1,7 @@
 import React, { Dispatch, useContext, useEffect, useState } from 'react';
-import { Props } from './types';
-import { rootUrl } from '../utils';
-import { ToastNoId, ToastsContext } from '../components/Toasts';
+import { Props, ToastNoId } from '../types';
+import { error, rootUrl, success, warning } from '../utils';
+import { ToastsContext } from './Toasts';
 
 export enum UserState {
   Unknown,
@@ -29,44 +29,24 @@ function login(addToast: Dispatch<ToastNoId>, setUser: Dispatch<UserType>) {
       let data = await fetch(`${rootUrl}userinfo`);
       if (data.ok) {
         const json = await data.json();
-        addToast({
-          title: `Logged in as ${json.username}`,
-          color: 'success',
-          iconType: 'check',
-        });
+        addToast(success({ title: `Logged in as ${json.username}`, iconType: 'user' }));
         setUser({ state: UserState.LoggedIn, ...json });
       } else {
         if (data.status === 403) {
-          addToast({
-            title: `Not logged in`,
-            color: 'warning',
-            iconType: 'user',
-            text: 'Please login to edit pages',
-          });
+          addToast(warning({ title: `Not logged in`, iconType: 'user', text: 'Please login to edit pages' }));
         } else {
-          addToast({
-            title: `${data.status}: ${data.statusText}`,
-            color: 'danger',
-            iconType: 'alert',
-            text: await data.text(),
-          });
+          addToast(error({ title: `${data.status}: ${data.statusText}`, text: await data.text() }));
         }
         setUser(loggedOutState);
       }
     } catch (err) {
-      addToast({
-        title: `Unable to parse user login`,
-        color: 'danger',
-        iconType: 'alert',
-        text: `${err}`,
-        toastLifeTimeMs: 15000,
-      });
+      addToast(error({ title: `Unable to parse user login`, text: `${err}`, toastLifeTimeMs: 15000, }));
       setUser(loggedOutState);
     }
   })();
 }
 
-export const UserProvider = (props: Props) => {
+export const UserProvider = ({ children }: Props) => {
   const addToast = useContext(ToastsContext);
   const [user, setUser] = useState<UserType>(defaultUserState);
 
@@ -75,7 +55,7 @@ export const UserProvider = (props: Props) => {
 
   return (
     <UserContext.Provider value={{ user }}>
-      {props.children}
+      {children}
     </UserContext.Provider>
   );
 

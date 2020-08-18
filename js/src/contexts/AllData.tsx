@@ -1,11 +1,10 @@
-import { Item, ItemTypeType, SourceDataType, SyncItemType } from './types';
-import React, { Dispatch } from 'react';
+import React, { Dispatch, useCallback, useContext, useEffect, useReducer, useState } from 'react';
 
-// import fauxData from './faux/fauxData.small.json';
 import fauxData from './faux/fauxData.json';
-import { rootUrl, splitNs } from '../utils';
+import { error, rootUrl, splitNs, success } from '../utils';
 import { EuiText } from '@elastic/eui';
-import { ToastNoId } from '../components/Toasts';
+import { ToastsContext } from './Toasts';
+import { Item, ItemTypeType, Props, SourceDataType, SyncItemType, ToastNoId } from '../types';
 
 const titleUrlSuffix = '/wiki/';
 
@@ -55,51 +54,89 @@ export const updateSyncInfo = (item: Item, dst: SyncItemType): Item => {
   return item;
 };
 
-export async function getItems(addToast: Dispatch<ToastNoId>): Promise<Array<Item>> {
-  let cache: any;
+export type DataLoadStatus = 'reset' | 'loading' | 'ready' | 'error'
 
-  async function getData(addToast: Dispatch<ToastNoId>) {
-    if (cache) {
-      return cache;
+export type AllDataContextType = {
+  allItems: Item[],
+  status: DataLoadStatus,
+  reload: Dispatch<void>
+  updateItem: Dispatch<Item>
+}
+
+const reducer = (allItems: Item[], newData: Item[] | Item) => {
+  if (Array.isArray(newData)) {
+    return newData;
+  }
+  // Replace updated item
+  const newItems = [...allItems];
+  for (let i = 0; i < newItems.length; i++) {
+    if (newItems[i].key === newData.key) {
+      newItems[i] = newData;
+      break;
     }
-    try {
-      let itemData = await fetch(`${rootUrl}data`);
-      if (itemData.ok) {
-        cache = await itemData.json();
-        const total = Object.values(cache).reduce((a: number, v: any) => a + Object.keys(v.copies).length, 0);
-        addToast({
-          title: `Loaded data`,
-          color: 'success',
-          text: (<EuiText>
-            {Object.keys(cache).length} pages<br/>
-            {total} copies
-          </EuiText>),
-        });
-        return cache;
-      } else {
-        addToast({
-          title: `${itemData.status}: ${itemData.statusText}`,
-          color: 'danger',
-          iconType: 'alert',
-          text: await itemData.text(),
-        });
-      }
-    } catch (err) {
-      addToast({
-        title: `Unable to parse data response, showing fake data`,
-        color: 'danger',
-        iconType: 'alert',
-        text: `${err}`,
-        toastLifeTimeMs: 15000,
-      });
+  }
+  return newItems;
+};
+
+const initialState: Item[] = [];
+
+export const AllDataContext = React.createContext<AllDataContextType>({} as AllDataContextType);
+
+export const AllDataProvider = ({ children }: Props) => {
+  const addToast = useContext(ToastsContext);
+  const [allItems, updateData] = useReducer(reducer, initialState);
+  let [status, setStatus] = useState<DataLoadStatus>('reset');
+  const reload = useCallback(() => setStatus('reset'), []);
+
+  useEffect(() => {
+    if (status === 'reset') {
+      setStatus('loading');
+      (async () => {
+        const data = await downloadData(addToast);
+        if (data === null) {
+          updateData([]);
+          setStatus('error');
+        } else {
+          updateData(data);
+          setStatus('ready');
+        }
+      })();
     }
-    cache = fauxData;
-    return cache;
+  }, [addToast, status]);
+
+  return (
+    <AllDataContext.Provider value={{ allItems, status, reload, updateItem: updateData }}>
+      {children}
+    </AllDataContext.Provider>
+  );
+};
+
+async function downloadData(addToast: Dispatch<ToastNoId>): Promise<Array<Item> | null> {
+  let data: SourceDataType[] = fauxData as any as SourceDataType[];
+  try {
+    let itemData = await fetch(`${rootUrl}data`);
+    if (itemData.ok) {
+      data = await itemData.json();
+      const total = Object.values(data).reduce((a: number, v: any) => a + Object.keys(v.copies).length, 0);
+      addToast(success({
+        title: `Loaded data`,
+        text: (<EuiText>
+          {Object.keys(data).length} pages<br/>
+          {total} copies
+        </EuiText>),
+      }));
+    } else {
+      addToast(error({ title: `${itemData.status}: ${itemData.statusText}`, text: await itemData.text() }));
+    }
+  } catch (err) {
+    addToast(error({
+      title: `Unable to parse data response, showing fake data`,
+      text: `${err}`,
+      toastLifeTimeMs: 15000,
+    }));
   }
 
-  const data = await getData(addToast);
-
-  function * flatten(data: Array<SourceDataType>): Generator<Item> {
+  function * flatten(data: SourceDataType[]): Generator<Item> {
     for (let src of data) {
       const [type, title] = splitNs(src.primaryTitle);
       const srcTitleUrl = `https://${src.primarySite}${titleUrlSuffix}${src.primaryTitle}`;
@@ -119,10 +156,6 @@ export async function getItems(addToast: Dispatch<ToastNoId>): Promise<Array<Ite
 
   return Array.from(flatten(data));
 }
-
-export const defaultSearchableFields: Array<string> = [
-  'status', 'wiki', 'lang', 'title', 'dstTitle',
-];
 
 // export async function fetchContent(site: string, title: string): Promise<string> {
 //   const params = new URLSearchParams({

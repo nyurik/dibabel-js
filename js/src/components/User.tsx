@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { EuiHeaderLink, EuiLoadingSpinner, EuiText } from '@elastic/eui';
-import { UserContext, UserState } from '../data/UserContext';
+import { UserContext, UserState } from '../contexts/UserContext';
 import { rootUrl } from '../utils';
 
 export const User = () => {

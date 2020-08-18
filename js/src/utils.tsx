@@ -1,8 +1,9 @@
 import { DependencyList, Dispatch, useEffect, useState } from 'react';
-import { Item, ItemTypeType } from './data/types';
+import { Item, ItemTypeType, ToastNoId } from './types';
 
 // Using full root for the ease of debugging locally. Eventually should probably use '/'
 export const rootUrl = 'https://dibabel.toolforge.org/';
+
 // export const rootUrl = '/';
 
 /**
@@ -113,3 +114,22 @@ export const sleep = (durationsMs: number) => {
 export const itemDiffLink = ({ dstTitle, srcRevId, matchedRevId }: Item) => {
   return `https://www.mediawiki.org/w/index.php?title=${encodeURIComponent(dstTitle)}&type=revision&diff=${srcRevId}&oldid=${matchedRevId}`;
 };
+
+export const success = (toast: ToastNoId): ToastNoId => ({
+  color: 'success', ...toast
+});
+
+export const warning = (toast: ToastNoId): ToastNoId => ({
+  color: 'warning', ...toast
+});
+
+export const error = (toast: ToastNoId): ToastNoId => ({
+  color: 'danger', iconType: 'alert', ...toast
+});
+
+export function dbg(log: string, fn: any): any {
+  return function () {
+    console.log(`++++++ ${log}`, arguments);
+    return fn.apply(arguments);
+  };
+}

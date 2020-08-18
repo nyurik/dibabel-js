@@ -1,10 +1,10 @@
-import React, { useContext, useState, Dispatch } from 'react';
+import React, { Dispatch, useContext, useState } from 'react';
 
 import { EuiButtonIcon, EuiHeaderLink, EuiPopover, EuiPopoverTitle, EuiSpacer, EuiSwitch } from '@elastic/eui';
-import { UserContext, UserState } from '../data/UserContext';
+import { UserContext, UserState } from './UserContext';
 import { rootUrl, usePersistedState } from '../utils';
 
-import { Props } from '../data/types';
+import { Props } from '../types';
 
 // Modeled after https://www.carlrippon.com/react-context-with-typescript-p2/
 
