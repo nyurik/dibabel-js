@@ -116,6 +116,7 @@ export type SourceDataType = {
 /**
  * This overrides EUI's own toast interface to remove the ID requirement (auto-added later)
  * FIXME: Can this be done with importing Toast from @elastic/eui/src/components/toast/global_toast_list and using Exclude<> ?
+ * Exclude<EuiToast, 'id'> ?
  */
 export interface ToastNoId extends EuiToastProps {
   // id: string;

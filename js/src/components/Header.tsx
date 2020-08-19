@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Message } from '@wikimedia/react.i18n';
 import {
   EuiBetaBadge,
   EuiFlexGroup,
@@ -7,7 +7,6 @@ import {
   EuiHeaderLink,
   EuiHeaderLogo,
   EuiHeaderSectionItem,
-  EuiLink,
   EuiPageHeader,
   EuiPageHeaderSection,
   EuiText
@@ -40,7 +39,7 @@ export function Header() {
                        href={'https://github.com/nyurik/dibabel-js'}>i18n.dibabel-header-links--source</EuiHeaderLink>
         <EuiHeaderLink iconType={'bug'}
                        target={'_blank'}
-                       href={'https://github.com/nyurik/dibabel-js/issues'}>i18n.dibabel-header-links--bugs</EuiHeaderLink>
+                       href={'https://github.com/nyurik/dibabel-js/issues'}><Message id="dibabel-header-links--bugs"/></EuiHeaderLink>
       </EuiPageHeaderSection>
       <EuiPageHeaderSection>
         <EuiFlexGroup
