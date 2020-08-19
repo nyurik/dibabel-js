@@ -5,4 +5,17 @@ declare module '*.scss' {
 
 declare var Prism: any;
 
-declare module '@wikimedia/react.i18n'; // {  export = { BananaContext, IntlProvider };}
+declare module '@wikimedia/react.i18n' {
+  interface MessageProps {
+    id: string
+    placeholders?: any[]
+  }
+
+  export class Message extends React.Component<MessageProps & any, any> {}
+
+  export const BananaContext: React.Context<{
+    i18n: (id: string, ...args: any) => string
+  }>;
+
+  export const IntlProvider: React.ContextProvider<{}>;
+}

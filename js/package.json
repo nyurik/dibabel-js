@@ -24,9 +24,10 @@
     "typescript": "^3.9.7"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "sitedata": "node scripts/create-sitedata.js",
+    "start": "yarn run sitedata && react-scripts start",
+    "build": "yarn run sitedata && react-scripts build",
+    "test": "yarn run sitedata && react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

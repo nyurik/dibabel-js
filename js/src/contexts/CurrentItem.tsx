@@ -1,5 +1,5 @@
 import React, { Dispatch, useCallback, useContext, useState } from 'react';
-import { error, rootUrl, sleep } from '../utils';
+import { error, rootUrlData, sleep } from '../utils';
 import { Item, Props, SyncContentType } from '../types';
 import { AllDataContext, DataLoadStatus, updateSyncInfo } from './AllData';
 import { isEqual } from 'lodash';
@@ -36,7 +36,7 @@ type SyncLoader = {
 async function loadSyncData(item: Item): Promise<SyncLoader> {
   const result = {} as SyncLoader;
   try {
-    const res = await fetch(`${rootUrl}page/${item.qid}/${item.wiki}`);
+    const res = await fetch(`${rootUrlData}page/${item.qid}/${item.wiki}`);
     if (res.ok) {
       const data: SyncContentType = await res.json();
       const newItem = updateSyncInfo({ ...item }, data.syncInfo);

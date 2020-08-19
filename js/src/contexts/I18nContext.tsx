@@ -1,38 +1,20 @@
-import React, { SetStateAction, useContext, useEffect, useState } from 'react';
-// import { IntlProvider } from '@wikimedia/react.i18n';
-// import { Props } from '../types';
-// import { SettingsContext } from './Settings';
-// import { dbg } from '../utils';
-//
-//
-// export type I18nContextType = {
-//   // messages: Messages,
-//   // setMessages: SetStateAction<Messages>
-// }
-//
-// export const I18nContext = React.createContext<I18nContextType>({} as I18nContextType);
-//
-//
-// export const I18nProvider = ({ children }: Props) => {
-//   const { locale, messages } = useContext(SettingsContext);
-//
-//   // const banana = useContext(BananaContext);
-//
-//   debugger;
-//   useEffect(() => {
-//     setMessages({
-//       ru: i18n_ru,
-//     });
-//   }, [setMessages]);
-//
-//   setMessages = dbg('setMessages', setMessages);
-//   debugger;
-//
-//   return (
-//     <I18nContext.Provider value={{ messages, setMessages }}>
-//       <IntlProvider locale={locale} messages={messages}>
-//         {children}
-//       </IntlProvider>
-//     </I18nContext.Provider>
-//   );
-// };
+import React, { useContext } from 'react';
+import { BananaContext } from '@wikimedia/react.i18n';
+import { Props } from '../types';
+
+type I18n = (id: string, ...args: any) => string;
+
+export interface I18nContextType {
+  i18n: I18n;
+}
+
+export const I18nContext = React.createContext<I18nContextType>({} as I18nContextType);
+
+export const I18nProvider = ({ children }: Props) => {
+  const banana = useContext(BananaContext);
+  return (
+    <I18nContext.Provider value={{ i18n: banana.i18n.bind(banana) }}>
+      {children}
+    </I18nContext.Provider>
+  );
+};

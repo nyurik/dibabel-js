@@ -1,6 +1,7 @@
 /vendor
 /public_html
 /.secret.php
+sitedata.json
 
 # dependencies
 /node_modules

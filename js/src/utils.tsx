@@ -2,10 +2,10 @@ import { DependencyList, Dispatch, useEffect, useState } from 'react';
 import { Item, ItemTypeType, ToastNoId } from './types';
 
 // Using full root for the ease of debugging locally. Eventually should probably use '/'
-export const rootUrl = 'https://dibabel.toolforge.org/';
-export const rootUrlI18n = '/';
+export const rootUrlData = 'https://dibabel.toolforge.org/';
+export const rootUrlSite = '/';
 
-// export const rootUrl = '/';
+// export const rootUrlData = '/';
 
 /**
  * React hook to store state in the local storage
@@ -78,7 +78,7 @@ export function usePersistedJsonState<TValue>(
 }
 
 export async function postToApi(domain: string, data: { [key: string]: string }) {
-  const response = await fetch(`${rootUrl}api/${domain}`, {
+  const response = await fetch(`${rootUrlData}api/${domain}`, {
     method: 'POST',
     mode: 'cors', // TODO: possibly use a different mode here?  no-cors, cors, same-origin
     headers: { 'Content-Type': 'application/json' },

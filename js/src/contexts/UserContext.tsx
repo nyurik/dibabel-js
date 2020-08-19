@@ -1,6 +1,6 @@
 import React, { Dispatch, useContext, useEffect, useState } from 'react';
 import { Props, ToastNoId } from '../types';
-import { error, rootUrl, success, warning } from '../utils';
+import { error, rootUrlSite, success, warning } from '../utils';
 import { ToastsContext } from './Toasts';
 
 export enum UserState {
@@ -26,7 +26,7 @@ export const UserContext = React.createContext<UserContextType>({} as UserContex
 function login(addToast: Dispatch<ToastNoId>, setUser: Dispatch<UserType>) {
   (async () => {
     try {
-      let data = await fetch(`${rootUrl}userinfo`);
+      let data = await fetch(`${rootUrlSite}userinfo`);
       if (data.ok) {
         const json = await data.json();
         addToast(success({ title: `Logged in as ${json.username}`, iconType: 'user' }));

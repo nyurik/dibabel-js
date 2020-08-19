@@ -15,16 +15,19 @@ import {
   EuiSwitch
 } from '@elastic/eui';
 import { UserContext, UserState } from './UserContext';
-import { rootUrl, rootUrlI18n, usePersistedState } from '../utils';
+import { rootUrlData, rootUrlSite, usePersistedState } from '../utils';
 
 import { Props } from '../types';
 import i18n_en from './messages_en.json';
 import { isEmpty } from 'lodash';
 
+export type LanguageNames = { [key: string]: string };
+export type SiteData = { languages: string[] };
 export type Messages = any;
 export type AllMessages = { [key: string]: Messages };
 
 export type SettingsContextType = {
+  siteData: SiteData,
   isDarkTheme: boolean,
   setIsDarkTheme: Dispatch<boolean>,
   isSplitView: boolean,
@@ -34,23 +37,21 @@ export type SettingsContextType = {
   locale: string,
   messages: AllMessages,
   setLocale: Dispatch<string>,
-  languageData: LanguageData,
+  languageNames: LanguageNames,
 }
 
 export const SettingsContext = React.createContext<SettingsContextType>({} as SettingsContextType);
 
-const initialValue: AllMessages = {
-  en: i18n_en,
-};
+const initMessages: AllMessages = { en: i18n_en };
+const initSiteData: SiteData = { languages: ['en'] };
 
 async function loadLocale(newLanguage: string, messages: AllMessages): Promise<Messages> {
-  debugger
   const newData: AllMessages = {};
-  while (newLanguage) {
+  while (true) {
     if (!messages[newLanguage]) {
       newData[newLanguage] = {}; // prevent repeated downloads
       try {
-        const resp = await fetch(`${rootUrlI18n}i18n/${newLanguage}.json`);
+        const resp = await fetch(`${rootUrlSite}i18n/${newLanguage}.json`);
         if (resp.ok) {
           newData[newLanguage] = await resp.json();
         }
@@ -59,11 +60,10 @@ async function loadLocale(newLanguage: string, messages: AllMessages): Promise<M
       }
     }
     const dashIdx = newLanguage.indexOf('-');
-    if (dashIdx > -1) {
-      newLanguage = newLanguage.substring(0, dashIdx);
-    } else {
-      newLanguage = '';
+    if (dashIdx < 0) {
+      break;
     }
+    newLanguage = newLanguage.substring(0, dashIdx);
   }
   if (!isEmpty(newData)) {
     return Object.assign(newData, messages);
@@ -71,44 +71,34 @@ async function loadLocale(newLanguage: string, messages: AllMessages): Promise<M
   return null;
 }
 
-const mw_languages_query = 'https://www.mediawiki.org/w/api.php?action=query&meta=languageinfo&liprop=name|autonym&format=json&formatversion=2&origin=*';
-
-export type LanguageData = { [key: string]: string };
-
-let languageCache: Promise<LanguageData> | null = null;
-
-export async function getLanguageData(): Promise<LanguageData> {
-  if (languageCache) {
-    return languageCache;
-  } else {
-    languageCache = (async (): Promise<LanguageData> => {
-      let data = await fetch(mw_languages_query);
-      if (data.ok) {
-        const langs = (await data.json()).query.languageinfo;
-        return Object.fromEntries(Object.keys(langs).map(lang => {
-          const langInfo = langs[lang];
-          let name = langInfo.name;
-          if (langInfo.autonym && langInfo.autonym !== langInfo.name) {
-            name += ` - ${langInfo.autonym}`;
-          }
-          return [lang, name];
-        }));
-      } else {
-        throw new Error(`${data.status}: ${data.statusText}\n${await data.text()}`);
+async function getLanguageNames(langCode: string): Promise<LanguageNames> {
+  const mw_languages_query = 'https://www.mediawiki.org/w/api.php?action=query&meta=languageinfo&liprop=name|autonym&format=json&formatversion=2&origin=*&uselang=';
+  let data = await fetch(mw_languages_query + encodeURIComponent(langCode));
+  if (data.ok) {
+    const langs = (await data.json()).query.languageinfo;
+    return Object.fromEntries(Object.keys(langs).map(lang => {
+      const langInfo = langs[lang];
+      let name = langInfo.name;
+      if (langInfo.autonym && langInfo.autonym !== langInfo.name) {
+        name += ` - ${langInfo.autonym}`;
       }
-    })();
-    return languageCache;
+      return [lang, name];
+    }));
+  } else {
+    throw new Error(`${data.status}: ${data.statusText}\n${await data.text()}`);
+  }
+}
+
+async function getSiteData(): Promise<SiteData> {
+  let data = await fetch(`${rootUrlSite}sitedata.json`);
+  if (data.ok) {
+    return await data.json();
+  } else {
+    throw new Error(`${data.status}: ${data.statusText}\n${await data.text()}`);
   }
 }
 
 export const SettingsProvider = ({ children }: Props) => {
-  const [languageData, setLanguageDate] = useState<LanguageData>({});
-  useEffect(() => {
-    getLanguageData().then(v => setLanguageDate(v));
-  });
-
-  const [messages, setMessages] = useState<AllMessages>(initialValue);
-
   const [isDarkTheme, setIsDarkTheme] = usePersistedState<boolean>(
     'theme', 'light',
     // FIXME!  currently always force to light mode. Once CSS dynamic loading is enabled, remove the `&& false`
@@ -121,16 +111,40 @@ export const SettingsProvider = ({ children }: Props) => {
   const [isIncrementalSearch, setIsIncrementalSearch] = usePersistedState<boolean>(
     `incremental-search`, 'true', v => v === 'true', v => v ? 'true' : 'false');
 
+  //
+  // Get the site data (run once)
+  const [siteData, setSiteData] = useState<SiteData>(initSiteData);
+  useEffect(() => {getSiteData().then(v => setSiteData(v)); }, []);
+
+  //
+  // Locale and the names of all languages in the language of the user
   const [locale, setLocaleVal] = usePersistedState<string>(`lang`, 'en', v => v, v => v);
+
+  //
+  // Names of all languages in the user's language
+  const [languageNames, setLanguageDate] = useState<LanguageNames>({});
+  useEffect(() => {
+    getLanguageNames(locale).then(v => setLanguageDate(v));
+  }, [locale]);
+
+  //
+  // Configure language localization
+  const [messages, setMessages] = useState<AllMessages>(initMessages);
 
   const setLocale = useCallback((newLocale: string): void => {
     loadLocale(newLocale, messages).then(newMsgs => {
       if (newMsgs) {
         setMessages(newMsgs);
       }
-      setLocaleVal(newLocale);
+      if (locale !== newLocale) {
+        setLocaleVal(newLocale);
+      }
     });
-  }, [messages, setLocaleVal]);
+  }, [locale, messages, setLocaleVal]);
+
+  // Do this only once to load user's locale
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { setLocale(locale); }, []);
 
   // // @ts-ignore
   // [(isDarkTheme ? themeLight : themeDark)].unuse();
@@ -140,6 +154,7 @@ export const SettingsProvider = ({ children }: Props) => {
   return (
     <SettingsContext.Provider
       value={{
+        siteData,
         isDarkTheme,
         setIsDarkTheme,
         isSplitView,
@@ -149,7 +164,7 @@ export const SettingsProvider = ({ children }: Props) => {
         locale,
         messages,
         setLocale,
-        languageData,
+        languageNames,
       }}>
       {children}
     </SettingsContext.Provider>
@@ -201,7 +216,7 @@ const SettingsDialog = () => {
     />,
     <EuiSpacer key={'s3'} size={'m'}/>,
     <EuiHeaderLink key={'logout'} disabled={user.state !== UserState.LoggedIn}
-                   href={`${rootUrl}logout`}>Logout...</EuiHeaderLink>,
+                   href={`${rootUrlData}logout`}>Logout...</EuiHeaderLink>,
   ];
 
   return (<>{results}</>);
@@ -210,7 +225,7 @@ const SettingsDialog = () => {
 export const Settings = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isLanguagesOpen, setIsLanguagesOpen] = useState(false);
-  const { languageData, locale, setLocale } = useContext(SettingsContext);
+  const { siteData, languageNames, locale, setLocale } = useContext(SettingsContext);
 
   const closePopover = () => { setIsLanguagesOpen(false); };
 
@@ -222,19 +237,17 @@ export const Settings = () => {
     color={'text'}
   />);
 
-  const langOptions = useMemo((): EuiSelectableOption[] => {
-    return Object.entries(languageData).map(
-      ([lang, name]) => {
-        const res = { key: lang, label: name } as EuiSelectableOption;
-        if (lang === locale) {
-          res.checked = 'on';
-        }
-        return res;
-      });
-  }, [languageData, locale]);
+  const langOptions = useMemo((): EuiSelectableOption[] =>
+    siteData.languages.map(lang => {
+      const res = { key: lang, label: languageNames[lang] || 'Unknown' } as EuiSelectableOption;
+      if (lang === locale) {
+        res.checked = 'on';
+      }
+      return res;
+    }), [languageNames, locale, siteData.languages]);
 
   // FIXME: update this link to ...?
-  const translateWikiUrl = `https://translatewiki.org/`;
+  // const translateWikiUrl = `https://translatewiki.org/`;
 
   const languageSelector = (<EuiPopover
     id="popover"
@@ -259,18 +272,15 @@ export const Settings = () => {
         <div style={{ width: 240 }}>
           <EuiPopoverTitle>{search}</EuiPopoverTitle>
           {list}
-          <EuiPanel paddingSize="m"><EuiLink href={translateWikiUrl} target={'_blank'}><EuiButtonIcon
+          {/* FIXME: add this to the EuiLink below, and fix the ref  href={translateWikiUrl}*/}
+          <EuiPanel paddingSize="m"><EuiLink target={'_blank'}><EuiButtonIcon
             iconType={'globe'}/> Help translate</EuiLink></EuiPanel>
         </div>
       )}
     </EuiSelectable>
   </EuiPopover>);
 
-  // debugger;
   return (<EuiFlexGroup alignItems={'center'}>
-    <EuiFlexItem grow={false}>
-      {languageSelector}
-    </EuiFlexItem>
     <EuiFlexItem grow={false}>
       <EuiPopover
         key={'s'}
@@ -280,6 +290,9 @@ export const Settings = () => {
         <EuiPopoverTitle>Options</EuiPopoverTitle>
         {isSettingsOpen ? <SettingsDialog/> : null}
       </EuiPopover>
+    </EuiFlexItem>
+    <EuiFlexItem grow={false}>
+      {languageSelector}
     </EuiFlexItem>
   </EuiFlexGroup>);
 };

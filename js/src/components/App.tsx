@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo, useContext } from 'react';
 
 // import themeLight from './theme_amsterdam-light.scss';
 // import themeDark from './theme_amsterdam-dark.scss';
@@ -19,27 +19,29 @@ import { WorkArea } from './WorkArea';
 import { Header } from './Header';
 import { AllDataProvider } from '../contexts/AllData';
 import { CurrentItemProvider } from '../contexts/CurrentItem';
+import { I18nProvider } from '../contexts/I18nContext';
 import { IntlProvider } from '@wikimedia/react.i18n';
 
 export function AppWithSettings() {
   const { locale, messages } = useContext(SettingsContext);
-
   return useMemo(() => (
     <IntlProvider locale={locale} messages={messages}>
-      <ToastsProvider>
-        <UserProvider>
-          <EuiPage>
-            <EuiPageBody>
-              <Header/>
-              <AllDataProvider>
-                <CurrentItemProvider>
-                  <WorkArea/>
-                </CurrentItemProvider>
-              </AllDataProvider>
-            </EuiPageBody>
-          </EuiPage>
-        </UserProvider>
-      </ToastsProvider>
+      <I18nProvider>
+        <ToastsProvider>
+          <UserProvider>
+            <EuiPage>
+              <EuiPageBody>
+                <Header/>
+                <AllDataProvider>
+                  <CurrentItemProvider>
+                    <WorkArea/>
+                  </CurrentItemProvider>
+                </AllDataProvider>
+              </EuiPageBody>
+            </EuiPage>
+          </UserProvider>
+        </ToastsProvider>
+      </I18nProvider>
     </IntlProvider>
   ), [locale, messages]);
 }

@@ -1,7 +1,7 @@
 import React, { Dispatch, useCallback, useContext, useEffect, useReducer, useState } from 'react';
 
 import fauxData from './faux/fauxData.json';
-import { error, rootUrl, splitNs, success } from '../utils';
+import { error, rootUrlData, splitNs, success } from '../utils';
 import { EuiText } from '@elastic/eui';
 import { ToastsContext } from './Toasts';
 import { Item, ItemTypeType, Props, SourceDataType, SyncItemType, ToastNoId } from '../types';
@@ -114,7 +114,7 @@ export const AllDataProvider = ({ children }: Props) => {
 async function downloadData(addToast: Dispatch<ToastNoId>): Promise<Array<Item> | null> {
   let data: SourceDataType[] = fauxData as any as SourceDataType[];
   try {
-    let itemData = await fetch(`${rootUrl}data`);
+    let itemData = await fetch(`${rootUrlData}data`);
     if (itemData.ok) {
       data = await itemData.json();
       const total = Object.values(data).reduce((a: number, v: any) => a + Object.keys(v.copies).length, 0);

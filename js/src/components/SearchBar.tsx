@@ -17,9 +17,7 @@ import { flatten, map, uniq } from 'lodash';
 import { iconsEuiMedium } from '../icons/icons';
 import { GroupSelector } from './GroupSelector';
 import { SyncButton } from './SyncButton';
-import { ToastsContext } from '../contexts/Toasts';
-import { getLanguageData, SettingsContext } from '../contexts/Settings';
-import { error } from '../utils';
+import { SettingsContext } from '../contexts/Settings';
 
 async function getOptions(allItems: Array<Item>, field: ('project')) {
   const values = uniq(allItems.map(v => v[field])).filter(v => v);
@@ -53,8 +51,7 @@ export const SearchBar = (
     setGroupSelection: Dispatch<Array<keyof Item>>,
   }) => {
 
-  const addToast = useContext(ToastsContext);
-  const { isIncrementalSearch } = useContext(SettingsContext);
+  const { languageNames, isIncrementalSearch } = useContext(SettingsContext);
   let { allItems, status, reload } = useContext(AllDataContext);
 
   const filters: Array<SearchFilterConfig> = [
@@ -118,21 +115,15 @@ export const SearchBar = (
       // @ts-ignore
       operator: 'exact',
       options: async () => {
-        try {
-          const values = uniq(allItems.map(v => v.lang));
-          values.sort();
-          const allLangs = await getLanguageData();
-          return values.map(lang => ({
-            value: lang,
-            view: <EuiFlexGroup>
-              <EuiFlexItem grow={false} className={'lang-code'}>{lang}</EuiFlexItem>
-              <EuiFlexItem grow={false}>{allLangs[lang] || 'Unknown'}</EuiFlexItem>
-            </EuiFlexGroup>
-          }));
-        } catch (err) {
-          addToast(error({ title: 'Unable to load language data', text: err.toString() }));
-          return [];
-        }
+        const values = uniq(allItems.map(v => v.lang));
+        values.sort();
+        return values.map(lang => ({
+          value: lang,
+          view: <EuiFlexGroup>
+            <EuiFlexItem grow={false} className={'lang-code'}>{lang}</EuiFlexItem>
+            <EuiFlexItem grow={false}>{languageNames[lang] || 'Unknown'}</EuiFlexItem>
+          </EuiFlexGroup>
+        }));
       },
     },
     {
