@@ -1,8 +1,5 @@
-import {ReactChild, useContext} from 'react';
+import { ReactChild } from 'react';
 import { EuiToastProps } from '@elastic/eui/src/components/toast/toast';
-
-import { I18nContext } from './contexts/I18nContext';
-const { i18n } = useContext(I18nContext);
 
 export type StatusType = 'ok' | 'outdated' | 'unlocalized' | 'diverged';
 
@@ -10,15 +7,13 @@ export type ItemTypeType = 'module' | 'template';
 
 export type LangInfo = { name: string, autonym: string } ;
 
-export type LangInfoDict = { [key: string]: LangInfo };
-
 export type Props = { children: React.ReactNode };
 
 export type GroupDefsType = {
   [key: string]: {
     columns: Array<keyof Item>,
     extra_columns?: Array<keyof Item>,
-    groupName: string,
+    groupI18n: string,
     order: number,
   }
 };
@@ -158,28 +153,28 @@ export const groupDefs: GroupDefsType = {
   'lang': {
     order: 1,
     columns: ['lang'],
-    groupName: i18n('dibabel-filters-groupby--lang'),
+    groupI18n: 'dibabel-filters-groupby--lang',
   },
   'project': {
     order: 1,
     columns: ['project'],
-    groupName: i18n('dibabel-filters-groupby--project'),
+    groupI18n: 'dibabel-filters-groupby--project',
   },
   'wiki': {
     order: 2,
     columns: ['wiki'],
     extra_columns: ['lang', 'project'],
-    groupName: i18n('dibabel-filters-groupby--wiki'),
+    groupI18n: 'dibabel-filters-groupby--wiki',
   },
   'srcTitleUrl': {
     order: 3,
     columns: ['title'],
     extra_columns: ['type', 'srcSite', 'srcFullTitle', 'srcTitleUrl'],
-    groupName: i18n('dibabel-filters-groupby--title'),
+    groupI18n: 'dibabel-filters-groupby--title',
   },
   'hash': {
     order: 4,
     columns: ['hash'],
-    groupName: i18n('dibabel-filters-groupby--hash'),
+    groupI18n: 'dibabel-filters-groupby--hash',
   },
 };

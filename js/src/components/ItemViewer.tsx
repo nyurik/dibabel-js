@@ -102,7 +102,7 @@ const ItemDiffViewer = () => {
     case 'outdated':
       infoSubHeader = (<EuiHealth color={'warning'}>
         <EuiText><Message id="dibabel-diff-header-description--outdated"
-                          placeholders={[<ItemDstLink item={currentItem}/>, <EuiLink href={itemDiffLink(currentItem)}target={'_blank'}>{i18n('dibabel-diff-header-description--outdated-rev', currentItem.behind)}</EuiLink>, <ItemSrcLink item={currentItem}/>]}/></EuiText></EuiHealth>);
+                          placeholders={[<ItemDstLink item={currentItem}/>, <EuiLink href={itemDiffLink(currentItem)} target={'_blank'}>{i18n('dibabel-diff-header-description--outdated-rev', currentItem.behind)}</EuiLink>, <ItemSrcLink item={currentItem}/>]}/></EuiText></EuiHealth>);
       break;
     case 'unlocalized':
       infoSubHeader = (<EuiHealth color={'warning'}>
@@ -173,7 +173,7 @@ const ItemDiffViewer = () => {
       default:
         throw new Error(itemStatus.status);
     }
-  }, [itemStatus, currentItem.type, syncData]);
+  }, [itemStatus.status, itemStatus.error, i18n, currentItem.type, syncData]);
 
   const onClose = useCallback(() => setCurrentItem(undefined), [setCurrentItem]);
 

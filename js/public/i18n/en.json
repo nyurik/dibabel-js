@@ -108,7 +108,5 @@
   "dibabel-updatepage-confirm--no": "No, take me back",
   "dibabel-updatepage-confirm--yes": "Yes, do it!",
   "dibabel-updatepage-confirm--description-part1": "You're about to edit $1",
-  "dibabel-updatepage-confirm--description-part2": "Are you sure you want to do this?",
-  "dibabel-languages-error--load": "Error loading language data",
-  "dibabel-languages-error--parse": "Error parsing language data"
+  "dibabel-updatepage-confirm--description-part2": "Are you sure you want to do this?"
 }

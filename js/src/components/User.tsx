@@ -2,13 +2,11 @@ import React, { useContext } from 'react';
 import { EuiHeaderLink, EuiLoadingSpinner, EuiText } from '@elastic/eui';
 import { UserContext, UserState } from '../contexts/UserContext';
 import { rootUrlData } from '../utils';
-
-import {I18nContext} from "../contexts/I18nContext";
+import { I18nContext } from '../contexts/I18nContext';
 
 export const User = () => {
-  const { user } = useContext(UserContext);
-
   const { i18n } = useContext(I18nContext);
+  const { user } = useContext(UserContext);
 
   switch (user.state) {
     case UserState.Unknown:
