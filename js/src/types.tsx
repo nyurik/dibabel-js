@@ -1,5 +1,8 @@
-import { ReactChild } from 'react';
+import {ReactChild, useContext} from 'react';
 import { EuiToastProps } from '@elastic/eui/src/components/toast/toast';
+
+import { I18nContext } from './contexts/I18nContext';
+const { i18n } = useContext(I18nContext);
 
 export type StatusType = 'ok' | 'outdated' | 'unlocalized' | 'diverged';
 
@@ -155,28 +158,28 @@ export const groupDefs: GroupDefsType = {
   'lang': {
     order: 1,
     columns: ['lang'],
-    groupName: 'by language',
+    groupName: i18n('dibabel-filters-groupby--lang'),
   },
   'project': {
     order: 1,
     columns: ['project'],
-    groupName: 'by project',
+    groupName: i18n('dibabel-filters-groupby--project'),
   },
   'wiki': {
     order: 2,
     columns: ['wiki'],
     extra_columns: ['lang', 'project'],
-    groupName: 'by wiki',
+    groupName: i18n('dibabel-filters-groupby--wiki'),
   },
   'srcTitleUrl': {
     order: 3,
     columns: ['title'],
     extra_columns: ['type', 'srcSite', 'srcFullTitle', 'srcTitleUrl'],
-    groupName: 'by title',
+    groupName: i18n('dibabel-filters-groupby--title'),
   },
   'hash': {
     order: 4,
     columns: ['hash'],
-    groupName: 'by hash',
+    groupName: i18n('dibabel-filters-groupby--hash'),
   },
 };

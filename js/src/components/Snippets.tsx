@@ -1,16 +1,20 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { EuiButtonIcon, EuiLink, EuiButtonIconColor } from '@elastic/eui';
 import { Item } from '../types';
+
+import {I18nContext} from "../contexts/I18nContext";
 
 export const ExternalLink = (
   { href, title, icon = 'symlink', color = 'text' }: { href: string, title: string, icon?: string, color?: EuiButtonIconColor }
 ) => {
+  const { i18n } = useContext(I18nContext);
+
   return (<EuiButtonIcon
     color={color}
     href={href}
     target={'_blank'}
     iconType={icon}
-    aria-label={'Open external link in a new tab'}
+    aria-label={i18n('dibabel-table-externallink--aria')}
     title={title}
   />);
 };

@@ -18,6 +18,7 @@ import { iconsEuiMedium } from '../icons/icons';
 import { GroupSelector } from './GroupSelector';
 import { SyncButton } from './SyncButton';
 import { SettingsContext } from '../contexts/Settings';
+import {I18nContext} from "../contexts/I18nContext";
 
 async function getOptions(allItems: Array<Item>, field: ('project')) {
   const values = uniq(allItems.map(v => v[field])).filter(v => v);
@@ -51,6 +52,8 @@ export const SearchBar = (
     setGroupSelection: Dispatch<Array<keyof Item>>,
   }) => {
 
+  const { i18n } = useContext(I18nContext);
+
   const { languageNames, isIncrementalSearch } = useContext(SettingsContext);
   let { allItems, status, reload } = useContext(AllDataContext);
 
@@ -67,14 +70,14 @@ export const SearchBar = (
           value: 'module',
           view: (<EuiFlexGroup>
             <EuiFlexItem grow={false}>{iconsEuiMedium.module}</EuiFlexItem>
-            <EuiFlexItem grow={false}>Modules</EuiFlexItem>
+            <EuiFlexItem grow={false}>{i18n('dibabel-filters-type--modules')}</EuiFlexItem>
           </EuiFlexGroup>)
         },
         {
           value: 'template',
           view: (<EuiFlexGroup>
             <EuiFlexItem grow={false}>{iconsEuiMedium.template}</EuiFlexItem>
-            <EuiFlexItem grow={false}>Templates</EuiFlexItem>
+            <EuiFlexItem grow={false}>{i18n('dibabel-filters-type--templates')}</EuiFlexItem>
           </EuiFlexGroup>)
         },
       ],
@@ -82,7 +85,7 @@ export const SearchBar = (
     {
       type: 'field_value_selection',
       field: 'status',
-      name: 'Status',
+      name: i18n('dibabel-filters-status'),
       multiSelect: 'or',
       // @ts-ignore
       operator: 'exact',
@@ -101,7 +104,7 @@ export const SearchBar = (
     {
       type: 'field_value_selection',
       field: 'project',
-      name: 'Project',
+      name: i18n('dibabel-filters-project'),
       multiSelect: 'or',
       // @ts-ignore
       operator: 'exact',
@@ -110,7 +113,7 @@ export const SearchBar = (
     {
       type: 'field_value_selection',
       field: 'lang',
-      name: 'Language',
+      name: i18n('dibabel-filters-lang'),
       multiSelect: 'or',
       // @ts-ignore
       operator: 'exact',
@@ -121,7 +124,7 @@ export const SearchBar = (
           value: lang,
           view: <EuiFlexGroup>
             <EuiFlexItem grow={false} className={'lang-code'}>{lang}</EuiFlexItem>
-            <EuiFlexItem grow={false}>{languageNames[lang] || 'Unknown'}</EuiFlexItem>
+            <EuiFlexItem grow={false}>{languageNames[lang] || i18n('dibabel-filters-lang--unknown')}</EuiFlexItem>
           </EuiFlexGroup>
         }));
       },
@@ -129,7 +132,7 @@ export const SearchBar = (
     {
       type: 'field_value_selection',
       field: 'wiki',
-      name: 'Wiki',
+      name: i18n('dibabel-filters-wiki'),
       multiSelect: 'or',
       filterWith: 'includes',
       // @ts-ignore
@@ -139,7 +142,7 @@ export const SearchBar = (
     {
       type: 'field_value_selection',
       field: 'protection',
-      name: 'Lock',
+      name: i18n('dibabel-filters-protection'),
       multiSelect: 'or',
       // @ts-ignore
       operator: 'exact',
@@ -157,7 +160,7 @@ export const SearchBar = (
   const searchBar = <EuiSearchBar
     query={query}
     box={{
-      placeholder: 'examples:   en.wikipedia    TNT    lang=en',
+      placeholder: i18n('dibabel-filters-searchbar--placeholder'),
       isClearable: true,
       incremental: isIncrementalSearch,
       fullWidth: true,
@@ -181,7 +184,7 @@ export const SearchBar = (
     isLoading={status === 'loading'}
     onClick={() => reload}
   >
-    {status === 'loading' ? 'Refreshing...' : 'Refresh'}
+    {status === 'loading' ? i18n('dibabel-filters-refreshbutton--process') : i18n('dibabel-filters-refreshbutton')}
   </EuiButton>);
 
   return (

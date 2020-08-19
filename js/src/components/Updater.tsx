@@ -6,7 +6,12 @@ import { error, getToken, postToApi, success } from '../utils';
 import { ToastsContext } from '../contexts/Toasts';
 import { CurrentItemContext } from '../contexts/CurrentItem';
 
+import {I18nContext} from "../contexts/I18nContext";
+import {Message} from "@wikimedia/react.i18n";
+
 export const Updater = ({ comment, onClose }: { comment: string, onClose: () => void }) => {
+  const { i18n } = useContext(I18nContext);
+
   const addToast = useContext(ToastsContext);
   const { setItemStatus, currentItem, syncData, setCurrentItem, updateSavedItem } = useContext(CurrentItemContext);
   const [confirmationStatus, setConfirmationStatus] = useState<'hide' | 'show' | 'saving'>('hide');
@@ -31,14 +36,14 @@ export const Updater = ({ comment, onClose }: { comment: string, onClose: () => 
       }
       onCloseItem();
       addToast(success({
-        title: (<EuiText><ItemDstLink item={currentItem!}/>{' '}was updated</EuiText>),
+        title: (<EuiText><Message id="dibabel-updatepage-status" placeholders={[<ItemDstLink item={currentItem!}/>]}/></EuiText>),
         iconType: 'check',
       }));
 
       updateSavedItem(currentItem!);
     } catch (err) {
       addToast(error({
-        title: (<EuiText>Error saving{' '}<ItemDstLink item={currentItem!}/>{' - ' + err.toString()}</EuiText>),
+        title: (<EuiText><Message id="dibabel-updatepage-status-error" placeholders={[<ItemDstLink item={currentItem!}/>, err.toString()]}/></EuiText>),
       }));
     } finally {
       onClose();
@@ -46,16 +51,16 @@ export const Updater = ({ comment, onClose }: { comment: string, onClose: () => 
   };
 
   return (<EuiOverlayMask><EuiConfirmModal
-    title="Updating wiki page"
+    title={i18n('dibabel-updatepage-confirm--title')}
     onCancel={() => setConfirmationStatus('hide')}
     onConfirm={onCopy}
-    cancelButtonText="No, take me back"
-    confirmButtonText="Yes, do it!"
+    cancelButtonText={i18n('dibabel-updatepage-confirm--no')}
+    confirmButtonText={i18n('dibabel-updatepage-confirm--yes')}
     buttonColor="primary"
     defaultFocusedButton="confirm"
     confirmButtonDisabled={confirmationStatus !== 'show'}
   >
-    <p>You&rsquo;re about to edit <ItemDstLink item={currentItem!}/></p>
-    <p>Are you sure you want to do this?</p>
+    <p><Message id="dibabel-updatepage-confirm--description-part1" placeholders={[<ItemDstLink item={currentItem!}/>]}/></p>
+    <p>{i18n('dibabel-updatepage-confirm--description-part2')}</p>
   </EuiConfirmModal></EuiOverlayMask>);
 };
