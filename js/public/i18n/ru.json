@@ -6,5 +6,6 @@
     "locale": "ru",
     "message-documentation": "qqq"
   },
-  "dibabel-header-links--bugs": "Ошибки и Идеи"
+  "dibabel-header-links--bugs": "Ошибки и Идеи",
+  "dibabel-table-pagecount": "{{PLURAL:$1|$1 страница|$1 страницы|$1 страниц}}"
 }
