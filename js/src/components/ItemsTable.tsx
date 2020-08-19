@@ -1,5 +1,5 @@
 import React, { Dispatch, useContext, useState } from 'react';
-import { Message } from '@wikimedia/react.i18n';
+import { Message } from './Message';
 import {
   EuiBasicTableColumn,
   EuiCheckbox,

@@ -18,7 +18,7 @@ import { UserContext, UserState } from './UserContext';
 import { rootUrlData, rootUrlSite, usePersistedState } from '../utils';
 
 import { Props } from '../types';
-import i18n_en from './messages_en.json';
+import i18n_en from './messages-en.json';
 import { isEmpty } from 'lodash';
 
 export type LanguageNames = { [key: string]: string };

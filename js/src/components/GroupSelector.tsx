@@ -12,7 +12,7 @@ export const GroupSelector = (props: {
   const { i18n } = useContext(I18nContext);
   const optsAsMap = Object.fromEntries(
     Object.entries(props.groupDefs).map(
-      ([k, v]) => [k, { label: v.groupName, 'data-group': k, 'data-order': v.order }]
+      ([k, v]) => [k, { label: i18n(v.groupI18n), 'data-group': k, 'data-order': v.order }]
     )
   );
 

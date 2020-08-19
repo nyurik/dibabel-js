@@ -3,7 +3,7 @@ import { BananaContext } from '@wikimedia/react.i18n';
 import { Props } from '../types';
 import { SettingsContext } from './Settings';
 
-type I18n = (id: string, ...args: any) => string;
+export type I18n = (id: string, ...args: any) => string;
 
 export interface I18nContextType {
   i18n: I18n;

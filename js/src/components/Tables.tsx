@@ -8,6 +8,8 @@ import { AllDataContext } from '../contexts/AllData';
 import { groupBy, map } from 'lodash';
 import { ItemsTable } from './ItemsTable';
 
+import {I18nContext} from "../contexts/I18nContext";
+
 export const Tables = ({ query, queryError, selectedItems, setSelectedItems, groupSelection }
   : {
   queryError: string,
@@ -17,6 +19,8 @@ export const Tables = ({ query, queryError, selectedItems, setSelectedItems, gro
   query: string | Query,
 }) => {
   let { allItems, status } = useContext(AllDataContext);
+
+  const { i18n } = useContext(I18nContext);
 
   const groupedItems = useMemo(() => {
     function makeLastItem(items: Array<Item>, parentColumns: Array<string>) {
@@ -68,8 +72,8 @@ export const Tables = ({ query, queryError, selectedItems, setSelectedItems, gro
   return (<ItemsTable
     groupedItems={groupedItems}
     isLoading={status === 'loading'}
-    message={status === 'loading' ? 'Loading...' : ''}
-    error={status === 'error' ? 'Error loading data' : queryError}
+    message={status === 'loading' ? i18n('dibabel-table-loading') : ''}
+    error={status === 'error' ? i18n('dibabel-table-loading--error') : queryError}
     selectedItems={selectedItems}
     setSelectedItems={setSelectedItems}
   />);
