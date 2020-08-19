@@ -184,14 +184,6 @@ const SettingsDialog = () => {
 
   const results = [
     <EuiSwitch
-      key={'lang'}
-      label={'Night mode'}
-      checked={isDarkTheme}
-      disabled
-      onChange={e => setIsDarkTheme(e.target.checked)}
-    />,
-    <EuiSpacer key={'s0'} size={'m'}/>,
-    <EuiSwitch
       key={'theme'}
       label={'Night mode'}
       checked={isDarkTheme}
