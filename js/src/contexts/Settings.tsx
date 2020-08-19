@@ -258,7 +258,8 @@ export const Settings = () => {
     <EuiSelectable
       searchable
       singleSelection={'always'}
-      height={500}
+      // TODO: enable height once the translations list is larger
+      // height={500}
       searchProps={{
         placeholder: 'Filter list',
         compressed: true,

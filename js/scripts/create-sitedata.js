@@ -31,7 +31,9 @@ try {
   }
   const languages = Array.from(langs);
   languages.sort();
-  fs.writeFileSync(path.join(i18nDir, '../info.json'), JSON.stringify({ languages: languages }));
+  const outFile = path.join(i18nDir, '../sitedata.json');
+  console.log(`Writing to ${outFile}`);
+  fs.writeFileSync(outFile, JSON.stringify({ languages: languages }));
 } catch (err) {
   console.error(err);
 }
