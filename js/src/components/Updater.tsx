@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { EuiConfirmModal, EuiOverlayMask, EuiText, } from '@elastic/eui';
 import { ItemDstLink } from './Snippets';
