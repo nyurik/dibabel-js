@@ -31,9 +31,7 @@ import { icons } from '../icons/icons';
 import { CurrentItemContext } from '../contexts/CurrentItem';
 import { Updater } from './Updater';
 import {I18nContext} from "../contexts/I18nContext";
-import {Message} from "@wikimedia/react.i18n";
-
-
+import { Message } from './Message';
 
 const ItemDiffBlock = ({ type, oldText, newText }: { type: ItemTypeType, oldText: string, newText: string }) => {
   const { isDarkTheme, isSplitView } = useContext(SettingsContext);

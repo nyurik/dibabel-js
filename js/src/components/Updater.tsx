@@ -7,7 +7,7 @@ import { ToastsContext } from '../contexts/Toasts';
 import { CurrentItemContext } from '../contexts/CurrentItem';
 
 import {I18nContext} from "../contexts/I18nContext";
-import {Message} from "@wikimedia/react.i18n";
+import { Message } from './Message';
 
 export const Updater = ({ comment, onClose }: { comment: string, onClose: () => void }) => {
   const { i18n } = useContext(I18nContext);

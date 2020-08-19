@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Message } from '@wikimedia/react.i18n';
+import { Message } from './Message';
 import {
   EuiBetaBadge,
   EuiFlexGroup,
