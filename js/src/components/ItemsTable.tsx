@@ -150,7 +150,7 @@ export const ItemsTable = (
               <EuiHealth
                 title={i18n('dibabel-table-td-status--outdated-title', item.behind)}
                 color={'warning'}
-              ><span>i18n.dibabel-table-td-status--outdated-label, {item.behind}<ExternalLink
+              ><span><Message id="dibabel-table-td-status--outdated-label" placeholders={[item.behind]}/><ExternalLink
                 title={i18n('dibabel-table-td-status--outdated-link', item.behind, item.srcFullTitle)}
                 href={itemDiffLink(item)}/></span></EuiHealth>);
           case 'diverged':
