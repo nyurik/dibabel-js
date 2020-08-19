@@ -126,11 +126,11 @@ const ItemDiffViewer = () => {
   const warnings = [];
   if (currentItem.status === 'diverged') {
     warnings.push(<EuiCallOut title={i18n('dibabel-diff-header-warnings--diverged-head')} color={'warning'} iconType={'alert'}>
-      <EuiText>{i18n('dibabel-diff-header-warnings--diverged-part1', currentItem.wiki)}
+      <EuiText>{i18n('dibabel-diff-header-warnings--diverged', currentItem.wiki)}
         <ul>
-          <li>{i18n('dibabel-diff-header-warnings--diverged-part2')}</li>
-          <li>{i18n('dibabel-diff-header-warnings--diverged-part3')}</li>
-          <li>{i18n('dibabel-diff-header-warnings--diverged-part4')}</li>
+          <li>{i18n('dibabel-diff-header-warnings--diverged-1')}</li>
+          <li>{i18n('dibabel-diff-header-warnings--diverged-2')}</li>
+          <li>{i18n('dibabel-diff-header-warnings--diverged-3')}</li>
         </ul></EuiText>
     </EuiCallOut>);
     warnings.push(<EuiSpacer size={'m'}/>);
