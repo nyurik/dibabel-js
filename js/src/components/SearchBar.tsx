@@ -69,14 +69,14 @@ export const SearchBar = (
         {
           value: 'module',
           view: (<EuiFlexGroup>
-            <EuiFlexItem grow={false}>{iconsEuiMedium.template}</EuiFlexItem>
+            <EuiFlexItem grow={false}>{iconsEuiMedium.module}</EuiFlexItem>
             <EuiFlexItem grow={false}>Modules</EuiFlexItem>
           </EuiFlexGroup>)
         },
         {
           value: 'template',
           view: (<EuiFlexGroup>
-            <EuiFlexItem grow={false}>{iconsEuiMedium.module}</EuiFlexItem>
+            <EuiFlexItem grow={false}>{iconsEuiMedium.template}</EuiFlexItem>
             <EuiFlexItem grow={false}>Templates</EuiFlexItem>
           </EuiFlexGroup>)
         },

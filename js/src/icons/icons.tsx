@@ -98,4 +98,3 @@ export const icons: { [name: string]: any } = {
 export const iconsEuiMedium = Object.fromEntries(Object.entries(icons).map(
   ([name, icon]) => [name, (<EuiIcon type={icon} size={'m'} title={name[0].toUpperCase() + name.substring(1)}/>)]
 ));
-
