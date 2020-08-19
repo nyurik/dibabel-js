@@ -8,7 +8,7 @@ import { AllDataContext } from '../contexts/AllData';
 import { groupBy, map } from 'lodash';
 import { ItemsTable } from './ItemsTable';
 
-import {I18nContext} from "../contexts/I18nContext";
+import { I18nContext } from '../contexts/I18nContext';
 
 export const Tables = ({ query, queryError, selectedItems, setSelectedItems, groupSelection }
   : {

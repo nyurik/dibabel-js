@@ -1,5 +1,4 @@
 import React, { Dispatch, useContext, useState } from 'react';
-import { Message } from './Message';
 import {
   EuiBasicTableColumn,
   EuiCheckbox,
@@ -16,6 +15,8 @@ import { ExternalLink, prettyDomain } from './Snippets';
 import { itemDiffLink } from '../utils';
 import { CurrentItemContext } from '../contexts/CurrentItem';
 import { I18nContext } from '../contexts/I18nContext';
+import { SettingsContext } from '../contexts/Settings';
+import { Message } from './Message';
 
 export const ItemsTable = (
   { error, groupedItems, isLoading, message, selectedItems, setSelectedItems }: {
@@ -27,6 +28,7 @@ export const ItemsTable = (
     setSelectedItems: Dispatch<Set<Item>>,
   }
 ) => {
+  const { languageNames } = useContext(SettingsContext);
   const { i18n } = useContext(I18nContext);
   const { setCurrentItem } = useContext(CurrentItemContext);
 
@@ -97,6 +99,10 @@ export const ItemsTable = (
       name: (<EuiText title={i18n('dibabel-table-th-language--title')}><Message
         id="dibabel-table-th-language--label"/></EuiText>),
       sortable: true,
+      render: (lang: string) => {
+        const name = languageNames[lang];
+        return name ? `${lang} - ${name}` : lang;
+      },
     },
     project: {
       field: 'project',

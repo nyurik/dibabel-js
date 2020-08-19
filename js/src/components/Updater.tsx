@@ -6,7 +6,7 @@ import { error, getToken, postToApi, success } from '../utils';
 import { ToastsContext } from '../contexts/Toasts';
 import { CurrentItemContext } from '../contexts/CurrentItem';
 
-import {I18nContext} from "../contexts/I18nContext";
+import { I18nContext } from '../contexts/I18nContext';
 import { Message } from './Message';
 
 export const Updater = ({ comment, onClose }: { comment: string, onClose: () => void }) => {
@@ -36,7 +36,8 @@ export const Updater = ({ comment, onClose }: { comment: string, onClose: () => 
       }
 
       addToast(success({
-        title: (<EuiText><Message id="dibabel-updatepage-status" placeholders={[<ItemDstLink item={currentItem!}/>]}/></EuiText>),
+        title: (<EuiText><Message id="dibabel-updatepage-status"
+                                  placeholders={[<ItemDstLink item={currentItem!}/>]}/></EuiText>),
         iconType: 'check',
       }));
 
@@ -44,7 +45,8 @@ export const Updater = ({ comment, onClose }: { comment: string, onClose: () => 
       setCurrentItem(undefined);
     } catch (err) {
       addToast(error({
-        title: (<EuiText><Message id="dibabel-updatepage-status-error" placeholders={[<ItemDstLink item={currentItem!}/>, err.toString()]}/></EuiText>),
+        title: (<EuiText><Message id="dibabel-updatepage-status-error"
+                                  placeholders={[<ItemDstLink item={currentItem!}/>, err.toString()]}/></EuiText>),
       }));
     } finally {
       onClose();
@@ -61,7 +63,8 @@ export const Updater = ({ comment, onClose }: { comment: string, onClose: () => 
     defaultFocusedButton="confirm"
     confirmButtonDisabled={confirmationStatus !== 'show'}
   >
-    <p><Message id="dibabel-updatepage-confirm--description-part1" placeholders={[<ItemDstLink item={currentItem!}/>]}/></p>
+    <p><Message id="dibabel-updatepage-confirm--description-part1" placeholders={[<ItemDstLink item={currentItem!}/>]}/>
+    </p>
     <p>{i18n('dibabel-updatepage-confirm--description-part2')}</p>
   </EuiConfirmModal></EuiOverlayMask>);
 };

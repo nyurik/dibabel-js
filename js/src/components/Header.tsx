@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { Message } from './Message';
 import {
   EuiBetaBadge,
   EuiFlexGroup,
@@ -16,6 +15,7 @@ import { Settings } from '../contexts/Settings';
 import { User } from './User';
 import { logoIcon } from '../icons/icons';
 import { I18nContext } from '../contexts/I18nContext';
+import { Message } from './Message';
 
 export function Header() {
   const { i18n } = useContext(I18nContext);

@@ -1,8 +1,8 @@
-import React, {useContext} from 'react';
-import { EuiButtonIcon, EuiLink, EuiButtonIconColor } from '@elastic/eui';
+import React, { useContext } from 'react';
+import { EuiButtonIcon, EuiButtonIconColor, EuiLink } from '@elastic/eui';
 import { Item } from '../types';
 
-import {I18nContext} from "../contexts/I18nContext";
+import { I18nContext } from '../contexts/I18nContext';
 
 export const ExternalLink = (
   { href, title, icon = 'symlink', color = 'text' }: { href: string, title: string, icon?: string, color?: EuiButtonIconColor }

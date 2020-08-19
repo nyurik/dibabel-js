@@ -18,7 +18,7 @@ import { iconsEuiMedium } from '../icons/icons';
 import { GroupSelector } from './GroupSelector';
 import { SyncButton } from './SyncButton';
 import { SettingsContext } from '../contexts/Settings';
-import {I18nContext} from "../contexts/I18nContext";
+import { I18nContext } from '../contexts/I18nContext';
 
 async function getOptions(allItems: Array<Item>, field: ('project')) {
   const values = uniq(allItems.map(v => v[field])).filter(v => v);

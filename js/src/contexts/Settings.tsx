@@ -85,7 +85,7 @@ async function getLanguageNames(langCode: string): Promise<LanguageNames> {
       }
       return [lang, name];
     }));
-    result['qqx'] = '* Debug UI'
+    result['qqx'] = '* Debug UI';
     return result;
   } else {
     throw new Error(`${data.status}: ${data.statusText}\n${await data.text()}`);

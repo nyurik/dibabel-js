@@ -1,8 +1,8 @@
-import React, {Dispatch, useContext} from 'react';
+import React, { Dispatch, useContext } from 'react';
 
 import { EuiButton, EuiFlexItem } from '@elastic/eui';
 import { Item } from '../types';
-import {I18nContext} from "../contexts/I18nContext";
+import { I18nContext } from '../contexts/I18nContext';
 
 export const SyncButton = (props: {
   selectedItems: Set<Item>,

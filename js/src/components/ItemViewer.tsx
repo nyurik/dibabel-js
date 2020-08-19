@@ -30,7 +30,7 @@ import { Props } from '@elastic/eui/src/components/button/button';
 import { icons } from '../icons/icons';
 import { CurrentItemContext } from '../contexts/CurrentItem';
 import { Updater } from './Updater';
-import {I18nContext} from "../contexts/I18nContext";
+import { I18nContext } from '../contexts/I18nContext';
 import { Message } from './Message';
 
 const ItemDiffBlock = ({ type, oldText, newText }: { type: ItemTypeType, oldText: string, newText: string }) => {
@@ -95,22 +95,28 @@ const ItemDiffViewer = () => {
   switch (currentItem.status) {
     case 'diverged':
       infoSubHeader = (<EuiHealth color={'danger'}>
-        <EuiText><Message id="dibabel-diff-header-description--diverged" placeholders={[<ItemDstLink item={currentItem}/>, <ItemSrcLink item={currentItem}/>]}/></EuiText></EuiHealth>);
+        <EuiText><Message id="dibabel-diff-header-description--diverged"
+                          placeholders={[<ItemDstLink item={currentItem}/>,
+                            <ItemSrcLink item={currentItem}/>]}/></EuiText></EuiHealth>);
       break;
     case 'outdated':
       infoSubHeader = (<EuiHealth color={'warning'}>
         <EuiText><Message id="dibabel-diff-header-description--outdated"
-                          placeholders={[<ItemDstLink item={currentItem}/>, <EuiLink href={itemDiffLink(currentItem)} target={'_blank'}>{i18n('dibabel-diff-header-description--outdated-rev', currentItem.behind)}</EuiLink>, <ItemSrcLink item={currentItem}/>]}/></EuiText></EuiHealth>);
+                          placeholders={[<ItemDstLink item={currentItem}/>, <EuiLink href={itemDiffLink(currentItem)}
+                                                                                     target={'_blank'}>{i18n('dibabel-diff-header-description--outdated-rev', currentItem.behind)}</EuiLink>,
+                            <ItemSrcLink item={currentItem}/>]}/></EuiText></EuiHealth>);
       break;
     case 'unlocalized':
       infoSubHeader = (<EuiHealth color={'warning'}>
-        <EuiText><Message id="dibabel-diff-header-description--unlocalized" placeholders={[<ItemDstLink item={currentItem}/>, <ItemSrcLink
-          item={currentItem}/>]}/></EuiText></EuiHealth>);
+        <EuiText><Message id="dibabel-diff-header-description--unlocalized"
+                          placeholders={[<ItemDstLink item={currentItem}/>, <ItemSrcLink
+                            item={currentItem}/>]}/></EuiText></EuiHealth>);
       break;
     case 'ok':
       infoSubHeader = (<EuiHealth color={'success'}>
-        <EuiText><Message id="dibabel-diff-header-description--ok" placeholders={[<ItemDstLink item={currentItem}/>, <ItemSrcLink
-          item={currentItem}/>]}/></EuiText></EuiHealth>);
+        <EuiText><Message id="dibabel-diff-header-description--ok"
+                          placeholders={[<ItemDstLink item={currentItem}/>, <ItemSrcLink
+                            item={currentItem}/>]}/></EuiText></EuiHealth>);
       break;
     default:
       throw new Error(i18n('dibabel-diff-header-description--error', currentItem.status));
@@ -125,13 +131,15 @@ const ItemDiffViewer = () => {
 
   const warnings = [];
   if (currentItem.status === 'diverged') {
-    warnings.push(<EuiCallOut title={i18n('dibabel-diff-header-warnings--diverged-head')} color={'warning'} iconType={'alert'}>
+    warnings.push(<EuiCallOut title={i18n('dibabel-diff-header-warnings--diverged-head')} color={'warning'}
+                              iconType={'alert'}>
       <EuiText>{i18n('dibabel-diff-header-warnings--diverged', currentItem.wiki)}
         <ul>
           <li>{i18n('dibabel-diff-header-warnings--diverged-1')}</li>
           <li>{i18n('dibabel-diff-header-warnings--diverged-2')}</li>
           <li>{i18n('dibabel-diff-header-warnings--diverged-3')}</li>
-        </ul></EuiText>
+        </ul>
+      </EuiText>
     </EuiCallOut>);
     warnings.push(<EuiSpacer size={'m'}/>);
   }
@@ -140,7 +148,8 @@ const ItemDiffViewer = () => {
     warnings.push(<EuiCallOut title={i18n('dibabel-diff-header-warnings--multisite-head')} color={'warning'}
                               iconType={'alert'}>
       <EuiText><Message id="dibabel-diff-header-warnings--multisite"
-                        placeholders={[<ItemSrcLink item={currentItem} linkToWD={false}/>, <ItemWikidataLink item={currentItem}/>]}/></EuiText>
+                        placeholders={[<ItemSrcLink item={currentItem} linkToWD={false}/>,
+                          <ItemWikidataLink item={currentItem}/>]}/></EuiText>
       <EuiSpacer size={'s'}/>
       <EuiText>{formatLinks(currentItem.wiki, currentItem.notMultisiteDeps)}</EuiText>
     </EuiCallOut>);
@@ -148,10 +157,12 @@ const ItemDiffViewer = () => {
   }
 
   if (currentItem.multisiteDepsNotOnDst) {
-    warnings.push(<EuiCallOut title={i18n('dibabel-diff-header-warnings--dependencies-head', currentItem.wiki)} color={'warning'}
+    warnings.push(<EuiCallOut title={i18n('dibabel-diff-header-warnings--dependencies-head', currentItem.wiki)}
+                              color={'warning'}
                               iconType={'alert'}>
       <EuiText><Message id="dibabel-diff-header-warnings--dependencies"
-                        placeholders={[<EuiLink href={`https://${currentItem.wiki}`} target={'_blank'}>{currentItem.wiki}</EuiLink>]}/></EuiText>
+                        placeholders={[<EuiLink href={`https://${currentItem.wiki}`}
+                                                target={'_blank'}>{currentItem.wiki}</EuiLink>]}/></EuiText>
       <EuiSpacer size={'s'}/>
       <EuiText>{formatLinks(currentItem.srcSite, currentItem.multisiteDepsNotOnDst)}</EuiText>
     </EuiCallOut>);
@@ -192,9 +203,10 @@ const ItemDiffViewer = () => {
     footer = <EuiFlyoutFooter>
       <EuiFlexGroup justifyContent={'spaceBetween'} alignItems={'center'}>
         <EuiFlexItem grow={false}>
-          <span>{i18n('dibabel-diff-content--login-error')}&nbsp;<ExternalLink href={'https://commons.wikimedia.org/wiki/Data:I18n/DiBabel.tab'}
-                                           icon={'globe'} color={'primary'}
-                                           title={'Translate auto-generated summary messages.'}/></span>
+          <span>{i18n('dibabel-diff-content--login-error')}&nbsp;<ExternalLink
+            href={'https://commons.wikimedia.org/wiki/Data:I18n/DiBabel.tab'}
+            icon={'globe'} color={'primary'}
+            title={'Translate auto-generated summary messages.'}/></span>
         </EuiFlexItem>
         <EuiFlexItem grow={true}>
           <Comment readOnly={!isLoggedIn} value={comment} setValue={setComment}/>
