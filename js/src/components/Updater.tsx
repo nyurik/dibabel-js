@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { EuiConfirmModal, EuiOverlayMask, EuiText, } from '@elastic/eui';
 import { ItemDstLink } from './Snippets';
@@ -14,14 +14,13 @@ export const Updater = ({ comment, onClose }: { comment: string, onClose: () => 
 
   const addToast = useContext(ToastsContext);
   const { setItemStatus, currentItem, syncData, setCurrentItem, updateSavedItem } = useContext(CurrentItemContext);
-  const [confirmationStatus, setConfirmationStatus] = useState<'hide' | 'show' | 'saving'>('hide');
-
-  const onCloseItem = useCallback(() => setCurrentItem(undefined), [setCurrentItem]);
+  const [confirmationStatus, setConfirmationStatus] = useState<'show' | 'saving'>('show');
 
   const onCopy = async () => {
     try {
       setConfirmationStatus('saving');
-      let res = await postToApi(currentItem!.wiki, {
+
+      const res = await postToApi(currentItem!.wiki, {
         action: 'edit',
         title: currentItem!.dstFullTitle,
         text: syncData!.newText,
@@ -30,17 +29,19 @@ export const Updater = ({ comment, onClose }: { comment: string, onClose: () => 
         nocreate: '1',
         token: await getToken(currentItem!.wiki),
       });
+
       if (res.edit.result !== 'Success') {
         setItemStatus({ status: 'error', error: res.edit.info || JSON.stringify(res.edit) });
         return;
       }
-      onCloseItem();
+
       addToast(success({
         title: (<EuiText><Message id="dibabel-updatepage-status" placeholders={[<ItemDstLink item={currentItem!}/>]}/></EuiText>),
         iconType: 'check',
       }));
 
       updateSavedItem(currentItem!);
+      setCurrentItem(undefined);
     } catch (err) {
       addToast(error({
         title: (<EuiText><Message id="dibabel-updatepage-status-error" placeholders={[<ItemDstLink item={currentItem!}/>, err.toString()]}/></EuiText>),
@@ -52,7 +53,7 @@ export const Updater = ({ comment, onClose }: { comment: string, onClose: () => 
 
   return (<EuiOverlayMask><EuiConfirmModal
     title={i18n('dibabel-updatepage-confirm--title')}
-    onCancel={() => setConfirmationStatus('hide')}
+    onCancel={onClose}
     onConfirm={onCopy}
     cancelButtonText={i18n('dibabel-updatepage-confirm--no')}
     confirmButtonText={i18n('dibabel-updatepage-confirm--yes')}

@@ -20,6 +20,9 @@ try {
       continue;
     }
     let langCode = path.basename(file, '.json');
+    if (langCode === 'qqq') {
+      continue;
+    }
     while (true) {
       langs.add(langCode);
       const dashIdx = langCode.indexOf('-');
@@ -29,8 +32,14 @@ try {
       langCode = langCode.substring(0, dashIdx);
     }
   }
+
   const languages = Array.from(langs);
   languages.sort();
+  console.log(`Found languages: ${languages.join(', ')}`);
+
+  // Add a fake debug language - make sure it's the last
+  languages.push('qqx');
+
   const outFile = path.join(i18nDir, '../sitedata.json');
   console.log(`Writing to ${outFile}`);
   fs.writeFileSync(outFile, JSON.stringify({ languages: languages }));

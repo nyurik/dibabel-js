@@ -72,11 +72,12 @@ async function loadLocale(newLanguage: string, messages: AllMessages): Promise<M
 }
 
 async function getLanguageNames(langCode: string): Promise<LanguageNames> {
+  const isDebugLang = langCode === 'qqx';
   const mw_languages_query = 'https://www.mediawiki.org/w/api.php?action=query&meta=languageinfo&liprop=name|autonym&format=json&formatversion=2&origin=*&uselang=';
-  let data = await fetch(mw_languages_query + encodeURIComponent(langCode));
+  let data = await fetch(mw_languages_query + encodeURIComponent(isDebugLang ? 'en' : langCode));
   if (data.ok) {
     const langs = (await data.json()).query.languageinfo;
-    return Object.fromEntries(Object.keys(langs).map(lang => {
+    const result = Object.fromEntries(Object.keys(langs).map(lang => {
       const langInfo = langs[lang];
       let name = langInfo.name;
       if (langInfo.autonym && langInfo.autonym !== langInfo.name) {
@@ -84,6 +85,8 @@ async function getLanguageNames(langCode: string): Promise<LanguageNames> {
       }
       return [lang, name];
     }));
+    result['qqx'] = '* Debug UI'
+    return result;
   } else {
     throw new Error(`${data.status}: ${data.statusText}\n${await data.text()}`);
   }
