@@ -3,7 +3,7 @@
     "authors": [
       "Amire80",
       "Yuri Astrakhan"
-    ],
+    ]
   },
   "dibabel-filters-groupby--placeholder": "A placeholder on a dropdown. Possible values: by language, by wiki, etc.",
   "dibabel-filters-groupby--title": "Tooltip for a dropdown. Related: {{msg-dibabel|dibabel-filters-groupby--placeholder}}",
@@ -13,9 +13,6 @@
   "dibabel-header-links--bugs": "A link at the top of the page. Links to [https://github.com/nyurik/dibabel-js/issues issue tracking on GitHub].",
   "dibabel-header-links--help": "A link at the top of the page. Links to [[:mw:Multilingual Templates and Modules]].",
   "dibabel-header-links--source": "A link at the top of the page. Links to [https://github.com/nyurik/dibabel-js the source code of the tool on GitHub].",
-  "dibabel-table-icons-protection--rights": "Tooltip for a lock icon on a row.",
-  "dibabel-table-icons-protection--title": "Tooltip for a lock icon at the top of the table.",
-  "dibabel-table-pagecount": "!!FUZZY!!$1 pages",
   "dibabel-table-cell-diverged--title": "$1 pages have local modifications and must be synchronized individually.",
   "dibabel-table-cell-hash--title": "Tooltip for a table cell.",
   "dibabel-table-cell-outdated--title": "$1 pages are behind the primary and can be synchronized automatically.",
@@ -52,5 +49,8 @@
   "dibabel-table-header-updated--title": "Tooltip for {{msg-dibabel|dibabel-table-header-updated--label}}",
   "dibabel-table-header-wikipage--label": "Table column heading",
   "dibabel-table-header-wikipage--link": "Tooltip for the icon next to a link in a table. $1 and $2 are page titles.",
-  "dibabel-table-header-wikipage--title": "Tooltip for {{msg-dibabel|dibabel-table-header-wikipage--label}}"
+  "dibabel-table-header-wikipage--title": "Tooltip for {{msg-dibabel|dibabel-table-header-wikipage--label}}",
+  "dibabel-table-icons-protection--rights": "Tooltip for a lock icon on a row.",
+  "dibabel-table-icons-protection--title": "Tooltip for a lock icon at the top of the table.",
+  "dibabel-table-pagecount": "!!FUZZY!!$1 pages"
 }
