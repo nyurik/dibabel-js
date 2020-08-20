@@ -142,16 +142,31 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
       </EuiFormRow>);
   }
 
+  const setNewPageTitle = (newTitle: string | undefined) => {
+    // Make sure that if the wiki has already been chosen and title changes,
+    // wiki is kept only if it doesn't have the new title
+    setPageTitle(newTitle);
+    let newWiki;
+    if (newTitle) {
+      newWiki = allItems.some(v => v.srcFullTitle === newTitle && v.wiki === wiki) ? undefined : wiki;
+    } else {
+      newWiki = undefined;
+    }
+    if (wiki !== newWiki) {
+      setWiki(newWiki);
+    }
+  };
+
   // FIXME I18N
   return (<EuiOverlayMask><EuiModal onClose={onClose} maxWidth={'60%'}>
     <EuiModalHeader>
-      <EuiModalHeaderTitle>{i18n('Create a new copy')}</EuiModalHeaderTitle>
+      <EuiModalHeaderTitle>{i18n('Copy page to another wiki...')}</EuiModalHeaderTitle>
     </EuiModalHeader>
     <EuiModalBody>
       <EuiForm>
         <EuiFormRow label={i18n('A page to copy')} helpText={pageHelpText}>
           <Picker disabled={status !== 'show'} placeholder={i18n('Select a page to copy')} value={pageTitle}
-                  setValue={setPageTitle}
+                  setValue={setNewPageTitle}
                   options={uniq(allItems.map(v => v.srcFullTitle))}/>
         </EuiFormRow>
         <EuiFormRow label={i18n('Target wiki')}
