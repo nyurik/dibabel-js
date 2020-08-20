@@ -87,7 +87,7 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
 
       // TODO
       const newItem: Item = {
-        dstTitleUrl: `https://dibabel.toolsforge.org/`,
+        dstTitleUrl: `https://dibabel.toolforge.org/`,
         lang: 'xx',
         project: 'wikipedia',
         dstFullTitle: pageTitle!,
