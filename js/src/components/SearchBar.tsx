@@ -1,4 +1,4 @@
-import React, { Dispatch, useContext } from 'react';
+import React, { Dispatch, useContext, useState } from 'react';
 
 import {
   EuiButton,
@@ -19,6 +19,7 @@ import { GroupSelector } from './GroupSelector';
 import { SyncButton } from './SyncButton';
 import { SettingsContext } from '../contexts/Settings';
 import { I18nContext } from '../contexts/I18nContext';
+import { AddNew } from './AddNew';
 
 async function getOptions(allItems: Array<Item>, field: ('project')) {
   const values = uniq(allItems.map(v => v[field])).filter(v => v);
@@ -53,9 +54,9 @@ export const SearchBar = (
   }) => {
 
   const { i18n } = useContext(I18nContext);
-
   const { languageNames, isIncrementalSearch } = useContext(SettingsContext);
-  let { allItems, status, reload } = useContext(AllDataContext);
+  const { allItems, status } = useContext(AllDataContext);
+  const [isAddLangShown, setIsAddLangShown] = useState(false);
 
   const filters: Array<SearchFilterConfig> = [
     {
@@ -177,15 +178,16 @@ export const SearchBar = (
     }}
   />;
 
-  const refreshButton = (<EuiButton
-    key={'loadItems'}
-    iconType={'refresh'}
+  // FIXME I18N once we actually know what we want
+  const addLangButton = (<EuiButton
     isDisabled={status !== 'ready'}
-    isLoading={status === 'loading'}
-    onClick={() => reload}
-  >
-    {status === 'loading' ? i18n('dibabel-filters-refreshbutton--process') : i18n('dibabel-filters-refreshbutton')}
-  </EuiButton>);
+    onClick={() => setIsAddLangShown(true)}
+  >{i18n('Add new...')}</EuiButton>);
+
+  let addLang;
+  if (isAddLangShown) {
+    addLang = (<AddNew onClose={() => setIsAddLangShown(false)}/>);
+  }
 
   return (
     <EuiFlexGroup alignItems={'center'}>
@@ -194,7 +196,7 @@ export const SearchBar = (
         <GroupSelector groupDefs={groupDefs} groupSelection={groupSelection} setGroupSelection={setGroupSelection}/>
       </EuiFlexItem>
       <EuiFlexItem>{searchBar}</EuiFlexItem>
-      <EuiFlexItem grow={false}>{refreshButton}</EuiFlexItem>
+      <EuiFlexItem grow={false}>{addLangButton}{addLang}</EuiFlexItem>
     </EuiFlexGroup>
   );
 

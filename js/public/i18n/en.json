@@ -42,8 +42,6 @@
   "dibabel-filters-lang--unknown": "Unknown",
   "dibabel-filters-project": "Project",
   "dibabel-filters-protection": "Lock",
-  "dibabel-filters-refreshbutton": "Refresh",
-  "dibabel-filters-refreshbutton--process": "Refreshing...",
   "dibabel-filters-searchbar--placeholder": "examples: en.wikipedia    TNT    lang=en",
   "dibabel-filters-status": "Status",
   "dibabel-filters-type--modules": "Modules",

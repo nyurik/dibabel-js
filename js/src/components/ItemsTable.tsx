@@ -11,8 +11,8 @@ import {
 
 import { Group, Item } from '../types';
 import { iconsEuiMedium, lockIcon } from '../icons/icons';
-import { ExternalLink, prettyDomain } from './Snippets';
-import { itemDiffLink } from '../utils';
+import { ExternalLink } from './Snippets';
+import { itemDiffLink, prettyDomain } from '../utils';
 import { CurrentItemContext } from '../contexts/CurrentItem';
 import { I18nContext } from '../contexts/I18nContext';
 import { SettingsContext } from '../contexts/Settings';
@@ -139,7 +139,8 @@ export const ItemsTable = (
     status: {
       field: 'sortStatus',
       name: (<EuiText
-        title={i18n('dibabel-table-header-status--title')}><Message id="dibabel-table-header-status--label"/></EuiText>),
+        title={i18n('dibabel-table-header-status--title')}><Message
+        id="dibabel-table-header-status--label"/></EuiText>),
       sortable: true,
       render: (_: string, item: Item) => {
         switch (item.status) {

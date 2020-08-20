@@ -22,7 +22,13 @@ import {
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer';
 
 import { ItemTypeType } from '../types';
-import { ExternalLink, ItemDstLink, ItemSrcLink, ItemWikidataLink } from './Snippets';
+import {
+  ExternalLink,
+  ItemDstLink,
+  ItemSrcLink,
+  MultisiteDepsNotOnDstWarning,
+  NotMultisiteDepsWarning
+} from './Snippets';
 import { itemDiffLink } from '../utils';
 import { UserContext, UserState } from '../contexts/UserContext';
 import { SettingsContext } from '../contexts/Settings';
@@ -122,13 +128,6 @@ const ItemDiffViewer = () => {
       throw new Error(i18n('dibabel-diff-header-description--error', currentItem.status));
   }
 
-  function formatLinks(site: string, links: Array<string>) {
-    return (<ul>
-      {links.map(el => (
-        <li key={el}><EuiLink href={`https://${site}/wiki/${el}`} target={'_blank'}>{el}</EuiLink></li>))}
-    </ul>);
-  }
-
   const warnings = [];
   if (currentItem.status === 'diverged') {
     warnings.push(<EuiCallOut title={i18n('dibabel-diff-header-warnings--diverged-head')} color={'warning'}
@@ -145,27 +144,12 @@ const ItemDiffViewer = () => {
   }
 
   if (currentItem.notMultisiteDeps) {
-    warnings.push(<EuiCallOut title={i18n('dibabel-diff-header-warnings--multisite-head')} color={'warning'}
-                              iconType={'alert'}>
-      <EuiText><Message id="dibabel-diff-header-warnings--multisite"
-                        placeholders={[<ItemSrcLink item={currentItem} linkToWD={false}/>,
-                          <ItemWikidataLink item={currentItem}/>]}/></EuiText>
-      <EuiSpacer size={'s'}/>
-      <EuiText>{formatLinks(currentItem.wiki, currentItem.notMultisiteDeps)}</EuiText>
-    </EuiCallOut>);
+    warnings.push(<NotMultisiteDepsWarning item={currentItem}/>);
     warnings.push(<EuiSpacer size={'m'}/>);
   }
 
   if (currentItem.multisiteDepsNotOnDst) {
-    warnings.push(<EuiCallOut title={i18n('dibabel-diff-header-warnings--dependencies-head', currentItem.wiki)}
-                              color={'warning'}
-                              iconType={'alert'}>
-      <EuiText><Message id="dibabel-diff-header-warnings--dependencies"
-                        placeholders={[<EuiLink href={`https://${currentItem.wiki}`}
-                                                target={'_blank'}>{currentItem.wiki}</EuiLink>]}/></EuiText>
-      <EuiSpacer size={'s'}/>
-      <EuiText>{formatLinks(currentItem.srcSite, currentItem.multisiteDepsNotOnDst)}</EuiText>
-    </EuiCallOut>);
+    warnings.push(<MultisiteDepsNotOnDstWarning item={currentItem}/>);
     warnings.push(<EuiSpacer size={'m'}/>);
   }
 

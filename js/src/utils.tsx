@@ -128,6 +128,10 @@ export const error = (toast: ToastNoId): ToastNoId => ({
   color: 'danger', iconType: 'alert', ...toast
 });
 
+export const prettyDomain = (lang: string, project: string) => {
+  return lang !== '-' ? `${lang}.${project}` : project;
+};
+
 export function dbg(log: string, fn: any): any {
   return function () {
     console.log(`++++++ ${log}`, arguments);

@@ -16,7 +16,7 @@ export const GroupSelector = (props: {
     )
   );
 
-  const onChange = (groupChoices: Array<EuiComboBoxOptionOption<string>>) => {
+  const onChange = (groupChoices: EuiComboBoxOptionOption<string>[]) => {
     // perform stable sort to keep values with the same order as was chosen by the user
     props.setGroupSelection(
       sortBy(groupChoices, (v: any) => parseInt(v['data-order'])).map((v: any) => v['data-group']));
