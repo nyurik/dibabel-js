@@ -91,13 +91,13 @@ export const SearchBar = (
       operator: 'exact',
       options: async () => {
         return map({
-          'ok': 'success',
-          'outdated': 'warning',
-          'unlocalized': 'warning',
-          'diverged': 'danger'
+          ok: 'success',
+          outdated: 'warning',
+          unlocalized: 'warning',
+          diverged: 'danger'
         }, (v, k) => ({
           value: k,
-          view: <EuiHealth color={v}>{k}</EuiHealth>,
+          view: <EuiHealth color={v}>{i18n(`dibabel-status-${k}`)}</EuiHealth>,
         }));
       },
     },

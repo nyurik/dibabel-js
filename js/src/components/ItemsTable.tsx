@@ -87,17 +87,17 @@ export const ItemsTable = (
     },
     title: {
       field: 'srcFullTitle',
-      name: (<EuiText title={i18n('dibabel-table-th-primary--title')}><Message
-        id="dibabel-table-th-primary--label"/></EuiText>),
+      name: (<EuiText title={i18n('dibabel-table-header-primary--title')}><Message
+        id="dibabel-table-header-primary--label"/></EuiText>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.type]}&nbsp;&nbsp;{item.srcFullTitle}<ExternalLink
-        title={i18n('dibabel-table-td-primary--title', item.srcFullTitle)}
+        title={i18n('dibabel-table-cell-primary--title', item.srcFullTitle)}
         href={item.srcTitleUrl}/></>),
     },
     lang: {
       field: 'lang',
-      name: (<EuiText title={i18n('dibabel-table-th-language--title')}><Message
-        id="dibabel-table-th-language--label"/></EuiText>),
+      name: (<EuiText title={i18n('dibabel-table-header-language--title')}><Message
+        id="dibabel-table-header-language--label"/></EuiText>),
       sortable: true,
       render: (lang: string) => {
         const name = languageNames[lang];
@@ -106,8 +106,8 @@ export const ItemsTable = (
     },
     project: {
       field: 'project',
-      name: (<EuiText title={i18n('dibabel-table-th-project--title')}><Message
-        id="dibabel-table-th-project--label"/></EuiText>),
+      name: (<EuiText title={i18n('dibabel-table-header-project--title')}><Message
+        id="dibabel-table-header-project--label"/></EuiText>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.project]}&nbsp;&nbsp;&nbsp;{item.project}</>),
     },
@@ -119,45 +119,45 @@ export const ItemsTable = (
     },
     dstTitle: {
       field: 'dstFullTitle',
-      name: (<EuiText title={i18n('dibabel-table-th-wikipage--title')}><Message
-        id="dibabel-table-th-wikipage--label"/></EuiText>),
+      name: (<EuiText title={i18n('dibabel-table-header-wikipage--title')}><Message
+        id="dibabel-table-header-wikipage--label"/></EuiText>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.type]}&nbsp;&nbsp;{item.dstFullTitle}<ExternalLink
-        title={i18n('dibabel-table-th-wikipage--link', prettyDomain(item.lang, item.project), item.dstFullTitle)}
+        title={i18n('dibabel-table-header-wikipage--link', prettyDomain(item.lang, item.project), item.dstFullTitle)}
         href={item.dstTitleUrl}/></>),
     },
     hash: {
       field: 'hash',
       name: (<EuiText
-        title={i18n('dibabel-table-th-hash--title')}
-      ><Message id="dibabel-table-th-hash--label"/></EuiText>),
+        title={i18n('dibabel-table-header-hash--title')}
+      ><Message id="dibabel-table-header-hash--label"/></EuiText>),
       sortable: true,
       render: (hash: string) => (<EuiText
-        title={i18n('dibabel-table-td-hash--title', hash)}
+        title={i18n('dibabel-table-cell-hash--title', hash)}
       >{hash.substring(0, 7)}</EuiText>)
     },
     status: {
       field: 'sortStatus',
       name: (<EuiText
-        title={i18n('dibabel-table-th-status--title')}><Message id="dibabel-table-th-status--label"/></EuiText>),
+        title={i18n('dibabel-table-header-status--title')}><Message id="dibabel-table-header-status--label"/></EuiText>),
       sortable: true,
       render: (_: string, item: Item) => {
         switch (item.status) {
           case 'ok':
             return (<EuiHealth
-              title={i18n('dibabel-table-td-status--ok-title')}
-              color={'success'}><Message id="dibabel-table-td-status--ok-label"/></EuiHealth>);
+              title={i18n('dibabel-table-cell-status--ok-title')}
+              color={'success'}><Message id="dibabel-table-cell-status--ok-label"/></EuiHealth>);
           case 'unlocalized':
             return (<EuiHealth
-              title={i18n('dibabel-table-td-status--unlocalized-title')}
-              color={'warning'}><Message id="dibabel-table-td-status--unlocalized-label"/></EuiHealth>);
+              title={i18n('dibabel-table-cell-status--unlocalized-title')}
+              color={'warning'}><Message id="dibabel-table-cell-status--unlocalized-label"/></EuiHealth>);
           case 'outdated':
             return (
               <EuiHealth
-                title={i18n('dibabel-table-td-status--outdated-title', item.behind)}
+                title={i18n('dibabel-table-cell-status--outdated-title', item.behind)}
                 color={'warning'}
-              ><span><Message id="dibabel-table-td-status--outdated-label" placeholders={[item.behind]}/><ExternalLink
-                title={i18n('dibabel-table-td-status--outdated-link', item.behind, item.srcFullTitle)}
+              ><span><Message id="dibabel-table-cell-status--outdated-label" placeholders={[item.behind]}/><ExternalLink
+                title={i18n('dibabel-table-cell-status--outdated-link', item.behind, item.srcFullTitle)}
                 href={itemDiffLink(item)}/></span></EuiHealth>);
           case 'diverged':
             return (
@@ -165,18 +165,18 @@ export const ItemsTable = (
                 title={'The target page has been modified and cannot be updated automatically.'}
                 color={'danger'}>Diverged</EuiHealth>);
           default:
-            throw new Error(i18n('dibabel-table-td-status--error-label', item.status));
+            throw new Error(i18n('dibabel-table-cell-status--error-label', item.status));
         }
       },
     },
     countOk: {
       field: 'countOk',
-      name: (<EuiText title={i18n('dibabel-table-th-updated--title')}><Message
-        id="dibabel-table-th-updated--label"/></EuiText>),
+      name: (<EuiText title={i18n('dibabel-table-header-updated--title')}><Message
+        id="dibabel-table-header-updated--label"/></EuiText>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
-          return <EuiHealth title={i18n('dibabel-table-td-updated--title', value)}
+          return <EuiHealth title={i18n('dibabel-table-cell-updated--title', value)}
                             color={'success'}>{i18n('dibabel-table-pagecount', value)}</EuiHealth>;
         } else {
           return '-';
@@ -186,13 +186,13 @@ export const ItemsTable = (
     countUnlocalized: {
       field: 'countUnlocalized',
       name: (<EuiText
-        title={i18n('dibabel-table-th-unlocalized--title')}><Message
-        id="dibabel-table-th-unlocalized--label"/></EuiText>),
+        title={i18n('dibabel-table-header-unlocalized--title')}><Message
+        id="dibabel-table-header-unlocalized--label"/></EuiText>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
           return <EuiHealth
-            title={i18n('dibabel-table-td-unlocalized--title', value)}
+            title={i18n('dibabel-table-cell-unlocalized--title', value)}
             color={'warning'}>{i18n('dibabel-table-pagecount', value)}</EuiHealth>;
         } else {
           return '-';
@@ -201,12 +201,12 @@ export const ItemsTable = (
     },
     countOutdated: {
       field: 'countOutdated',
-      name: (<EuiText title={i18n('dibabel-table-th-outdated--title')}><Message
-        id="dibabel-table-th-outdated--label"/></EuiText>),
+      name: (<EuiText title={i18n('dibabel-table-header-outdated--title')}><Message
+        id="dibabel-table-header-outdated--label"/></EuiText>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
-          return <EuiHealth title={i18n('dibabel-table-td-outdated--label', value)}
+          return <EuiHealth title={i18n('dibabel-table-cell-outdated--label', value)}
                             color={'warning'}>{i18n('dibabel-table-pagecount', value)}</EuiHealth>;
         } else {
           return '-';
@@ -215,12 +215,12 @@ export const ItemsTable = (
     },
     countDiverged: {
       field: 'countDiverged',
-      name: (<EuiText title={i18n('dibabel-table-th-diverged--title')}><Message
-        id="dibabel-table-th-diverged--label"/></EuiText>),
+      name: (<EuiText title={i18n('dibabel-table-header-diverged--title')}><Message
+        id="dibabel-table-header-diverged--label"/></EuiText>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
-          return <EuiHealth title={i18n('dibabel-table-th-diverged--title', value)}
+          return <EuiHealth title={i18n('dibabel-table-header-diverged--title', value)}
                             color={'danger'}>{i18n('dibabel-table-pagecount', value)}</EuiHealth>;
         } else {
           return '-';
