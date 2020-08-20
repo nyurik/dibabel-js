@@ -13,6 +13,7 @@ import {
   EuiHealth,
   EuiIcon,
   EuiLink,
+  EuiLoadingContent,
   EuiProgress,
   EuiSpacer,
   EuiText,
@@ -155,8 +156,14 @@ const ItemDiffViewer = () => {
 
   const body = useMemo(() => {
     switch (itemStatus.status) {
+      case 'reset':
+        return undefined;
       case 'loading':
-        return (<EuiProgress size={'s'} color={'accent'} label={i18n('dibabel-diff-content--loading')}/>);
+        return (<>
+          <EuiProgress size={'s'} color={'accent'} label={i18n('dibabel-diff-content--loading')}/>
+          <EuiSpacer size={'m'}/>
+          <EuiLoadingContent lines={10}/>
+        </>);
       case 'error':
         return (<EuiCallOut title={i18n('dibabel-diff-content--loading-error')} color={'danger'} iconType={'alert'}>
           <p>{itemStatus.error}</p>

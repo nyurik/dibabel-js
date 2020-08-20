@@ -24,10 +24,11 @@ import { I18nContext } from '../contexts/I18nContext';
 import { Message } from './Message';
 import { AllDataContext } from '../contexts/AllData';
 import { uniq } from 'lodash';
-import { ItemSrcLink, NotMultisiteDepsWarning } from './Snippets';
+import { ItemDstLink, ItemSrcLink, NotMultisiteDepsWarning } from './Snippets';
 import { Item } from '../types';
 
-const Picker = ({ placeholder, value, setValue, options }: {
+const Picker = ({ disabled, placeholder, value, setValue, options }: {
+  disabled: boolean,
   placeholder: string,
   value: string | undefined,
   setValue: Dispatch<string | undefined>,
@@ -43,11 +44,10 @@ const Picker = ({ placeholder, value, setValue, options }: {
 
   const opts = options.sort().map(v => ({ label: v }));
   return (<EuiComboBox
-    id={'picker'}
     placeholder={placeholder}
     singleSelection={{ asPlainText: true }}
     options={opts}
-    isDisabled={options.length === 0}
+    isDisabled={disabled || options.length === 0}
     selectedOptions={value ? opts.filter(v => v.label === value) : []}
     onChange={onTitleChange}
   />);
@@ -59,14 +59,14 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
 
   // TODO
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [confirmationStatus, setConfirmationStatus] = useState<'show' | 'saving'>('show');
+  const [status, setStatus] = useState<'show' | 'saving'>('show');
   const [pageTitle, setPageTitle] = useState<string | undefined>();
   const [wiki, setWiki] = useState<string | undefined>();
   const { allItems } = useContext(AllDataContext);
 
   const onCopy = async () => {
     try {
-      setConfirmationStatus('saving');
+      setStatus('saving');
 
       // const res = await postToApi(currentItem!.wiki, {
       //   action: 'edit',
@@ -83,19 +83,29 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
       //   return;
       // }
 
-      await sleep(2);
+      await sleep(3000);
 
+      // TODO
+      const newItem: Item = {
+        dstTitleUrl: `https://dibabel.toolsforge.org/`,
+        lang: 'xx',
+        project: 'wikipedia',
+        dstFullTitle: pageTitle!,
+      } as Item;
+
+      // FIXME I18N
       addToast(success({
-        title: (<EuiText><Message id="dibabel-updatepage-status"
-                                  placeholders={['LINK_TODO']}/></EuiText>),
+        title: (<EuiText><Message id="Page $1 has been successfully created (Not really, just testing)"
+                                  placeholders={[(<ItemDstLink item={newItem}/>)]}/></EuiText>),
         iconType: 'check',
+        toastLifeTimeMs: 15000
       }));
 
       // updateSavedItem(currentItem!);
     } catch (err) {
       addToast(error({
         // FIXME: change message ID
-        title: (<EuiText><Message id="dibabel-updatepage-status-error"
+        title: (<EuiText><Message id="Error saving $1:  $2"
                                   placeholders={['LINK_TODO', err.toString()]}/></EuiText>),
       }));
     } finally {
@@ -140,12 +150,14 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
     <EuiModalBody>
       <EuiForm>
         <EuiFormRow label={i18n('A page to copy')} helpText={pageHelpText}>
-          <Picker placeholder={i18n('Select a page to copy')} value={pageTitle} setValue={setPageTitle}
+          <Picker disabled={status !== 'show'} placeholder={i18n('Select a page to copy')} value={pageTitle}
+                  setValue={setPageTitle}
                   options={uniq(allItems.map(v => v.srcFullTitle))}/>
         </EuiFormRow>
         <EuiFormRow label={i18n('Target wiki')}
                     helpText={pageTitle ? i18n('Already exists on $1 out of $2 wikis.', existsOn.size, knownWikis) : undefined}>
-          <Picker placeholder={i18n('Select target wiki')} value={wiki} setValue={setWiki} options={wikiOptions}/>
+          <Picker disabled={status !== 'show'} placeholder={i18n('Select target wiki')} value={wiki} setValue={setWiki}
+                  options={wikiOptions}/>
         </EuiFormRow>
         {warnings}
       </EuiForm>
@@ -153,7 +165,10 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
     <EuiModalFooter>
       <EuiTextAlign textAlign="left"><EuiBadge color={'accent'}>NOT IMPLEMENTED</EuiBadge></EuiTextAlign>
       <EuiButtonEmpty onClick={onClose}>{i18n('Cancel')}</EuiButtonEmpty>
-      <EuiButton onClick={onCopy} color={warnings ? 'danger' : 'primary'} isLoading={confirmationStatus === 'saving'}
+      <EuiButton isDisabled={status !== 'show' || !pageTitle || !wiki}
+                 onClick={onCopy}
+                 color={warnings ? 'danger' : 'primary'}
+                 isLoading={status === 'saving'}
                  fill>{i18n('Create!')}</EuiButton>
     </EuiModalFooter>
   </EuiModal>
