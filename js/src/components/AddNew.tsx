@@ -160,7 +160,7 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
   // FIXME I18N
   return (<EuiOverlayMask><EuiModal onClose={onClose} maxWidth={'60%'}>
     <EuiModalHeader>
-      <EuiModalHeaderTitle>{i18n('Copy page to another wiki...')}</EuiModalHeaderTitle>
+      <EuiModalHeaderTitle>{i18n('Create a new copy')}</EuiModalHeaderTitle>
     </EuiModalHeader>
     <EuiModalBody>
       <EuiForm>

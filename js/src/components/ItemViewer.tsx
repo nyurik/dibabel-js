@@ -70,13 +70,14 @@ const ItemDiffBlock = ({ type, oldText, newText }: { type: ItemTypeType, oldText
 
 const Comment: FunctionComponent<{ readOnly: boolean, value: string, setValue: Dispatch<string> }> = ({ readOnly, value, setValue }) => {
   const { i18n } = useContext(I18nContext);
+  const placeholder = i18n('dibabel-diff-summary--placeholder');
   return (<EuiFieldText
     readOnly={readOnly}
-    placeholder={i18n('dibabel-diff-summary--placeholder')}
+    placeholder={placeholder}
     isInvalid={!value.trim()}
     value={value}
     onChange={e => setValue(e.target.value)}
-    aria-label={i18n('dibabel-diff-summary--placeholder')}
+    aria-label={placeholder}
     fullWidth={true}
   />);
 };
@@ -201,7 +202,7 @@ const ItemDiffViewer = () => {
     footer = <EuiFlyoutFooter>
       <EuiFlexGroup justifyContent={'spaceBetween'} alignItems={'center'}>
         <EuiFlexItem grow={false}>
-          <span>{i18n('dibabel-diff-content--login-error')}&nbsp;<ExternalLink
+          <span>{i18n('dibabel-diff-summary--title')}&nbsp;<ExternalLink
             href={'https://commons.wikimedia.org/wiki/Data:I18n/DiBabel.tab'}
             icon={'globe'} color={'primary'}
             title={'Translate auto-generated summary messages.'}/></span>
