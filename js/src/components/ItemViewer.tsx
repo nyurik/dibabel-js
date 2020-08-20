@@ -39,6 +39,7 @@ import { CurrentItemContext } from '../contexts/CurrentItem';
 import { Updater } from './Updater';
 import { I18nContext } from '../contexts/I18nContext';
 import { Message } from './Message';
+import { LineRange } from '@elastic/eui/src/components/loading/loading_content';
 
 const ItemDiffBlock = ({ type, oldText, newText }: { type: ItemTypeType, oldText: string, newText: string }) => {
   const { isDarkTheme, isSplitView } = useContext(SettingsContext);
@@ -162,7 +163,13 @@ const ItemDiffViewer = () => {
         return (<>
           <EuiProgress size={'s'} color={'accent'} label={i18n('dibabel-diff-content--loading')}/>
           <EuiSpacer size={'m'}/>
-          <EuiLoadingContent lines={10}/>
+          <EuiLoadingContent lines={Math.round(Math.random()*6+1) as LineRange}/>
+          <EuiSpacer size={'m'}/>
+          <EuiLoadingContent lines={Math.round(Math.random()*6+1) as LineRange}/>
+          <EuiSpacer size={'m'}/>
+          <EuiLoadingContent lines={Math.round(Math.random()*6+1) as LineRange}/>
+          <EuiSpacer size={'m'}/>
+          <EuiLoadingContent lines={Math.round(Math.random()*6+1) as LineRange}/>
         </>);
       case 'error':
         return (<EuiCallOut title={i18n('dibabel-diff-content--loading-error')} color={'danger'} iconType={'alert'}>
