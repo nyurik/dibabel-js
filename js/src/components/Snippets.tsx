@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { EuiButtonIcon, EuiButtonIconColor, EuiCallOut, EuiLink, EuiSpacer, EuiText } from '@elastic/eui';
+import { EuiButtonIcon, EuiButtonIconColor, EuiCallOut, EuiLink, EuiSpacer, EuiText, EuiToolTip } from '@elastic/eui';
 import { Item } from '../types';
 
 import { I18nContext } from '../contexts/I18nContext';
@@ -7,18 +7,23 @@ import { prettyDomain } from '../utils';
 import { Message } from './Message';
 
 export const ExternalLink = (
-  { href, title, icon = 'symlink', color = 'text' }: { href: string, title: string, icon?: string, color?: EuiButtonIconColor }
+  { href, title, tooltip, icon = 'symlink', color = 'text' }: {
+    href: string,
+    title?: string,
+    tooltip: string,
+    icon?: string,
+    color?: EuiButtonIconColor,
+  }
 ) => {
   const { i18n } = useContext(I18nContext);
 
-  return (<EuiButtonIcon
+  return (<EuiToolTip title={title} content={tooltip}><EuiButtonIcon
     color={color}
     href={href}
     target={'_blank'}
     iconType={icon}
     aria-label={i18n('dibabel-table-externallink--aria')}
-    title={title}
-  />);
+  /></EuiToolTip>);
 };
 
 export const ItemSrcLink = ({ item, linkToWD = true }: { item: Item, linkToWD?: boolean }) => {
@@ -71,4 +76,4 @@ export const MultisiteDepsNotOnDstWarning = ({ item }: { item: Item }) => {
       <EuiText>{formatLinks(item.srcSite, item.multisiteDepsNotOnDst!)}</EuiText>
     </EuiCallOut>
   );
-}
+};

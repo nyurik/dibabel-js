@@ -6,7 +6,9 @@ import {
   EuiIcon,
   EuiInMemoryTable,
   EuiInMemoryTableProps,
-  EuiText
+  EuiText,
+  EuiToolTip,
+  EuiIconTip
 } from '@elastic/eui';
 
 import { Group, Item } from '../types';
@@ -69,35 +71,35 @@ export const ItemsTable = (
     },
     protection: {
       field: 'protection',
-      name: (<EuiIcon
+      name: (<EuiIconTip
         type={lockIcon}
         size={'m'}
         color={'#C6C7C7'}
-        title={i18n('dibabel-table-icons-protection--title')}
+        content={i18n('dibabel-table-icons-protection--title')}
       />),
       width: '2.2em',
       sortable: true,
       render: (rights: string) => rights ? (
-        <EuiIcon
+        <EuiIconTip
           type={lockIcon}
           size={'m'}
           color={'#0078b8'}
-          title={i18n('dibabel-table-icons-protection--rights', rights)}
+          content={i18n('dibabel-table-icons-protection--rights', rights)}
         />) : '',
     },
     title: {
       field: 'srcFullTitle',
-      name: (<EuiText title={i18n('dibabel-table-header-primary--title')}><Message
-        id="dibabel-table-header-primary--label"/></EuiText>),
+      name: (<EuiToolTip content={i18n('dibabel-table-header-primary--title')}><Message
+        id="dibabel-table-header-primary--label"/></EuiToolTip>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.type]}&nbsp;&nbsp;{item.srcFullTitle}<ExternalLink
-        title={i18n('dibabel-table-cell-primary--title', item.srcFullTitle)}
+        tooltip={i18n('dibabel-table-cell-primary--title', item.srcFullTitle)}
         href={item.srcTitleUrl}/></>),
     },
     lang: {
       field: 'lang',
-      name: (<EuiText title={i18n('dibabel-table-header-language--title')}><Message
-        id="dibabel-table-header-language--label"/></EuiText>),
+      name: (<EuiToolTip content={i18n('dibabel-table-header-language--title')}><Message
+        id="dibabel-table-header-language--label"/></EuiToolTip>),
       sortable: true,
       render: (lang: string) => {
         const name = languageNames[lang];
@@ -106,41 +108,39 @@ export const ItemsTable = (
     },
     project: {
       field: 'project',
-      name: (<EuiText title={i18n('dibabel-table-header-project--title')}><Message
-        id="dibabel-table-header-project--label"/></EuiText>),
+      name: (<EuiToolTip content={i18n('dibabel-table-header-project--title')}><Message
+        id="dibabel-table-header-project--label"/></EuiToolTip>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.project]}&nbsp;&nbsp;&nbsp;{item.project}</>),
     },
     wiki: {
       field: 'wiki',
-      name: (<EuiText title={'The wiki site where the copied page is located.'}>Wiki site</EuiText>),
+      name: (<EuiToolTip content={'The wiki site where the copied page is located.'}><EuiText>Wiki
+        site</EuiText></EuiToolTip>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.project]}&nbsp;&nbsp;&nbsp;{item.wiki}</>),
     },
     dstTitle: {
       field: 'dstFullTitle',
-      name: (<EuiText title={i18n('dibabel-table-header-wikipage--title')}><Message
-        id="dibabel-table-header-wikipage--label"/></EuiText>),
+      name: (<EuiToolTip content={i18n('dibabel-table-header-wikipage--title')}><Message
+        id="dibabel-table-header-wikipage--label"/></EuiToolTip>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.type]}&nbsp;&nbsp;{item.dstFullTitle}<ExternalLink
-        title={i18n('dibabel-table-header-wikipage--link', prettyDomain(item.lang, item.project), item.dstFullTitle)}
+        tooltip={i18n('dibabel-table-header-wikipage--link', prettyDomain(item.lang, item.project), item.dstFullTitle)}
         href={item.dstTitleUrl}/></>),
     },
     hash: {
       field: 'hash',
-      name: (<EuiText
-        title={i18n('dibabel-table-header-hash--title')}
-      ><Message id="dibabel-table-header-hash--label"/></EuiText>),
+      name: (<EuiToolTip content={i18n('dibabel-table-header-hash--title')}
+      ><Message id="dibabel-table-header-hash--label"/></EuiToolTip>),
       sortable: true,
-      render: (hash: string) => (<EuiText
-        title={i18n('dibabel-table-cell-hash--title', hash)}
-      >{hash.substring(0, 7)}</EuiText>)
+      render: (hash: string) => (<EuiToolTip title={hash} content={i18n('dibabel-table-cell-hash--title')}
+      ><EuiText>{hash.substring(0, 7)}</EuiText></EuiToolTip>)
     },
     status: {
       field: 'sortStatus',
-      name: (<EuiText
-        title={i18n('dibabel-table-header-status--title')}><Message
-        id="dibabel-table-header-status--label"/></EuiText>),
+      name: (<EuiToolTip content={i18n('dibabel-table-header-status--title')}><Message
+        id="dibabel-table-header-status--label"/></EuiToolTip>),
       sortable: true,
       render: (_: string, item: Item) => {
         switch (item.status) {
@@ -158,7 +158,7 @@ export const ItemsTable = (
                 title={i18n('dibabel-table-cell-status--outdated-title', item.behind)}
                 color={'warning'}
               ><span><Message id="dibabel-table-cell-status--outdated-label" placeholders={[item.behind]}/><ExternalLink
-                title={i18n('dibabel-table-cell-status--outdated-link', item.behind, item.srcFullTitle)}
+                tooltip={i18n('dibabel-table-cell-status--outdated-link', item.behind, item.srcFullTitle)}
                 href={itemDiffLink(item)}/></span></EuiHealth>);
           case 'diverged':
             return (
@@ -172,8 +172,8 @@ export const ItemsTable = (
     },
     countOk: {
       field: 'countOk',
-      name: (<EuiText title={i18n('dibabel-table-header-updated--title')}><Message
-        id="dibabel-table-header-updated--label"/></EuiText>),
+      name: (<EuiToolTip content={i18n('dibabel-table-header-updated--title')}><Message
+        id="dibabel-table-header-updated--label"/></EuiToolTip>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
@@ -186,9 +186,9 @@ export const ItemsTable = (
     },
     countUnlocalized: {
       field: 'countUnlocalized',
-      name: (<EuiText
-        title={i18n('dibabel-table-header-unlocalized--title')}><Message
-        id="dibabel-table-header-unlocalized--label"/></EuiText>),
+      name: (<EuiToolTip
+        content={i18n('dibabel-table-header-unlocalized--title')}><Message
+        id="dibabel-table-header-unlocalized--label"/></EuiToolTip>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
@@ -202,8 +202,8 @@ export const ItemsTable = (
     },
     countOutdated: {
       field: 'countOutdated',
-      name: (<EuiText title={i18n('dibabel-table-header-outdated--title')}><Message
-        id="dibabel-table-header-outdated--label"/></EuiText>),
+      name: (<EuiToolTip content={i18n('dibabel-table-header-outdated--title')}><Message
+        id="dibabel-table-header-outdated--label"/></EuiToolTip>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
@@ -216,8 +216,8 @@ export const ItemsTable = (
     },
     countDiverged: {
       field: 'countDiverged',
-      name: (<EuiText title={i18n('dibabel-table-header-diverged--title')}><Message
-        id="dibabel-table-header-diverged--label"/></EuiText>),
+      name: (<EuiToolTip content={i18n('dibabel-table-header-diverged--title')}><Message
+        id="dibabel-table-header-diverged--label"/></EuiToolTip>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {

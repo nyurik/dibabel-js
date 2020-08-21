@@ -205,7 +205,7 @@ const ItemDiffViewer = () => {
           <span>{i18n('dibabel-diff-summary--title')}&nbsp;<ExternalLink
             href={'https://commons.wikimedia.org/wiki/Data:I18n/DiBabel.tab'}
             icon={'globe'} color={'primary'}
-            title={'Translate auto-generated summary messages.'}/></span>
+            tooltip={'Help translate summary messages.'}/></span>
         </EuiFlexItem>
         <EuiFlexItem grow={true}>
           <Comment readOnly={!isLoggedIn} value={comment} setValue={setComment}/>

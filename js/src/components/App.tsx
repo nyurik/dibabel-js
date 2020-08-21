@@ -11,7 +11,7 @@ import '@elastic/eui/dist/eui_theme_light.css';
 import '../App.css';
 
 // React component import
-import { EuiPage, EuiPageBody } from '@elastic/eui';
+import { EuiPage, EuiPageBody, EuiErrorBoundary } from '@elastic/eui';
 import { ToastsProvider } from '../contexts/Toasts';
 import { UserProvider } from '../contexts/UserContext';
 import { SettingsContext, SettingsProvider } from '../contexts/Settings';
@@ -48,8 +48,10 @@ export function AppWithSettings() {
 
 export function App() {
   return (
-    <SettingsProvider>
-      <AppWithSettings/>
-    </SettingsProvider>
+    <EuiErrorBoundary>
+      <SettingsProvider>
+        <AppWithSettings/>
+      </SettingsProvider>
+    </EuiErrorBoundary>
   );
 }
