@@ -11,7 +11,7 @@ import { ItemViewer } from './ItemViewer';
 export const WorkArea = () => {
   let [queryError, setQueryError] = useState('');
   let [selectedItems, setSelectedItems] = useState<Set<Item>>(() => new Set());
-  let [query, setQuery] = usePersistedState<string>('query', '', v => v === '[object Object]' ? '' : v, v => typeof v === 'object' ? (v as Query).text : v);
+  let [query, setQuery] = usePersistedState<string>('query', '', v => v === '[object Object]' ? '' : v, v => v);
 
   const [rawGroupSelection, setGroupSelection] = usePersistedJsonState<Array<keyof Item>>('groupSelection', ['srcTitleUrl']);
 
