@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { EuiSpacer, Query } from '@elastic/eui';
+import { EuiSpacer } from '@elastic/eui';
 
 import { groupDefs, Item } from '../types';
 import { usePersistedJsonState, usePersistedState } from '../utils';
