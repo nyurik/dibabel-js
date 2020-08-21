@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { EuiComboBox, EuiComboBoxOptionOption } from '@elastic/eui';
+import { EuiComboBox, EuiComboBoxOptionOption, EuiToolTip } from '@elastic/eui';
 import { GroupDefsType, Item } from '../types';
 import { sortBy } from 'lodash';
 import { I18nContext } from '../contexts/I18nContext';
@@ -22,14 +22,17 @@ export const GroupSelector = (props: {
       sortBy(groupChoices, (v: any) => parseInt(v['data-order'])).map((v: any) => v['data-group']));
   };
 
-  return (<EuiComboBox
-    fullWidth={true}
-    placeholder={i18n('dibabel-filters-groupby--placeholder')}
-    title={i18n('dibabel-filters-groupby--title')}
-    options={Object.values(optsAsMap)}
-    selectedOptions={props.groupSelection.map(v => optsAsMap[v])}
-    onChange={onChange}
-    isClearable={true}
-  />);
+  return (
+    <EuiToolTip anchorClassName="eui-displayBlock"
+                content={i18n('dibabel-filters-groupby--tooltip')}>
+      <EuiComboBox
+        fullWidth={true}
+        placeholder={i18n('dibabel-filters-groupby--placeholder')}
+        options={Object.values(optsAsMap)}
+        selectedOptions={props.groupSelection.map(v => optsAsMap[v])}
+        onChange={onChange}
+        isClearable={true}
+      />
+    </EuiToolTip>);
 
 };

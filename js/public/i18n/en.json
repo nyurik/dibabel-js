@@ -29,6 +29,7 @@
   "dibabel-diff-title--current": "Current $1 content",
   "dibabel-diff-title--new": "New $1 content",
   "dibabel-diff-update": "Update!",
+  "dibabel-filters-groupby--tooltip": "Group the list of copies by...",
   "dibabel-filters-groupby--hash": "by hash",
   "dibabel-filters-groupby--lang": "by language",
   "dibabel-filters-groupby--placeholder": "Group by...",
