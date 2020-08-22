@@ -173,7 +173,7 @@ export const SearchBar = (
         setQueryError(error.message);
       } else {
         setQueryError('');
-        setQuery(query.text());
+        setQuery(query.text);
       }
     }}
   />;
