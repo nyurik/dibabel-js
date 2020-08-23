@@ -29,7 +29,7 @@ export function Header() {
         <EuiHeaderSectionItem border={'none'}>
           <EuiHeaderLogo iconType={logoIcon}>
             Dibabel&nbsp;&nbsp;<EuiBetaBadge label={i18n('dibabel-header-beta--label')}
-                                             title={i18n('dibabel-header-beta--title')}/>
+                                             title={i18n('dibabel-header-beta--tooltip')}/>
           </EuiHeaderLogo>
         </EuiHeaderSectionItem>
       </EuiPageHeaderSection>

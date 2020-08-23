@@ -48,8 +48,8 @@ const ItemDiffBlock = ({ type, oldText, newText }: { type: ItemTypeType, oldText
   return (
     <div className={'diff-view'}>
       <ReactDiffViewer
-        leftTitle={isSame ? '' : i18n('dibabel-diff-title--current', type)}
-        rightTitle={isSame ? '' : i18n('dibabel-diff-title--new', type)}
+        leftTitle={isSame ? '' : i18n('dibabel-diff-label--current', type)}
+        rightTitle={isSame ? '' : i18n('dibabel-diff-label--new', type)}
         oldValue={oldText}
         newValue={newText}
         splitView={!isSame && isSplitView}
@@ -164,13 +164,13 @@ const ItemDiffViewer = () => {
         return (<>
           <EuiProgress size={'s'} color={'accent'} label={i18n('dibabel-diff-content--loading')}/>
           <EuiSpacer size={'m'}/>
-          <EuiLoadingContent lines={Math.round(Math.random()*6+1) as LineRange}/>
+          <EuiLoadingContent lines={Math.round(Math.random() * 6 + 1) as LineRange}/>
           <EuiSpacer size={'m'}/>
-          <EuiLoadingContent lines={Math.round(Math.random()*6+1) as LineRange}/>
+          <EuiLoadingContent lines={Math.round(Math.random() * 6 + 1) as LineRange}/>
           <EuiSpacer size={'m'}/>
-          <EuiLoadingContent lines={Math.round(Math.random()*6+1) as LineRange}/>
+          <EuiLoadingContent lines={Math.round(Math.random() * 6 + 1) as LineRange}/>
           <EuiSpacer size={'m'}/>
-          <EuiLoadingContent lines={Math.round(Math.random()*6+1) as LineRange}/>
+          <EuiLoadingContent lines={Math.round(Math.random() * 6 + 1) as LineRange}/>
         </>);
       case 'error':
         return (<EuiCallOut title={i18n('dibabel-diff-content--loading-error')} color={'danger'} iconType={'alert'}>
@@ -202,10 +202,10 @@ const ItemDiffViewer = () => {
     footer = <EuiFlyoutFooter>
       <EuiFlexGroup justifyContent={'spaceBetween'} alignItems={'center'}>
         <EuiFlexItem grow={false}>
-          <span>{i18n('dibabel-diff-summary--title')}&nbsp;<ExternalLink
+          <span>{i18n('dibabel-diff-summary--label')}&nbsp;<ExternalLink
             href={'https://commons.wikimedia.org/wiki/Data:I18n/DiBabel.tab'}
             icon={'globe'} color={'primary'}
-            tooltip={'Help translate summary messages.'}/></span>
+            tooltip={i18n('dibabel-diff-summary--tooltip')}/></span>
         </EuiFlexItem>
         <EuiFlexItem grow={true}>
           <Comment readOnly={!isLoggedIn} value={comment} setValue={setComment}/>

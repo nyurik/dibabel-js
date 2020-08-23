@@ -17,6 +17,8 @@ import {
 import { UserContext, UserState } from './UserContext';
 import { rootUrlData, rootUrlSite, usePersistedState } from '../utils';
 
+import { I18nContext } from './I18nContext';
+
 import { Props } from '../types';
 import i18n_en from './messages-en.json';
 import { isEmpty } from 'lodash';
@@ -183,12 +185,14 @@ const SettingsDialog = () => {
     isIncrementalSearch,
     setIsIncrementalSearch,
   } = useContext(SettingsContext);
+
   const { user } = useContext(UserContext);
+  const { i18n } = useContext(I18nContext);
 
   const results = [
     <EuiSwitch
       key={'theme'}
-      label={'Night mode'}
+      label={i18n('dibabel-settings-theme--label')}
       checked={isDarkTheme}
       disabled
       onChange={e => setIsDarkTheme(e.target.checked)}
@@ -196,22 +200,22 @@ const SettingsDialog = () => {
     <EuiSpacer key={'s1'} size={'m'}/>,
     <EuiSwitch
       key={'split'}
-      label={'Split diff view'}
-      title={'Show page comparison side by side (split) or unified.'}
+      label={i18n('dibabel-settings-split--label')}
+      title={i18n('dibabel-settings-split--tooltip')}
       checked={isSplitView}
       onChange={e => setIsSplitView(e.target.checked)}
     />,
     <EuiSpacer key={'s2'} size={'m'}/>,
     <EuiSwitch
       key={'inc'}
-      label={'Incremental search'}
-      title={'Search as you type. If disabled, you must press ENTER after entering the search query string. Disable when your computer is not performing fast enough when entering queries.'}
+      label={i18n('dibabel-settings-search--label')}
+      title={i18n('dibabel-settings-search--tooltip')}
       checked={isIncrementalSearch}
       onChange={e => setIsIncrementalSearch(e.target.checked)}
     />,
     <EuiSpacer key={'s3'} size={'m'}/>,
     <EuiHeaderLink key={'logout'} disabled={user.state !== UserState.LoggedIn}
-                   href={`${rootUrlData}logout`}>Logout...</EuiHeaderLink>,
+                   href={`${rootUrlData}logout`}>{i18n('dibabel-settings-logout')}</EuiHeaderLink>,
   ];
 
   return (<>{results}</>);
@@ -223,23 +227,24 @@ export const Settings = () => {
   const { siteData, languageNames, locale, setLocale } = useContext(SettingsContext);
 
   const closePopover = () => { setIsLanguagesOpen(false); };
+  const { i18n } = useContext(I18nContext);
 
   const settingsButton = (<EuiButtonIcon
     iconSize={'m'}
     iconType={'gear'}
     onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-    aria-label={'Open options menu'}
+    aria-label={i18n('dibabel-settings-gear--aria')}
     color={'text'}
   />);
 
   const langOptions = useMemo((): EuiSelectableOption[] =>
     siteData.languages.map(lang => {
-      const res = { key: lang, label: languageNames[lang] || 'Unknown' } as EuiSelectableOption;
+      const res = { key: lang, label: languageNames[lang] || i18n('dibabel-language-unknown') } as EuiSelectableOption;
       if (lang === locale) {
         res.checked = 'on';
       }
       return res;
-    }), [languageNames, locale, siteData.languages]);
+    }), [i18n, languageNames, locale, siteData.languages]);
 
   // FIXME: update this link to ...?
   // const translateWikiUrl = `https://translatewiki.org/`;
@@ -256,7 +261,7 @@ export const Settings = () => {
       // TODO: enable height once the translations list is larger
       // height={500}
       searchProps={{
-        placeholder: 'Filter list',
+        placeholder: i18n('dibabel-language-filter--placeholder'),
         compressed: true,
       }}
       options={langOptions}
@@ -270,7 +275,7 @@ export const Settings = () => {
           {list}
           {/* FIXME: add this to the EuiLink below, and fix the ref  href={translateWikiUrl}*/}
           <EuiPanel paddingSize="m"><EuiLink target={'_blank'}><EuiButtonIcon
-            iconType={'globe'}/> Help translate</EuiLink></EuiPanel>
+            iconType={'globe'}/>{i18n('dibabel-language-help')}</EuiLink></EuiPanel>
         </div>
       )}
     </EuiSelectable>
@@ -283,7 +288,7 @@ export const Settings = () => {
         button={settingsButton}
         isOpen={isSettingsOpen}
         closePopover={() => setIsSettingsOpen(false)}>
-        <EuiPopoverTitle>Options</EuiPopoverTitle>
+        <EuiPopoverTitle>{i18n('dibabel-settings-options')}</EuiPopoverTitle>
         {isSettingsOpen ? <SettingsDialog/> : null}
       </EuiPopover>
     </EuiFlexItem>

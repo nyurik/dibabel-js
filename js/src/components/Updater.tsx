@@ -54,7 +54,7 @@ export const Updater = ({ comment, onClose }: { comment: string, onClose: () => 
   };
 
   return (<EuiOverlayMask><EuiConfirmModal
-    title={i18n('dibabel-updatepage-confirm--title')}
+    title={i18n('dibabel-updatepage-confirm--tooltip')}
     onCancel={onClose}
     onConfirm={onCopy}
     cancelButtonText={i18n('dibabel-updatepage-confirm--no')}
