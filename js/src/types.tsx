@@ -164,7 +164,7 @@ export const groupDefs: GroupDefsType = {
     order: 2,
     columns: ['wiki'],
     extra_columns: ['lang', 'project'],
-    groupI18n: 'dibabel-filters-groupby--wiki',
+    groupI18n: 'dibabel-filters-groupby--site',
   },
   'srcTitleUrl': {
     order: 3,

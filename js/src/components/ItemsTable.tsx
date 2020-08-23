@@ -115,8 +115,7 @@ export const ItemsTable = (
     },
     wiki: {
       field: 'wiki',
-      name: (<EuiToolTip content={'The wiki site where the copied page is located.'}><EuiText>Wiki
-        site</EuiText></EuiToolTip>),
+      name: (<EuiToolTip content={i18n('dibabel-table-header-site--title')}><EuiText>{i18n('dibabel-table-header-site--label')}</EuiText></EuiToolTip>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.project]}&nbsp;&nbsp;&nbsp;{item.wiki}</>),
     },
@@ -163,8 +162,8 @@ export const ItemsTable = (
           case 'diverged':
             return (
               <EuiHealth
-                title={'The target page has been modified and cannot be updated automatically.'}
-                color={'danger'}>Diverged</EuiHealth>);
+                title={i18n('dibabel-table-cell-status--diverged-title')}
+                color={'danger'}><Message id="dibabel-table-cell-status--diverged-label"/></EuiHealth>);
           default:
             throw new Error(i18n('dibabel-table-cell-status--error-label', item.status));
         }

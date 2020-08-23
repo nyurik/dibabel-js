@@ -202,10 +202,10 @@ const ItemDiffViewer = () => {
     footer = <EuiFlyoutFooter>
       <EuiFlexGroup justifyContent={'spaceBetween'} alignItems={'center'}>
         <EuiFlexItem grow={false}>
-          <span>{i18n('dibabel-diff-summary--title')}&nbsp;<ExternalLink
+          <span>{i18n('dibabel-diff-summary--label')}&nbsp;<ExternalLink
             href={'https://commons.wikimedia.org/wiki/Data:I18n/DiBabel.tab'}
             icon={'globe'} color={'primary'}
-            tooltip={'Help translate summary messages.'}/></span>
+            tooltip={i18n('dibabel-diff-summary--title')}/></span>
         </EuiFlexItem>
         <EuiFlexItem grow={true}>
           <Comment readOnly={!isLoggedIn} value={comment} setValue={setComment}/>

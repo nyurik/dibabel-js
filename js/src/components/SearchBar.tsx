@@ -62,7 +62,7 @@ export const SearchBar = (
     {
       type: 'field_value_selection',
       field: 'type',
-      name: 'Type',
+      name: i18n('dibabel-filters-type'),
       // @ts-ignore
       operator: 'exact',
       multiSelect: false,
@@ -98,7 +98,7 @@ export const SearchBar = (
           diverged: 'danger'
         }, (v, k) => ({
           value: k,
-          view: <EuiHealth color={v}>{i18n(`dibabel-status-${k}`)}</EuiHealth>,
+          view: <EuiHealth color={v}>{i18n(`dibabel-filters-status-${k}`)}</EuiHealth>,
         }));
       },
     },
