@@ -201,7 +201,7 @@ const SettingsDialog = () => {
     <EuiSwitch
       key={'split'}
       label={i18n('dibabel-settings-split--label')}
-      title={i18n('dibabel-settings-split--title')}
+      title={i18n('dibabel-settings-split--tooltip')}
       checked={isSplitView}
       onChange={e => setIsSplitView(e.target.checked)}
     />,
@@ -209,7 +209,7 @@ const SettingsDialog = () => {
     <EuiSwitch
       key={'inc'}
       label={i18n('dibabel-settings-search--label')}
-      title={i18n('dibabel-settings-search--title')}
+      title={i18n('dibabel-settings-search--tooltip')}
       checked={isIncrementalSearch}
       onChange={e => setIsIncrementalSearch(e.target.checked)}
     />,

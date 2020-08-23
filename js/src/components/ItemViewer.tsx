@@ -48,8 +48,8 @@ const ItemDiffBlock = ({ type, oldText, newText }: { type: ItemTypeType, oldText
   return (
     <div className={'diff-view'}>
       <ReactDiffViewer
-        leftTitle={isSame ? '' : i18n('dibabel-diff-title--current', type)}
-        rightTitle={isSame ? '' : i18n('dibabel-diff-title--new', type)}
+        leftTitle={isSame ? '' : i18n('dibabel-diff-label--current', type)}
+        rightTitle={isSame ? '' : i18n('dibabel-diff-label--new', type)}
         oldValue={oldText}
         newValue={newText}
         splitView={!isSame && isSplitView}
@@ -205,7 +205,7 @@ const ItemDiffViewer = () => {
           <span>{i18n('dibabel-diff-summary--label')}&nbsp;<ExternalLink
             href={'https://commons.wikimedia.org/wiki/Data:I18n/DiBabel.tab'}
             icon={'globe'} color={'primary'}
-            tooltip={i18n('dibabel-diff-summary--title')}/></span>
+            tooltip={i18n('dibabel-diff-summary--tooltip')}/></span>
         </EuiFlexItem>
         <EuiFlexItem grow={true}>
           <Comment readOnly={!isLoggedIn} value={comment} setValue={setComment}/>
