@@ -17,7 +17,7 @@ import {
 import { UserContext, UserState } from './UserContext';
 import { rootUrlData, rootUrlSite, usePersistedState } from '../utils';
 
-import { I18nContext } from '../contexts/I18nContext';
+import { I18nContext } from './I18nContext';
 
 import { Props } from '../types';
 import i18n_en from './messages-en.json';
@@ -105,16 +105,16 @@ async function getSiteData(): Promise<SiteData> {
 
 export const SettingsProvider = ({ children }: Props) => {
   const [isDarkTheme, setIsDarkTheme] = usePersistedState<boolean>(
-      'theme', 'light',
-      // FIXME!  currently always force to light mode. Once CSS dynamic loading is enabled, remove the `&& false`
-      v => v === 'dark' && false,
-      v => v ? 'dark' : 'light');
+    'theme', 'light',
+    // FIXME!  currently always force to light mode. Once CSS dynamic loading is enabled, remove the `&& false`
+    v => v === 'dark' && false,
+    v => v ? 'dark' : 'light');
 
   const [isSplitView, setIsSplitView] = usePersistedState<boolean>(
-      `diff-split`, 'true', v => v === 'true', v => v ? 'true' : 'false');
+    `diff-split`, 'true', v => v === 'true', v => v ? 'true' : 'false');
 
   const [isIncrementalSearch, setIsIncrementalSearch] = usePersistedState<boolean>(
-      `incremental-search`, 'true', v => v === 'true', v => v ? 'true' : 'false');
+    `incremental-search`, 'true', v => v === 'true', v => v ? 'true' : 'false');
 
   //
   // Get the site data (run once)
@@ -157,22 +157,22 @@ export const SettingsProvider = ({ children }: Props) => {
   // [(isDarkTheme ? themeDark : themeLight)].use();
 
   return (
-      <SettingsContext.Provider
-          value={{
-            siteData,
-            isDarkTheme,
-            setIsDarkTheme,
-            isSplitView,
-            setIsSplitView,
-            isIncrementalSearch,
-            setIsIncrementalSearch,
-            locale,
-            messages,
-            setLocale,
-            languageNames,
-          }}>
-        {children}
-      </SettingsContext.Provider>
+    <SettingsContext.Provider
+      value={{
+        siteData,
+        isDarkTheme,
+        setIsDarkTheme,
+        isSplitView,
+        setIsSplitView,
+        isIncrementalSearch,
+        setIsIncrementalSearch,
+        locale,
+        messages,
+        setLocale,
+        languageNames,
+      }}>
+      {children}
+    </SettingsContext.Provider>
   );
 };
 
@@ -191,27 +191,27 @@ const SettingsDialog = () => {
 
   const results = [
     <EuiSwitch
-        key={'theme'}
-        label={i18n('dibabel-settings-theme--label')}
-        checked={isDarkTheme}
-        disabled
-        onChange={e => setIsDarkTheme(e.target.checked)}
+      key={'theme'}
+      label={i18n('dibabel-settings-theme--label')}
+      checked={isDarkTheme}
+      disabled
+      onChange={e => setIsDarkTheme(e.target.checked)}
     />,
     <EuiSpacer key={'s1'} size={'m'}/>,
     <EuiSwitch
-        key={'split'}
-        label={i18n('dibabel-settings-split--label')}
-        title={i18n('dibabel-settings-split--title')}
-        checked={isSplitView}
-        onChange={e => setIsSplitView(e.target.checked)}
+      key={'split'}
+      label={i18n('dibabel-settings-split--label')}
+      title={i18n('dibabel-settings-split--title')}
+      checked={isSplitView}
+      onChange={e => setIsSplitView(e.target.checked)}
     />,
     <EuiSpacer key={'s2'} size={'m'}/>,
     <EuiSwitch
-        key={'inc'}
-        label={i18n('dibabel-settings-search--label')}
-        title={i18n('dibabel-settings-search--title')}
-        checked={isIncrementalSearch}
-        onChange={e => setIsIncrementalSearch(e.target.checked)}
+      key={'inc'}
+      label={i18n('dibabel-settings-search--label')}
+      title={i18n('dibabel-settings-search--title')}
+      checked={isIncrementalSearch}
+      onChange={e => setIsIncrementalSearch(e.target.checked)}
     />,
     <EuiSpacer key={'s3'} size={'m'}/>,
     <EuiHeaderLink key={'logout'} disabled={user.state !== UserState.LoggedIn}
@@ -230,53 +230,53 @@ export const Settings = () => {
   const { i18n } = useContext(I18nContext);
 
   const settingsButton = (<EuiButtonIcon
-      iconSize={'m'}
-      iconType={'gear'}
-      onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-      aria-label={i18n('dibabel-settings-gear--aria')}
-      color={'text'}
+    iconSize={'m'}
+    iconType={'gear'}
+    onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+    aria-label={i18n('dibabel-settings-gear--aria')}
+    color={'text'}
   />);
 
   const langOptions = useMemo((): EuiSelectableOption[] =>
-      siteData.languages.map(lang => {
-        const res = { key: lang, label: languageNames[lang] || i18n('dibabel-language-unknown') } as EuiSelectableOption;
-        if (lang === locale) {
-          res.checked = 'on';
-        }
-        return res;
-      }), [languageNames, locale, siteData.languages]);
+    siteData.languages.map(lang => {
+      const res = { key: lang, label: languageNames[lang] || i18n('dibabel-language-unknown') } as EuiSelectableOption;
+      if (lang === locale) {
+        res.checked = 'on';
+      }
+      return res;
+    }), [i18n, languageNames, locale, siteData.languages]);
 
   // FIXME: update this link to ...?
   // const translateWikiUrl = `https://translatewiki.org/`;
 
   const languageSelector = (<EuiPopover
-      id="popover"
-      panelPaddingSize="none"
-      button={<EuiButtonEmpty onClick={() => setIsLanguagesOpen(true)}>{locale}</EuiButtonEmpty>}
-      isOpen={isLanguagesOpen}
-      closePopover={closePopover}>
+    id="popover"
+    panelPaddingSize="none"
+    button={<EuiButtonEmpty onClick={() => setIsLanguagesOpen(true)}>{locale}</EuiButtonEmpty>}
+    isOpen={isLanguagesOpen}
+    closePopover={closePopover}>
     <EuiSelectable
-        searchable
-        singleSelection={'always'}
-        // TODO: enable height once the translations list is larger
-        // height={500}
-        searchProps={{
-          placeholder: i18n('dibabel-language-filter--placeholder'),
-          compressed: true,
-        }}
-        options={langOptions}
-        onChange={(val: EuiSelectableOption[]) => {
-          setLocale(val.filter(v => v.checked === 'on')[0].key!);
-          closePopover();
-        }}>
+      searchable
+      singleSelection={'always'}
+      // TODO: enable height once the translations list is larger
+      // height={500}
+      searchProps={{
+        placeholder: i18n('dibabel-language-filter--placeholder'),
+        compressed: true,
+      }}
+      options={langOptions}
+      onChange={(val: EuiSelectableOption[]) => {
+        setLocale(val.filter(v => v.checked === 'on')[0].key!);
+        closePopover();
+      }}>
       {(list, search) => (
-          <div style={{ width: 240 }}>
-            <EuiPopoverTitle>{search}</EuiPopoverTitle>
-            {list}
-            {/* FIXME: add this to the EuiLink below, and fix the ref  href={translateWikiUrl}*/}
-            <EuiPanel paddingSize="m"><EuiLink target={'_blank'}><EuiButtonIcon
-                iconType={'globe'}/>{i18n('dibabel-language-help')}</EuiLink></EuiPanel>
-          </div>
+        <div style={{ width: 240 }}>
+          <EuiPopoverTitle>{search}</EuiPopoverTitle>
+          {list}
+          {/* FIXME: add this to the EuiLink below, and fix the ref  href={translateWikiUrl}*/}
+          <EuiPanel paddingSize="m"><EuiLink target={'_blank'}><EuiButtonIcon
+            iconType={'globe'}/>{i18n('dibabel-language-help')}</EuiLink></EuiPanel>
+        </div>
       )}
     </EuiSelectable>
   </EuiPopover>);
@@ -284,10 +284,10 @@ export const Settings = () => {
   return (<EuiFlexGroup alignItems={'center'}>
     <EuiFlexItem grow={false}>
       <EuiPopover
-          key={'s'}
-          button={settingsButton}
-          isOpen={isSettingsOpen}
-          closePopover={() => setIsSettingsOpen(false)}>
+        key={'s'}
+        button={settingsButton}
+        isOpen={isSettingsOpen}
+        closePopover={() => setIsSettingsOpen(false)}>
         <EuiPopoverTitle>{i18n('dibabel-settings-options')}</EuiPopoverTitle>
         {isSettingsOpen ? <SettingsDialog/> : null}
       </EuiPopover>

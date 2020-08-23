@@ -4,11 +4,11 @@ import {
   EuiCheckbox,
   EuiHealth,
   EuiIcon,
+  EuiIconTip,
   EuiInMemoryTable,
   EuiInMemoryTableProps,
   EuiText,
-  EuiToolTip,
-  EuiIconTip
+  EuiToolTip
 } from '@elastic/eui';
 
 import { Group, Item } from '../types';
@@ -115,7 +115,8 @@ export const ItemsTable = (
     },
     wiki: {
       field: 'wiki',
-      name: (<EuiToolTip content={i18n('dibabel-table-header-site--title')}><EuiText>{i18n('dibabel-table-header-site--label')}</EuiText></EuiToolTip>),
+      name: (<EuiToolTip
+        content={i18n('dibabel-table-header-site--title')}><EuiText>{i18n('dibabel-table-header-site--label')}</EuiText></EuiToolTip>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.project]}&nbsp;&nbsp;&nbsp;{item.wiki}</>),
     },

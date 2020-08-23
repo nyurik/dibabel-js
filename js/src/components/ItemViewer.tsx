@@ -164,13 +164,13 @@ const ItemDiffViewer = () => {
         return (<>
           <EuiProgress size={'s'} color={'accent'} label={i18n('dibabel-diff-content--loading')}/>
           <EuiSpacer size={'m'}/>
-          <EuiLoadingContent lines={Math.round(Math.random()*6+1) as LineRange}/>
+          <EuiLoadingContent lines={Math.round(Math.random() * 6 + 1) as LineRange}/>
           <EuiSpacer size={'m'}/>
-          <EuiLoadingContent lines={Math.round(Math.random()*6+1) as LineRange}/>
+          <EuiLoadingContent lines={Math.round(Math.random() * 6 + 1) as LineRange}/>
           <EuiSpacer size={'m'}/>
-          <EuiLoadingContent lines={Math.round(Math.random()*6+1) as LineRange}/>
+          <EuiLoadingContent lines={Math.round(Math.random() * 6 + 1) as LineRange}/>
           <EuiSpacer size={'m'}/>
-          <EuiLoadingContent lines={Math.round(Math.random()*6+1) as LineRange}/>
+          <EuiLoadingContent lines={Math.round(Math.random() * 6 + 1) as LineRange}/>
         </>);
       case 'error':
         return (<EuiCallOut title={i18n('dibabel-diff-content--loading-error')} color={'danger'} iconType={'alert'}>
