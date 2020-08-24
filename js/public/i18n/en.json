@@ -40,7 +40,7 @@
   "dibabel-filters-lang": "Language",
   "dibabel-filters-lang--unknown": "Multilingual / Other",
   "dibabel-filters-project": "Project",
-  "dibabel-filters-protection": "Lock",
+  "dibabel-filters-protection": "Protection",
   "dibabel-filters-searchbar--placeholder": "examples: en.wikipedia    TNT    lang=en",
   "dibabel-filters-status": "Status",
   "dibabel-filters-status-diverged": "Diverged",
