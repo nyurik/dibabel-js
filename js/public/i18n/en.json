@@ -53,7 +53,7 @@
   "dibabel-filters-wiki": "Wiki",
   "dibabel-header-beta--label": "BETA",
   "dibabel-header-beta--tooltip": "Work in progress. Please verify your changes.",
-  "dibabel-header-description": "Keep modules and templates the same across languages. Written by $1",
+  "dibabel-header-description": "Keep modules and templates the same across wikis and languages. Written by $1",
   "dibabel-header-links--bugs": "Bugs & Ideas",
   "dibabel-header-links--help": "Help",
   "dibabel-header-links--source": "Source",
