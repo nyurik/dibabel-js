@@ -121,7 +121,7 @@
   "dibabel-updatepage-confirm--tooltip": "Updating wiki page",
   "dibabel-updatepage-confirm--yes": "Yes, do it!",
   "dibabel-updatepage-status": "$1 was updated",
-  "dibabel-updatepage-status-error": "Error saving $1 - $2",
+  "dibabel-updatepage-status-error": "Error publishing $1 - $2",
   "dibabel-user-login": "Login",
   "dibabel-user-login--error": "Unknown user state $1"
 }
