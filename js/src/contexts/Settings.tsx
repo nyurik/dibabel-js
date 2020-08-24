@@ -246,8 +246,6 @@ export const Settings = () => {
       return res;
     }), [i18n, languageNames, locale, siteData.languages]);
 
-  const translateWikiUrl = `https://translatewiki.net/w/i.php?title=Special:Translate&group=dibabel&action=translate`;
-
   const languageSelector = (<EuiPopover
     id="popover"
     panelPaddingSize="none"
@@ -272,7 +270,9 @@ export const Settings = () => {
         <div style={{ width: 240 }}>
           <EuiPopoverTitle>{search}</EuiPopoverTitle>
           {list}
-          <EuiPanel paddingSize="m"><EuiLink href={translateWikiUrl} target={'_blank'}><EuiButtonIcon
+          <EuiPanel paddingSize="m"><EuiLink
+            href={`https://translatewiki.net/w/i.php?title=Special:Translate&group=dibabel&action=translate&language=${encodeURIComponent(locale)}`}
+            target={'_blank'}><EuiButtonIcon
             iconType={'globe'}/>{i18n('dibabel-language-help')}</EuiLink></EuiPanel>
         </div>
       )}
