@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { BananaContext } from '@wikimedia/react.i18n';
 import { Props } from '../types';
 import { SettingsContext } from './Settings';
@@ -21,12 +21,16 @@ export const I18nProvider = ({ children }: Props) => {
   const banana = useContext(BananaContext);
   // Allow debugging code
   const i18n = locale === 'qqx' ? (id: string) => id : banana.i18n.bind(banana);
-  const dir = rtlLanguages.has(locale) ? 'rtl' : 'ltr';
+
+  // We must modify the entire body because tooltips and popups are outside of the context in the tree
+  useEffect(() => {
+    document.body.lang = locale;
+    document.body.dir = rtlLanguages.has(locale) ? 'rtl' : 'ltr';
+  }, [locale]);
+
   return (
-    <div lang={locale} dir={dir}>
-      <I18nContext.Provider value={{ i18n }}>
-        {children}
-      </I18nContext.Provider>
-    </div>
+    <I18nContext.Provider value={{ i18n }}>
+      {children}
+    </I18nContext.Provider>
   );
 };
