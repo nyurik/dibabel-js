@@ -38,7 +38,7 @@
   "dibabel-filters-groupby--title": "by title",
   "dibabel-filters-groupby--site": "by wiki",
   "dibabel-filters-lang": "Language",
-  "dibabel-filters-lang--unknown": "Unknown",
+  "dibabel-filters-lang--unknown": "Multilingual/Other",
   "dibabel-filters-project": "Project",
   "dibabel-filters-protection": "Lock",
   "dibabel-filters-searchbar--placeholder": "examples: en.wikipedia    TNT    lang=en",
