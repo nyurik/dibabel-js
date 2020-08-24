@@ -246,8 +246,7 @@ export const Settings = () => {
       return res;
     }), [i18n, languageNames, locale, siteData.languages]);
 
-  // FIXME: update this link to ...?
-  // const translateWikiUrl = `https://translatewiki.org/`;
+  const translateWikiUrl = `https://translatewiki.net/w/i.php?title=Special:Translate&group=dibabel&action=translate`;
 
   const languageSelector = (<EuiPopover
     id="popover"
@@ -273,8 +272,7 @@ export const Settings = () => {
         <div style={{ width: 240 }}>
           <EuiPopoverTitle>{search}</EuiPopoverTitle>
           {list}
-          {/* FIXME: add this to the EuiLink below, and fix the ref  href={translateWikiUrl}*/}
-          <EuiPanel paddingSize="m"><EuiLink target={'_blank'}><EuiButtonIcon
+          <EuiPanel paddingSize="m"><EuiLink href={translateWikiUrl} target={'_blank'}><EuiButtonIcon
             iconType={'globe'}/>{i18n('dibabel-language-help')}</EuiLink></EuiPanel>
         </div>
       )}
