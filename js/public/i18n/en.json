@@ -81,7 +81,7 @@
   "dibabel-table-cell-status--ok-label": "OK",
   "dibabel-table-cell-status--outdated-label": "Outdated by {{PLURAL:$1|1 edit|$1 edits}}",
   "dibabel-table-cell-status--outdated-link": "Show what changed in the last {{PLURAL:$1|edit|$1 edits}} of the primary $2 in a new tab.",
-  "dibabel-table-cell-status--outdated-tooltip": "The target page is behind by {{PLURAL:$1|1 edit|$1 edits}}, and can be updated.  Click to see changes.",
+  "dibabel-table-cell-status--outdated-tooltip": "The target page is behind by {{PLURAL:$1|1 edit|$1 edits}}, and can be updated. Click to see changes.",
   "dibabel-table-cell-status--unlocalized-label": "Unlocalized",
   "dibabel-table-cell-status--unlocalized-tooltip": "The target page has exactly the same content as original instead of using localized values, and needs to be updated.",
   "dibabel-table-cell-unlocalized--tooltip": "{{PLURAL:$1|one page is|$1 pages are}} identical to the original. These pages need to be localized because some dependent templates may have different names on that wiki. This can be done automatically.",
