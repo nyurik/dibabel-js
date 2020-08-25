@@ -72,8 +72,8 @@ export const Tables = ({ query, queryError, selectedItems, setSelectedItems, gro
   return (<ItemsTable
     groupedItems={groupedItems}
     isLoading={status === 'loading'}
-    message={status === 'loading' ? i18n('dibabel-table-loading') : ''}
-    error={status === 'error' ? i18n('dibabel-table-loading--error') : queryError}
+    message={status === 'loading' ? i18n('table-loading') : ''}
+    error={status === 'error' ? i18n('table-loading--error') : queryError}
     selectedItems={selectedItems}
     setSelectedItems={setSelectedItems}
   />);

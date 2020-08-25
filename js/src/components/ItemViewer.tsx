@@ -48,8 +48,8 @@ const ItemDiffBlock = ({ type, oldText, newText }: { type: ItemTypeType, oldText
   return (
     <div className={'diff-view'}>
       <ReactDiffViewer
-        leftTitle={isSame ? '' : i18n('dibabel-diff-label--current', type)}
-        rightTitle={isSame ? '' : i18n('dibabel-diff-label--new', type)}
+        leftTitle={isSame ? '' : i18n('diff-label--current', type)}
+        rightTitle={isSame ? '' : i18n('diff-label--new', type)}
         oldValue={oldText}
         newValue={newText}
         splitView={!isSame && isSplitView}
@@ -70,7 +70,7 @@ const ItemDiffBlock = ({ type, oldText, newText }: { type: ItemTypeType, oldText
 
 const Comment: FunctionComponent<{ readOnly: boolean, value: string, setValue: Dispatch<string> }> = ({ readOnly, value, setValue }) => {
   const { i18n } = useContext(I18nContext);
-  const placeholder = i18n('dibabel-diff-summary--placeholder');
+  const placeholder = i18n('diff-summary--placeholder');
   return (<EuiFieldText
     readOnly={readOnly}
     placeholder={placeholder}
@@ -104,26 +104,26 @@ const ItemDiffViewer = () => {
   switch (currentItem.status) {
     case 'diverged':
       infoSubHeader = (<EuiHealth color={'danger'}>
-        <EuiText><Message id="dibabel-diff-header-description--diverged"
+        <EuiText><Message id="diff-header-description--diverged"
                           placeholders={[<ItemDstLink item={currentItem}/>,
                             <ItemSrcLink item={currentItem}/>]}/></EuiText></EuiHealth>);
       break;
     case 'outdated':
       infoSubHeader = (<EuiHealth color={'warning'}>
-        <EuiText><Message id="dibabel-diff-header-description--outdated"
+        <EuiText><Message id="diff-header-description--outdated"
                           placeholders={[<ItemDstLink item={currentItem}/>, <EuiLink href={itemDiffLink(currentItem)}
-                                                                                     target={'_blank'}>{i18n('dibabel-diff-header-description--outdated-rev', currentItem.behind)}</EuiLink>,
+                                                                                     target={'_blank'}>{i18n('diff-header-description--outdated-rev', currentItem.behind)}</EuiLink>,
                             <ItemSrcLink item={currentItem}/>]}/></EuiText></EuiHealth>);
       break;
     case 'unlocalized':
       infoSubHeader = (<EuiHealth color={'warning'}>
-        <EuiText><Message id="dibabel-diff-header-description--unlocalized"
+        <EuiText><Message id="diff-header-description--unlocalized"
                           placeholders={[<ItemDstLink item={currentItem}/>, <ItemSrcLink
                             item={currentItem}/>]}/></EuiText></EuiHealth>);
       break;
     case 'ok':
       infoSubHeader = (<EuiHealth color={'success'}>
-        <EuiText><Message id="dibabel-diff-header-description--ok"
+        <EuiText><Message id="diff-header-description--ok"
                           placeholders={[<ItemDstLink item={currentItem}/>, <ItemSrcLink
                             item={currentItem}/>]}/></EuiText></EuiHealth>);
       break;
@@ -133,13 +133,13 @@ const ItemDiffViewer = () => {
 
   const warnings = [];
   if (currentItem.status === 'diverged') {
-    warnings.push(<EuiCallOut title={i18n('dibabel-diff-header-warnings--diverged-head')} color={'warning'}
+    warnings.push(<EuiCallOut title={i18n('diff-header-warnings--diverged-head')} color={'warning'}
                               iconType={'alert'}>
-      <EuiText>{i18n('dibabel-diff-header-warnings--diverged', currentItem.wiki)}
+      <EuiText>{i18n('diff-header-warnings--diverged', currentItem.wiki)}
         <ul>
-          <li>{i18n('dibabel-diff-header-warnings--diverged-1')}</li>
-          <li>{i18n('dibabel-diff-header-warnings--diverged-2')}</li>
-          <li>{i18n('dibabel-diff-header-warnings--diverged-3')}</li>
+          <li>{i18n('diff-header-warnings--diverged-1')}</li>
+          <li>{i18n('diff-header-warnings--diverged-2')}</li>
+          <li>{i18n('diff-header-warnings--diverged-3')}</li>
         </ul>
       </EuiText>
     </EuiCallOut>);
@@ -162,7 +162,7 @@ const ItemDiffViewer = () => {
         return undefined;
       case 'loading':
         return (<>
-          <EuiProgress size={'s'} color={'accent'} label={i18n('dibabel-diff-content--loading')}/>
+          <EuiProgress size={'s'} color={'accent'} label={i18n('diff-content--loading')}/>
           <EuiSpacer size={'m'}/>
           <EuiLoadingContent lines={Math.round(Math.random() * 6 + 1) as LineRange}/>
           <EuiSpacer size={'m'}/>
@@ -173,7 +173,7 @@ const ItemDiffViewer = () => {
           <EuiLoadingContent lines={Math.round(Math.random() * 6 + 1) as LineRange}/>
         </>);
       case 'error':
-        return (<EuiCallOut title={i18n('dibabel-diff-content--loading-error')} color={'danger'} iconType={'alert'}>
+        return (<EuiCallOut title={i18n('diff-content--loading-error')} color={'danger'} iconType={'alert'}>
           <p>{itemStatus.error}</p>
         </EuiCallOut>);
       case 'ready':
@@ -196,22 +196,22 @@ const ItemDiffViewer = () => {
     if (isLoggedIn) {
       btnProps.onClick = () => setConfirmationStatus(true);
     } else {
-      btnProps.title = i18n('dibabel-diff-content--login-error');
+      btnProps.title = i18n('diff-content--login-error');
       btnProps.disabled = true;
     }
     footer = <EuiFlyoutFooter>
       <EuiFlexGroup justifyContent={'spaceBetween'} alignItems={'center'}>
         <EuiFlexItem grow={false}>
-          <span>{i18n('dibabel-diff-summary--label')}&nbsp;<ExternalLink
+          <span>{i18n('diff-summary--label')}&nbsp;<ExternalLink
             href={'https://commons.wikimedia.org/wiki/Data:I18n/DiBabel.tab'}
             icon={'globe'} color={'primary'}
-            tooltip={i18n('dibabel-diff-summary--tooltip')}/></span>
+            tooltip={i18n('diff-summary--tooltip')}/></span>
         </EuiFlexItem>
         <EuiFlexItem grow={true}>
           <Comment readOnly={!isLoggedIn} value={comment} setValue={setComment}/>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton {...btnProps} >{i18n('dibabel-diff-update')}</EuiButton>
+          <EuiButton {...btnProps} >{i18n('diff-update')}</EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>
     </EuiFlyoutFooter>;

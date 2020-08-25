@@ -24,10 +24,10 @@ export const GroupSelector = (props: {
 
   return (
     <EuiToolTip anchorClassName="eui-displayBlock"
-                content={i18n('dibabel-filters-groupby--tooltip')}>
+                content={i18n('filters-groupby--tooltip')}>
       <EuiComboBox
         fullWidth={true}
-        placeholder={i18n('dibabel-filters-groupby--placeholder')}
+        placeholder={i18n('filters-groupby--placeholder')}
         options={Object.values(optsAsMap)}
         selectedOptions={props.groupSelection.map(v => optsAsMap[v])}
         onChange={onChange}

@@ -62,7 +62,7 @@ export const SearchBar = (
     {
       type: 'field_value_selection',
       field: 'type',
-      name: i18n('dibabel-filters-type'),
+      name: i18n('filters-type'),
       // @ts-ignore
       operator: 'exact',
       multiSelect: false,
@@ -71,14 +71,14 @@ export const SearchBar = (
           value: 'module',
           view: (<EuiFlexGroup>
             <EuiFlexItem grow={false}>{iconsEuiMedium.module}</EuiFlexItem>
-            <EuiFlexItem grow={false}>{i18n('dibabel-filters-type--modules')}</EuiFlexItem>
+            <EuiFlexItem grow={false}>{i18n('filters-type--modules')}</EuiFlexItem>
           </EuiFlexGroup>)
         },
         {
           value: 'template',
           view: (<EuiFlexGroup>
             <EuiFlexItem grow={false}>{iconsEuiMedium.template}</EuiFlexItem>
-            <EuiFlexItem grow={false}>{i18n('dibabel-filters-type--templates')}</EuiFlexItem>
+            <EuiFlexItem grow={false}>{i18n('filters-type--templates')}</EuiFlexItem>
           </EuiFlexGroup>)
         },
       ],
@@ -86,7 +86,7 @@ export const SearchBar = (
     {
       type: 'field_value_selection',
       field: 'status',
-      name: i18n('dibabel-filters-status'),
+      name: i18n('filters-status'),
       multiSelect: 'or',
       // @ts-ignore
       operator: 'exact',
@@ -98,14 +98,14 @@ export const SearchBar = (
           diverged: 'danger'
         }, (v, k) => ({
           value: k,
-          view: <EuiHealth color={v}>{i18n(`dibabel-filters-status-${k}`)}</EuiHealth>,
+          view: <EuiHealth color={v}>{i18n(`filters-status-${k}`)}</EuiHealth>,
         }));
       },
     },
     {
       type: 'field_value_selection',
       field: 'project',
-      name: i18n('dibabel-filters-project'),
+      name: i18n('filters-project'),
       multiSelect: 'or',
       // @ts-ignore
       operator: 'exact',
@@ -114,7 +114,7 @@ export const SearchBar = (
     {
       type: 'field_value_selection',
       field: 'lang',
-      name: i18n('dibabel-filters-lang'),
+      name: i18n('filters-lang'),
       multiSelect: 'or',
       // @ts-ignore
       operator: 'exact',
@@ -125,7 +125,7 @@ export const SearchBar = (
           value: lang,
           view: <EuiFlexGroup>
             <EuiFlexItem grow={false} className={'lang-code'}>{lang}</EuiFlexItem>
-            <EuiFlexItem grow={false}>{languageNames[lang] || i18n('dibabel-filters-lang--unknown')}</EuiFlexItem>
+            <EuiFlexItem grow={false}>{languageNames[lang] || i18n('filters-lang--unknown')}</EuiFlexItem>
           </EuiFlexGroup>
         }));
       },
@@ -133,7 +133,7 @@ export const SearchBar = (
     {
       type: 'field_value_selection',
       field: 'wiki',
-      name: i18n('dibabel-filters-wiki'),
+      name: i18n('filters-wiki'),
       multiSelect: 'or',
       filterWith: 'includes',
       // @ts-ignore
@@ -143,7 +143,7 @@ export const SearchBar = (
     {
       type: 'field_value_selection',
       field: 'protection',
-      name: i18n('dibabel-filters-protection'),
+      name: i18n('filters-protection'),
       multiSelect: 'or',
       // @ts-ignore
       operator: 'exact',
@@ -161,7 +161,7 @@ export const SearchBar = (
   const searchBar = <EuiSearchBar
     query={query}
     box={{
-      placeholder: i18n('dibabel-filters-searchbar--placeholder'),
+      placeholder: i18n('filters-searchbar--placeholder'),
       isClearable: true,
       incremental: isIncrementalSearch,
       fullWidth: true,

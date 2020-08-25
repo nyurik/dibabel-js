@@ -28,29 +28,29 @@ export function Header() {
       <EuiPageHeaderSection>
         <EuiHeaderSectionItem border={'none'}>
           <EuiHeaderLogo iconType={logoIcon}>
-            Dibabel&nbsp;&nbsp;<EuiBetaBadge label={i18n('dibabel-header-beta--label')}
-                                             title={i18n('dibabel-header-beta--tooltip')}/>
+            Dibabel&nbsp;&nbsp;<EuiBetaBadge label={i18n('header-beta--label')}
+                                             title={i18n('header-beta--tooltip')}/>
           </EuiHeaderLogo>
         </EuiHeaderSectionItem>
       </EuiPageHeaderSection>
       <EuiPageHeaderSection>
         <EuiHeaderSectionItem>
-          <EuiText size={'s'}><Message id="dibabel-header-description" placeholders={[userLink]}/></EuiText>
+          <EuiText size={'s'}><Message id="header-description" placeholders={[userLink]}/></EuiText>
         </EuiHeaderSectionItem>
       </EuiPageHeaderSection>
       <EuiPageHeaderSection>
         <EuiHeaderLink iconType={'help'}
                        target={'_blank'}
                        href={'https://www.mediawiki.org/wiki/WP:TNT'}><Message
-          id="dibabel-header-links--help"/></EuiHeaderLink>
+          id="header-links--help"/></EuiHeaderLink>
         <EuiHeaderLink iconType={'logoGithub'}
                        target={'_blank'}
                        href={'https://github.com/nyurik/dibabel-js'}><Message
-          id="dibabel-header-links--source"/></EuiHeaderLink>
+          id="header-links--source"/></EuiHeaderLink>
         <EuiHeaderLink iconType={'bug'}
                        target={'_blank'}
                        href={'https://github.com/nyurik/dibabel-js/issues'}><Message
-          id="dibabel-header-links--bugs"/></EuiHeaderLink>
+          id="header-links--bugs"/></EuiHeaderLink>
       </EuiPageHeaderSection>
       <EuiPageHeaderSection>
         <EuiFlexGroup

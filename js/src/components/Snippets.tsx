@@ -22,7 +22,7 @@ export const ExternalLink = (
     href={href}
     target={'_blank'}
     iconType={icon}
-    aria-label={i18n('dibabel-table-externallink--aria')}
+    aria-label={i18n('table-externallink--aria')}
   /></EuiToolTip>);
 };
 
@@ -52,9 +52,9 @@ function formatLinks(site: string, links: Array<string>) {
 export const NotMultisiteDepsWarning = ({ item }: { item: Item }) => {
   const { i18n } = useContext(I18nContext);
   return (
-    <EuiCallOut title={i18n('dibabel-diff-header-warnings--multisite-head')} color={'warning'}
+    <EuiCallOut title={i18n('diff-header-warnings--multisite-head')} color={'warning'}
                 iconType={'alert'}>
-      <EuiText><Message id="dibabel-diff-header-warnings--multisite"
+      <EuiText><Message id="diff-header-warnings--multisite"
                         placeholders={[<ItemSrcLink item={item} linkToWD={false}/>,
                           <ItemWikidataLink item={item}/>]}/></EuiText>
       <EuiSpacer size={'s'}/>
@@ -66,10 +66,10 @@ export const NotMultisiteDepsWarning = ({ item }: { item: Item }) => {
 export const MultisiteDepsNotOnDstWarning = ({ item }: { item: Item }) => {
   const { i18n } = useContext(I18nContext);
   return (
-    <EuiCallOut title={i18n('dibabel-diff-header-warnings--dependencies-head', item.wiki)}
+    <EuiCallOut title={i18n('diff-header-warnings--dependencies-head', item.wiki)}
                 color={'warning'}
                 iconType={'alert'}>
-      <EuiText><Message id="dibabel-diff-header-warnings--dependencies"
+      <EuiText><Message id="diff-header-warnings--dependencies"
                         placeholders={[<EuiLink href={`https://${item.wiki}`}
                                                 target={'_blank'}>{item.wiki}</EuiLink>]}/></EuiText>
       <EuiSpacer size={'s'}/>

@@ -192,7 +192,7 @@ const SettingsDialog = () => {
   const results = [
     <EuiSwitch
       key={'theme'}
-      label={i18n('dibabel-settings-theme--label')}
+      label={i18n('settings-theme--label')}
       checked={isDarkTheme}
       disabled
       onChange={e => setIsDarkTheme(e.target.checked)}
@@ -200,22 +200,22 @@ const SettingsDialog = () => {
     <EuiSpacer key={'s1'} size={'m'}/>,
     <EuiSwitch
       key={'split'}
-      label={i18n('dibabel-settings-split--label')}
-      title={i18n('dibabel-settings-split--tooltip')}
+      label={i18n('settings-split--label')}
+      title={i18n('settings-split--tooltip')}
       checked={isSplitView}
       onChange={e => setIsSplitView(e.target.checked)}
     />,
     <EuiSpacer key={'s2'} size={'m'}/>,
     <EuiSwitch
       key={'inc'}
-      label={i18n('dibabel-settings-search--label')}
-      title={i18n('dibabel-settings-search--tooltip')}
+      label={i18n('settings-search--label')}
+      title={i18n('settings-search--tooltip')}
       checked={isIncrementalSearch}
       onChange={e => setIsIncrementalSearch(e.target.checked)}
     />,
     <EuiSpacer key={'s3'} size={'m'}/>,
     <EuiHeaderLink key={'logout'} disabled={user.state !== UserState.LoggedIn}
-                   href={`${rootUrlData}logout`}>{i18n('dibabel-settings-logout')}</EuiHeaderLink>,
+                   href={`${rootUrlData}logout`}>{i18n('settings-logout')}</EuiHeaderLink>,
   ];
 
   return (<>{results}</>);
@@ -233,13 +233,13 @@ export const Settings = () => {
     iconSize={'m'}
     iconType={'gear'}
     onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-    aria-label={i18n('dibabel-settings-gear--aria')}
+    aria-label={i18n('settings-gear--aria')}
     color={'text'}
   />);
 
   const langOptions = useMemo((): EuiSelectableOption[] =>
     siteData.languages.map(lang => {
-      const res = { key: lang, label: languageNames[lang] || i18n('dibabel-language-unknown') } as EuiSelectableOption;
+      const res = { key: lang, label: languageNames[lang] || i18n('language-unknown') } as EuiSelectableOption;
       if (lang === locale) {
         res.checked = 'on';
       }
@@ -258,7 +258,7 @@ export const Settings = () => {
       // TODO: enable height once the translations list is larger
       // height={500}
       searchProps={{
-        placeholder: i18n('dibabel-language-filter--placeholder'),
+        placeholder: i18n('language-filter--placeholder'),
         compressed: true,
       }}
       options={langOptions}
@@ -273,7 +273,7 @@ export const Settings = () => {
           <EuiPanel paddingSize="m"><EuiLink
             href={`https://translatewiki.net/w/i.php?title=Special:Translate&group=dibabel&action=translate&language=${encodeURIComponent(locale)}`}
             target={'_blank'}><EuiButtonIcon
-            iconType={'globe'}/>{i18n('dibabel-language-help')}</EuiLink></EuiPanel>
+            iconType={'globe'}/>{i18n('language-help')}</EuiLink></EuiPanel>
         </div>
       )}
     </EuiSelectable>
@@ -286,7 +286,7 @@ export const Settings = () => {
         button={settingsButton}
         isOpen={isSettingsOpen}
         closePopover={() => setIsSettingsOpen(false)}>
-        <EuiPopoverTitle>{i18n('dibabel-settings-options')}</EuiPopoverTitle>
+        <EuiPopoverTitle>{i18n('settings-options')}</EuiPopoverTitle>
         {isSettingsOpen ? <SettingsDialog/> : null}
       </EuiPopover>
     </EuiFlexItem>

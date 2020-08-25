@@ -18,9 +18,9 @@ export const SyncButton = (props: {
     };
     return (
       <EuiFlexItem grow={false}>
-        <EuiButton disabled title={i18n('dibabel-sync-button--tooltip')} color={'danger'} iconType={'trash'}
+        <EuiButton disabled title={i18n('sync-button--tooltip')} color={'danger'} iconType={'trash'}
                    onClick={onClick}>
-          {i18n('dibabel-sync-button--label', props.selectedItems.size)}
+          {i18n('sync-button--label', props.selectedItems.size)}
         </EuiButton>
       </EuiFlexItem>
     );

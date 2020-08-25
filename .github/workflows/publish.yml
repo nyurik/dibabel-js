@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      # Temp step - make sure dibabel does not deploy until the strings are synced
+      - run: !grep -q '"dibabel-' js/public/i18n/he.json
+
       - uses: actions/setup-node@v1
         with:
           node-version: 12

@@ -36,7 +36,7 @@ export const Updater = ({ comment, onClose }: { comment: string, onClose: () => 
       }
 
       addToast(success({
-        title: (<EuiText><Message id="dibabel-updatepage-status"
+        title: (<EuiText><Message id="updatepage-status"
                                   placeholders={[<ItemDstLink item={currentItem!}/>]}/></EuiText>),
         iconType: 'check',
       }));
@@ -45,7 +45,7 @@ export const Updater = ({ comment, onClose }: { comment: string, onClose: () => 
       setCurrentItem(undefined);
     } catch (err) {
       addToast(error({
-        title: (<EuiText><Message id="dibabel-updatepage-status-error"
+        title: (<EuiText><Message id="updatepage-status-error"
                                   placeholders={[<ItemDstLink item={currentItem!}/>, err.toString()]}/></EuiText>),
       }));
     } finally {
@@ -54,17 +54,17 @@ export const Updater = ({ comment, onClose }: { comment: string, onClose: () => 
   };
 
   return (<EuiOverlayMask><EuiConfirmModal
-    title={i18n('dibabel-updatepage-confirm--tooltip')}
+    title={i18n('updatepage-confirm--tooltip')}
     onCancel={onClose}
     onConfirm={onCopy}
-    cancelButtonText={i18n('dibabel-updatepage-confirm--no')}
-    confirmButtonText={i18n('dibabel-updatepage-confirm--yes')}
+    cancelButtonText={i18n('updatepage-confirm--no')}
+    confirmButtonText={i18n('updatepage-confirm--yes')}
     buttonColor="primary"
     defaultFocusedButton="confirm"
     confirmButtonDisabled={confirmationStatus !== 'show'}
   >
-    <p><Message id="dibabel-updatepage-confirm--description-part1" placeholders={[<ItemDstLink item={currentItem!}/>]}/>
+    <p><Message id="updatepage-confirm--description-part1" placeholders={[<ItemDstLink item={currentItem!}/>]}/>
     </p>
-    <p>{i18n('dibabel-updatepage-confirm--description-part2')}</p>
+    <p>{i18n('updatepage-confirm--description-part2')}</p>
   </EuiConfirmModal></EuiOverlayMask>);
 };

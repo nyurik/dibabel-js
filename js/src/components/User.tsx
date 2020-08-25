@@ -12,7 +12,7 @@ export const User = () => {
     case UserState.Unknown:
       return <EuiLoadingSpinner size={'m'}/>;
     case UserState.LoggedOut:
-      return <EuiHeaderLink href={`${rootUrlData}login`}>{i18n('dibabel-user-login')}</EuiHeaderLink>;
+      return <EuiHeaderLink href={`${rootUrlData}login`}>{i18n('user-login')}</EuiHeaderLink>;
     case UserState.LoggedIn:
       return <EuiText>{user.username}</EuiText>;
     default:

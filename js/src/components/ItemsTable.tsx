@@ -75,7 +75,7 @@ export const ItemsTable = (
         type={lockIcon}
         size={'m'}
         color={'#C6C7C7'}
-        content={i18n('dibabel-table-icons-protection--tooltip')}
+        content={i18n('table-icons-protection--tooltip')}
       />),
       width: '2.2em',
       sortable: true,
@@ -84,23 +84,23 @@ export const ItemsTable = (
           type={lockIcon}
           size={'m'}
           color={'#0078b8'}
-          title={i18n('dibabel-table-icons-protection--rights')}
+          title={i18n('table-icons-protection--rights')}
           content={rights}
         />) : '',
     },
     title: {
       field: 'srcFullTitle',
-      name: (<EuiToolTip content={i18n('dibabel-table-header-primary--tooltip')}><Message
-        id="dibabel-table-header-primary--label"/></EuiToolTip>),
+      name: (<EuiToolTip content={i18n('table-header-primary--tooltip')}><Message
+        id="table-header-primary--label"/></EuiToolTip>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.type]}&nbsp;&nbsp;{item.srcFullTitle}<ExternalLink
-        tooltip={i18n('dibabel-table-cell-primary--tooltip', item.srcFullTitle)}
+        tooltip={i18n('table-cell-primary--tooltip', item.srcFullTitle)}
         href={item.srcTitleUrl}/></>),
     },
     lang: {
       field: 'lang',
-      name: (<EuiToolTip content={i18n('dibabel-table-header-language--tooltip')}><Message
-        id="dibabel-table-header-language--label"/></EuiToolTip>),
+      name: (<EuiToolTip content={i18n('table-header-language--tooltip')}><Message
+        id="table-header-language--label"/></EuiToolTip>),
       sortable: true,
       render: (lang: string) => {
         const name = languageNames[lang];
@@ -109,63 +109,63 @@ export const ItemsTable = (
     },
     project: {
       field: 'project',
-      name: (<EuiToolTip content={i18n('dibabel-table-header-project--tooltip')}><Message
-        id="dibabel-table-header-project--label"/></EuiToolTip>),
+      name: (<EuiToolTip content={i18n('table-header-project--tooltip')}><Message
+        id="table-header-project--label"/></EuiToolTip>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.project]}&nbsp;&nbsp;&nbsp;{item.project}</>),
     },
     wiki: {
       field: 'wiki',
       name: (<EuiToolTip
-        content={i18n('dibabel-table-header-site--tooltip')}><Message id={'dibabel-table-header-site--label'}/></EuiToolTip>),
+        content={i18n('table-header-site--tooltip')}><Message id={'table-header-site--label'}/></EuiToolTip>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.project]}&nbsp;&nbsp;&nbsp;{item.wiki}</>),
     },
     dstTitle: {
       field: 'dstFullTitle',
-      name: (<EuiToolTip content={i18n('dibabel-table-header-wikipage--tooltip')}><Message
-        id="dibabel-table-header-wikipage--label"/></EuiToolTip>),
+      name: (<EuiToolTip content={i18n('table-header-wikipage--tooltip')}><Message
+        id="table-header-wikipage--label"/></EuiToolTip>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.type]}&nbsp;&nbsp;{item.dstFullTitle}<ExternalLink
-        tooltip={i18n('dibabel-table-header-wikipage--link', prettyDomain(item.lang, item.project), item.dstFullTitle)}
+        tooltip={i18n('table-header-wikipage--link', prettyDomain(item.lang, item.project), item.dstFullTitle)}
         href={item.dstTitleUrl}/></>),
     },
     hash: {
       field: 'hash',
-      name: (<EuiToolTip content={i18n('dibabel-table-header-hash--tooltip')}
-      ><Message id="dibabel-table-header-hash--label"/></EuiToolTip>),
+      name: (<EuiToolTip content={i18n('table-header-hash--tooltip')}
+      ><Message id="table-header-hash--label"/></EuiToolTip>),
       sortable: true,
-      render: (hash: string) => (<EuiToolTip title={hash} content={i18n('dibabel-table-cell-hash--tooltip')}
+      render: (hash: string) => (<EuiToolTip title={hash} content={i18n('table-cell-hash--tooltip')}
       ><EuiText>{hash.substring(0, 7)}</EuiText></EuiToolTip>)
     },
     status: {
       field: 'sortStatus',
-      name: (<EuiToolTip content={i18n('dibabel-table-header-status--tooltip')}><Message
-        id="dibabel-table-header-status--label"/></EuiToolTip>),
+      name: (<EuiToolTip content={i18n('table-header-status--tooltip')}><Message
+        id="table-header-status--label"/></EuiToolTip>),
       sortable: true,
       render: (_: string, item: Item) => {
         switch (item.status) {
           case 'ok':
             return (<EuiHealth
-              title={i18n('dibabel-table-cell-status--ok--tooltip')}
-              color={'success'}><Message id="dibabel-table-cell-status--ok-label"/></EuiHealth>);
+              title={i18n('table-cell-status--ok--tooltip')}
+              color={'success'}><Message id="table-cell-status--ok-label"/></EuiHealth>);
           case 'unlocalized':
             return (<EuiHealth
-              title={i18n('dibabel-table-cell-status--unlocalized-tooltip')}
-              color={'warning'}><Message id="dibabel-table-cell-status--unlocalized-label"/></EuiHealth>);
+              title={i18n('table-cell-status--unlocalized-tooltip')}
+              color={'warning'}><Message id="table-cell-status--unlocalized-label"/></EuiHealth>);
           case 'outdated':
             return (
               <EuiHealth
-                title={i18n('dibabel-table-cell-status--outdated-tooltip', item.behind)}
+                title={i18n('table-cell-status--outdated-tooltip', item.behind)}
                 color={'warning'}
-              ><span><Message id="dibabel-table-cell-status--outdated-label" placeholders={[item.behind]}/><ExternalLink
-                tooltip={i18n('dibabel-table-cell-status--outdated-link', item.behind, item.srcFullTitle)}
+              ><span><Message id="table-cell-status--outdated-label" placeholders={[item.behind]}/><ExternalLink
+                tooltip={i18n('table-cell-status--outdated-link', item.behind, item.srcFullTitle)}
                 href={itemDiffLink(item)}/></span></EuiHealth>);
           case 'diverged':
             return (
               <EuiHealth
-                title={i18n('dibabel-table-cell-status--diverged-tooltip')}
-                color={'danger'}><Message id="dibabel-table-cell-status--diverged-label"/></EuiHealth>);
+                title={i18n('table-cell-status--diverged-tooltip')}
+                color={'danger'}><Message id="table-cell-status--diverged-label"/></EuiHealth>);
           default:
             return (<EuiText>ERROR: {item.status} - {item.dstFullTitle}</EuiText>)
             // throw new Error(item.status);
@@ -174,13 +174,13 @@ export const ItemsTable = (
     },
     countOk: {
       field: 'countOk',
-      name: (<EuiToolTip content={i18n('dibabel-table-header-updated--tooltip')}><Message
-        id="dibabel-table-header-updated--label"/></EuiToolTip>),
+      name: (<EuiToolTip content={i18n('table-header-updated--tooltip')}><Message
+        id="table-header-updated--label"/></EuiToolTip>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
-          return <EuiHealth title={i18n('dibabel-table-cell-updated--tooltip', value)}
-                            color={'success'}>{i18n('dibabel-table-pagecount', value)}</EuiHealth>;
+          return <EuiHealth title={i18n('table-cell-updated--tooltip', value)}
+                            color={'success'}>{i18n('table-pagecount', value)}</EuiHealth>;
         } else {
           return '-';
         }
@@ -189,14 +189,14 @@ export const ItemsTable = (
     countUnlocalized: {
       field: 'countUnlocalized',
       name: (<EuiToolTip
-        content={i18n('dibabel-table-header-unlocalized--tooltip')}><Message
-        id="dibabel-table-header-unlocalized--label"/></EuiToolTip>),
+        content={i18n('table-header-unlocalized--tooltip')}><Message
+        id="table-header-unlocalized--label"/></EuiToolTip>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
           return <EuiHealth
-            title={i18n('dibabel-table-cell-unlocalized--tooltip', value)}
-            color={'warning'}>{i18n('dibabel-table-pagecount', value)}</EuiHealth>;
+            title={i18n('table-cell-unlocalized--tooltip', value)}
+            color={'warning'}>{i18n('table-pagecount', value)}</EuiHealth>;
         } else {
           return '-';
         }
@@ -204,13 +204,13 @@ export const ItemsTable = (
     },
     countOutdated: {
       field: 'countOutdated',
-      name: (<EuiToolTip content={i18n('dibabel-table-header-outdated--tooltip')}><Message
-        id="dibabel-table-header-outdated--label"/></EuiToolTip>),
+      name: (<EuiToolTip content={i18n('table-header-outdated--tooltip')}><Message
+        id="table-header-outdated--label"/></EuiToolTip>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
-          return <EuiHealth title={i18n('dibabel-table-cell-outdated--tooltip', value)}
-                            color={'warning'}>{i18n('dibabel-table-pagecount', value)}</EuiHealth>;
+          return <EuiHealth title={i18n('table-cell-outdated--tooltip', value)}
+                            color={'warning'}>{i18n('table-pagecount', value)}</EuiHealth>;
         } else {
           return '-';
         }
@@ -218,13 +218,13 @@ export const ItemsTable = (
     },
     countDiverged: {
       field: 'countDiverged',
-      name: (<EuiToolTip content={i18n('dibabel-table-header-diverged--tooltip')}><Message
-        id="dibabel-table-header-diverged--label"/></EuiToolTip>),
+      name: (<EuiToolTip content={i18n('table-header-diverged--tooltip')}><Message
+        id="table-header-diverged--label"/></EuiToolTip>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
-          return <EuiHealth title={i18n('dibabel-table-cell-diverged--tooltip', value)}
-                            color={'danger'}>{i18n('dibabel-table-pagecount', value)}</EuiHealth>;
+          return <EuiHealth title={i18n('table-cell-diverged--tooltip', value)}
+                            color={'danger'}>{i18n('table-pagecount', value)}</EuiHealth>;
         } else {
           return '-';
         }
