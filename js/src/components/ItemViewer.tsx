@@ -128,7 +128,7 @@ const ItemDiffViewer = () => {
                             item={currentItem}/>]}/></EuiText></EuiHealth>);
       break;
     default:
-      throw new Error(i18n('dibabel-diff-header-description--error', currentItem.status));
+      throw new Error(currentItem.status);
   }
 
   const warnings = [];

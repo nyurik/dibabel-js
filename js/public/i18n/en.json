@@ -10,7 +10,6 @@
   "dibabel-diff-content--loading-error": "Error loading content...",
   "dibabel-diff-content--login-error": "Please login in the upper right corner before copying.",
   "dibabel-diff-header-description--diverged": "The current version of $1 was not found in the history of the primary page $2.",
-  "dibabel-diff-header-description--error": "Unhandled $1",
   "dibabel-diff-header-description--ok": "Page $1 is a localized version of the original $2.",
   "dibabel-diff-header-description--outdated": "Page $1 is $2 behind the primary $3.",
   "dibabel-diff-header-description--outdated-rev": "{{PLURAL:$1|one revision|$1 revisions}}",
@@ -76,7 +75,6 @@
   "dibabel-table-cell-primary--tooltip": "Show primary $1 in a new tab.",
   "dibabel-table-cell-status--diverged-label": "Diverged",
   "dibabel-table-cell-status--diverged-tooltip": "The target page has been modified and cannot be updated automatically.",
-  "dibabel-table-cell-status--error-label": "Unknown status $1",
   "dibabel-table-cell-status--ok--tooltip": "The target page is up to date with the primary",
   "dibabel-table-cell-status--ok-label": "OK",
   "dibabel-table-cell-status--outdated-label": "Outdated by {{PLURAL:$1|1 edit|$1 edits}}",
@@ -110,7 +108,7 @@
   "dibabel-table-header-wikipage--label": "Wiki page",
   "dibabel-table-header-wikipage--link": "Show $1 / $2 in a new tab.",
   "dibabel-table-header-wikipage--tooltip": "Title of the copied page as it appears on the destination wiki.",
-  "dibabel-table-icons-protection--rights": "Rights required to edit:",
+  "dibabel-table-icons-protection--rights": "Rights required to edit",
   "dibabel-table-icons-protection--tooltip": "Indicate if the page has protection and requires special edit rights.",
   "dibabel-table-loading": "Loading...",
   "dibabel-table-loading--error": "Error loading data",
@@ -122,6 +120,5 @@
   "dibabel-updatepage-confirm--yes": "Yes, do it!",
   "dibabel-updatepage-status": "$1 was updated",
   "dibabel-updatepage-status-error": "Error publishing $1 - $2",
-  "dibabel-user-login": "Login",
-  "dibabel-user-login--error": "Unknown user state $1"
+  "dibabel-user-login": "Login"
 }

@@ -84,7 +84,8 @@ export const ItemsTable = (
           type={lockIcon}
           size={'m'}
           color={'#0078b8'}
-          content={i18n('dibabel-table-icons-protection--rights', rights)}
+          title={i18n('dibabel-table-icons-protection--rights')}
+          content={rights}
         />) : '',
     },
     title: {
@@ -116,7 +117,7 @@ export const ItemsTable = (
     wiki: {
       field: 'wiki',
       name: (<EuiToolTip
-        content={i18n('dibabel-table-header-site--tooltip')}><EuiText>{i18n('dibabel-table-header-site--label')}</EuiText></EuiToolTip>),
+        content={i18n('dibabel-table-header-site--tooltip')}><Message id={'dibabel-table-header-site--label'}/></EuiToolTip>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.project]}&nbsp;&nbsp;&nbsp;{item.wiki}</>),
     },
@@ -166,7 +167,8 @@ export const ItemsTable = (
                 title={i18n('dibabel-table-cell-status--diverged-tooltip')}
                 color={'danger'}><Message id="dibabel-table-cell-status--diverged-label"/></EuiHealth>);
           default:
-            throw new Error(i18n('dibabel-table-cell-status--error-label', item.status));
+            return (<EuiText>ERROR: {item.status} - {item.dstFullTitle}</EuiText>)
+            // throw new Error(item.status);
         }
       },
     },

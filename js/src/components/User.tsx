@@ -16,6 +16,6 @@ export const User = () => {
     case UserState.LoggedIn:
       return <EuiText>{user.username}</EuiText>;
     default:
-      throw new Error(i18n('dibabel-user-login--error', user.state));
+      throw new Error(user.state);
   }
 };
