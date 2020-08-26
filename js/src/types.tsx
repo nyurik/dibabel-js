@@ -153,28 +153,28 @@ export const groupDefs: GroupDefsType = {
   'lang': {
     order: 1,
     columns: ['lang'],
-    groupI18n: 'dibabel-filters-groupby--lang',
+    groupI18n: 'filters-groupby--lang',
   },
   'project': {
     order: 1,
     columns: ['project'],
-    groupI18n: 'dibabel-filters-groupby--project',
+    groupI18n: 'filters-groupby--project',
   },
   'wiki': {
     order: 2,
     columns: ['wiki'],
     extra_columns: ['lang', 'project'],
-    groupI18n: 'dibabel-filters-groupby--site',
+    groupI18n: 'filters-groupby--site',
   },
   'srcTitleUrl': {
     order: 3,
     columns: ['title'],
     extra_columns: ['type', 'srcSite', 'srcFullTitle', 'srcTitleUrl'],
-    groupI18n: 'dibabel-filters-groupby--title',
+    groupI18n: 'filters-groupby--title',
   },
   'hash': {
     order: 4,
     columns: ['hash'],
-    groupI18n: 'dibabel-filters-groupby--hash',
+    groupI18n: 'filters-groupby--hash',
   },
 };
