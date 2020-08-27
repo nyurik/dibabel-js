@@ -1,0 +1,23 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"filters-groupby--lang": "efter sprog",
+	"filters-groupby--placeholder": "Grupper efter...",
+	"filters-groupby--project": "efter projekt",
+	"filters-groupby--site": "efter wiki",
+	"filters-groupby--title": "efter titel",
+	"filters-lang": "Sprog",
+	"filters-project": "Projekt",
+	"filters-type--modules": "Moduler",
+	"filters-type--templates": "Skabeloner",
+	"header-links--help": "Hjælp",
+	"header-links--source": "Kilde",
+	"language-unknown": "Ukendt",
+	"sync-button--label": "Synkroniser $1 sider",
+	"table-header-language--label": "Sprog",
+	"table-header-project--label": "Projekt",
+	"table-header-updated--label": "Samme",
+	"table-loading": "Indlæser...",
+	"table-pagecount": "{{PLURAL:$1|$1 side|$1 sider}}"
+}

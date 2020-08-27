@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Borichèt"
+		]
+	},
+	"diff-content--loading": "Cariament dël contnù dla pàgina...",
+	"diff-content--loading-error": "Eror ant ël cariament dël contnù...",
+	"diff-content--login-error": "Për piasì, ch'as colega ant ël canton an àut a drita prima ëd copié.",
+	"diff-header-description--diverged": "La version atual ëd $1 a l'é nen ëstàita trovà ant la stòria dla pagina prinsipal $2.",
+	"diff-header-description--ok": "La pàgina $1 a l'é na version localisà dl'original $2.",
+	"diff-header-description--outdated": "La pàgina $1 a l'é $2 andré rëspet a la primaria $3.",
+	"diff-header-description--outdated-rev": "{{PLURAL:$1|un-a revision|$1 revision}}",
+	"diff-header-description--unlocalized": "La pàgina $1 a l'é idèntica a l'original $2, ma a l'ha damanca ëd localisassion."
+}

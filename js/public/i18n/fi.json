@@ -1,12 +1,14 @@
 {
 	"@metadata": {
 		"authors": [
-			"Nike"
+			"Nike",
+			"Yurik"
 		]
 	},
 	"diff-summary--label": "Yhteenveto",
 	"diff-summary--placeholder": "Muokkausyhteenveto",
 	"diff-summary--tooltip": "Auta kääntämään yhteenvetoviestejä.",
+	"diff-summary-text--edit": "Kopioitiin {{PLURAL:$1|yksi muutos|$1 muutosta}} käyttäjältä $2{{#if:$3|: \"$3\"}} sivulta $4. ([[mw:WP:TNT|ohje]], [[c:Data:I18n/DiBabel.tab|käännös]])",
 	"diff-update": "Päivitä!",
 	"filters-groupby--hash": "tiivisteen mukaan",
 	"filters-groupby--lang": "kielen mukaan",

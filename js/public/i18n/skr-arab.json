@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"diff-summary--label": "خلاصہ",
+	"filters-groupby--title": "عنوان نال",
+	"filters-status-outdated": "پُراݨے",
+	"filters-wiki": "وکی",
+	"header-links--help": "مدد",
+	"header-links--source": "ماخذ",
+	"table-header-language--label": "زبان",
+	"table-header-project--label": "منصوبہ",
+	"table-header-updated--label": "ساگی"
+}

@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Yurik"
+		]
+	},
+	"diff-summary-text--edit": "$2 చేసిన {{PLURAL:$1|ఒక మార్పును|$1 మార్పులను}} కాపీ చేస్తున్నాను: {{#if:$3|: \"$3\"}} $4 నుండి. ([[mw:WP:TNT|డాక్స్]], [[c:Data:I18n/DiBabel.tab|అనువదించండి]])"
+}

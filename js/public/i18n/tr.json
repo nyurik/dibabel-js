@@ -1,0 +1,31 @@
+{
+	"@metadata": {
+		"authors": [
+			"MuratTheTurkish"
+		]
+	},
+	"diff-header-description--diverged": "$1 sayfasının mevcut sürümü, $2 ana sayfasının geçmişinde bulunamadı.",
+	"diff-header-warnings--diverged-2": "Yerel değişiklikler artık ana sayfaya dahil edilmiştir",
+	"diff-header-warnings--diverged-3": "Yerel değişikliklere artık gerek yok",
+	"diff-header-warnings--multisite": "Bu sayfa, Vikiveri'de \"çoklu site\" olarak etiketlenmemiş şablonlara veya modüllere bağlıdır.  Çoğu zaman bu, $1 sayfasının henüz senkronizasyon için hazır olmadığı ve $2 içinde bir çoklu site türünün olmaması gerektiği anlamına gelir.  Alternatif olarak, sayfanın yeni bir şablon/modül kullanmak üzere düzenlendiği ve yeni sayfanın senkronizasyon için etkinleştirilmediği anlamına da gelebilir.",
+	"diff-header-warnings--multisite-head": "Bağımlılıklar, senkronizasyon için etkinleştirilmedi",
+	"diff-summary--label": "Özet",
+	"filters-protection": "Koruma",
+	"header-description": "Modülleri ve şablonları vikiler ve diller arasında aynı tutun. $1 tarafından yazıldı",
+	"header-links--source": "Kaynak",
+	"settings-options": "Seçenekler",
+	"settings-search--label": "Artımlı arama",
+	"sync-button--label": "$1 sayfayı senkronize et",
+	"table-cell-status--ok--tooltip": "Hedef sayfa, birincil ile güncel",
+	"table-cell-status--outdated-tooltip": "Hedef sayfa {{PLURAL:$1|1 düzenleme|$1 düzenleme}} geride kaldı ve güncellenebilir. Değişiklikleri görmek için tıklayın.",
+	"table-cell-status--unlocalized-label": "Yerelleştirilmemiş",
+	"table-header-diverged--tooltip": "Yerel değişikliklere sahip sayfa sayısı.",
+	"table-header-hash--tooltip": "Karma numarası, sayfa içeriğinin benzersiz bir parmak izidir. Özdeş karmaya sahip sayfalar aynı içeriğe sahiptir. Karma, sayfa bir viki için yerelleştirilmeden önce hesaplanır.",
+	"table-header-outdated--label": "Eski",
+	"table-header-outdated--tooltip": "Birincil sayfadan geri kalan sayfa sayısı.",
+	"table-header-project--label": "Proje",
+	"table-header-wikipage--tooltip": "Hedef vikide göründüğü şekliyle kopyalanan sayfanın başlığı.",
+	"table-icons-protection--rights": "Düzenlemek için gerekli haklar",
+	"table-loading": "Yükleniyor...",
+	"updatepage-status-error": "$1 - $2 yayımlanırken hata oluştu"
+}

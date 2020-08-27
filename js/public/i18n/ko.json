@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Yurik"
+		]
+	},
+	"diff-summary-text--edit": "$4에서 $2{{#if:$3|: \"$3\"}}에 의한 편집 {{PLURAL:$1|한 개|$1개}}를 복사함. ([[mw:WP:TNT|docs]], [[c:Data:I18n/DiBabel.tab|translate]])"
+}

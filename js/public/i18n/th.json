@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Yurik"
+		]
+	},
+	"diff-content--loading": "กำลังโหลดเนื้อหา...",
+	"diff-summary--placeholder": "ความย่อการแก้ไข",
+	"diff-summary-text--edit": "คัดลอก $1 การแก้ไข โดย $2{{#if:$3|: \"$3\"}} จาก $4 ([[mw:WP:TNT|คู่มือ]], [[c:Data:I18n/DiBabel.tab|แปล]])",
+	"diff-summary-text--localized": "ปรับ $1 สำหรับใช้กับแม่แบบและมอดูลบนวิกินี้ ([[mw:WP:TNT|คู่มือ]], [[c:Data:I18n/DiBabel.tab|แปล]])",
+	"diff-summary-text--reset": "รีเซ็ตหน้าให้เนื้อหาปัจจุบันตรงกับ $1 ([[mw:WP:TNT|คู่มือ]], [[c:Data:I18n/DiBabel.tab|แปล]])",
+	"settings-options": "ตัวเลือก",
+	"table-header-outdated--label": "ล้าสมัย",
+	"table-loading": "กำลังโหลด..."
+}

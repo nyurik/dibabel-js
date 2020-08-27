@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Amire80"
+			"Amire80",
+			"Yurik"
 		]
 	},
 	"diff-content--loading": "טעינת תוכן הדף...",
@@ -26,6 +27,7 @@
 	"diff-summary--label": "תקציר",
 	"diff-summary--placeholder": "תקציר העריכה",
 	"diff-summary--tooltip": "עִזרו לנו לתרגם הודעות תקציר.",
+	"diff-summary-text--edit": "העתקה של {{PLURAL:$1|שינוי אחד|$1 שינויים}} מאת $2$2{{#if:$3|: \"$3\"}} מהדף $4. ([[mw:WP:TNT|תיעוד]], [[c:Data:I18n/DiBabel.tab|תרגום]]|",
 	"diff-update": "לעדכן!",
 	"filters-groupby--hash": "לפי גיבוב",
 	"filters-groupby--lang": "לפי שפה",
@@ -50,7 +52,7 @@
 	"filters-wiki": "ויקי",
 	"header-beta--label": "בטא",
 	"header-beta--tooltip": "בעבודה. נא לוודא את השינויים שלך.",
-	"header-description": "כלי לשמירה על מצב שבו יחידות ותבניות יהיו זהות בשפות שונות. נכתב על־ידי $1",
+	"header-description": "כלי לשמירה על מצב שבו יחידות ותבניות יהיו זהות בשפות ובאתרי ויקי שונים. נכתב על־ידי $1",
 	"header-links--bugs": "באגים ורעיונות",
 	"header-links--help": "עזרה",
 	"header-links--source": "קוד מקור",
@@ -106,7 +108,7 @@
 	"table-header-wikipage--label": "דף ויקי",
 	"table-header-wikipage--link": "הצגת $1 / $2 בלשונית חדשה.",
 	"table-header-wikipage--tooltip": "כותרת הדף המועתק כפי שהוא מופיע בוויקי היעד.",
-	"table-icons-protection--rights": "הרשאות דרושות בשביל לערוך:",
+	"table-icons-protection--rights": "הרשאות דרושות בשביל לערוך",
 	"table-icons-protection--tooltip": "מציין אם הדף מוגן ודורש הרשאות עריכה מיוחדות.",
 	"table-loading": "טעינה...",
 	"table-loading--error": "שגיאה בטעינת נתונים",
@@ -117,6 +119,6 @@
 	"updatepage-confirm--tooltip": "עדכון דף הוויקי",
 	"updatepage-confirm--yes": "כן, לעשות את זה!",
 	"updatepage-status": "הדף $1 עודכן",
-	"updatepage-status-error": "שגיאה בשמירת $1 – $2",
+	"updatepage-status-error": "שגיאה בפרסום $1 – $2",
 	"user-login": "כניסה לחשבון"
 }

@@ -1,11 +1,52 @@
 {
-  "@metadata": {
-    "authors": [
-      "Yuri Astrakhan"
-    ],
-    "locale": "ru",
-    "message-documentation": "qqq"
-  },
-  "dibabel-header-links--bugs": "Ошибки и Идеи",
-  "dibabel-table-pagecount": "{{PLURAL:$1|$1 страница|$1 страницы|$1 страниц}}"
+	"@metadata": {
+		"locale": "ru",
+		"message-documentation": "qqq",
+		"authors": [
+			"Yuri Astrakhan",
+			"Yurik"
+		]
+	},
+	"filters-status-ok": "OK",
+	"filters-status-outdated": "Устарело",
+	"filters-status-unlocalized": "Не переведён",
+	"filters-type": "Тип",
+	"filters-type--modules": "Модули",
+	"filters-type--templates": "Шаблоны",
+	"header-beta--label": "БЕТА",
+	"header-description": "Сохраняет код модулей и шаблонов одинаковыми на всех языках. Автор $1",
+	"header-links--bugs": "Ошибки и Идеи",
+	"header-links--help": "Справка",
+	"header-links--source": "Исходный код",
+	"language-help": "Помогите с переводом",
+	"language-unknown": "Неизвестен",
+	"settings-gear--aria": "Открыть меню установок",
+	"settings-options": "Настройки",
+	"settings-search--tooltip": "Производить поиск после ввода каждой буквы. Если выключить, то надо нажать Enter для поиска. Выключите если ваш компьютер тормозит.",
+	"settings-theme--label": "Ночной режим",
+	"table-cell-diverged--tooltip": "{{PLURAL:$1|$1 страница содержит|$1 страницы содержат|$1 страниц содержат}} локальные изменения, и {{PLURAL:$1|должна быть синхронизирована|должны быть синхронизированы}} по одной.",
+	"table-cell-status--ok-label": "OK",
+	"table-cell-status--outdated-label": "Устарело на {{PLURAL:$1|$1 \n правку|$1 правки|$1 правок}}",
+	"table-cell-status--unlocalized-label": "Не переведен",
+	"table-externallink--aria": "Открыть внешнюю ссылку в новой вкладке",
+	"table-header-language--label": "Язык",
+	"table-header-outdated--label": "Устарел",
+	"table-header-primary--label": "Основная страница",
+	"table-header-project--label": "Проект",
+	"table-header-site--label": "Вики-сайт",
+	"table-header-status--label": "Статус",
+	"table-header-unlocalized--label": "Не переведен",
+	"table-header-wikipage--label": "Вики-страница",
+	"table-header-wikipage--link": "Показать $1 / $2 в новой вкладке.",
+	"table-icons-protection--rights": "Необходимы права для редактирования:",
+	"table-icons-protection--tooltip": "Отображается есть ли у страницы защита и требуются ли особые права для ее редактирования.",
+	"table-loading": "Загрузка...",
+	"table-loading--error": "Ошибка загрузки данных",
+	"table-pagecount": "{{PLURAL:$1|$1 страница|$1 страницы|$1 страниц}}",
+	"updatepage-confirm--description-part2": "Вы уверены, что хотите сделать это?",
+	"updatepage-confirm--no": "Нет, верни меня назад",
+	"updatepage-confirm--tooltip": "Обновление вики-страницы",
+	"updatepage-confirm--yes": "Да, сделаем это!",
+	"updatepage-status": "$1 был обновлен",
+	"user-login": "Войти"
 }

@@ -1,6 +1,8 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Yurik"
+		]
 	},
 	"diff-content--loading": "Cargando el contenido…",
 	"diff-content--loading-error": "Error al cargar el contenido...",
@@ -24,6 +26,7 @@
 	"diff-summary--label": "Resumen",
 	"diff-summary--placeholder": "Resumen de edición",
 	"diff-summary--tooltip": "Ayuda a traducir los mensajes de resumen.",
+	"diff-summary-text--edit": "Copia de {{PLURAL:$1|1 cambio|$1 cambios}} de $2{{#if:$3|: «$3»}} desde $4. [[mw:WP:TNT|Más información]].",
 	"diff-update": "¡Actualizar!",
 	"filters-groupby--hash": "por hash",
 	"filters-groupby--lang": "por lenguaje",

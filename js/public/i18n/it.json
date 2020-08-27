@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Beta16"
+		]
+	},
+	"diff-summary-text--edit": "Copia di {{PLURAL:$1|una modifica|$1 modifiche}} di $2: $3 da $4. ([[mw:Special:MyLanguage/WP:TNT|documentazione]])",
+	"filters-protection": "Protezione"
+}

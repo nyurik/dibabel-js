@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Yurik"
+		]
+	},
+	"diff-summary-text--edit": "Copiando {{PLURAL:$1|uma alteração|$1 alterações}} por $2{{#if:$3|: \"$3\"}} de $4. ([[mw:WP:TNT|docs]], [[c:Data:I18n/DiBabel.tab|traduza]])"
+}

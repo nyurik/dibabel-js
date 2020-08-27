@@ -1,0 +1,26 @@
+{
+	"@metadata": {
+		"authors": [
+			"Yurik"
+		]
+	},
+	"diff-summary--placeholder": "编辑摘要",
+	"diff-summary-text--edit": "正由$2从$4复制{{PLURAL:$1|一次更改|$1次更改}}{{#if:$3|: \"$3\"}}。（[[mw:WP:TNT|文档]]、[[c:Data:I18n/DiBabel.tab|翻译]]）",
+	"filters-lang": "语言",
+	"filters-protection": "锁定",
+	"filters-status-ok": "好",
+	"filters-type": "类型",
+	"filters-type--modules": "模块",
+	"header-links--help": "帮助",
+	"header-links--source": "来源",
+	"language-unknown": "未知",
+	"settings-options": "选项",
+	"settings-theme--label": "夜间模式",
+	"table-cell-status--ok-label": "好",
+	"table-cell-status--unlocalized-label": "未本地化",
+	"table-header-language--label": "语言",
+	"table-header-outdated--label": "已过期",
+	"table-header-unlocalized--label": "未本地化",
+	"table-loading": "加载中……",
+	"user-login": "登录"
+}

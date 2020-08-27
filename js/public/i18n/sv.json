@@ -1,6 +1,8 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Sabelöga"
+		]
 	},
 	"diff-content--loading": "Laddar sidinnehåll...",
 	"diff-content--login-error": "Logga in längst upp till höger innan du börjar kopiera.",
@@ -37,6 +39,7 @@
 	"header-links--bugs": "Buggar och idéer",
 	"header-links--help": "Hjälp",
 	"header-links--source": "Källa",
+	"language--tooltip": "Tryck här för att ändra vilket språk som visas",
 	"language-filter--placeholder": "Filtrera lista",
 	"language-help": "Hjälp till att översätta",
 	"language-unknown": "Okänd",

@@ -1,0 +1,16 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"diff-content--loading": "Wczytywanie treści strony…",
+	"diff-content--loading-error": "Wystąpił błąd podczas wczytywania…",
+	"diff-content--login-error": "Zaloguj się używając linku w prawym górnym roku ekranu, zanim skopiujesz.",
+	"diff-summary--label": "Opis zmian",
+	"header-links--source": "Źródło",
+	"settings-options": "Opcje",
+	"sync-button--label": "Zsynchronizuj $1 {{PLURAL:$1|stronę|strony|stron}}",
+	"table-header-diverged--tooltip": "Liczba stron z lokalnymi modyfikacjami.",
+	"table-header-outdated--label": "Zdezaktualizowane",
+	"table-header-project--label": "Projekt",
+	"table-loading": "Ładowanie…"
+}
