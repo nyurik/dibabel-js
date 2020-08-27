@@ -1,6 +1,8 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Bjankuloski06"
+		]
 	},
 	"diff-content--loading": "Ја вчитувам содржината на страницата...",
 	"diff-content--loading-error": "Грешка при вчитувањето на содржината...",

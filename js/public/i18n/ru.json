@@ -4,7 +4,8 @@
 		"message-documentation": "qqq",
 		"authors": [
 			"Yuri Astrakhan",
-			"Yurik"
+			"Yurik",
+			"Iniquity"
 		]
 	},
 	"filters-status-ok": "OK",

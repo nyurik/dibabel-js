@@ -1,6 +1,8 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Rail"
+		]
 	},
 	"diff-content--loading": "Wczytywanie treści strony…",
 	"diff-content--loading-error": "Wystąpił błąd podczas wczytywania…",
