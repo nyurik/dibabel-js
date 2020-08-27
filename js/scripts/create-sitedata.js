@@ -12,6 +12,10 @@ const i18nDir = path.join(__dirname, '../public/i18n');
 
 console.log(`Generating info file...`);
 try {
+
+  const enDataLen = Object.keys(JSON.parse(
+    fs.readFileSync(path.join(i18nDir, 'en.json'), { encoding: 'utf8', flag: 'r' }))).length;
+
   /** @type Set<string> */
   let langs = new Set();
   for (let file of fs.readdirSync(i18nDir)) {
@@ -23,13 +27,16 @@ try {
     if (langCode === 'qqq') {
       continue;
     }
-    while (true) {
+    const dataLen = Object.keys(JSON.parse(
+      fs.readFileSync(path.join(i18nDir, file), { encoding: 'utf8', flag: 'r' }))).length;
+
+    // Require certain percentage of messages to be present
+    let percentage = Math.round(dataLen / enDataLen * 100);
+    if (percentage > 25) {
+      console.log(`Adding ${langCode} with ${percentage}%`);
       langs.add(langCode);
-      const dashIdx = langCode.indexOf('-');
-      if (dashIdx < 0) {
-        break;
-      }
-      langCode = langCode.substring(0, dashIdx);
+    } else {
+      console.log(`Skipping ${langCode} with ${percentage}%`)
     }
   }
 
