@@ -172,11 +172,10 @@ export const SearchBar = (
     }}
   />;
 
-  // FIXME I18N once we actually know what we want
   const addLangButton = (<EuiButton
     isDisabled={status !== 'ready'}
     onClick={() => setIsAddLangShown(true)}
-  >{i18n('Add new...')}</EuiButton>);
+  >{i18n('create-page-error--button')}</EuiButton>);
 
   let addLang;
   if (isAddLangShown) {

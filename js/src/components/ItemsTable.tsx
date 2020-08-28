@@ -89,8 +89,10 @@ export const ItemsTable = (
     },
     title: {
       field: 'srcFullTitle',
-      name: (<EuiToolTip content={i18n('table-header-primary--tooltip')}><Message
-        id="table-header-primary--label"/></EuiToolTip>),
+      name: (
+        <EuiToolTip content={i18n('table-header-primary--tooltip')}>
+          <Message id="table-header-primary--label"/>
+        </EuiToolTip>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.type]}&nbsp;&nbsp;{item.srcFullTitle}<ExternalLink
         tooltip={i18n('table-cell-primary--tooltip', item.srcFullTitle)}
@@ -98,8 +100,10 @@ export const ItemsTable = (
     },
     lang: {
       field: 'lang',
-      name: (<EuiToolTip content={i18n('table-header-language--tooltip')}><Message
-        id="table-header-language--label"/></EuiToolTip>),
+      name: (
+        <EuiToolTip content={i18n('table-header-language--tooltip')}>
+          <Message id="table-header-language--label"/>
+        </EuiToolTip>),
       sortable: true,
       render: (lang: string) => {
         const name = languageNames[lang];
@@ -108,22 +112,28 @@ export const ItemsTable = (
     },
     project: {
       field: 'project',
-      name: (<EuiToolTip content={i18n('table-header-project--tooltip')}><Message
-        id="table-header-project--label"/></EuiToolTip>),
+      name: (
+        <EuiToolTip content={i18n('table-header-project--tooltip')}>
+          <Message id="table-header-project--label"/>
+        </EuiToolTip>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.project]}&nbsp;&nbsp;&nbsp;{item.project}</>),
     },
     wiki: {
       field: 'wiki',
-      name: (<EuiToolTip
-        content={i18n('table-header-site--tooltip')}><Message id={'table-header-site--label'}/></EuiToolTip>),
+      name: (
+        <EuiToolTip content={i18n('table-header-site--tooltip')}>
+          <Message id={'table-header-site--label'}/>
+        </EuiToolTip>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.project]}&nbsp;&nbsp;&nbsp;{item.wiki}</>),
     },
     dstTitle: {
       field: 'dstFullTitle',
-      name: (<EuiToolTip content={i18n('table-header-wikipage--tooltip')}><Message
-        id="table-header-wikipage--label"/></EuiToolTip>),
+      name: (
+        <EuiToolTip content={i18n('table-header-wikipage--tooltip')}>
+          <Message id="table-header-wikipage--label"/>
+        </EuiToolTip>),
       sortable: true,
       render: (_: string, item: Item) => (<>{iconsEuiMedium[item.type]}&nbsp;&nbsp;{item.dstFullTitle}<ExternalLink
         tooltip={i18n('table-header-wikipage--link', prettyDomain(item.lang, item.project), item.dstFullTitle)}
@@ -131,18 +141,23 @@ export const ItemsTable = (
     },
     sortDepsStatus: {
       field: 'sortDepsStatus',
-      name: (<EuiToolTip content={i18n('table-header-deps--tooltip')}><Message
-        id="table-header-deps--label"/></EuiToolTip>),
+      name: (
+        <EuiToolTip content={i18n('table-header-deps--tooltip')}>
+          <Message id="table-header-deps--label"/>
+        </EuiToolTip>),
       render: (_: string, item: Item) => {
         const res = [];
         if (item.missingDeps) {
-          res.push(<EuiIconTip size={'l'} type={'alert'} color={'danger'} content={i18n('This page has dependencies that do not exist on the target wiki')} />);
+          res.push(<EuiIconTip size={'l'} type={'alert'} color={'danger'}
+                               content={i18n('table-cell-deps-missing--tooltip')}/>);
         }
         if (item.unsyncedDeps) {
-          res.push(<EuiIconTip size={'l'} type={'alert'} color={'warning'} content={i18n('This page has dependencies that are not being synced')} />);
+          res.push(<EuiIconTip size={'l'} type={'alert'} color={'warning'}
+                               content={i18n('table-cell-deps-unsynced--tooltip')}/>);
         }
         if (item.staleDeps) {
-          res.push(<EuiIconTip size={'l'} type={'alert'} color={'primary'} content={i18n('The dependencies of this page are outdated on the target wiki')} />);
+          res.push(<EuiIconTip size={'l'} type={'alert'} color={'primary'}
+                               content={i18n('table-cell-deps-stale--tooltip')}/>);
         }
         return (<>{res}</>);
       },
@@ -150,51 +165,61 @@ export const ItemsTable = (
     },
     hash: {
       field: 'hash',
-      name: (<EuiToolTip content={i18n('table-header-hash--tooltip')}
-      ><Message id="table-header-hash--label"/></EuiToolTip>),
+      name: (
+        <EuiToolTip content={i18n('table-header-hash--tooltip')}>
+          <Message id="table-header-hash--label"/>
+        </EuiToolTip>),
       sortable: true,
-      render: (hash: string) => (<EuiToolTip title={hash} content={i18n('table-cell-hash--tooltip')}
-      ><EuiText>{hash.substring(0, 7)}</EuiText></EuiToolTip>)
+      render: (hash: string) => (
+        <EuiToolTip title={hash} content={i18n('table-cell-hash--tooltip')}>
+          <EuiText>{hash.substring(0, 7)}</EuiText>
+        </EuiToolTip>)
     },
     status: {
       field: 'sortStatus',
-      name: (<EuiToolTip content={i18n('table-header-status--tooltip')}><Message
-        id="table-header-status--label"/></EuiToolTip>),
+      name: (
+        <EuiToolTip content={i18n('table-header-status--tooltip')}>
+          <Message id="table-header-status--label"/>
+        </EuiToolTip>),
       sortable: true,
       render: (_: string, item: Item) => {
         switch (item.status) {
           case 'ok':
-            return (<EuiHealth
-              title={i18n('table-cell-status--ok--tooltip')}
-              color={'success'}><Message id="table-cell-status--ok-label"/></EuiHealth>);
+            return (
+              <EuiHealth title={i18n('table-cell-status--ok--tooltip')} color={'success'}>
+                <Message id="table-cell-status--ok-label"/>
+              </EuiHealth>);
           case 'unlocalized':
-            return (<EuiHealth
-              title={i18n('table-cell-status--unlocalized-tooltip')}
-              color={'warning'}><Message id="table-cell-status--unlocalized-label"/></EuiHealth>);
+            return (
+              <EuiHealth title={i18n('table-cell-status--unlocalized-tooltip')} color={'warning'}>
+                <Message id="table-cell-status--unlocalized-label"/>
+              </EuiHealth>);
           case 'outdated':
             return (
-              <EuiHealth
-                title={i18n('table-cell-status--outdated-tooltip', item.behind)}
-                color={'warning'}
-              ><span><Message id="table-cell-status--outdated-label" placeholders={[item.behind]}/><ExternalLink
-                tooltip={i18n('table-cell-status--outdated-link', item.behind, item.srcFullTitle)}
-                href={itemDiffLink(item)}/></span></EuiHealth>);
+              <EuiHealth title={i18n('table-cell-status--outdated-tooltip', item.behind)} color={'warning'}>
+                <EuiText>
+                  {i18n('table-cell-status--outdated-label', item.behind)}
+                  <ExternalLink tooltip={i18n('table-cell-status--outdated-link', item.behind, item.srcFullTitle)}
+                                href={itemDiffLink(item)}/>
+                </EuiText>
+              </EuiHealth>);
           case 'diverged':
             return (
-              <EuiHealth
-                title={i18n('table-cell-status--diverged-tooltip')}
-                color={'danger'}><Message id="table-cell-status--diverged-label"/></EuiHealth>);
+              <EuiHealth title={i18n('table-cell-status--diverged-tooltip')} color={'danger'}>
+                <Message id="table-cell-status--diverged-label"/>
+              </EuiHealth>);
           default:
             debugger;
             return (<EuiText>ERROR: {item.status} - {item.dstFullTitle}</EuiText>);
-          // throw new Error(item.status);
         }
       },
     },
     countOk: {
       field: 'countOk',
-      name: (<EuiToolTip content={i18n('table-header-updated--tooltip')}><Message
-        id="table-header-updated--label"/></EuiToolTip>),
+      name: (
+        <EuiToolTip content={i18n('table-header-updated--tooltip')}>
+          <Message id="table-header-updated--label"/>
+        </EuiToolTip>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
@@ -207,9 +232,10 @@ export const ItemsTable = (
     },
     countUnlocalized: {
       field: 'countUnlocalized',
-      name: (<EuiToolTip
-        content={i18n('table-header-unlocalized--tooltip')}><Message
-        id="table-header-unlocalized--label"/></EuiToolTip>),
+      name: (
+        <EuiToolTip content={i18n('table-header-unlocalized--tooltip')}>
+          <Message id="table-header-unlocalized--label"/>
+        </EuiToolTip>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
@@ -223,8 +249,10 @@ export const ItemsTable = (
     },
     countOutdated: {
       field: 'countOutdated',
-      name: (<EuiToolTip content={i18n('table-header-outdated--tooltip')}><Message
-        id="table-header-outdated--label"/></EuiToolTip>),
+      name: (
+        <EuiToolTip content={i18n('table-header-outdated--tooltip')}>
+          <Message id="table-header-outdated--label"/>
+        </EuiToolTip>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {
@@ -237,8 +265,10 @@ export const ItemsTable = (
     },
     countDiverged: {
       field: 'countDiverged',
-      name: (<EuiToolTip content={i18n('table-header-diverged--tooltip')}><Message
-        id="table-header-diverged--label"/></EuiToolTip>),
+      name: (
+        <EuiToolTip content={i18n('table-header-diverged--tooltip')}>
+          <Message id="table-header-diverged--label"/>
+        </EuiToolTip>),
       sortable: true,
       render: (value: number) => {
         if (value > 0) {

@@ -8,9 +8,9 @@ import {
   EuiHeaderSectionItem,
   EuiLink,
   EuiPageHeader,
-  EuiPageHeaderSection,
-  EuiText
+  EuiPageHeaderSection
 } from '@elastic/eui';
+
 import { Settings } from '../contexts/Settings';
 import { User } from './User';
 import { logoIcon } from '../icons/icons';
@@ -35,22 +35,25 @@ export function Header() {
       </EuiPageHeaderSection>
       <EuiPageHeaderSection>
         <EuiHeaderSectionItem>
-          <EuiText size={'s'}><Message id="header-description" placeholders={[userLink]}/></EuiText>
+          <Message size={'s'} id="header-description" placeholders={[userLink]}/>
         </EuiHeaderSectionItem>
       </EuiPageHeaderSection>
       <EuiPageHeaderSection>
         <EuiHeaderLink iconType={'help'}
                        target={'_blank'}
-                       href={'https://www.mediawiki.org/wiki/WP:TNT'}><Message
-          id="header-links--help"/></EuiHeaderLink>
+                       href={'https://www.mediawiki.org/wiki/WP:TNT'}>
+          <Message id="header-links--help"/>
+        </EuiHeaderLink>
         <EuiHeaderLink iconType={'logoGithub'}
                        target={'_blank'}
-                       href={'https://github.com/nyurik/dibabel-js'}><Message
-          id="header-links--source"/></EuiHeaderLink>
+                       href={'https://github.com/nyurik/dibabel-js'}>
+          <Message id="header-links--source"/>
+        </EuiHeaderLink>
         <EuiHeaderLink iconType={'bug'}
                        target={'_blank'}
-                       href={'https://github.com/nyurik/dibabel-js/issues'}><Message
-          id="header-links--bugs"/></EuiHeaderLink>
+                       href={'https://github.com/nyurik/dibabel-js/issues'}>
+          <Message id="header-links--bugs"/>
+        </EuiHeaderLink>
       </EuiPageHeaderSection>
       <EuiPageHeaderSection>
         <EuiFlexGroup

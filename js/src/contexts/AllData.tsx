@@ -41,7 +41,7 @@ export const AllDataProvider = ({ children }: Props) => {
           case 'error':
             setStatus('error');
             addToast(error({
-              title: i18n('Error loading data'),
+              title: i18n('table-loading--error'),
               text: (<EuiText>{res.exception.toString()}</EuiText>),
             }));
             break;
@@ -49,11 +49,12 @@ export const AllDataProvider = ({ children }: Props) => {
             setStatus('ready');
             addToast(success({
               title: i18n('Loaded data'),
-              text: (<EuiText>
-                <Message id={'Loaded {{PLURAL:$1|one page|$1 pages}}'} placeholders={[stateStore.rawSyncData.size]}/>
-                <br/>
-                <Message id={'{{PLURAL:$1|one copy|$1 copies}}'} placeholders={[stateStore.items.length]}/>
-              </EuiText>),
+              text: (
+                <>
+                  <Message id={'dataloader-toast-success--pages'} placeholders={[stateStore.rawSyncData.size]}/>
+                  <br/>
+                  <Message id={'dataloader-toast-success--copies'} placeholders={[stateStore.items.length]}/>
+                </>),
             }));
             break;
           case 'debug':
@@ -77,7 +78,7 @@ export const AllDataProvider = ({ children }: Props) => {
     switch (res.status) {
       case 'error':
         addToast(error({
-          title: i18n('Error loading copy'),
+          title: i18n('dataloader-toast-error--title'),
           text: (<EuiText>{res.exception.toString()}</EuiText>),
         }));
         return { status: { status: 'error', error: res.exception.toString() } };

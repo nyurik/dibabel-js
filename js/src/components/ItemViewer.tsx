@@ -70,7 +70,7 @@ const ItemDiffViewer = () => {
       } else {
         newSummary = await i18nInLocale(item.lang, msgKey, summaryLink);
       }
-      setComment(fixMwLinks(newSummary))
+      setComment(fixMwLinks(newSummary));
       setCommentIsLoaded(true);
     })();
   }, [comment, item, i18n, itemStatus.status, itemContent, commentIsLoaded, i18nInLocale]);
@@ -78,33 +78,37 @@ const ItemDiffViewer = () => {
   let infoSubHeader;
   switch (item.status) {
     case 'diverged':
-      infoSubHeader = (<EuiHealth color={'danger'}>
-        <EuiText><Message id="diff-header-description--diverged"
-                          placeholders={[<ItemDstLink item={item}/>,
-                            <ItemSrcLink item={item}/>]}/></EuiText></EuiHealth>);
+      infoSubHeader = (
+        <EuiHealth color={'danger'}>
+          <Message id="diff-header-description--diverged"
+                   placeholders={[<ItemDstLink item={item}/>, <ItemSrcLink item={item}/>]}/>
+        </EuiHealth>);
       break;
     case 'outdated':
-      infoSubHeader = (<EuiHealth color={'warning'}>
-        <EuiText><Message
-          id="diff-header-description--outdated"
-          placeholders={[
-            <ItemDstLink item={item}/>,
-            <EuiLink href={itemDiffLink(item)} target={'_blank'}>{
-              i18n('diff-header-description--outdated-rev', item.behind)}</EuiLink>,
-            <ItemSrcLink item={item}/>
-          ]}/></EuiText></EuiHealth>);
+      infoSubHeader = (
+        <EuiHealth color={'warning'}>
+          <Message id="diff-header-description--outdated"
+                   placeholders={[
+                     <ItemDstLink item={item}/>,
+                     <EuiLink href={itemDiffLink(item)}
+                              target={'_blank'}>{i18n('diff-header-description--outdated-rev', item.behind)}</EuiLink>,
+                     <ItemSrcLink item={item}/>
+                   ]}/>
+        </EuiHealth>);
       break;
     case 'unlocalized':
-      infoSubHeader = (<EuiHealth color={'warning'}>
-        <EuiText><Message id="diff-header-description--unlocalized"
-                          placeholders={[<ItemDstLink item={item}/>, <ItemSrcLink
-                            item={item}/>]}/></EuiText></EuiHealth>);
+      infoSubHeader = (
+        <EuiHealth color={'warning'}>
+          <Message id="diff-header-description--unlocalized"
+                   placeholders={[<ItemDstLink item={item}/>, <ItemSrcLink item={item}/>]}/>
+        </EuiHealth>);
       break;
     case 'ok':
-      infoSubHeader = (<EuiHealth color={'success'}>
-        <EuiText><Message id="diff-header-description--ok"
-                          placeholders={[<ItemDstLink item={item}/>, <ItemSrcLink
-                            item={item}/>]}/></EuiText></EuiHealth>);
+      infoSubHeader = (
+        <EuiHealth color={'success'}>
+          <Message id="diff-header-description--ok"
+                   placeholders={[<ItemDstLink item={item}/>, <ItemSrcLink item={item}/>]}/>
+        </EuiHealth>);
       break;
     default:
       debugger;
@@ -243,6 +247,7 @@ const ItemDiffViewer = () => {
         <EuiFlyoutBody>
           {warnings}
           {dependencies}
+          <EuiSpacer size={'l'}/>
           {body}
         </EuiFlyoutBody>
         {footer}

@@ -15,8 +15,8 @@ import {
   EuiModalHeaderTitle,
   EuiOverlayMask,
   EuiSpacer,
-  EuiText,
 } from '@elastic/eui';
+
 import { AllDataContext, SyncLoader } from '../contexts/AllData';
 import { ToastsContext } from '../contexts/Toasts';
 import { I18nContext } from '../contexts/I18nContext';
@@ -143,13 +143,13 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
     }
     const result = [];
     result.push(
-      <EuiFormRow fullWidth={true} label={i18n('Dependencies')}>
+      <EuiFormRow fullWidth={true} label={i18n('table-header-deps--label')}>
         <DependenciesList item={info.newItem}/>
       </EuiFormRow>
     );
     if (info.content && info.content.changeType === 'new') {
       result.push(
-        <EuiFormRow fullWidth={true} label={i18n('Content')}>
+        <EuiFormRow fullWidth={true} label={i18n('create-page-content--label')}>
           <ItemDiffBlock type={info.newItem.type}
                          oldText={info.content.newText}
                          newText={info.content.newText}/>
@@ -169,27 +169,29 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
   };
 
   const onCopy = async () => {
-    try {
-      if (!pageTitle || !wiki || !info || !info.newItem || !info.content || info.content.changeType !== 'new') {
-        return;  // safety and make typescript happy
-      }
+    if (!pageTitle || !wiki || !info || !info.newItem || !info.content || info.content.changeType !== 'new') {
+      return;  // safety and make typescript happy
+    }
 
+    try {
       setStatus('saving');
 
       const res = await editItem(info.newItem, info.content, comment);
 
       if (res.edit.result !== 'Success') {
         addToast(error({
-          title: (<EuiText><Message id="create-page--error"
-                                    placeholders={[res.edit.info || JSON.stringify(res.edit)]}/></EuiText>),
+          title: (<Message id="create-page-error--title"
+                           placeholders={[
+                             <ItemDstLink item={info.newItem}/>,
+                             res.edit.info || JSON.stringify(res.edit)]}/>),
         }));
         setStatus('loaded');
         return;
       }
 
       addToast(success({
-        title: (<EuiText><Message id="create-page--success"
-                                  placeholders={[<ItemDstLink item={info.newItem}/>]}/></EuiText>),
+        title: (<Message id="create-page-success--title"
+                         placeholders={[<ItemDstLink item={info.newItem}/>]}/>),
         iconType: 'check',
       }));
 
@@ -198,42 +200,40 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
 
     } catch (err) {
       addToast(error({
-        // FIXME: change message ID
-        title: (<EuiText><Message id="Error creating $1:  $2"
-                                  placeholders={['LINK_TODO', err.toString()]}/></EuiText>),
+        title: (<Message id="create-page-error--title"
+                         placeholders={[<ItemDstLink item={info.newItem}/>, err.toString()]}/>),
       }));
       setStatus('loaded');
     }
   };
 
-  // FIXME I18N
   return (<EuiOverlayMask><EuiModal onClose={onClose}>
     <EuiModalHeader>
-      <EuiModalHeaderTitle>{i18n('Create a new copy')}</EuiModalHeaderTitle>
+      <EuiModalHeaderTitle>{i18n('create-page-header--label')}</EuiModalHeaderTitle>
     </EuiModalHeader>
     <EuiModalBody>
       <EuiForm>
-        <EuiFormRow fullWidth={true} label={i18n('A page to copy')} helpText={pageHelpText}>
-          <Picker disabled={status === 'saving'} placeholder={i18n('Select a page to copy')} value={pageTitle}
+        <EuiFormRow fullWidth={true} label={i18n('create-page-page--label')} helpText={pageHelpText}>
+          <Picker disabled={status === 'saving'} placeholder={i18n('create-page-page--placeholder')} value={pageTitle}
                   setValue={(v) => setTarget(v, wiki)} options={uniq(allItems.map(v => v.srcFullTitle))}/>
         </EuiFormRow>
-        <EuiFormRow fullWidth={true} label={i18n('Target wiki')}
-                    helpText={pageTitle ? i18n('Already exists on $1 out of $2 wikis.', existsOn.size, knownWikis) : undefined}>
-          <Picker disabled={status === 'saving'} placeholder={i18n('Select target wiki')} value={wiki}
+        <EuiFormRow fullWidth={true} label={i18n('create-page-wiki--label')}
+                    helpText={pageTitle ? i18n('create-page-wiki--info', existsOn.size, knownWikis) : undefined}>
+          <Picker disabled={status === 'saving'} placeholder={i18n('create-page-wiki--placeholder')} value={wiki}
                   setValue={(v) => setTarget(pageTitle, v)} options={wikiOptions}/>
         </EuiFormRow>
-        <EuiSpacer size={'m'} />
+        <EuiSpacer size={'m'}/>
         {loadedInfo}
       </EuiForm>
     </EuiModalBody>
     <EuiModalFooter>
       <Comment readOnly={false} isLoading={false} value={comment} setValue={setNewComment}/>
-      <EuiButtonEmpty onClick={onClose}>{i18n('Cancel')}</EuiButtonEmpty>
+      <EuiButtonEmpty onClick={onClose}>{i18n('create-page-cancel--label')}</EuiButtonEmpty>
       <EuiButton isDisabled={status !== 'loaded'}
                  onClick={onCopy}
                  color={'primary'}
                  isLoading={status === 'saving'}
-                 fill>{i18n('Create!')}</EuiButton>
+                 fill>{i18n('create-page-create--label')}</EuiButton>
     </EuiModalFooter>
   </EuiModal>
   </EuiOverlayMask>);

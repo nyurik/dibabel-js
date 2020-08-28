@@ -1,10 +1,10 @@
 import React, { Dispatch, useCallback, useContext, useState } from 'react';
+
 import { error, sleep } from '../services/utils';
-import { Item, Props, SrvContentTypes, OptionalContentTypes } from '../services/types';
+import { Item, OptionalContentTypes, Props, SrvContentTypes } from '../services/types';
 import { AllDataContext, ItemStatus } from './AllData';
 import { ItemDstLink } from '../components/Snippets';
 import { ToastsContext } from './Toasts';
-import { EuiText } from '@elastic/eui';
 import { Message } from '../components/Message';
 
 type OptionalItem = Item | undefined;
@@ -67,9 +67,8 @@ export const CurrentItemProvider = ({ children }: Props) => {
       }
       if (tries === maxTries) {
         addToast(error({
-          title: (<EuiText><Message
-            id={'$1 was modified, but the DiBabel server was not able to get confirmation.'}
-            placeholders={[<ItemDstLink item={item}/>]}/></EuiText>),
+          title: (<Message id={'$1 was modified, but the DiBabel server was not able to get confirmation.'}
+                           placeholders={[<ItemDstLink item={item}/>]}/>),
         }));
       }
     })();
@@ -77,7 +76,14 @@ export const CurrentItemProvider = ({ children }: Props) => {
 
   return (
     <CurrentItemContext.Provider
-      value={{ itemStatus, setItemStatus, currentItem, itemContent, setCurrentItem: setCurrentItemCB, updateSavedItem }}>
+      value={{
+        itemStatus,
+        setItemStatus,
+        currentItem,
+        itemContent,
+        setCurrentItem: setCurrentItemCB,
+        updateSavedItem
+      }}>
       {children}
     </CurrentItemContext.Provider>
   );

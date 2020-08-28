@@ -24,10 +24,11 @@ export const DependenciesList: FunctionComponent<{ item: Item, links?: boolean }
   let depItems: DepItem[] = [];
 
   if (item.sortDepsStatus > 0) {
-    result.push(<EuiCallOut title={i18n('diff-deps-warning--title')}
-                            color={'warning'} iconType={'alert'}>
-      <Message id={'diff-deps-warnings--content'}/>
-    </EuiCallOut>);
+    result.push(
+      <EuiCallOut title={i18n('diff-deps-warning--title')}
+                  color={'warning'} iconType={'alert'}>
+        <Message id={'diff-deps-warnings--content'}/>
+      </EuiCallOut>);
     result.push(<EuiSpacer size={'m'}/>);
   }
 
@@ -96,8 +97,10 @@ export const DependenciesList: FunctionComponent<{ item: Item, links?: boolean }
     columns.push({
       field: 'item',
       name: '',
-      render: (item: Item) => !item ? <></> : (<EuiButtonEmpty onClick={() => setCurrentItem(item)}><Message
-        id={'diff-deps-button--caption'}/></EuiButtonEmpty>)
+      render: (item: Item) => !item ? <></> : (
+        <EuiButtonEmpty onClick={() => setCurrentItem(item)}>
+          <Message id={'diff-deps-button--caption'}/>
+        </EuiButtonEmpty>)
     });
   }
 

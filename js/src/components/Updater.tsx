@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 
-import { EuiConfirmModal, EuiOverlayMask, EuiText, } from '@elastic/eui';
+import { EuiConfirmModal, EuiOverlayMask, } from '@elastic/eui';
 import { ItemDstLink } from './Snippets';
 import { error, success } from '../services/utils';
 import { ToastsContext } from '../contexts/Toasts';
@@ -33,8 +33,7 @@ export const Updater = ({ comment, onClose }: { comment: string, onClose: () => 
       }
 
       addToast(success({
-        title: (<EuiText><Message id="updatepage-status"
-                                  placeholders={[<ItemDstLink item={currentItem}/>]}/></EuiText>),
+        title: (<Message id="updatepage-status" placeholders={[<ItemDstLink item={currentItem}/>]}/>),
         iconType: 'check',
       }));
 
@@ -42,8 +41,8 @@ export const Updater = ({ comment, onClose }: { comment: string, onClose: () => 
       setCurrentItem(undefined);
     } catch (err) {
       addToast(error({
-        title: (<EuiText><Message id="updatepage-status-error"
-                                  placeholders={[<ItemDstLink item={currentItem}/>, err.toString()]}/></EuiText>),
+        title: (<Message id="updatepage-status-error"
+                         placeholders={[<ItemDstLink item={currentItem}/>, err.toString()]}/>),
       }));
     } finally {
       onClose();
@@ -60,7 +59,8 @@ export const Updater = ({ comment, onClose }: { comment: string, onClose: () => 
     defaultFocusedButton="confirm"
     confirmButtonDisabled={confirmationStatus !== 'show'}
   >
-    <p><Message id="updatepage-confirm--description-part1" placeholders={[<ItemDstLink item={currentItem}/>]}/>
+    <p>
+      <Message id="updatepage-confirm--description-part1" placeholders={[<ItemDstLink item={currentItem}/>]}/>
     </p>
     <p>{i18n('updatepage-confirm--description-part2')}</p>
   </EuiConfirmModal></EuiOverlayMask>);

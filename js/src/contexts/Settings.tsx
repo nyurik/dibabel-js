@@ -250,8 +250,8 @@ export const Settings = () => {
   const languageSelector = (<EuiPopover
     id="popover"
     panelPaddingSize="none"
-    button={<EuiToolTip title={languageNames[locale] || i18n('dibabel-language-unknown')}
-                        content={i18n('dibabel-language--tooltip')}><EuiButtonEmpty
+    button={<EuiToolTip title={languageNames[locale] || i18n('language-unknown')}
+                        content={i18n('language--tooltip')}><EuiButtonEmpty
       onClick={() => setIsLanguagesOpen(true)}>{locale}</EuiButtonEmpty></EuiToolTip>}
     isOpen={isLanguagesOpen}
     closePopover={closePopover}>
