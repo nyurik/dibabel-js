@@ -72,26 +72,34 @@ class SessionState:
 
 
 class QueryCache:
-    max_stale_minutes = 60 * 24 * 5
+    primary_pages_by_qid: Dict[str, PagePrimary]
+    primary_pages_by_title: Dict[str, PagePrimary]
+    primary_site: WikiSite
+    sites_metadata: Dict[str, SiteMetadata]
+    summary_i18n: Dict[str, Dict[str, str]]
+    syncinfo_by_qid_domain: Dict[str, Dict[str, SyncInfo]]
+    title_sitelinks: TitleSitelinksCache
 
     def __init__(self, cache_dir):
         cache_dir = Path(cache_dir)
         cache_dir.mkdir(parents=True, exist_ok=True)
         self.cache_file = str(cache_dir / 'cache.sqlite')
+        self.wikidata = Sparql()
+        self.refresh_state()
+        print('Done initializing')
 
+    def refresh_state(self):
         with self.create_session(user_requested=False) as state:
             self.primary_site = state.get_site(primary_domain)
-            self.sites_metadata: Dict[str, SiteMetadata] = state.cache.get('sites_metadata', {})
-
-            self.wikidata = Sparql()
+            self.sites_metadata = state.cache.get('sites_metadata', {})
 
             # Template name -> domain -> localized template name
-            self.title_sitelinks: TitleSitelinksCache = state.cache.get('title_sitelinks') or {}
+            self.title_sitelinks = state.cache.get('title_sitelinks') or {}
 
-            self.primary_pages_by_qid: Dict[str, PagePrimary] = {}
-            self.primary_pages_by_title: Dict[str, PagePrimary] = {}
+            self.primary_pages_by_qid = {}
+            self.primary_pages_by_title = {}
 
-            self.syncinfo_by_qid_domain: Dict[str, Dict[str, SyncInfo]] = {
+            self.syncinfo_by_qid_domain = {
                 v[len('info_by_qid:'):]: state.cache[v]
                 for v in state.cache.keys()
                 if v.startswith('info_by_qid:')}
@@ -108,8 +116,6 @@ class QueryCache:
             self.update_syncinfo(state)
             # Update localization strings
             self.summary_i18n = self.get_translation_table(state)
-
-        print('Done initializing')
 
     def create_session(self, user_requested) -> SessionState:
         return SessionState(self.cache_file, user_requested)
@@ -307,7 +313,7 @@ WHERE {{
             else:
                 unresolved.add(title)
 
-        self.update_metadata(state, [domain]);
+        self.update_metadata(state, [domain])
 
         if cached_pages:
             if refresh:

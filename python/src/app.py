@@ -1,7 +1,9 @@
 from pathlib import Path
 
+import atexit
 import mwoauth
 import yaml
+from apscheduler.schedulers.background import BackgroundScheduler
 from dibabel.QueryCache import QueryCache
 from flask import Flask, jsonify, session, flash, abort, Response
 from flask import redirect, request
@@ -17,8 +19,19 @@ for file in ('default.yaml', 'secret.yaml'):
         app.config.update(yaml.safe_load(stream))
 
 print(f"Running as {app.config['CONSUMER_KEY']}")
-
 cache = QueryCache('../cache')
+
+
+def refresher():
+    print(f"Refreshing state...")
+    cache.refresh_state()
+
+
+# Make sure we have the latest data by occasionally refreshing it
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=refresher, trigger="interval", seconds=300)
+scheduler.start()
+atexit.register(lambda: scheduler.shutdown())
 
 
 def create_consumer_token():
@@ -131,4 +144,5 @@ def logout():
 
 
 if __name__ == "__main__":
-    app.run()
+    # Prevent double-loading in debug mode
+    app.run(use_reloader=False)
