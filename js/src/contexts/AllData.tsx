@@ -7,6 +7,7 @@ import { ToastsContext } from './Toasts';
 import { Item, Items, Props, SrvContentTypes } from '../services/types';
 import { StateStore } from '../services/StateStore';
 import { I18nContext } from './I18nContext';
+import { Message } from '../components/Message';
 
 export type DataLoadStatus = 'reset' | 'loading' | 'ready' | 'error'
 
@@ -50,13 +51,11 @@ export const AllDataProvider = ({ children }: Props) => {
             addToast(success({
               title: i18n('dataloader-toast-success--title'),
               text: (
-                // For some strange reason <Message id=...> does not work here -- it has empty messages table
-                <EuiText>
-                  {i18n('dataloader-toast-success--pages', stateStore.rawSyncData.size)}
+                <>
+                  <Message id={'dataloader-toast-success--pages'} placeholders={[stateStore.rawSyncData.size]}/>
                   <br/>
-                  {i18n('dataloader-toast-success--copies', stateStore.items.length)}
-                </EuiText>
-              )
+                  <Message id={'dataloader-toast-success--copies'} placeholders={[stateStore.items.length]}/>
+                </>),
             }));
             break;
           case 'debug':
