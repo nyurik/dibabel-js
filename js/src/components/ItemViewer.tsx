@@ -111,27 +111,25 @@ const ItemDiffViewer = () => {
         </EuiHealth>);
       break;
     default:
-      debugger;
       throw new Error(item.status);
   }
 
   const warnings = useMemo(() => {
-    const warnings = [];
     if (item.status === 'diverged') {
-      warnings.push(<EuiCallOut title={i18n('diff-header-warnings--diverged-head')} color={'warning'}
-                                iconType={'alert'}>
-        <EuiText>{i18n('diff-header-warnings--diverged', item.wiki)}
-          <ul>
-            <li key={'1'}>{i18n('diff-header-warnings--diverged-1')}</li>
-            <li key={'2'}>{i18n('diff-header-warnings--diverged-2')}</li>
-            <li key={'3'}>{i18n('diff-header-warnings--diverged-3')}</li>
-          </ul>
-        </EuiText>
-      </EuiCallOut>);
-      warnings.push(<EuiSpacer size={'m'}/>);
+      return (<>
+        <EuiCallOut title={i18n('diff-header-warnings--diverged-head')} color={'warning'}
+                    iconType={'alert'}>
+          <EuiText>{i18n('diff-header-warnings--diverged', item.wiki)}
+            <ul>
+              <li key={'1'}>{i18n('diff-header-warnings--diverged-1')}</li>
+              <li key={'2'}>{i18n('diff-header-warnings--diverged-2')}</li>
+              <li key={'3'}>{i18n('diff-header-warnings--diverged-3')}</li>
+            </ul>
+          </EuiText>
+        </EuiCallOut>,
+        <EuiSpacer size={'m'}/>
+      </>);
     }
-
-    return warnings;
   }, [i18n, item]);
 
   const dependencies = useMemo(() => {
@@ -181,7 +179,6 @@ const ItemDiffViewer = () => {
             return;
         }
       default:
-        debugger;
         throw new Error(itemStatus.status);
     }
   }, [itemStatus, i18n, itemContent, item.type, internalError]);
@@ -194,7 +191,7 @@ const ItemDiffViewer = () => {
     const isDiverged = item.status === 'diverged';
     const btnProps: Props = {
       fill: true,
-      color: (isDiverged || warnings.length > 0) ? 'danger' : 'primary',
+      color: (isDiverged || warnings) ? 'danger' : 'primary',
     };
     if (isLoggedIn) {
       btnProps.onClick = () => setConfirmationStatus(true);

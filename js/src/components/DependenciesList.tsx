@@ -25,11 +25,13 @@ export const DependenciesList: FunctionComponent<{ item: Item, links?: boolean }
 
   if (item.sortDepsStatus > 0) {
     result.push(
-      <EuiCallOut title={i18n('diff-deps-warning--title')}
+      <EuiCallOut key={'1'}
+                  title={i18n('diff-deps-warning--title')}
                   color={'warning'} iconType={'alert'}>
         <Message id={'diff-deps-warnings--content'}/>
-      </EuiCallOut>);
-    result.push(<EuiSpacer size={'m'}/>);
+      </EuiCallOut>,
+      <EuiSpacer key={'2'} size={'m'}/>
+    );
   }
 
   item.srvPage.allPrimaryDependencies.forEach((value) => {
@@ -105,6 +107,7 @@ export const DependenciesList: FunctionComponent<{ item: Item, links?: boolean }
   }
 
   result.push(<EuiInMemoryTable
+    key={'3'}
     items={depItems}
     columns={columns}
     itemId={'href'}

@@ -1,12 +1,12 @@
 import React, { Dispatch, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
+import { EuiText } from '@elastic/eui';
+
 import { error, success } from '../services/utils';
 import { ToastsContext } from './Toasts';
 import { Item, Items, Props, SrvContentTypes } from '../services/types';
 import { StateStore } from '../services/StateStore';
 import { I18nContext } from './I18nContext';
-import { EuiText } from '@elastic/eui';
-import { Message } from '../components/Message';
 
 export type DataLoadStatus = 'reset' | 'loading' | 'ready' | 'error'
 
@@ -48,13 +48,15 @@ export const AllDataProvider = ({ children }: Props) => {
           case 'success':
             setStatus('ready');
             addToast(success({
-              title: i18n('Loaded data'),
+              title: i18n('dataloader-toast-success--title'),
               text: (
-                <>
-                  <Message id={'dataloader-toast-success--pages'} placeholders={[stateStore.rawSyncData.size]}/>
+                // For some strange reason <Message id=...> does not work here -- it has empty messages table
+                <EuiText>
+                  {i18n('dataloader-toast-success--pages', stateStore.rawSyncData.size)}
                   <br/>
-                  <Message id={'dataloader-toast-success--copies'} placeholders={[stateStore.items.length]}/>
-                </>),
+                  {i18n('dataloader-toast-success--copies', stateStore.items.length)}
+                </EuiText>
+              )
             }));
             break;
           case 'debug':
@@ -66,7 +68,6 @@ export const AllDataProvider = ({ children }: Props) => {
             }));
             break;
           default:
-            debugger;
             throw new Error(res.status);
         }
       })();
@@ -99,7 +100,6 @@ export const AllDataProvider = ({ children }: Props) => {
           content: res.content,
         };
       default:
-        debugger;
         throw new Error(res.status);
     }
   }, [addToast, i18n, stateStore]);

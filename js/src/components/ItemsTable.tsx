@@ -148,15 +148,15 @@ export const ItemsTable = (
       render: (_: string, item: Item) => {
         const res = [];
         if (item.missingDeps) {
-          res.push(<EuiIconTip size={'l'} type={'alert'} color={'danger'}
+          res.push(<EuiIconTip key={'1'} size={'l'} type={'alert'} color={'danger'}
                                content={i18n('table-cell-deps-missing--tooltip')}/>);
         }
         if (item.unsyncedDeps) {
-          res.push(<EuiIconTip size={'l'} type={'alert'} color={'warning'}
+          res.push(<EuiIconTip key={'2'} size={'l'} type={'alert'} color={'warning'}
                                content={i18n('table-cell-deps-unsynced--tooltip')}/>);
         }
         if (item.staleDeps) {
-          res.push(<EuiIconTip size={'l'} type={'alert'} color={'primary'}
+          res.push(<EuiIconTip key={'3'} size={'l'} type={'alert'} color={'primary'}
                                content={i18n('table-cell-deps-stale--tooltip')}/>);
         }
         return (<>{res}</>);
@@ -209,8 +209,7 @@ export const ItemsTable = (
                 <Message id="table-cell-status--diverged-label"/>
               </EuiHealth>);
           default:
-            debugger;
-            return (<EuiText>ERROR: {item.status} - {item.dstFullTitle}</EuiText>);
+            throw new Error(`${item.status} - ${item.dstFullTitle}`);
         }
       },
     },

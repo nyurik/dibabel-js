@@ -16,7 +16,6 @@ export const User = () => {
     case UserState.LoggedIn:
       return <EuiText>{user.username}</EuiText>;
     default:
-      debugger;
       throw new Error(user.state);
   }
 };

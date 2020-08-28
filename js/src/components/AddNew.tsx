@@ -123,7 +123,6 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
         setInfo(newInfo);
         if (newInfo && newInfo.content && newInfo.content.changeType === 'new') {
           if (!comment || !commentEdited) {
-            debugger;
             setComment(fixMwLinks(await i18nInLocale(
               newInfo.newItem.lang, getSummaryMsgFromStatus('new'), getSummaryLink(newInfo.newItem))));
             setCommentEdited(false);
@@ -141,14 +140,17 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
     if (!info || !info.newItem) {
       return;
     }
-    const result = [];
-    result.push(
+
+    const result = [
+      <EuiSpacer size={'l'}/>,
       <EuiFormRow fullWidth={true} label={i18n('table-header-deps--label')}>
         <DependenciesList item={info.newItem}/>
       </EuiFormRow>
-    );
+    ];
+
     if (info.content && info.content.changeType === 'new') {
       result.push(
+        <EuiSpacer size={'l'}/>,
         <EuiFormRow fullWidth={true} label={i18n('create-page-content--label')}>
           <ItemDiffBlock type={info.newItem.type}
                          oldText={info.content.newText}
@@ -160,7 +162,6 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
   }, [i18n, info]);
 
   const setNewComment = (newComment: string) => {
-    debugger;
     newComment = newComment.trim();
     if (newComment !== comment) {
       setComment(newComment);
@@ -229,7 +230,7 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
     <EuiModalFooter>
       <Comment readOnly={false} isLoading={false} value={comment} setValue={setNewComment}/>
       <EuiButtonEmpty onClick={onClose}>{i18n('create-page-cancel--label')}</EuiButtonEmpty>
-      <EuiButton isDisabled={status !== 'loaded'}
+      <EuiButton isDisabled={status !== 'loaded' || !comment}
                  onClick={onCopy}
                  color={'primary'}
                  isLoading={status === 'saving'}
