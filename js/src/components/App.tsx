@@ -8,10 +8,10 @@ import React, { useContext, useMemo } from 'react';
 import '@elastic/eui/dist/eui_theme_light.css';
 
 // This should come last to override the defaults from EUI
-import '../App.css';
+import './App.css';
 
 // React component import
-import { EuiPage, EuiPageBody, EuiErrorBoundary } from '@elastic/eui';
+import { EuiErrorBoundary, EuiPage, EuiPageBody } from '@elastic/eui';
 import { ToastsProvider } from '../contexts/Toasts';
 import { UserProvider } from '../contexts/UserContext';
 import { SettingsContext, SettingsProvider } from '../contexts/Settings';
@@ -25,9 +25,9 @@ import { IntlProvider } from '@wikimedia/react.i18n';
 export function AppWithSettings() {
   const { locale, messages } = useContext(SettingsContext);
   return useMemo(() => (
-    <IntlProvider locale={locale} messages={messages}>
-      <I18nProvider>
-        <ToastsProvider>
+    <ToastsProvider>
+      <IntlProvider locale={locale} messages={messages}>
+        <I18nProvider>
           <UserProvider>
             <EuiPage>
               <EuiPageBody>
@@ -40,9 +40,9 @@ export function AppWithSettings() {
               </EuiPageBody>
             </EuiPage>
           </UserProvider>
-        </ToastsProvider>
-      </I18nProvider>
-    </IntlProvider>
+        </I18nProvider>
+      </IntlProvider>
+    </ToastsProvider>
   ), [locale, messages]);
 }
 

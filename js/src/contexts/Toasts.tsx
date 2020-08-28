@@ -1,9 +1,13 @@
-import React, { Dispatch, useReducer } from 'react';
-import { EuiGlobalToastList } from '@elastic/eui';
+import React, { Dispatch, useCallback, useReducer } from 'react';
+import { EuiGlobalToastList, EuiText } from '@elastic/eui';
 import { Toast as ToastWithId } from '@elastic/eui/src/components/toast/global_toast_list';
-import { Props, ToastNoId } from '../types';
+import { Props, ToastNoId } from '../services/types';
+import { error } from '../services/utils';
 
-type ToastContextType = Dispatch<ToastNoId | ToastWithId>;
+type ToastContextType = {
+  addToast: Dispatch<ToastNoId | ToastWithId>,
+  internalError: Dispatch<string>,
+};
 
 export const ToastsContext = React.createContext<ToastContextType>({} as ToastContextType);
 
@@ -25,7 +29,7 @@ const applyToastChange = (toasts: ToastWithId[], newOrExistingToast: ToastNoId |
   }
 };
 
-const ToastsViewer = ({ toasts, doToast }: { toasts: ToastWithId[], doToast: ToastContextType }) => {
+const ToastsViewer = ({ toasts, doToast }: { toasts: ToastWithId[], doToast: Dispatch<ToastWithId> }) => {
   return <EuiGlobalToastList
     toasts={toasts}
     dismissToast={doToast}
@@ -36,9 +40,18 @@ const ToastsViewer = ({ toasts, doToast }: { toasts: ToastWithId[], doToast: Toa
 export const ToastsProvider = ({ children }: Props) => {
   const [toasts, doToast] = useReducer(applyToastChange, []);
 
+  const internalError = useCallback((msg: string) => {
+    console.error(msg);
+    doToast(error({
+      title: 'INTERNAL ERROR',
+      text: (<EuiText>{msg}</EuiText>),
+    }));
+    debugger;
+  }, []);
+
   return (
     <>
-      <ToastsContext.Provider value={doToast}>
+      <ToastsContext.Provider value={{ addToast: doToast, internalError }}>
         {children}
       </ToastsContext.Provider>
       <ToastsViewer toasts={toasts} doToast={doToast}/>

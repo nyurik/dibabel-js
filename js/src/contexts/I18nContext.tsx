@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { BananaContext } from '@wikimedia/react.i18n';
-import { Props } from '../types';
+import { Props } from '../services/types';
 import { SettingsContext } from './Settings';
 
 export type I18n = (id: string, ...args: any) => string;

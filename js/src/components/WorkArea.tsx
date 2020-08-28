@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import { EuiSpacer } from '@elastic/eui';
 
-import { groupDefs, Item } from '../types';
-import { usePersistedJsonState, usePersistedState } from '../utils';
+import { groupDefs, Item } from '../services/types';
+import { usePersistedJsonState, usePersistedState } from '../services/utils';
 import { SearchBar } from './SearchBar';
 import { Tables } from './Tables';
 import { ItemViewer } from './ItemViewer';

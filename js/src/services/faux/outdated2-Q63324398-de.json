@@ -1,0 +1,3568 @@
+{
+  "pages": [
+    {
+      "primaryTitle": "Template:Shared Template Warning",
+      "type": "sync",
+      "primarySite": "www.mediawiki.org",
+      "qid": "Q63324398",
+      "primaryRevId": 3406824,
+      "dependencies": [
+        "Template:Documentation"
+      ],
+      "copies": [
+        {
+          "domain": "ace.wikipedia.org",
+          "title": "Seunaleuëk:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T14:33:31Z"
+        },
+        {
+          "domain": "af.wikipedia.org",
+          "title": "Sjabloon:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T22:07:30Z"
+        },
+        {
+          "domain": "ak.wikipedia.org",
+          "title": "Nhwɛsode:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T22:07:40Z"
+        },
+        {
+          "domain": "als.wikipedia.org",
+          "title": "Vorlage:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T22:07:50Z"
+        },
+        {
+          "domain": "am.wikipedia.org",
+          "title": "መለጠፊያ:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T22:08:00Z"
+        },
+        {
+          "domain": "an.wikipedia.org",
+          "title": "Plantilla:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T22:08:10Z"
+        },
+        {
+          "domain": "ar.wiktionary.org",
+          "title": "قالب:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T10:54:01Z"
+        },
+        {
+          "domain": "arz.wikipedia.org",
+          "title": "قالب:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T14:34:26Z"
+        },
+        {
+          "domain": "as.wikipedia.org",
+          "title": "সাঁচ:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T14:35:21Z"
+        },
+        {
+          "domain": "ast.wikipedia.org",
+          "title": "Plantía:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T22:08:20Z"
+        },
+        {
+          "domain": "ay.wikipedia.org",
+          "title": "Plantilla:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T14:36:12Z"
+        },
+        {
+          "domain": "az.wikipedia.org",
+          "title": "Şablon:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T22:08:30Z"
+        },
+        {
+          "domain": "azb.wikipedia.org",
+          "title": "شابلون:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T14:36:56Z"
+        },
+        {
+          "domain": "ba.wikipedia.org",
+          "title": "Ҡалып:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T22:08:40Z"
+        },
+        {
+          "domain": "bar.wikipedia.org",
+          "title": "Vorlog:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T22:08:50Z"
+        },
+        {
+          "domain": "bcl.wikipedia.org",
+          "title": "Plantilya:Shared Template Warning",
+          "status": "diverged",
+          "hash": "9c5490743b707674d7b0f64284bec29bb1c4be66",
+          "timestamp": "2019-05-13T17:42:08Z"
+        },
+        {
+          "domain": "be.wikipedia.org",
+          "title": "Шаблон:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:42:58Z"
+        },
+        {
+          "domain": "bg.wikipedia.org",
+          "title": "Шаблон:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:43:09Z"
+        },
+        {
+          "domain": "bh.wikipedia.org",
+          "title": "टेम्पलेट:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:43:19Z"
+        },
+        {
+          "domain": "bi.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T14:38:38Z"
+        },
+        {
+          "domain": "bjn.wikipedia.org",
+          "title": "Citakan:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T14:39:19Z"
+        },
+        {
+          "domain": "bn.wikipedia.org",
+          "title": "টেমপ্লেট:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:43:29Z"
+        },
+        {
+          "domain": "bn.wikivoyage.org",
+          "title": "টেমপ্লেট:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T11:01:22Z"
+        },
+        {
+          "domain": "bo.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:44:17Z"
+        },
+        {
+          "domain": "bpy.wikipedia.org",
+          "title": "মডেল:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:44:27Z"
+        },
+        {
+          "domain": "br.wikipedia.org",
+          "title": "Patrom:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:44:37Z"
+        },
+        {
+          "domain": "bs.wikipedia.org",
+          "title": "Šablon:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:44:48Z"
+        },
+        {
+          "domain": "bug.wikipedia.org",
+          "title": "Templat:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:44:58Z"
+        },
+        {
+          "domain": "ca.wikipedia.org",
+          "title": "Plantilla:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:45:08Z"
+        },
+        {
+          "domain": "cbk-zam.wikipedia.org",
+          "title": "Plantilla:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:16:37Z"
+        },
+        {
+          "domain": "cdo.wikipedia.org",
+          "title": "模板:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:17:29Z"
+        },
+        {
+          "domain": "ce.wikipedia.org",
+          "title": "Кеп:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:45:19Z"
+        },
+        {
+          "domain": "ceb.wikipedia.org",
+          "title": "Plantilya:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:45:29Z"
+        },
+        {
+          "domain": "ch.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:18:19Z"
+        },
+        {
+          "domain": "ckb.wikipedia.org",
+          "title": "داڕێژە:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:19:11Z"
+        },
+        {
+          "domain": "commons.wikimedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:45:39Z"
+        },
+        {
+          "domain": "cs.wikipedia.org",
+          "title": "Šablona:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:45:50Z"
+        },
+        {
+          "domain": "cv.wikipedia.org",
+          "title": "Шаблон:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:46:00Z"
+        },
+        {
+          "domain": "cy.wikipedia.org",
+          "title": "Nodyn:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:46:11Z"
+        },
+        {
+          "domain": "da.wikipedia.org",
+          "title": "Skabelon:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:46:21Z"
+        },
+        {
+          "domain": "de.wikibooks.org",
+          "title": "Vorlage:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-19T09:29:10Z"
+        },
+        {
+          "domain": "de.wikipedia.org",
+          "title": "Vorlage:Shared Template Warning",
+          "status": "outdated",
+          "hash": "05b8ab0ce5d9c94652079a1d44f60843c0e35243",
+          "timestamp": "2019-05-04T04:49:01Z",
+          "behind": 2,
+          "matchedRevId": 3226665
+        },
+        {
+          "domain": "din.wikipedia.org",
+          "title": "Macuëc:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:20:08Z"
+        },
+        {
+          "domain": "diq.wikipedia.org",
+          "title": "Şablon:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:20:57Z"
+        },
+        {
+          "domain": "dty.wikipedia.org",
+          "title": "ढाँचा:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T16:15:46Z"
+        },
+        {
+          "domain": "dv.wikipedia.org",
+          "title": "ފަންވަތް:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:25:34Z"
+        },
+        {
+          "domain": "ee.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:09:02Z"
+        },
+        {
+          "domain": "el.wikipedia.org",
+          "title": "Πρότυπο:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:46:32Z"
+        },
+        {
+          "domain": "eml.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:49:53Z"
+        },
+        {
+          "domain": "en.wikibooks.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T11:57:16Z"
+        },
+        {
+          "domain": "en.wikiquote.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T11:55:51Z"
+        },
+        {
+          "domain": "en.wikiversity.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T11:16:14Z"
+        },
+        {
+          "domain": "en.wikivoyage.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T11:00:17Z"
+        },
+        {
+          "domain": "eo.wikipedia.org",
+          "title": "Ŝablono:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:53:35Z"
+        },
+        {
+          "domain": "es.wikibooks.org",
+          "title": "Plantilla:Shared Template Warning",
+          "status": "diverged",
+          "hash": "90ba107005b842d6440b0558847b78102c260c75",
+          "timestamp": "2019-05-19T09:47:37Z"
+        },
+        {
+          "domain": "es.wikipedia.org",
+          "title": "Plantilla:Shared Template Warning",
+          "status": "diverged",
+          "hash": "7b5f104fa14f3919c6b8a49acf4a2d3cd21a4e71",
+          "timestamp": "2020-06-27T15:42:43Z"
+        },
+        {
+          "domain": "et.wikipedia.org",
+          "title": "Mall:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:53:55Z"
+        },
+        {
+          "domain": "eu.wikipedia.org",
+          "title": "Txantiloi:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:54:05Z"
+        },
+        {
+          "domain": "ext.wikipedia.org",
+          "title": "Prantilla:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:27:07Z"
+        },
+        {
+          "domain": "ff.wikipedia.org",
+          "title": "Modèle:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:27:55Z"
+        },
+        {
+          "domain": "fi.wikipedia.org",
+          "title": "Malline:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:54:15Z"
+        },
+        {
+          "domain": "fi.wikivoyage.org",
+          "title": "Malline:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T11:02:11Z"
+        },
+        {
+          "domain": "fo.wikipedia.org",
+          "title": "Fyrimynd:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:28:43Z"
+        },
+        {
+          "domain": "fr.wikibooks.org",
+          "title": "Modèle:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-19T05:24:40Z"
+        },
+        {
+          "domain": "fr.wikinews.org",
+          "title": "Modèle:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-19T05:25:51Z"
+        },
+        {
+          "domain": "fr.wikipedia.org",
+          "title": "Modèle:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:54:25Z"
+        },
+        {
+          "domain": "fr.wikiquote.org",
+          "title": "Modèle:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-19T05:27:33Z"
+        },
+        {
+          "domain": "fr.wikisource.org",
+          "title": "Modèle:Shared Template Warning",
+          "status": "diverged",
+          "hash": "5ef22f42eabba1cdeef184e0455a5ef3c2c6f860",
+          "timestamp": "2019-06-14T22:45:25Z"
+        },
+        {
+          "domain": "fr.wikiversity.org",
+          "title": "Modèle:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-19T05:31:32Z"
+        },
+        {
+          "domain": "fr.wikivoyage.org",
+          "title": "Modèle:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-19T05:33:04Z"
+        },
+        {
+          "domain": "fr.wiktionary.org",
+          "title": "Modèle:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-19T05:37:48Z"
+        },
+        {
+          "domain": "frp.wikipedia.org",
+          "title": "Modèlo:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:29:32Z"
+        },
+        {
+          "domain": "frr.wikipedia.org",
+          "title": "Vorlage:Shared Template Warning",
+          "status": "diverged",
+          "hash": "f75115031184089ffa82431ea03b0804afaf6f1c",
+          "timestamp": "2019-05-16T04:42:31Z"
+        },
+        {
+          "domain": "fy.wikipedia.org",
+          "title": "Berjocht:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:31:35Z"
+        },
+        {
+          "domain": "ga.wikipedia.org",
+          "title": "Teimpléad:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:54:35Z"
+        },
+        {
+          "domain": "gd.wikipedia.org",
+          "title": "Teamplaid:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:42:12Z"
+        },
+        {
+          "domain": "gl.wikipedia.org",
+          "title": "Modelo:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:54:44Z"
+        },
+        {
+          "domain": "gn.wikipedia.org",
+          "title": "Tembiecharã:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:43:51Z"
+        },
+        {
+          "domain": "gom.wikipedia.org",
+          "title": "सांचो:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:44:41Z"
+        },
+        {
+          "domain": "gor.wikipedia.org",
+          "title": "Templat:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:45:29Z"
+        },
+        {
+          "domain": "gu.wikipedia.org",
+          "title": "ઢાંચો:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:54:54Z"
+        },
+        {
+          "domain": "hak.wikipedia.org",
+          "title": "模板:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:46:24Z"
+        },
+        {
+          "domain": "he.wikipedia.org",
+          "title": "תבנית:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2020-08-16T18:45:25Z"
+        },
+        {
+          "domain": "hi.wikipedia.org",
+          "title": "साँचा:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:55:13Z"
+        },
+        {
+          "domain": "hi.wikivoyage.org",
+          "title": "साँचा:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T11:03:02Z"
+        },
+        {
+          "domain": "hif.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:47:14Z"
+        },
+        {
+          "domain": "hr.wikipedia.org",
+          "title": "Predložak:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:55:22Z"
+        },
+        {
+          "domain": "hu.wikipedia.org",
+          "title": "Sablon:Megosztott sablon figyelmeztetés",
+          "status": "diverged",
+          "hash": "c646070bac88d8d6135c3ee157341f65073aac07",
+          "timestamp": "2019-07-21T18:23:57Z"
+        },
+        {
+          "domain": "hu.wikisource.org",
+          "title": "Sablon:Megosztott sablon figyelmeztetés",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2020-08-14T22:48:18Z"
+        },
+        {
+          "domain": "hu.wiktionary.org",
+          "title": "Sablon:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T10:56:54Z"
+        },
+        {
+          "domain": "hy.wikipedia.org",
+          "title": "Կաղապար:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:55:42Z"
+        },
+        {
+          "domain": "ia.wikipedia.org",
+          "title": "Patrono:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:48:02Z"
+        },
+        {
+          "domain": "id.wikipedia.org",
+          "title": "Templat:Shared Template Warning",
+          "status": "diverged",
+          "hash": "301f366e9c16872fbecf8432eab683f5bbe673e0",
+          "timestamp": "2019-05-10T23:55:52Z"
+        },
+        {
+          "domain": "ilo.wikipedia.org",
+          "title": "Plantilia:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:56:02Z"
+        },
+        {
+          "domain": "io.wikipedia.org",
+          "title": "Shablono:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:48:50Z"
+        },
+        {
+          "domain": "it.wikibooks.org",
+          "title": "Template:Shared Template Warning",
+          "status": "diverged",
+          "hash": "0b6e3640b551888fbfba2884cc7f69239214defd",
+          "timestamp": "2019-05-19T10:00:54Z"
+        },
+        {
+          "domain": "it.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:56:14Z"
+        },
+        {
+          "domain": "it.wikivoyage.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T13:03:34Z"
+        },
+        {
+          "domain": "it.wiktionary.org",
+          "title": "Template:Shared Template Warning",
+          "status": "diverged",
+          "hash": "749e38b2302b2bc920d617067c55d81b72dc1054",
+          "timestamp": "2019-07-02T12:57:59Z"
+        },
+        {
+          "domain": "ja.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:56:24Z"
+        },
+        {
+          "domain": "jv.wikipedia.org",
+          "title": "Cithakan:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:49:32Z"
+        },
+        {
+          "domain": "ka.wikipedia.org",
+          "title": "თარგი:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:56:34Z"
+        },
+        {
+          "domain": "kbp.wikipedia.org",
+          "title": "Modèle:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T04:54:24Z"
+        },
+        {
+          "domain": "kg.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T04:55:40Z"
+        },
+        {
+          "domain": "km.wikipedia.org",
+          "title": "ទំព័រគំរូ:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T04:56:42Z"
+        },
+        {
+          "domain": "kn.wikipedia.org",
+          "title": "ಟೆಂಪ್ಲೇಟು:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:56:43Z"
+        },
+        {
+          "domain": "ko.wikipedia.org",
+          "title": "틀:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:56:53Z"
+        },
+        {
+          "domain": "ks.wikipedia.org",
+          "title": "فرما:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-06-08T16:08:28Z"
+        },
+        {
+          "domain": "ku.wikipedia.org",
+          "title": "Şablon:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T04:58:11Z"
+        },
+        {
+          "domain": "ky.wikipedia.org",
+          "title": "Калып:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T05:00:40Z"
+        },
+        {
+          "domain": "la.wikipedia.org",
+          "title": "Formula:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:57:03Z"
+        },
+        {
+          "domain": "lad.wikipedia.org",
+          "title": "Xablón:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T05:01:43Z"
+        },
+        {
+          "domain": "lij.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T10:24:04Z"
+        },
+        {
+          "domain": "lmo.wikipedia.org",
+          "title": "Mudel:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T05:06:15Z"
+        },
+        {
+          "domain": "ln.wikipedia.org",
+          "title": "Modèle:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T05:07:57Z"
+        },
+        {
+          "domain": "lo.wikipedia.org",
+          "title": "ແມ່ແບບ:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T05:09:37Z"
+        },
+        {
+          "domain": "lrc.wikipedia.org",
+          "title": "چوٙأ:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T05:10:28Z"
+        },
+        {
+          "domain": "lt.wikipedia.org",
+          "title": "Šablonas:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:57:12Z"
+        },
+        {
+          "domain": "ltg.wikipedia.org",
+          "title": "Taiss:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T05:11:28Z"
+        },
+        {
+          "domain": "lv.wikipedia.org",
+          "title": "Veidne:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T10:20:48Z"
+        },
+        {
+          "domain": "mai.wikipedia.org",
+          "title": "आकृति:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:57:22Z"
+        },
+        {
+          "domain": "mg.wikipedia.org",
+          "title": "Endrika:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:57:32Z"
+        },
+        {
+          "domain": "mhr.wikipedia.org",
+          "title": "Кышкар:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:57:41Z"
+        },
+        {
+          "domain": "min.wikipedia.org",
+          "title": "Templat:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:57:51Z"
+        },
+        {
+          "domain": "mk.wikipedia.org",
+          "title": "Предлошка:Shared Template Warning",
+          "status": "diverged",
+          "hash": "82b6fafc21c26b09b4a848ae28a20bc4ebaa5cbc",
+          "timestamp": "2019-05-17T06:24:10Z"
+        },
+        {
+          "domain": "ml.wikipedia.org",
+          "title": "ഫലകം:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:58:01Z"
+        },
+        {
+          "domain": "mn.wikipedia.org",
+          "title": "Загвар:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T05:16:08Z"
+        },
+        {
+          "domain": "mr.wikipedia.org",
+          "title": "साचा:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:58:11Z"
+        },
+        {
+          "domain": "ms.wikipedia.org",
+          "title": "Templat:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:58:22Z"
+        },
+        {
+          "domain": "mwl.wikipedia.org",
+          "title": "Modelo:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T05:17:38Z"
+        },
+        {
+          "domain": "my.wikipedia.org",
+          "title": "တမ်းပလိတ်:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:58:31Z"
+        },
+        {
+          "domain": "mzn.wikipedia.org",
+          "title": "شابلون:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T05:18:58Z"
+        },
+        {
+          "domain": "nah.wikipedia.org",
+          "title": "Nemachiyōtīlli:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T05:19:56Z"
+        },
+        {
+          "domain": "nap.wikipedia.org",
+          "title": "Modello:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T05:21:17Z"
+        },
+        {
+          "domain": "nds.wikipedia.org",
+          "title": "Vörlaag:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T06:58:48Z"
+        },
+        {
+          "domain": "ne.wikipedia.org",
+          "title": "ढाँचा:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:58:41Z"
+        },
+        {
+          "domain": "new.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:58:51Z"
+        },
+        {
+          "domain": "nn.wikipedia.org",
+          "title": "Mal:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:59:10Z"
+        },
+        {
+          "domain": "no.wikipedia.org",
+          "title": "Mal:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:59:21Z"
+        },
+        {
+          "domain": "nov.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T06:59:53Z"
+        },
+        {
+          "domain": "oc.wikipedia.org",
+          "title": "Modèl:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:59:30Z"
+        },
+        {
+          "domain": "or.wikipedia.org",
+          "title": "ଛାଞ୍ଚ:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:59:40Z"
+        },
+        {
+          "domain": "pa.wikipedia.org",
+          "title": "ਫਰਮਾ:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-10T23:59:50Z"
+        },
+        {
+          "domain": "pag.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T07:00:53Z"
+        },
+        {
+          "domain": "pam.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T07:01:38Z"
+        },
+        {
+          "domain": "pfl.wikipedia.org",
+          "title": "Vorlach:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T07:02:19Z"
+        },
+        {
+          "domain": "pi.wikipedia.org",
+          "title": "पटिरूप:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:00:02Z"
+        },
+        {
+          "domain": "pih.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T07:03:04Z"
+        },
+        {
+          "domain": "pl.wikipedia.org",
+          "title": "Szablon:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:00:14Z"
+        },
+        {
+          "domain": "pnb.wikipedia.org",
+          "title": "سانچہ:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T07:03:57Z"
+        },
+        {
+          "domain": "ps.wikipedia.org",
+          "title": "کينډۍ:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-16T03:06:06Z"
+        },
+        {
+          "domain": "pt.wikipedia.org",
+          "title": "Predefinição:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:00:26Z"
+        },
+        {
+          "domain": "pt.wikivoyage.org",
+          "title": "Predefinição:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T11:04:40Z"
+        },
+        {
+          "domain": "rn.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T07:05:19Z"
+        },
+        {
+          "domain": "ro.wikipedia.org",
+          "title": "Format:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:00:39Z"
+        },
+        {
+          "domain": "ru.wikipedia.org",
+          "title": "Шаблон:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:00:51Z"
+        },
+        {
+          "domain": "sa.wikipedia.org",
+          "title": "फलकम्:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:01:01Z"
+        },
+        {
+          "domain": "sah.wikipedia.org",
+          "title": "Халыып:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:01:11Z"
+        },
+        {
+          "domain": "sc.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T09:19:41Z"
+        },
+        {
+          "domain": "scn.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T09:18:58Z"
+        },
+        {
+          "domain": "sco.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:01:20Z"
+        },
+        {
+          "domain": "sd.wikipedia.org",
+          "title": "سانچو:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T09:18:10Z"
+        },
+        {
+          "domain": "se.wikipedia.org",
+          "title": "Málle:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:01:31Z"
+        },
+        {
+          "domain": "sh.wikipedia.org",
+          "title": "Šablon:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:01:40Z"
+        },
+        {
+          "domain": "shn.wikipedia.org",
+          "title": "ထႅမ်းပလဵၵ်ႉ:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T09:17:24Z"
+        },
+        {
+          "domain": "si.wikipedia.org",
+          "title": "සැකිල්ල:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:01:50Z"
+        },
+        {
+          "domain": "simple.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:02:01Z"
+        },
+        {
+          "domain": "simple.wiktionary.org",
+          "title": "Template:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T10:59:00Z"
+        },
+        {
+          "domain": "sk.wikipedia.org",
+          "title": "Šablóna:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:02:11Z"
+        },
+        {
+          "domain": "sl.wikipedia.org",
+          "title": "Predloga:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:02:20Z"
+        },
+        {
+          "domain": "sn.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T09:16:40Z"
+        },
+        {
+          "domain": "species.wikimedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T10:52:39Z"
+        },
+        {
+          "domain": "sq.wikipedia.org",
+          "title": "Stampa:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T09:15:50Z"
+        },
+        {
+          "domain": "sr.wikipedia.org",
+          "title": "Шаблон:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:02:30Z"
+        },
+        {
+          "domain": "ss.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T09:14:59Z"
+        },
+        {
+          "domain": "su.wikipedia.org",
+          "title": "Citakan:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:02:40Z"
+        },
+        {
+          "domain": "sv.wikipedia.org",
+          "title": "Mall:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:02:49Z"
+        },
+        {
+          "domain": "sw.wikipedia.org",
+          "title": "Kigezo:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:02:59Z"
+        },
+        {
+          "domain": "szy.wikipedia.org",
+          "title": "taazihan mitudung:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2020-07-14T23:47:59Z"
+        },
+        {
+          "domain": "ta.wikipedia.org",
+          "title": "வார்ப்புரு:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:03:09Z"
+        },
+        {
+          "domain": "tcy.wikipedia.org",
+          "title": "ಟೆಂಪ್ಲೇಟ್:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T09:21:51Z"
+        },
+        {
+          "domain": "te.wikipedia.org",
+          "title": "మూస:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:03:19Z"
+        },
+        {
+          "domain": "tet.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T09:22:40Z"
+        },
+        {
+          "domain": "tg.wikipedia.org",
+          "title": "Шаблон:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T09:23:36Z"
+        },
+        {
+          "domain": "th.wikipedia.org",
+          "title": "แม่แบบ:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:03:29Z"
+        },
+        {
+          "domain": "tl.wikipedia.org",
+          "title": "Padron:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T09:24:25Z"
+        },
+        {
+          "domain": "tt.wikipedia.org",
+          "title": "Калып:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T09:25:15Z"
+        },
+        {
+          "domain": "uk.wikipedia.org",
+          "title": "Шаблон:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:03:48Z"
+        },
+        {
+          "domain": "uk.wikivoyage.org",
+          "title": "Шаблон:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T11:05:35Z"
+        },
+        {
+          "domain": "ur.wikipedia.org",
+          "title": "سانچہ:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:03:59Z"
+        },
+        {
+          "domain": "uz.wikipedia.org",
+          "title": "Andoza:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:04:09Z"
+        },
+        {
+          "domain": "vec.wikipedia.org",
+          "title": "Modèl:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2020-08-01T16:49:24Z"
+        },
+        {
+          "domain": "vi.wikipedia.org",
+          "title": "Bản mẫu:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:04:18Z"
+        },
+        {
+          "domain": "vo.wikipedia.org",
+          "title": "Samafomot:Shared Template:Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:04:28Z"
+        },
+        {
+          "domain": "wa.wikipedia.org",
+          "title": "Modele:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:04:37Z"
+        },
+        {
+          "domain": "war.wikipedia.org",
+          "title": "Batakan:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:04:47Z"
+        },
+        {
+          "domain": "wuu.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T09:26:04Z"
+        },
+        {
+          "domain": "xal.wikipedia.org",
+          "title": "Кевләр:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T09:26:52Z"
+        },
+        {
+          "domain": "xmf.wikipedia.org",
+          "title": "თარგი:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:04:57Z"
+        },
+        {
+          "domain": "yo.wikipedia.org",
+          "title": "Àdàkọ:Shared Template Warning",
+          "status": "unlocalized",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T09:27:40Z"
+        },
+        {
+          "domain": "zh-classical.wikipedia.org",
+          "title": "模板:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T09:28:28Z"
+        },
+        {
+          "domain": "zh-min-nan.wikipedia.org",
+          "title": "Pang-bô͘:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:05:06Z"
+        },
+        {
+          "domain": "zh-yue.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-17T09:20:54Z"
+        },
+        {
+          "domain": "zh.wikipedia.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-11T00:05:16Z"
+        },
+        {
+          "domain": "zh.wikisource.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-08-04T22:42:57Z"
+        },
+        {
+          "domain": "zh.wikivoyage.org",
+          "title": "Template:Shared Template Warning",
+          "status": "ok",
+          "hash": "c5b12497baea46464c8d82f0a25ab36b6178c871",
+          "timestamp": "2019-05-13T11:12:08Z"
+        }
+      ]
+    },
+    {
+      "primaryTitle": "Template:Documentation",
+      "type": "manual_sync",
+      "primarySite": "www.mediawiki.org",
+      "qid": "Q4608595",
+      "copies": [
+        {
+          "domain": "scn.wikipedia.org",
+          "title": "Template:Man"
+        },
+        {
+          "domain": "sa.wikisource.org",
+          "title": "फलकम्:Documentation"
+        },
+        {
+          "domain": "sah.wikipedia.org",
+          "title": "Халыып:Doc"
+        },
+        {
+          "domain": "sah.wikisource.org",
+          "title": "Халыып:Documentation"
+        },
+        {
+          "domain": "sc.wikipedia.org",
+          "title": "Template:Man"
+        },
+        {
+          "domain": "rue.wikipedia.org",
+          "title": "Шаблона:Documentation"
+        },
+        {
+          "domain": "rw.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "sa.wikipedia.org",
+          "title": "फलकम्:Documentation, template"
+        },
+        {
+          "domain": "sa.wikiquote.org",
+          "title": "फलकम्:Documentation"
+        },
+        {
+          "domain": "ru.wiktionary.org",
+          "title": "Шаблон:doc"
+        },
+        {
+          "domain": "sd.wikipedia.org",
+          "title": "سانچو:دستاويز"
+        },
+        {
+          "domain": "sco.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "si.wikipedia.org",
+          "title": "සැකිල්ල:ප්‍රලේඛනය"
+        },
+        {
+          "domain": "shn.wikipedia.org",
+          "title": "ထႅမ်းပလဵၵ်ႉ:Documentation"
+        },
+        {
+          "domain": "simple.wiktionary.org",
+          "title": "Template:documentation"
+        },
+        {
+          "domain": "sk.wikipedia.org",
+          "title": "Šablóna:Dokumentácia"
+        },
+        {
+          "domain": "simple.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "ru.wikiquote.org",
+          "title": "Шаблон:Doc"
+        },
+        {
+          "domain": "ru.wikisource.org",
+          "title": "Шаблон:Документация"
+        },
+        {
+          "domain": "ru.wikivoyage.org",
+          "title": "Шаблон:Documentation"
+        },
+        {
+          "domain": "ru.wikipedia.org",
+          "title": "Шаблон:Doc"
+        },
+        {
+          "domain": "ro.wikibooks.org",
+          "title": "Format:Documentație"
+        },
+        {
+          "domain": "ro.wikinews.org",
+          "title": "Format:Documentație"
+        },
+        {
+          "domain": "rm.wikipedia.org",
+          "title": "Model:Documentation"
+        },
+        {
+          "domain": "rn.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "pt.wiktionary.org",
+          "title": "Predefinição:Documentação"
+        },
+        {
+          "domain": "qu.wikipedia.org",
+          "title": "Plantilla:Plantillata llamk'achiy"
+        },
+        {
+          "domain": "ro.wikipedia.org",
+          "title": "Format:Documentație"
+        },
+        {
+          "domain": "roa-tara.wikipedia.org",
+          "title": "Template:Man"
+        },
+        {
+          "domain": "ru.wikibooks.org",
+          "title": "Шаблон:Doc"
+        },
+        {
+          "domain": "ru.wikinews.org",
+          "title": "Шаблон:Doc"
+        },
+        {
+          "domain": "ro.wikiquote.org",
+          "title": "Format:Documentație"
+        },
+        {
+          "domain": "ro.wikisource.org",
+          "title": "Format:Documentație"
+        },
+        {
+          "domain": "ro.wikivoyage.org",
+          "title": "Format:Documentație"
+        },
+        {
+          "domain": "pt.wikiversity.org",
+          "title": "Predefinição:Documentação"
+        },
+        {
+          "domain": "pt.wikivoyage.org",
+          "title": "Predefinição:Documentação"
+        },
+        {
+          "domain": "pt.wikiquote.org",
+          "title": "Predefinição:Instruções da predefinição"
+        },
+        {
+          "domain": "pt.wikisource.org",
+          "title": "Predefinição:Documentação"
+        },
+        {
+          "domain": "pt.wikipedia.org",
+          "title": "Predefinição:Documentação"
+        },
+        {
+          "domain": "pnb.wikipedia.org",
+          "title": "سانچہ:Documentation"
+        },
+        {
+          "domain": "ps.wikivoyage.org",
+          "title": "کينډۍ:Documentation"
+        },
+        {
+          "domain": "pt.wikibooks.org",
+          "title": "Predefinição:Documentação"
+        },
+        {
+          "domain": "ps.wikipedia.org",
+          "title": "کينډۍ:لاسوند"
+        },
+        {
+          "domain": "pl.wikipedia.org",
+          "title": "Szablon:Dokumentacja"
+        },
+        {
+          "domain": "pl.wiktionary.org",
+          "title": "Szablon:dokumentacja"
+        },
+        {
+          "domain": "pms.wikipedia.org",
+          "title": "Stamp:Spiegon"
+        },
+        {
+          "domain": "pl.wikivoyage.org",
+          "title": "Szablon:Dokumentacja"
+        },
+        {
+          "domain": "pl.wikiquote.org",
+          "title": "Szablon:Dokumentacja"
+        },
+        {
+          "domain": "pl.wikinews.org",
+          "title": "Szablon:Dokumentacja"
+        },
+        {
+          "domain": "pfl.wikipedia.org",
+          "title": "Vorlach:Dokumentation"
+        },
+        {
+          "domain": "pi.wikipedia.org",
+          "title": "पटिरूप:Documentation"
+        },
+        {
+          "domain": "pih.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "pl.wikibooks.org",
+          "title": "Szablon:Dokumentacja"
+        },
+        {
+          "domain": "nso.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "ny.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "nrm.wikipedia.org",
+          "title": "Modèle:Documentation"
+        },
+        {
+          "domain": "nov.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "pam.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "pap.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "pcd.wikipedia.org",
+          "title": "Modèle:Documentation"
+        },
+        {
+          "domain": "pa.wikipedia.org",
+          "title": "ਫਰਮਾ:Reflist"
+        },
+        {
+          "domain": "pa.wikisource.org",
+          "title": "ਫਰਮਾ:Documentation"
+        },
+        {
+          "domain": "pag.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "or.wikisource.org",
+          "title": "ଛାଞ୍ଚ:Documentation"
+        },
+        {
+          "domain": "os.wikipedia.org",
+          "title": "Хуызæг:Doc"
+        },
+        {
+          "domain": "oc.wikipedia.org",
+          "title": "Modèl:Doc modèl"
+        },
+        {
+          "domain": "olo.wikipedia.org",
+          "title": "Šablonu:Doc"
+        },
+        {
+          "domain": "om.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "or.wikipedia.org",
+          "title": "ଛାଞ୍ଚ:Documentation"
+        },
+        {
+          "domain": "no.wikipedia.org",
+          "title": "Mal:Dokumentasjon"
+        },
+        {
+          "domain": "no.wikiquote.org",
+          "title": "Mal:Dokumentasjon"
+        },
+        {
+          "domain": "no.wikisource.org",
+          "title": "Mal:Dokumentasjon"
+        },
+        {
+          "domain": "nn.wikipedia.org",
+          "title": "Mal:Dokumentasjon"
+        },
+        {
+          "domain": "no.wikinews.org",
+          "title": "Mal:Dokumentasjon"
+        },
+        {
+          "domain": "nl.wikisource.org",
+          "title": "Sjabloon:Sjabdoc"
+        },
+        {
+          "domain": "nl.wikivoyage.org",
+          "title": "Sjabloon:Documentation"
+        },
+        {
+          "domain": "nl.wikipedia.org",
+          "title": "Sjabloon:Sjabdoc"
+        },
+        {
+          "domain": "nds.wikipedia.org",
+          "title": "Vörlaag:Dokumentatschoon"
+        },
+        {
+          "domain": "ne.wikipedia.org",
+          "title": "ढाँचा:Documentation"
+        },
+        {
+          "domain": "nds-nl.wikipedia.org",
+          "title": "Mal:Dokumentatie"
+        },
+        {
+          "domain": "mzn.wikipedia.org",
+          "title": "شابلون:توضیحات"
+        },
+        {
+          "domain": "nah.wikipedia.org",
+          "title": "Nemachiyōtīlli:Documentation"
+        },
+        {
+          "domain": "nap.wikipedia.org",
+          "title": "Modello:Man"
+        },
+        {
+          "domain": "myv.wikipedia.org",
+          "title": "ЛопаПарцун:Doc"
+        },
+        {
+          "domain": "nl.wikibooks.org",
+          "title": "Sjabloon:Sjabdoc"
+        },
+        {
+          "domain": "new.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "mt.wikipedia.org",
+          "title": "Mudell:Dokumentazzjoni"
+        },
+        {
+          "domain": "mwl.wikipedia.org",
+          "title": "Modelo:Documentaçon"
+        },
+        {
+          "domain": "my.wikipedia.org",
+          "title": "တမ်းပလိတ်:Documentation"
+        },
+        {
+          "domain": "ms.wikipedia.org",
+          "title": "Templat:Pendokumenan"
+        },
+        {
+          "domain": "ml.wikisource.org",
+          "title": "ഫലകം:Documentation"
+        },
+        {
+          "domain": "mn.wikipedia.org",
+          "title": "Загвар:Documentation"
+        },
+        {
+          "domain": "mnw.wikipedia.org",
+          "title": "ထာမ်ပလိက်:Documentation"
+        },
+        {
+          "domain": "mr.wikibooks.org",
+          "title": "साचा:Documentation"
+        },
+        {
+          "domain": "ml.wikipedia.org",
+          "title": "ഫലകം:വിവരണം"
+        },
+        {
+          "domain": "mr.wikiquote.org",
+          "title": "साचा:Documentation"
+        },
+        {
+          "domain": "mr.wikisource.org",
+          "title": "साचा:Documentation"
+        },
+        {
+          "domain": "mrj.wikipedia.org",
+          "title": "Шаблон:Doc"
+        },
+        {
+          "domain": "mr.wikipedia.org",
+          "title": "साचा:Documentation"
+        },
+        {
+          "domain": "mk.wikisource.org",
+          "title": "Предлошка:Документација"
+        },
+        {
+          "domain": "he.wikivoyage.org",
+          "title": "תבנית:תיעוד"
+        },
+        {
+          "domain": "hif.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "hr.wikibooks.org",
+          "title": "Predložak:Dokumentacija"
+        },
+        {
+          "domain": "hi.wikiquote.org",
+          "title": "साँचा:प्रलेखन"
+        },
+        {
+          "domain": "hi.wikiversity.org",
+          "title": "साँचा:Documentation"
+        },
+        {
+          "domain": "hi.wikivoyage.org",
+          "title": "साँचा:Documentation"
+        },
+        {
+          "domain": "hi.wikipedia.org",
+          "title": "साँचा:Documentation"
+        },
+        {
+          "domain": "hu.wikisource.org",
+          "title": "Sablon:Sablondokumentáció"
+        },
+        {
+          "domain": "hu.wiktionary.org",
+          "title": "Sablon:Sablondokumentáció"
+        },
+        {
+          "domain": "hu.wikiquote.org",
+          "title": "Sablon:Sablondokumentáció"
+        },
+        {
+          "domain": "hu.wikipedia.org",
+          "title": "Sablon:Sablondokumentáció"
+        },
+        {
+          "domain": "hy.wikipedia.org",
+          "title": "Կաղապար:Պարզաբանում"
+        },
+        {
+          "domain": "hsb.wikipedia.org",
+          "title": "Předłoha:Dokumentacija"
+        },
+        {
+          "domain": "hr.wikipedia.org",
+          "title": "Predložak:Dokumentacija"
+        },
+        {
+          "domain": "ht.wikipedia.org",
+          "title": "Modèl:Dokimantasyon"
+        },
+        {
+          "domain": "hu.wikibooks.org",
+          "title": "Sablon:Sablondokumentáció"
+        },
+        {
+          "domain": "hu.wikinews.org",
+          "title": "Sablon:Sablondokumentáció"
+        },
+        {
+          "domain": "fy.wikipedia.org",
+          "title": "Berjocht:Documentation"
+        },
+        {
+          "domain": "fr.wiktionary.org",
+          "title": "Modèle:Documentation"
+        },
+        {
+          "domain": "frp.wikipedia.org",
+          "title": "Modèlo:Documentacion"
+        },
+        {
+          "domain": "fur.wikipedia.org",
+          "title": "Model:Man"
+        },
+        {
+          "domain": "fr.wikivoyage.org",
+          "title": "Modèle:Documentation"
+        },
+        {
+          "domain": "fr.wikisource.org",
+          "title": "Modèle:Documentation"
+        },
+        {
+          "domain": "fr.wikiversity.org",
+          "title": "Modèle:Documentation"
+        },
+        {
+          "domain": "gl.wikibooks.org",
+          "title": "Modelo:Uso de marcador"
+        },
+        {
+          "domain": "gag.wikipedia.org",
+          "title": "Şablon:Documentation"
+        },
+        {
+          "domain": "gan.wikipedia.org",
+          "title": "模板:Documentation"
+        },
+        {
+          "domain": "gd.wikipedia.org",
+          "title": "Teamplaid:Documentation"
+        },
+        {
+          "domain": "ga.wikipedia.org",
+          "title": "Teimpléad:Doiciméadú"
+        },
+        {
+          "domain": "fr.wikiquote.org",
+          "title": "Modèle:Documentation"
+        },
+        {
+          "domain": "he.wikipedia.org",
+          "title": "תבנית:תיעוד"
+        },
+        {
+          "domain": "gu.wikisource.org",
+          "title": "ઢાંચો:Documentation"
+        },
+        {
+          "domain": "gv.wikipedia.org",
+          "title": "Clowan:Docamadys"
+        },
+        {
+          "domain": "ha.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "gom.wikipedia.org",
+          "title": "सांचो:Documentation"
+        },
+        {
+          "domain": "gor.wikipedia.org",
+          "title": "Templat:Dokumentasi"
+        },
+        {
+          "domain": "got.wikipedia.org",
+          "title": "𐍆𐌰𐌿𐍂𐌰𐌼𐌴𐌻𐌴𐌹𐌽𐍃:Documentation"
+        },
+        {
+          "domain": "gu.wikipedia.org",
+          "title": "ઢાંચો:Documentation"
+        },
+        {
+          "domain": "gl.wikiquote.org",
+          "title": "Modelo:Uso de marcador"
+        },
+        {
+          "domain": "gl.wikisource.org",
+          "title": "Modelo:Uso de marcador"
+        },
+        {
+          "domain": "glk.wikipedia.org",
+          "title": "قالب:Documentation"
+        },
+        {
+          "domain": "gl.wikipedia.org",
+          "title": "Modelo:Uso de marcador"
+        },
+        {
+          "domain": "hak.wikipedia.org",
+          "title": "模板:Documentation"
+        },
+        {
+          "domain": "haw.wikipedia.org",
+          "title": "Anakuhi:Documentation"
+        },
+        {
+          "domain": "he.wikibooks.org",
+          "title": "תבנית:תיעוד"
+        },
+        {
+          "domain": "fr.wikipedia.org",
+          "title": "Modèle:Documentation"
+        },
+        {
+          "domain": "fr.wikibooks.org",
+          "title": "Modèle:Documentation"
+        },
+        {
+          "domain": "fr.wikinews.org",
+          "title": "Modèle:Documentation"
+        },
+        {
+          "domain": "fj.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "fi.wikiquote.org",
+          "title": "Malline:Mallineohje"
+        },
+        {
+          "domain": "fi.wikivoyage.org",
+          "title": "Malline:Mallineohje"
+        },
+        {
+          "domain": "fa.wikiquote.org",
+          "title": "الگو:توضیحات"
+        },
+        {
+          "domain": "fa.wikisource.org",
+          "title": "الگو:توضیحات"
+        },
+        {
+          "domain": "fi.wikipedia.org",
+          "title": "Malline:Mallineohje"
+        },
+        {
+          "domain": "fa.wiktionary.org",
+          "title": "الگو:توضیحات"
+        },
+        {
+          "domain": "ff.wikipedia.org",
+          "title": "Modèle:Documentation"
+        },
+        {
+          "domain": "fi.wikibooks.org",
+          "title": "Malline:Mallineohje"
+        },
+        {
+          "domain": "fi.wikinews.org",
+          "title": "Malline:Mallineohje"
+        },
+        {
+          "domain": "fa.wikivoyage.org",
+          "title": "الگو:توضیحات"
+        },
+        {
+          "domain": "fa.wikipedia.org",
+          "title": "الگو:توضیحات"
+        },
+        {
+          "domain": "es.wikipedia.org",
+          "title": "Plantilla:Documentación"
+        },
+        {
+          "domain": "eu.wikipedia.org",
+          "title": "Txantiloi:Txantiloi dokumentazioa"
+        },
+        {
+          "domain": "ext.wikipedia.org",
+          "title": "Prantilla:Documentation"
+        },
+        {
+          "domain": "fa.wikibooks.org",
+          "title": "الگو:توضیحات"
+        },
+        {
+          "domain": "fa.wikinews.org",
+          "title": "الگو:توضیحات"
+        },
+        {
+          "domain": "es.wiktionary.org",
+          "title": "Plantilla:documentación de plantilla"
+        },
+        {
+          "domain": "es.wikiversity.org",
+          "title": "Plantilla:Documentación"
+        },
+        {
+          "domain": "es.wikivoyage.org",
+          "title": "Plantilla:Documentación"
+        },
+        {
+          "domain": "es.wikiquote.org",
+          "title": "Plantilla:Documentación"
+        },
+        {
+          "domain": "es.wikisource.org",
+          "title": "Plantilla:Documentación"
+        },
+        {
+          "domain": "et.wikisource.org",
+          "title": "Mall:Dokumentatsioon"
+        },
+        {
+          "domain": "et.wikipedia.org",
+          "title": "Mall:Dokumentatsioon"
+        },
+        {
+          "domain": "es.wikibooks.org",
+          "title": "Plantilla:Documentación"
+        },
+        {
+          "domain": "es.wikinews.org",
+          "title": "Plantilla:Uso de plantilla"
+        },
+        {
+          "domain": "en.wiktionary.org",
+          "title": "Template:documentation"
+        },
+        {
+          "domain": "eo.wikibooks.org",
+          "title": "Ŝablono:Dok"
+        },
+        {
+          "domain": "eo.wikinews.org",
+          "title": "Ŝablono:Dok"
+        },
+        {
+          "domain": "en.wikivoyage.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "en.wikiversity.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "en.wikisource.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "eo.wikiquote.org",
+          "title": "Ŝablono:Dok"
+        },
+        {
+          "domain": "eo.wikisource.org",
+          "title": "Ŝablono:Dok"
+        },
+        {
+          "domain": "eo.wiktionary.org",
+          "title": "Ŝablono:doku"
+        },
+        {
+          "domain": "eo.wikipedia.org",
+          "title": "Ŝablono:Dok"
+        },
+        {
+          "domain": "en.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "en.wikiquote.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "zh.wiktionary.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "zu.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "zh.wikivoyage.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "zh.wikiversity.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "zh.wikiquote.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "zh.wikisource.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "zh.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "zh-min-nan.wikipedia.org",
+          "title": "Pang-bô͘:Documentation"
+        },
+        {
+          "domain": "zh-min-nan.wiktionary.org",
+          "title": "Pang-bô͘:documentation"
+        },
+        {
+          "domain": "zh.wikinews.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "zh-yue.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "zh.wikibooks.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "yue.wiktionary.org",
+          "title": "模:documentation"
+        },
+        {
+          "domain": "za.wikipedia.org",
+          "title": "模板:Documentation"
+        },
+        {
+          "domain": "lrc.wikipedia.org",
+          "title": "چوٙأ:Documentation"
+        },
+        {
+          "domain": "lt.wikibooks.org",
+          "title": "Šablonas:Dokumentacija"
+        },
+        {
+          "domain": "lt.wikipedia.org",
+          "title": "Šablonas:Dokumentacija"
+        },
+        {
+          "domain": "lmo.wikipedia.org",
+          "title": "Mudel:Man"
+        },
+        {
+          "domain": "ln.wikipedia.org",
+          "title": "Modèle:Documentation"
+        },
+        {
+          "domain": "lo.wikipedia.org",
+          "title": "ແມ່ແບບ:ຄູ່ມືການໃຊ້ງານ"
+        },
+        {
+          "domain": "lij.wikipedia.org",
+          "title": "Template:Man"
+        },
+        {
+          "domain": "mg.wikipedia.org",
+          "title": "Endrika:Documentation"
+        },
+        {
+          "domain": "mhr.wikipedia.org",
+          "title": "Кышкар:Doc"
+        },
+        {
+          "domain": "mi.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "mk.wikipedia.org",
+          "title": "Предлошка:Документација"
+        },
+        {
+          "domain": "mk.wikibooks.org",
+          "title": "Предлошка:Документација"
+        },
+        {
+          "domain": "min.wikipedia.org",
+          "title": "Templat:Dokumentasi"
+        },
+        {
+          "domain": "lt.wikisource.org",
+          "title": "Šablonas:Dokumentacija"
+        },
+        {
+          "domain": "ltg.wikipedia.org",
+          "title": "Taiss:Dokumentaceja"
+        },
+        {
+          "domain": "meta.wikimedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "mai.wikipedia.org",
+          "title": "आकृति:Documentation"
+        },
+        {
+          "domain": "map-bms.wikipedia.org",
+          "title": "Cithakan:Dokumentasi"
+        },
+        {
+          "domain": "mdf.wikipedia.org",
+          "title": "Шаблон:Nowrap"
+        },
+        {
+          "domain": "lv.wikipedia.org",
+          "title": "Veidne:Dokumentācija"
+        },
+        {
+          "domain": "ko.wikipedia.org",
+          "title": "틀:설명문서"
+        },
+        {
+          "domain": "kn.wikipedia.org",
+          "title": "ಟೆಂಪ್ಲೇಟು:Documentation"
+        },
+        {
+          "domain": "kk.wikipedia.org",
+          "title": "Үлгі:Doc"
+        },
+        {
+          "domain": "kl.wikipedia.org",
+          "title": "Ilisserut:Documentation"
+        },
+        {
+          "domain": "km.wikipedia.org",
+          "title": "ទំព័រគំរូ:Documentation"
+        },
+        {
+          "domain": "kg.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "ki.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "ka.wikiquote.org",
+          "title": "თარგი:თარგის ინფო"
+        },
+        {
+          "domain": "kaa.wikipedia.org",
+          "title": "Shablon:Documentation"
+        },
+        {
+          "domain": "kab.wikipedia.org",
+          "title": "Talɣa:Tumlin"
+        },
+        {
+          "domain": "kbd.wikipedia.org",
+          "title": "Шаблон:Documentation"
+        },
+        {
+          "domain": "kbp.wikipedia.org",
+          "title": "Modèle:Documentation"
+        },
+        {
+          "domain": "kn.wikisource.org",
+          "title": "ಟೆಂಪ್ಲೇಟು:Documentation"
+        },
+        {
+          "domain": "ko.wikibooks.org",
+          "title": "틀:설명문서"
+        },
+        {
+          "domain": "ko.wikinews.org",
+          "title": "틀:설명문서"
+        },
+        {
+          "domain": "la.wikipedia.org",
+          "title": "Formula:Documentatio"
+        },
+        {
+          "domain": "la.wikisource.org",
+          "title": "Formula:Documentation"
+        },
+        {
+          "domain": "ky.wikipedia.org",
+          "title": "Калып:Документация"
+        },
+        {
+          "domain": "ky.wiktionary.org",
+          "title": "Калып:doc"
+        },
+        {
+          "domain": "kw.wikipedia.org",
+          "title": "Skantlyn:Documentation"
+        },
+        {
+          "domain": "ku.wikipedia.org",
+          "title": "Şablon:Belgekirin"
+        },
+        {
+          "domain": "ku.wiktionary.org",
+          "title": "Şablon:belgekirin"
+        },
+        {
+          "domain": "li.wikipedia.org",
+          "title": "Sjabloon:Documentation"
+        },
+        {
+          "domain": "lb.wikipedia.org",
+          "title": "Schabloun:Dokumentatioun"
+        },
+        {
+          "domain": "lez.wikipedia.org",
+          "title": "Шаблон:Doc"
+        },
+        {
+          "domain": "lg.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "lad.wikipedia.org",
+          "title": "Xablón:Dokumentasyon"
+        },
+        {
+          "domain": "ko.wikisource.org",
+          "title": "틀:설명문서"
+        },
+        {
+          "domain": "ko.wikiversity.org",
+          "title": "틀:설명문서"
+        },
+        {
+          "domain": "ko.wiktionary.org",
+          "title": "틀:설명문서"
+        },
+        {
+          "domain": "koi.wikipedia.org",
+          "title": "Шаблон:Документтэз"
+        },
+        {
+          "domain": "krc.wikipedia.org",
+          "title": "Шаблон:Doc"
+        },
+        {
+          "domain": "ks.wikipedia.org",
+          "title": "فرما:دستاویزیکرن"
+        },
+        {
+          "domain": "ko.wikiquote.org",
+          "title": "틀:설명문서"
+        },
+        {
+          "domain": "ja.wikisource.org",
+          "title": "テンプレート:Documentation"
+        },
+        {
+          "domain": "ja.wikiversity.org",
+          "title": "テンプレート:Documentation"
+        },
+        {
+          "domain": "ja.wiktionary.org",
+          "title": "テンプレート:Documentation"
+        },
+        {
+          "domain": "jam.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "jbo.wikipedia.org",
+          "title": "termo'a:documentation"
+        },
+        {
+          "domain": "ja.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "ja.wikiquote.org",
+          "title": "テンプレート:Documentation"
+        },
+        {
+          "domain": "ka.wikibooks.org",
+          "title": "თარგი:თარგის ინფო"
+        },
+        {
+          "domain": "jv.wikipedia.org",
+          "title": "Cithakan:Dhokumèntasi"
+        },
+        {
+          "domain": "ka.wikipedia.org",
+          "title": "თარგი:თარგის ინფო"
+        },
+        {
+          "domain": "it.wiktionary.org",
+          "title": "Template:Man"
+        },
+        {
+          "domain": "iu.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "it.wikivoyage.org",
+          "title": "Template:Man"
+        },
+        {
+          "domain": "it.wikisource.org",
+          "title": "Template:Documentazione"
+        },
+        {
+          "domain": "it.wikiversity.org",
+          "title": "Template:Man"
+        },
+        {
+          "domain": "it.wikiquote.org",
+          "title": "Template:Man"
+        },
+        {
+          "domain": "ja.wikinews.org",
+          "title": "テンプレート:Documentation"
+        },
+        {
+          "domain": "it.wikipedia.org",
+          "title": "Template:Man"
+        },
+        {
+          "domain": "it.wikibooks.org",
+          "title": "Template:Man"
+        },
+        {
+          "domain": "is.wikipedia.org",
+          "title": "Snið:Documentation"
+        },
+        {
+          "domain": "inh.wikipedia.org",
+          "title": "Ло:Doc"
+        },
+        {
+          "domain": "io.wikipedia.org",
+          "title": "Shablono:Dokumentizo"
+        },
+        {
+          "domain": "ilo.wikipedia.org",
+          "title": "Plantilia:Dokumentasion"
+        },
+        {
+          "domain": "it.wikinews.org",
+          "title": "Template:Man"
+        },
+        {
+          "domain": "hy.wiktionary.org",
+          "title": "Կաղապար:Օգտագործման ձեռնարկ"
+        },
+        {
+          "domain": "hyw.wikipedia.org",
+          "title": "Կաղապար:Պարզաբանում"
+        },
+        {
+          "domain": "ia.wikibooks.org",
+          "title": "Patrono:Documentation"
+        },
+        {
+          "domain": "ia.wikipedia.org",
+          "title": "Patrono:Documentation"
+        },
+        {
+          "domain": "id.wikibooks.org",
+          "title": "Templat:Dokumentasi"
+        },
+        {
+          "domain": "id.wikisource.org",
+          "title": "Templat:Dokumentasi"
+        },
+        {
+          "domain": "ie.wikipedia.org",
+          "title": "Avise:Documentation"
+        },
+        {
+          "domain": "ig.wikipedia.org",
+          "title": "Àtụ:Documentation"
+        },
+        {
+          "domain": "el.wikipedia.org",
+          "title": "Πρότυπο:Τεκμηρίωση προτύπου"
+        },
+        {
+          "domain": "en.wikibooks.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "el.wiktionary.org",
+          "title": "Πρότυπο:οδηγίες"
+        },
+        {
+          "domain": "eml.wikipedia.org",
+          "title": "Template:Man"
+        },
+        {
+          "domain": "el.wikiversity.org",
+          "title": "Πρότυπο:Τεκμηρίωση προτύπου"
+        },
+        {
+          "domain": "el.wikivoyage.org",
+          "title": "Πρότυπο:Documentation"
+        },
+        {
+          "domain": "el.wikisource.org",
+          "title": "Πρότυπο:Τεκμηρίωση προτύπου"
+        },
+        {
+          "domain": "de.wikivoyage.org",
+          "title": "Vorlage:Dokumentation"
+        },
+        {
+          "domain": "de.wiktionary.org",
+          "title": "Vorlage:Dokumentation"
+        },
+        {
+          "domain": "din.wikipedia.org",
+          "title": "Macuëc:Documentation"
+        },
+        {
+          "domain": "de.wikiquote.org",
+          "title": "Vorlage:Dokumentation"
+        },
+        {
+          "domain": "de.wikisource.org",
+          "title": "Vorlage:Dokumentation"
+        },
+        {
+          "domain": "de.wikiversity.org",
+          "title": "Vorlage:Dokumentation"
+        },
+        {
+          "domain": "el.wikinews.org",
+          "title": "Πρότυπο:Τεκμηρίωση προτύπου"
+        },
+        {
+          "domain": "dsb.wikipedia.org",
+          "title": "Pśedłoga:Dokumentacija"
+        },
+        {
+          "domain": "dv.wikipedia.org",
+          "title": "ފަންވަތް:Documentation"
+        },
+        {
+          "domain": "dz.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "ee.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "diq.wikipedia.org",
+          "title": "Şablon:Documentation"
+        },
+        {
+          "domain": "en.wikinews.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "de.wikipedia.org",
+          "title": "Vorlage:Dokumentation"
+        },
+        {
+          "domain": "de.wikinews.org",
+          "title": "Vorlage:Dokumentation"
+        },
+        {
+          "domain": "csb.wikipedia.org",
+          "title": "Szablóna:Dokumentacja"
+        },
+        {
+          "domain": "cu.wikipedia.org",
+          "title": "Обраꙁьць:Doc"
+        },
+        {
+          "domain": "cv.wikipedia.org",
+          "title": "Шаблон:Doc"
+        },
+        {
+          "domain": "da.wikibooks.org",
+          "title": "Skabelon:Skabelon dokumentation"
+        },
+        {
+          "domain": "cy.wikisource.org",
+          "title": "Nodyn:Documentation"
+        },
+        {
+          "domain": "cy.wikipedia.org",
+          "title": "Nodyn:Doc"
+        },
+        {
+          "domain": "da.wikisource.org",
+          "title": "Skabelon:Dokumentation"
+        },
+        {
+          "domain": "de.wikibooks.org",
+          "title": "Vorlage:Dokumentation"
+        },
+        {
+          "domain": "da.wikipedia.org",
+          "title": "Skabelon:Dokumentation"
+        },
+        {
+          "domain": "da.wikiquote.org",
+          "title": "Skabelon:Skabelon dokumentation"
+        },
+        {
+          "domain": "cs.wikisource.org",
+          "title": "Šablona:Dokumentace"
+        },
+        {
+          "domain": "cs.wikiversity.org",
+          "title": "Šablona:Dokumentace"
+        },
+        {
+          "domain": "commons.wikimedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "cr.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "cs.wikipedia.org",
+          "title": "Šablona:Dokumentace"
+        },
+        {
+          "domain": "cs.wikibooks.org",
+          "title": "Šablona:Dokumentace"
+        },
+        {
+          "domain": "cs.wikinews.org",
+          "title": "Šablona:Dokumentace"
+        },
+        {
+          "domain": "co.wikipedia.org",
+          "title": "Template:Man"
+        },
+        {
+          "domain": "chr.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "chy.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "ckb.wikipedia.org",
+          "title": "داڕێژە:بەڵگەنامە"
+        },
+        {
+          "domain": "ch.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "ceb.wikipedia.org",
+          "title": "Plantilya:Dokumentasyon"
+        },
+        {
+          "domain": "ce.wikipedia.org",
+          "title": "Кеп:Документаци"
+        },
+        {
+          "domain": "ca.wikipedia.org",
+          "title": "Plantilla:Ús de la plantilla"
+        },
+        {
+          "domain": "cbk-zam.wikipedia.org",
+          "title": "Plantilla:Documentación"
+        },
+        {
+          "domain": "cdo.wikipedia.org",
+          "title": "模板:Documentation"
+        },
+        {
+          "domain": "ca.wikiquote.org",
+          "title": "Plantilla:Ús de la plantilla"
+        },
+        {
+          "domain": "ca.wiktionary.org",
+          "title": "Plantilla:ús de la plantilla"
+        },
+        {
+          "domain": "bg.wikipedia.org",
+          "title": "Шаблон:Документация"
+        },
+        {
+          "domain": "be.wikisource.org",
+          "title": "Шаблон:Дакументацыя"
+        },
+        {
+          "domain": "bi.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "bjn.wikipedia.org",
+          "title": "Citakan:Documentation"
+        },
+        {
+          "domain": "bn.wikibooks.org",
+          "title": "টেমপ্লেট:নথি"
+        },
+        {
+          "domain": "bg.wikiquote.org",
+          "title": "Шаблон:Документация"
+        },
+        {
+          "domain": "bg.wiktionary.org",
+          "title": "Шаблон:Документация"
+        },
+        {
+          "domain": "bh.wikipedia.org",
+          "title": "टेम्पलेट:Documentation"
+        },
+        {
+          "domain": "be.wikipedia.org",
+          "title": "Шаблон:Дакументацыя"
+        },
+        {
+          "domain": "be.wikiquote.org",
+          "title": "Шаблон:Дакументацыя"
+        },
+        {
+          "domain": "be.wikibooks.org",
+          "title": "Шаблон:Дакументацыя"
+        },
+        {
+          "domain": "be-tarask.wikipedia.org",
+          "title": "Шаблён:Дакумэнтацыя"
+        },
+        {
+          "domain": "ba.wikipedia.org",
+          "title": "Ҡалып:Doc"
+        },
+        {
+          "domain": "ban.wikipedia.org",
+          "title": "Mal:Dokumentasi"
+        },
+        {
+          "domain": "bar.wikipedia.org",
+          "title": "Vorlog:Dokumentation"
+        },
+        {
+          "domain": "bcl.wikipedia.org",
+          "title": "Plantilya:Dokumentasyon"
+        },
+        {
+          "domain": "bs.wikiquote.org",
+          "title": "Šablon:Dokumentacija"
+        },
+        {
+          "domain": "bug.wikipedia.org",
+          "title": "Templat:Documentation"
+        },
+        {
+          "domain": "bxr.wikipedia.org",
+          "title": "Загбар:Doc"
+        },
+        {
+          "domain": "ca.wikibooks.org",
+          "title": "Plantilla:Ús de la plantilla"
+        },
+        {
+          "domain": "ca.wikinews.org",
+          "title": "Plantilla:Ús de la plantilla"
+        },
+        {
+          "domain": "bn.wikipedia.org",
+          "title": "টেমপ্লেট:নথি"
+        },
+        {
+          "domain": "br.wikisource.org",
+          "title": "Patrom:Diellerezh"
+        },
+        {
+          "domain": "bs.wikipedia.org",
+          "title": "Šablon:Dokumentacija"
+        },
+        {
+          "domain": "br.wikipedia.org",
+          "title": "Patrom:Implijout patromoù"
+        },
+        {
+          "domain": "bo.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "bpy.wikipedia.org",
+          "title": "মডেল:Documentation"
+        },
+        {
+          "domain": "bn.wikisource.org",
+          "title": "টেমপ্লেট:নথি"
+        },
+        {
+          "domain": "bn.wikivoyage.org",
+          "title": "টেমপ্লেট:নথি"
+        },
+        {
+          "domain": "azb.wikipedia.org",
+          "title": "شابلون:بلگه له مه"
+        },
+        {
+          "domain": "az.wikisource.org",
+          "title": "Şablon:Doc"
+        },
+        {
+          "domain": "az.wikiquote.org",
+          "title": "Şablon:Doc"
+        },
+        {
+          "domain": "av.wikipedia.org",
+          "title": "Шаблон:Documentation"
+        },
+        {
+          "domain": "ay.wikipedia.org",
+          "title": "Plantilla:Documentation"
+        },
+        {
+          "domain": "az.wikibooks.org",
+          "title": "Şablon:Doc"
+        },
+        {
+          "domain": "ast.wikipedia.org",
+          "title": "Plantía:Documentación"
+        },
+        {
+          "domain": "az.wikipedia.org",
+          "title": "Şablon:Doc"
+        },
+        {
+          "domain": "as.wikisource.org",
+          "title": "সাঁচ:Documentation"
+        },
+        {
+          "domain": "as.wikipedia.org",
+          "title": "সাঁচ:নথিকৰণ"
+        },
+        {
+          "domain": "arz.wikipedia.org",
+          "title": "قالب:Documentation"
+        },
+        {
+          "domain": "arc.wikipedia.org",
+          "title": "ܩܠܒܐ:ܐܫܛܪܘܬܐ"
+        },
+        {
+          "domain": "ar.wikiversity.org",
+          "title": "قالب:توثيق"
+        },
+        {
+          "domain": "ar.wiktionary.org",
+          "title": "قالب:توثيق"
+        },
+        {
+          "domain": "ar.wikiquote.org",
+          "title": "قالب:Documentation"
+        },
+        {
+          "domain": "ar.wikisource.org",
+          "title": "قالب:توثيق"
+        },
+        {
+          "domain": "ar.wikipedia.org",
+          "title": "قالب:توثيق"
+        },
+        {
+          "domain": "ar.wikinews.org",
+          "title": "قالب:توثيق"
+        },
+        {
+          "domain": "ar.wikibooks.org",
+          "title": "قالب:توثيق"
+        },
+        {
+          "domain": "am.wikipedia.org",
+          "title": "መለጠፊያ:አጠቃቀም"
+        },
+        {
+          "domain": "an.wikipedia.org",
+          "title": "Plantilla:Uso de plantilla"
+        },
+        {
+          "domain": "ang.wikipedia.org",
+          "title": "Bysen:Documentation"
+        },
+        {
+          "domain": "af.wiktionary.org",
+          "title": "Sjabloon:documentation"
+        },
+        {
+          "domain": "ak.wikipedia.org",
+          "title": "Nhwɛsode:Documentation"
+        },
+        {
+          "domain": "als.wikipedia.org",
+          "title": "Vorlage:Dokumentation"
+        },
+        {
+          "domain": "af.wikipedia.org",
+          "title": "Sjabloon:Dokumentasie"
+        },
+        {
+          "domain": "ace.wikipedia.org",
+          "title": "Seunaleuëk:Dokumentasi"
+        },
+        {
+          "domain": "ady.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "ab.wikipedia.org",
+          "title": "Ашаблон:Documentation"
+        },
+        {
+          "domain": "tr.wikisource.org",
+          "title": "Şablon:Belgeleme"
+        },
+        {
+          "domain": "nl.wikinews.org",
+          "title": "Sjabloon:Sjabdoc"
+        },
+        {
+          "domain": "dty.wikipedia.org",
+          "title": "ढाँचा:Documentation"
+        },
+        {
+          "domain": "bm.wikipedia.org",
+          "title": "Modèle:Documentation"
+        },
+        {
+          "domain": "an.wiktionary.org",
+          "title": "Plantilla:Uso de plantilla"
+        },
+        {
+          "domain": "zh-classical.wikipedia.org",
+          "title": "模板:Documentation"
+        },
+        {
+          "domain": "yi.wikipedia.org",
+          "title": "מוסטער:דאקומענטאציע"
+        },
+        {
+          "domain": "xmf.wikipedia.org",
+          "title": "თარგი:თანგიშ ინფო"
+        },
+        {
+          "domain": "www.wikidata.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "xal.wikipedia.org",
+          "title": "Кевләр:Documentation"
+        },
+        {
+          "domain": "xh.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "wikimania.wikimedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "wo.wikipedia.org",
+          "title": "Royuwaay:Documentation"
+        },
+        {
+          "domain": "wuu.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "vo.wikipedia.org",
+          "title": "Samafomot:Geb samafomota"
+        },
+        {
+          "domain": "wa.wikipedia.org",
+          "title": "Modele:Documentation"
+        },
+        {
+          "domain": "vi.wikivoyage.org",
+          "title": "Bản mẫu:Tài liệu"
+        },
+        {
+          "domain": "vi.wiktionary.org",
+          "title": "Bản mẫu:Tài liệu"
+        },
+        {
+          "domain": "war.wikipedia.org",
+          "title": "Batakan:Documentation"
+        },
+        {
+          "domain": "vi.wikipedia.org",
+          "title": "Bản mẫu:Tài liệu"
+        },
+        {
+          "domain": "vi.wikiquote.org",
+          "title": "Bản mẫu:Tài liệu"
+        },
+        {
+          "domain": "vi.wikisource.org",
+          "title": "Bản mẫu:Tài liệu"
+        },
+        {
+          "domain": "uk.wikivoyage.org",
+          "title": "Шаблон:Документація"
+        },
+        {
+          "domain": "uk.wiktionary.org",
+          "title": "Шаблон:documentation"
+        },
+        {
+          "domain": "uk.wikiquote.org",
+          "title": "Шаблон:Документація"
+        },
+        {
+          "domain": "uk.wikisource.org",
+          "title": "Шаблон:Документація"
+        },
+        {
+          "domain": "ur.wikipedia.org",
+          "title": "سانچہ:دستاویز"
+        },
+        {
+          "domain": "uk.wikipedia.org",
+          "title": "Шаблон:Документація"
+        },
+        {
+          "domain": "vec.wikipedia.org",
+          "title": "Modèl:Man"
+        },
+        {
+          "domain": "vec.wikisource.org",
+          "title": "Modèl:Doc"
+        },
+        {
+          "domain": "vep.wikipedia.org",
+          "title": "Šablon:Doc"
+        },
+        {
+          "domain": "uz.wiktionary.org",
+          "title": "Andoza:documentation"
+        },
+        {
+          "domain": "ve.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "ur.wikiquote.org",
+          "title": "سانچہ:دستاویز"
+        },
+        {
+          "domain": "ur.wiktionary.org",
+          "title": "سانچہ:دستاویز"
+        },
+        {
+          "domain": "uz.wikipedia.org",
+          "title": "Andoza:Documentation"
+        },
+        {
+          "domain": "tum.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "tw.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "ty.wikipedia.org",
+          "title": "Modèle:Documentation"
+        },
+        {
+          "domain": "tyv.wikipedia.org",
+          "title": "Майык:Doc"
+        },
+        {
+          "domain": "tt.wikipedia.org",
+          "title": "Калып:Doc"
+        },
+        {
+          "domain": "ts.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "tt.wikibooks.org",
+          "title": "Калып:Doc"
+        },
+        {
+          "domain": "tr.wikiquote.org",
+          "title": "Şablon:Belgeleme"
+        },
+        {
+          "domain": "tr.wiktionary.org",
+          "title": "Şablon:Belgeleme"
+        },
+        {
+          "domain": "udm.wikipedia.org",
+          "title": "Шаблон:Doc"
+        },
+        {
+          "domain": "ug.wikipedia.org",
+          "title": "قېلىپ:Documentation"
+        },
+        {
+          "domain": "uk.wikibooks.org",
+          "title": "Шаблон:Документація"
+        },
+        {
+          "domain": "uk.wikinews.org",
+          "title": "Шаблон:Документація"
+        },
+        {
+          "domain": "ta.wikiquote.org",
+          "title": "வார்ப்புரு:Documentation"
+        },
+        {
+          "domain": "ta.wikisource.org",
+          "title": "வார்ப்புரு:Documentation"
+        },
+        {
+          "domain": "tcy.wikipedia.org",
+          "title": "ಟೆಂಪ್ಲೇಟ್:Documentation"
+        },
+        {
+          "domain": "ta.wikipedia.org",
+          "title": "வார்ப்புரு:Documentation"
+        },
+        {
+          "domain": "tg.wikipedia.org",
+          "title": "Шаблон:Documentation"
+        },
+        {
+          "domain": "te.wikisource.org",
+          "title": "మూస:Documentation"
+        },
+        {
+          "domain": "tet.wikipedia.org",
+          "title": "Template:Documentação"
+        },
+        {
+          "domain": "tg.wikibooks.org",
+          "title": "Шаблон:Ҳуҷҷатҳо"
+        },
+        {
+          "domain": "te.wikipedia.org",
+          "title": "మూస:Documentation"
+        },
+        {
+          "domain": "szl.wikipedia.org",
+          "title": "Muster:Dokumyntacyjŏ"
+        },
+        {
+          "domain": "szy.wikipedia.org",
+          "title": "taazihan mitudung:Documentation"
+        },
+        {
+          "domain": "ta.wikibooks.org",
+          "title": "வார்ப்புரு:Documentation"
+        },
+        {
+          "domain": "sw.wikipedia.org",
+          "title": "Kigezo:Documentation"
+        },
+        {
+          "domain": "sv.wikisource.org",
+          "title": "Mall:Dokumentation"
+        },
+        {
+          "domain": "sv.wikiversity.org",
+          "title": "Mall:Dokumentation"
+        },
+        {
+          "domain": "sv.wikivoyage.org",
+          "title": "Mall:Man"
+        },
+        {
+          "domain": "tl.wikipedia.org",
+          "title": "Padron:Documentation"
+        },
+        {
+          "domain": "tk.wiktionary.org",
+          "title": "Şablon:documentation"
+        },
+        {
+          "domain": "tl.wikibooks.org",
+          "title": "Padron:Documentation"
+        },
+        {
+          "domain": "th.wikiquote.org",
+          "title": "แม่แบบ:เอกสารกำกับแม่แบบ"
+        },
+        {
+          "domain": "th.wikisource.org",
+          "title": "แม่แบบ:คู่มือการใช้งาน"
+        },
+        {
+          "domain": "tk.wikipedia.org",
+          "title": "Şablon:Documentation"
+        },
+        {
+          "domain": "tr.wikinews.org",
+          "title": "Şablon:Belgeleme"
+        },
+        {
+          "domain": "tr.wikipedia.org",
+          "title": "Şablon:Belgeleme"
+        },
+        {
+          "domain": "tn.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "tpi.wikipedia.org",
+          "title": "Templet:Template doc"
+        },
+        {
+          "domain": "tr.wikibooks.org",
+          "title": "Şablon:Belgeleme"
+        },
+        {
+          "domain": "th.wikibooks.org",
+          "title": "แม่แบบ:คู่มือการใช้งาน"
+        },
+        {
+          "domain": "tg.wiktionary.org",
+          "title": "Шаблон:Documentation"
+        },
+        {
+          "domain": "th.wikipedia.org",
+          "title": "แม่แบบ:คู่มือการใช้งาน"
+        },
+        {
+          "domain": "sv.wikiquote.org",
+          "title": "Mall:Dokumentation"
+        },
+        {
+          "domain": "sv.wikipedia.org",
+          "title": "Mall:Dokumentation"
+        },
+        {
+          "domain": "sv.wikibooks.org",
+          "title": "Mall:Dokumentation"
+        },
+        {
+          "domain": "sv.wikinews.org",
+          "title": "Mall:Dokumentation"
+        },
+        {
+          "domain": "sr.wikisource.org",
+          "title": "Шаблон:Документација"
+        },
+        {
+          "domain": "srn.wikipedia.org",
+          "title": "Ankra:Documentation"
+        },
+        {
+          "domain": "stq.wikipedia.org",
+          "title": "Foarloage:Dokumentation"
+        },
+        {
+          "domain": "su.wikipedia.org",
+          "title": "Citakan:Dokuméntasi"
+        },
+        {
+          "domain": "sq.wikinews.org",
+          "title": "Stampa:Documentation"
+        },
+        {
+          "domain": "species.wikimedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "sr.wikibooks.org",
+          "title": "Шаблон:Документација"
+        },
+        {
+          "domain": "sr.wikinews.org",
+          "title": "Шаблон:Документација"
+        },
+        {
+          "domain": "sq.wikipedia.org",
+          "title": "Stampa:Dokumentacioni"
+        },
+        {
+          "domain": "sr.wikipedia.org",
+          "title": "Шаблон:Документација"
+        },
+        {
+          "domain": "sl.wikiquote.org",
+          "title": "Predloga:Dokumentacija"
+        },
+        {
+          "domain": "sl.wikisource.org",
+          "title": "Predloga:Dokumentacija"
+        },
+        {
+          "domain": "sl.wikiversity.org",
+          "title": "Predloga:Dokumentacija"
+        },
+        {
+          "domain": "sm.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "sn.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "so.wikipedia.org",
+          "title": "Template:Documentation"
+        },
+        {
+          "domain": "sl.wikipedia.org",
+          "title": "Predloga:Dokumentacija"
+        },
+        {
+          "domain": "sl.wikibooks.org",
+          "title": "Predloga:Dokumentacija"
+        },
+        {
+          "domain": "sg.wikipedia.org",
+          "title": "Modèle:Documentation"
+        },
+        {
+          "domain": "sh.wikipedia.org",
+          "title": "Šablon:Documentation"
+        },
+        {
+          "domain": "se.wikipedia.org",
+          "title": "Málle:Málleveahkki"
+        },
+        {
+          "domain": "ang.wiktionary.org",
+          "title": "Bysen:Documentation"
+        },
+        {
+          "domain": "af.wikibooks.org",
+          "title": "Sjabloon:Dokumentasie"
+        },
+        {
+          "domain": "ast.wiktionary.org",
+          "title": "Plantía:Documentación"
+        },
+        {
+          "domain": "shn.wiktionary.org",
+          "title": "ထႅမ်းပလဵၵ်ႉ:Documentation"
+        },
+        {
+          "domain": "ti.wikipedia.org",
+          "title": "ሞደል:Documentation"
+        },
+        {
+          "domain": "gcr.wikipedia.org",
+          "title": "Modèl:Dokimantasyon"
+        },
+        {
+          "domain": "nqo.wikipedia.org",
+          "title": "ߞߙߊߞߏ:Documentation"
+        },
+        {
+          "domain": "id.wikipedia.org",
+          "title": "Templat:Documentation"
+        },
+        {
+          "domain": "vi.wikibooks.org",
+          "title": "Bản mẫu:Tài liệu"
+        },
+        {
+          "domain": "fy.wiktionary.org",
+          "title": "Berjocht:dokumintaasje"
+        },
+        {
+          "domain": "uz.wikiquote.org",
+          "title": "Andoza:Documentation"
+        },
+        {
+          "domain": "gu.wiktionary.org",
+          "title": "ઢાંચો:documentation"
+        },
+        {
+          "domain": "la.wikiquote.org",
+          "title": "Formula:Documentatio"
+        },
+        {
+          "domain": "la.wiktionary.org",
+          "title": "Formula:Documentatio"
+        },
+        {
+          "domain": "ml.wiktionary.org",
+          "title": "ഫലകം:Documentation"
+        },
+        {
+          "domain": "yo.wikipedia.org",
+          "title": "Àdàkọ:Ìwé-àlàyé"
+        },
+        {
+          "domain": "lij.wikisource.org",
+          "title": "Template:Man"
+        },
+        {
+          "domain": "pt.wikinews.org",
+          "title": "Predefinição:Documentação"
+        },
+        {
+          "domain": "ml.wikiquote.org",
+          "title": "ഫലകം:വിവരണം"
+        },
+        {
+          "domain": "gd.wiktionary.org",
+          "title": "Teamplaid:Documentation"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "changeType": "outdated",
+    "domain": "de.wikipedia.org",
+    "qid": "Q63324398",
+    "title": "Template:Shared Template Warning",
+    "newText": "<noinclude>{{ {{PAGENAME}}|Template:Shared Template Warning|Shared Template Warning}}{{Dokumentation}}</noinclude><includeonly><table\n cellspacing=\"0\" cellpadding=\"0\" border=\"0\"\n style=\"background:transparent; margin:0.5em auto; padding:0.5em; background-color:#fee7e6; border:1px solid #aaa;\"\n><tr><td nowrap=\"nowrap\" valign=\"top\"><!--\n--><span style=\"position:relative; top:-2px;\"><!--\n -->[[File:OOjs_UI_icon_notice-destructive.svg|18px|warning|link=]]<!--\n--></span>&nbsp;'''{{#invoke:TNT|msg|I18n/Shared Template Warning.tab|warning}}'''</td><!--\n--><td valign=\"top\" style=\"padding-left:0.5em;\"><!--\n -->{{#ifeq:{{SITENAME}}|MediaWiki<!--\n  -->|{{#invoke:TNT|msg|I18n/Shared Template Warning.tab|be-careful}}<!--\n  -->|{{#invoke:TNT|msg|I18n/Shared Template Warning.tab|no-edit|{{{1}}}}}<!--\n-->}}{{#if:{{{2|}}}|<br>{{#invoke:TNT|msg|I18n/Shared Template Warning.tab|translate|c:Data:I18n/{{{2}}}.tab}}<!--\n-->}}</td></tr></table></includeonly>",
+    "currentText": "<noinclude>{{ {{PAGENAME}}|Template:Shared/Shared Template Warning|Shared Template Warning}}{{Dokumentation}}</noinclude><includeonly><table\n cellspacing=\"0\" cellpadding=\"0\" border=\"0\"\n style=\"background:transparent; margin-top:0.5em; padding:0.5em; background-color:#fee7e6; border:1px solid #aaa;\"\n><tr><td nowrap=\"nowrap\" valign=\"top\"><!--\n--><span style=\"position:relative; top:-2px;\"><!--\n -->[[File:OOjs_UI_icon_notice-destructive.svg|18px|warning|link=]]<!--\n--></span>&nbsp;'''{{#invoke:TNT|msg|I18n/Shared Template Warning.tab|warning}}'''</td><!--\n--><td valign=\"top\" style=\"padding-left:0.5em;\"><!--\n -->{{#ifeq:{{SITENAME}}|MediaWiki<!--\n  -->|{{#invoke:TNT|msg|I18n/Shared Template Warning.tab|be-careful}}<!--\n  -->|{{#invoke:TNT|msg|I18n/Shared Template Warning.tab|no-edit|{{{1}}}}}<!--\n-->}}{{#if:{{{2|}}}|<br>{{#invoke:TNT|msg|I18n/Shared Template Warning.tab|translate|c:Data:I18n/{{{2}}}.tab}}<!--\n-->}}</td></tr></table></includeonly>",
+    "currentRevId": 188201409,
+    "currentRevTs": "2019-05-04T04:49:01Z",
+    "changes": [
+      {
+        "user": "Yurik",
+        "ts": "2019-05-10T21:47:32Z",
+        "comment": "center warning and remove Shared/ prefix in mw link",
+        "revid": 3226670
+      },
+      {
+        "user": "DannyS712",
+        "ts": "2019-09-15T02:15:56Z",
+        "comment": "Protected \"[[Template:Shared Template Warning]]\": Highly visible page or template: Global template or module, see [[WP:TNT]] for more ([Edit=Allow only administrators] (indefinite) [Move=Allow only administrators] (indefinite))",
+        "revid": 3406824
+      }
+    ]
+  }
+}

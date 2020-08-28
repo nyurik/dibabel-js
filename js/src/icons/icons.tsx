@@ -1,5 +1,5 @@
 import React from 'react';
-import { EuiIcon } from '@elastic/eui';
+import { EuiIcon, EuiToolTip } from '@elastic/eui';
 
 /**
  * https://commons.wikimedia.org/wiki/File:Incubator-logo.svg
@@ -96,5 +96,5 @@ export const icons: { [name: string]: any } = {
 
 // Cache all medium size icons as EuiIcon objects
 export const iconsEuiMedium = Object.fromEntries(Object.entries(icons).map(
-  ([name, icon]) => [name, (<EuiIcon type={icon} size={'m'} title={name[0].toUpperCase() + name.substring(1)}/>)]
+  ([name, icon]) => [name, (<EuiToolTip content={name[0].toUpperCase() + name.substring(1)}><EuiIcon type={icon} size={'m'} /></EuiToolTip>)]
 ));

@@ -28,7 +28,7 @@ class WikiSite(Site):
         self.project = m.group('project')
 
     def query_metadata(self) -> SiteMetadata:
-        res = next(self.query(meta='siteinfo', siprop=('magicwords', 'extensions')))
+        res = next(self.query(meta='siteinfo', siprop=('magicwords', 'extensions', 'namespaces')))
 
         # Only remember template-like magic words (uppercase, don't begin with a "_")
         words = [vvv for vv in
@@ -42,8 +42,13 @@ class WikiSite(Site):
         flagged_revisions = \
             bool([v for v in res.extensions if 'descriptionmsg' in v and v.descriptionmsg == 'flaggedrevs-desc'])
 
-        return SiteMetadata(datetime.utcnow(), magic_words=magic_words, magic_prefixes=magic_prefixes,
-                            flagged_revisions=flagged_revisions)
+        return SiteMetadata(datetime.utcnow(),
+                            magic_words=magic_words,
+                            magic_prefixes=magic_prefixes,
+                            flagged_revisions=flagged_revisions,
+                            template_ns=res.namespaces['10'].name,
+                            module_ns=res.namespaces['828'].name,
+                            )
 
     def query_pages_revid(self, titles: Iterable[str]) -> Iterable[Tuple[str, int]]:
         for data in self.query_pages(prop=['info'], titles=titles):
@@ -75,9 +80,9 @@ class WikiSite(Site):
                 protection=list(set(protection)) or None,
             )
 
-    def load_page_history(self, title: str, history: List[RevComment], current_revid: int) -> None:
-        # Load all of history
-        if not history or history[0].revid != current_revid:
+    def load_page_history(self, title: str, history: List[RevComment], current_revid: int) -> List[RevComment]:
+        result = []
+        if not history or history[-1].revid != current_revid:
             params = dict(
                 prop='revisions',
                 rvprop=['user', 'comment', 'timestamp', 'content', 'ids'],
@@ -91,12 +96,13 @@ class WikiSite(Site):
             # there could (in theory) be more than one revision at the same timestamp,
             # ensure we don't duplicate
             rev_ids = set((v.revid for v in history))
-            for result in self.query(**params):
-                for r in result.pages[0].revisions:
+            for res in self.query(**params):
+                for r in res.pages[0].revisions:
                     if r.revid not in rev_ids:
-                        rev = RevComment(r.user, datetime.fromisoformat(r.timestamp.rstrip('Z')), r.comment.strip(),
+                        rev = RevComment(r.user, r.timestamp, r.comment.strip(),
                                          r.slots.main.content, r.revid)
-                        history.append(rev)
+                        result.append(rev)
+        return result
 
     def __str__(self):
         return self.domain

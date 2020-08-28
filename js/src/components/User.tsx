@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { EuiHeaderLink, EuiLoadingSpinner, EuiText } from '@elastic/eui';
 import { UserContext, UserState } from '../contexts/UserContext';
-import { rootUrlData } from '../utils';
+import { rootUrlData } from '../services/utils';
 import { I18nContext } from '../contexts/I18nContext';
 
 export const User = () => {
@@ -16,6 +16,7 @@ export const User = () => {
     case UserState.LoggedIn:
       return <EuiText>{user.username}</EuiText>;
     default:
+      debugger;
       throw new Error(user.state);
   }
 };

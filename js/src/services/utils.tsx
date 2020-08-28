@@ -1,11 +1,21 @@
 import { DependencyList, Dispatch, useEffect, useState } from 'react';
-import { Item, ItemTypeType, ToastNoId } from './types';
+import { Item, PageType, ToastNoId } from './types';
+
+// lang=(zh or ace or de) shared template project:(wikipedia)
 
 // Using full root for the ease of debugging locally. Eventually should probably use '/'
-export const rootUrlData = 'https://dibabel.toolforge.org/';
+export const rootUrlData = '/';
+// export const rootUrlData = 'http://localhost:5000/';
+// export const rootUrlData = 'https://dibabel.toolforge.org/';
 export const rootUrlSite = '/';
 
+export const titleUrlSuffix = '/wiki/';
+
 // export const rootUrlData = '/';
+
+export function wikiUrl(site: string, title: string) {
+  return `https://${site}${titleUrlSuffix}${encodeURIComponent(title)}`;
+}
 
 /**
  * React hook to store state in the local storage
@@ -82,7 +92,7 @@ export async function postToApi(domain: string, data: { [key: string]: string })
     method: 'POST',
     mode: 'cors', // TODO: possibly use a different mode here?  no-cors, cors, same-origin
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   });
   return response.json();
 }
@@ -103,9 +113,9 @@ export async function getToken(domain: string) {
   return token;
 }
 
-export const splitNs = (title: string): [ItemTypeType, string] => {
+export const splitNs = (title: string): [PageType, string] => {
   const pos = title.indexOf(':');
-  return [title.substring(0, pos).toLowerCase() as ItemTypeType, title.substring(pos + 1)];
+  return [title.substring(0, pos).toLowerCase() as PageType, title.substring(pos + 1)];
 };
 
 export const sleep = (durationsMs: number) => {
@@ -138,4 +148,30 @@ export function dbg(log: string, fn: any): any {
     // debugger;
     return fn.apply(arguments);
   };
+}
+
+export function getSummaryMsgFromStatus(changeType: string): string {
+  switch (changeType) {
+    default:
+      throw new Error(changeType);
+    case 'outdated':
+      return 'diff-summary-text--edit';
+    case 'unlocalized':
+      return 'diff-summary-text--localized';
+    case 'diverged':
+      return 'diff-summary-text--reset';
+    case 'new':
+      return 'diff-summary-text--new';
+  }
+}
+
+export function getSummaryLink(item: Item): string {
+  return `[[mw:${item.srcFullTitle}]]`;
+}
+
+export function fixMwLinks(summary: string): string {
+  // Reverse link conversion from first form to second.  Ideally we should fix Banana not to do this.
+  // <a href="./mw:Special:MyLanguage/WP:TNT" title="mw:Special:MyLanguage/WP:TNT">docs</a>
+  // [[mw:Special:MyLanguage/WP:TNT|docs]]
+  return summary.replace(new RegExp(/<a href="\.\/([^"]+)" title="\1">([^<]+)<\/a>/, 'g'), (_, lnk, txt) => `[[${lnk}|${txt}]]`).trim();
 }

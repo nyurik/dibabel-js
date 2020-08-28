@@ -2,7 +2,7 @@ import React, { Dispatch, useContext, useMemo } from 'react';
 
 import { EuiSearchBar, Query } from '@elastic/eui';
 
-import { defaultSearchableFields, Group, groupDefs, Item } from '../types';
+import { defaultSearchableFields, Group, groupDefs, Item } from '../services/types';
 
 import { AllDataContext } from '../contexts/AllData';
 import { groupBy, map } from 'lodash';
@@ -18,9 +18,8 @@ export const Tables = ({ query, queryError, selectedItems, setSelectedItems, gro
   groupSelection: Array<keyof Item>,
   query: string | Query,
 }) => {
-  let { allItems, status } = useContext(AllDataContext);
-
   const { i18n } = useContext(I18nContext);
+  const { allItems, status } = useContext(AllDataContext);
 
   const groupedItems = useMemo(() => {
     function makeLastItem(items: Array<Item>, parentColumns: Array<string>) {
@@ -66,7 +65,7 @@ export const Tables = ({ query, queryError, selectedItems, setSelectedItems, gro
     }
 
     const filteredItems = EuiSearchBar.Query.execute(query, allItems, { defaultSearchableFields });
-    return organizeItemsInGroups(0, filteredItems, ['protection', 'wiki', 'dstTitle', 'status', 'hash']);
+    return organizeItemsInGroups(0, filteredItems, ['protection', 'wiki', 'dstTitle', 'status', 'sortDepsStatus', 'hash']);
   }, [allItems, groupSelection, query]);
 
   return (<ItemsTable

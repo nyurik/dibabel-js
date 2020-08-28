@@ -2,12 +2,12 @@ import json
 import pickle
 import sqlite3
 import zlib
+from collections import defaultdict
 from datetime import datetime, timedelta
-from itertools import chain
 from json import dumps, loads
 from pathlib import Path
-from typing import Generator, Tuple, Optional
-from typing import List, Dict, Set, Iterable
+from sys import intern
+from typing import Generator, Optional, List, Dict, Set, Iterable, Tuple
 
 from requests import Session
 from requests.adapters import HTTPAdapter
@@ -15,15 +15,13 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from sqlitedict import SqliteDict
 
-from .DataTypes import RevComment, TemplateCache, SyncInfo, SiteMetadata, WdWarning, WdSitelink, TemplateReplacements, \
+from .DataTypes import TitleSitelinksCache, SyncInfo, SiteMetadata, WdWarning, WdSitelink, TitleSitelinks, \
     Translations
 from .PageContent import TitlePagePair, PageContent
 from .PagePrimary import PagePrimary
 from .Sparql import Sparql
 from .WikiSite import WikiSite
-from .utils import batches, title_to_url, parse_wd_sitelink, dict_of_dicts, update_dict_of_dicts
-
-known_unshared = {'Template:Documentation'}
+from .utils import batches, title_to_url, parse_wd_sitelink, update_dict_of_dicts, calc_hash
 
 primary_domain = 'www.mediawiki.org'
 
@@ -32,11 +30,7 @@ class SessionState:
     @staticmethod
     def my_encode(obj):
         try:
-            if isinstance(obj, list) and obj and isinstance(obj[0], RevComment):
-                enc_obj = [v.encode() for v in obj]
-            else:
-                enc_obj = obj
-            return dumps(enc_obj, ensure_ascii=False)
+            return dumps(obj, ensure_ascii=False)
         except TypeError:
             return sqlite3.Binary(zlib.compress(pickle.dumps(obj, pickle.HIGHEST_PROTOCOL)))
 
@@ -46,9 +40,6 @@ class SessionState:
             obj = loads(obj)
         except ValueError:
             return pickle.loads(zlib.decompress(bytes(obj)))
-        if isinstance(obj, list) and obj and isinstance(obj[0], dict) and 'comment' in obj[0]:
-            obj = [RevComment.decode(v) for v in obj]
-        return obj
 
     def __init__(self, cache_file: str, user_requested=False):
         self.user_requested = user_requested
@@ -95,7 +86,7 @@ class QueryCache:
             self.wikidata = Sparql()
 
             # Template name -> domain -> localized template name
-            self.template_map: TemplateCache = state.cache.get('template_map') or {}
+            self.title_sitelinks: TitleSitelinksCache = state.cache.get('title_sitelinks') or {}
 
             self.primary_pages_by_qid: Dict[str, PagePrimary] = {}
             self.primary_pages_by_title: Dict[str, PagePrimary] = {}
@@ -105,13 +96,16 @@ class QueryCache:
                 for v in state.cache.keys()
                 if v.startswith('info_by_qid:')}
 
-            # Get sitelinks, and update self.primary_pages_by_qid
             wd_warnings = []
-            sitelinks = self.query_wd_multilingual_pages(state, wd_warnings)
-            # Update primary pages and templates cache
+            # Make sure we have primary domain metadata
+            self.update_metadata(state, [primary_domain])
+            # Query WDQS for the list of all available primary pages
+            # Init self.primary_pages_by_qid and self.primary_pages_by_title
+            self.query_primary_pages(wd_warnings)
+            # Load primary page history and update the sitelinks for pages and dependencies
             self.update_primary_pages(state)
-            # Download clones and compute sync info
-            self.update_syncinfo(state, sitelinks, False)
+            # Download content of all copies and compute sync info
+            self.update_syncinfo(state)
             # Update localization strings
             self.summary_i18n = self.get_translation_table(state)
 
@@ -120,49 +114,40 @@ class QueryCache:
     def create_session(self, user_requested) -> SessionState:
         return SessionState(self.cache_file, user_requested)
 
-    def query_wd_multilingual_pages(self,
-                                    state: SessionState,
-                                    warnings: List[WdWarning],
-                                    qids: List[str] = None
-                                    ) -> List[WdSitelink]:
+    def query_primary_pages(self, warnings: List[WdWarning]) -> None:
         """
-        Find all sitelinks for the pages in Wikidata who's instance-of is Q63090714 (auto-synchronized pages)
-        :return: a map of wikidata ID -> list of sitelinks
+        Update self.primary_pages_by_qid and _by_title from WDQS
         """
-        items_str = ''
-        if qids:
-            items_str = f' VALUES ?id {{ wd:{" wd:".join(qids)} }}'
-        query = 'SELECT ?id ?sl WHERE {%%% ?id wdt:P31 wd:Q63090714. ?sl schema:about ?id. }'.replace('%%%', items_str)
+        query = '''\
+SELECT ?id ?sl WHERE {
+  ?id wdt:P31 wd:Q63090714.
+  ?sl schema:about ?id;
+      schema:isPartOf <https://%%%/>.
+}'''.replace('%%%', primary_domain)
 
-        primaries = []
-        copies = []
+        found_qids = []
         for row in self.wikidata.query(query):
             qid = row['id']['value'][len('http://www.wikidata.org/entity/'):]
             res = parse_wd_sitelink(qid, row['sl']['value'], warnings)
             if res:
-                if res.domain != primary_domain:
-                    copies.append(res)
-                else:
-                    primaries.append(qid)
-                    if qid not in self.primary_pages_by_qid:
-                        self.primary_pages_by_qid[qid] = PagePrimary(qid, res.title, self.template_map)
+                found_qids.append(qid)
+                if qid not in self.primary_pages_by_qid:
+                    self.primary_pages_by_qid[qid] = PagePrimary(qid, res.title, self.title_sitelinks)
 
-        if not qids:
-            # Remove primary pages that are no longer listed as multi-copiable in WD
-            for old_key in set(self.primary_pages_by_qid.keys()).difference(primaries):
-                del self.primary_pages_by_qid[old_key]
+        # Remove primary pages that are no longer listed as multi-copiable in WD
+        for old_key in set(self.primary_pages_by_qid.keys()).difference(found_qids):
+            del self.primary_pages_by_qid[old_key]
 
         # Update reverse lookup by title
         self.primary_pages_by_title = {v.title: v for v in self.primary_pages_by_qid.values()}
 
-        return copies
-
     def update_primary_pages(self, state: SessionState, page: Optional[PagePrimary] = None):
-        pages_to_update = self.primary_pages_by_qid.values() if page is None else [page]
+        primary_metadata = self.sites_metadata[primary_domain]
+        pages_to_update = list(self.primary_pages_by_qid.values()) if page is None else [page]
         # Load primary page revision history from cache if needed
         for page in pages_to_update:
             if not page.history:
-                page.history = state.cache.get(f"primary:{page.title}") or []
+                page.set_history(state.cache.get(f"primary:{page.title}") or [], primary_metadata)
         # Find latest available revisions for primary pages, and cleanup if don't exist
         latest_primary_revids: Dict[str, int] = {}
         for title, revid in self.primary_site.query_pages_revid((v.title for v in pages_to_update)):
@@ -174,112 +159,139 @@ class QueryCache:
         # Load page history if needed, and cache it
         for page in pages_to_update:
             revid = latest_primary_revids[page.title]
-            if not page.history or page.history[-1].revid != revid:
-                self.primary_site.load_page_history(page.title, page.history, revid)
+            hist = self.primary_site.load_page_history(page.title, page.history, revid)
+            if hist:
+                page.add_to_history(hist, primary_metadata)
                 state.cache[f"primary:{page.title}"] = page.history
-        # Load dependencies of the primary pages
-        self.update_template_cache(state, pages_to_update)
+        # Load sitelinks for both primary pages and their dependencies
+        titles = set((v.title for v in pages_to_update))
+        for page in pages_to_update:
+            titles.update(page.historic_dependencies)
+        self.update_sitelinks_map(state, titles)
 
-    def update_syncinfo(self,
-                        state: SessionState,
-                        sitelinks: Iterable[WdSitelink],
-                        refresh) -> List[Tuple[str, str, PageContent]]:
+    def update_syncinfo(self, state: SessionState,
+                        sitelink: Optional[WdSitelink] = None) -> List[Tuple[PageContent, SyncInfo]]:
+        """
+        Get a list of domain/title/PageContent tuples
+        """
         infos = self.syncinfo_by_qid_domain
-        if not refresh:
-            sitelinks = filter(lambda v: v.qid not in infos or v.domain not in infos[v.qid], sitelinks)
-        qid_by_domain_title = dict_of_dicts(sitelinks, lambda v: v.domain, lambda v: v.title, lambda v: v.qid)
-        self.update_metadata(state, qid_by_domain_title.keys())
+        if sitelink:
+            # if not refresh:
+            #     sitelinks = filter(lambda v: v.qid not in infos or v.domain not in infos[v.qid], sitelinks)
+            # qid_by_domain_title = dict_of_dicts(sitelinks, lambda v: v.domain, lambda v: v.title, lambda v: v.qid)
+            qid_by_domain_title = {sitelink.domain: {sitelink.title: sitelink.qid}}
+        else:
+            qid_by_domain_title = defaultdict(dict)
+            for qid, page in self.primary_pages_by_qid.items():
+                links = self.title_sitelinks[page.title]
+                for domain, title in links.domain_to_title.items():
+                    if qid not in infos or domain not in infos[qid]:
+                        qid_by_domain_title[domain][title] = qid
+
         result = []
         changed_qid = set()
         for domain, titles_qid in sorted(qid_by_domain_title.items(), key=lambda v: v[0]):
-            for title, page in self.get_page_content(state, domain, titles_qid.keys(), refresh):
-                result.append((domain, title, page))
+            for title, page in self.get_page_content(state, domain, titles_qid.keys(), bool(sitelink)):
                 qid = titles_qid[title]
                 old_revid = 0 if qid not in infos or domain not in infos[qid] else infos[qid][domain].dst_revid
-                is_same = (page is None and old_revid == 0) or (page is not None and old_revid == page.revid)
-                if not is_same:
-                    changed_qid.add(qid)
+                if page is None or old_revid != page.revid:
                     primary = self.primary_pages_by_qid[qid]
+                    metadata = self.sites_metadata[domain]
                     if page is None:
-                        info = SyncInfo('missing', primary.qid, primary.title, domain, title)
+                        last_rev = primary.last_revision
+                        info = SyncInfo(
+                            'new', primary.qid, primary.title, domain, title,
+                            new_content=intern(primary.localize_content(last_rev.content, metadata, domain)),
+                            hash=calc_hash(last_rev.content))
                     else:
-                        info = primary.compute_sync_info(primary.qid, page, self.sites_metadata[domain])
-                    update_dict_of_dicts(infos, primary.qid, domain, info)
+                        info = primary.compute_sync_info(primary.qid, page, metadata)
+                        update_dict_of_dicts(infos, primary.qid, domain, info)
+                        changed_qid.add(qid)
+                else:
+                    info = infos[qid][domain]
+                result.append((page, info))
+
         for qid in changed_qid:
             state.cache[f'info_by_qid:{qid}'] = infos[qid]
+
         return result
 
-    def update_template_cache(self, state: SessionState, pages: Iterable[PagePrimary]):
-        # Template name -> domain -> localized template name
-        titles: Set[str] = set()
-        for page in pages:
-            for rev in page.history:
-                titles.update(page.parse_dependencies(rev.content))
-
+    def update_sitelinks_map(self, state: SessionState, titles: Iterable[str]):
         # Ask source to resolve titles
         normalized = {}
         redirects = {}
-        for batch in batches(titles, 50):
+        missing = set()
+        pages = set()
+        for batch in batches(sorted(set(titles)), 50):
             res = next(self.primary_site.query(titles=batch, redirects=True))
             if 'normalized' in res:
                 normalized.update({v['from']: v.to for v in res.normalized})
             if 'redirects' in res:
                 redirects.update({v['from']: v.to for v in res.redirects})
+            for v in res.pages:
+                if 'missing' in v:
+                    missing.add(v['title'])
+                else:
+                    pages.add(v['title'])
 
-        # redirect targets
-        # + normalization results without redirects
-        # + titles without redirects and without normalizations
-        # and remove all the ones already in cache
-        unknowns = set(redirects.values()) \
-            .union(set(normalized.values()).difference(redirects.keys())) \
-            .union(titles.difference(redirects.keys()).difference(normalized.keys())) \
-            .difference(self.template_map)
+        vals = "\n".join((f'<{title_to_url(primary_domain, v)}>' for v in pages))
+        query = f'''\
+SELECT ?id ?sl ?is_multi ?is_non_multi
+WHERE {{ 
+  VALUES ?mw {{
+{vals}
+  }}
+  ?mw schema:about ?id.
+  ?sl schema:about ?id.
+  BIND( EXISTS {{?id wdt:P31 wd:Q63090714}} AS ?is_multi)
+  BIND( EXISTS {{?id wdt:P31 wd:Q98545791}} AS ?is_non_multi)
+}}'''
+        query_result = self.wikidata.query(query)
+        qid_copies = []
+        qid_primary = {}
+        for row in query_result:
+            qid = row['id']['value'][len('http://www.wikidata.org/entity/'):]
+            is_multi = row['is_multi']['value'] == 'true'
+            is_non_multi = row['is_non_multi']['value'] == 'true'
+            res = parse_wd_sitelink(qid, row['sl']['value'])
+            if res:
+                if res.domain == primary_domain:
+                    qid_primary[qid] = res.title
+                    status = 'sync' if is_multi else 'manual_sync' if is_non_multi else 'no_sync'
+                    self.title_sitelinks[res.title] = TitleSitelinks(qid, res.title, status, {})
+                else:
+                    qid_copies.append(res)
 
-        if unknowns:
-            vals = " ".join(
-                {v: f'<{title_to_url(primary_domain, v)}>'
-                 for v in unknowns}.values())
-            query = f'''\
-    SELECT ?id ?sl ?ismult
-    WHERE {{ 
-      VALUES ?mw {{ {vals} }}
-      ?mw schema:about ?id.
-      ?sl schema:about ?id.
-      BIND( EXISTS {{?id wdt:P31 wd:Q63090714}} AS ?ismult)
-    }}'''
-            query_result = self.wikidata.query(query)
-            qid_clones = []
-            qid_primary = {}
-            for row in query_result:
-                qid = row['id']['value'][len('http://www.wikidata.org/entity/'):]
-                is_multi = bool(row['ismult']['value'])
-                res = parse_wd_sitelink(qid, row['sl']['value'])
-                if res:
-                    if res.domain == primary_domain:
-                        qid_primary[qid] = res.title
-                        self.template_map[res.title] = TemplateReplacements(qid, is_multi, {})
-                    else:
-                        qid_clones.append(res)
-            for row in qid_clones:
-                self.template_map[qid_primary[row.qid]].domain_to_title[row.domain] = row.title
+        for title in pages:
+            if title not in self.title_sitelinks:
+                self.title_sitelinks[title] = TitleSitelinks(None, title, 'no_wd', {})
 
-        for frm, to in chain(redirects.items(), normalized.items()):
-            if to not in self.template_map:
-                self.template_map[frm] = TemplateReplacements(None, False, {})
-            # elif frm in self.template_map:
-            #     raise ValueError(f'Logic error - {frm} is already cached')
-            else:
-                self.template_map[frm] = self.template_map[to]
+        for frm, to in redirects.items():
+            try:
+                self.title_sitelinks[frm] = self.title_sitelinks[to]
+            except KeyError:
+                self.title_sitelinks[frm] = TitleSitelinks(None, frm, 'missing', {})
+
+        for frm, to in normalized.items():
+            try:
+                self.title_sitelinks[frm] = self.title_sitelinks[to]
+            except KeyError:
+                # Save normalized title
+                self.title_sitelinks[frm] = TitleSitelinks(None, to, 'missing', {})
 
         # Ensure all titles are present in cache
-        for t in titles:
-            if t not in self.template_map:
-                self.template_map[t] = TemplateReplacements(None, False, {})
+        for title in missing:
+            if title not in self.title_sitelinks:
+                self.title_sitelinks[title] = TitleSitelinks(None, title, 'missing', {})
 
-        state.cache['template_map'] = self.template_map
+        # Update sitelinks for copies
+        for row in qid_copies:
+            self.title_sitelinks[qid_primary[row.qid]].domain_to_title[row.domain] = row.title
 
-    @staticmethod
-    def get_page_content(state: SessionState,
+        state.cache['title_sitelinks'] = self.title_sitelinks
+
+    def get_page_content(self,
+                         state: SessionState,
                          domain: str,
                          titles: Iterable[str],
                          refresh=False
@@ -294,6 +306,8 @@ class QueryCache:
                 cached_pages[title] = page
             else:
                 unresolved.add(title)
+
+        self.update_metadata(state, [domain]);
 
         if cached_pages:
             if refresh:
@@ -317,16 +331,19 @@ class QueryCache:
             for title, page in site.query_pages_content(unresolved):
                 cache_title = title_to_url(site.domain, title)
                 if page is None:
-                    del state.cache[cache_title]
+                    state.cache.pop(cache_title, None)  # ok if doesn't exist
                 else:
                     state.cache[cache_title] = page
                 yield title, page
 
+    def is_stale_metadata(self, domain: str) -> bool:
+        md = self.sites_metadata.get(domain)
+        return not md or (datetime.utcnow() - md.last_updated) > timedelta(days=30)
+
     def update_metadata(self, state: SessionState, domains: Iterable[str]) -> None:
         updated = False
         for domain in sorted(domains):
-            md = self.sites_metadata.get(domain)
-            if not md or (datetime.utcnow() - md.last_updated) > timedelta(days=30):
+            if self.is_stale_metadata(domain):
                 self.sites_metadata[domain] = state.get_site(domain).query_metadata()
                 updated = True
         if updated:
@@ -340,7 +357,7 @@ class QueryCache:
 
     @staticmethod
     def info_obj(p: SyncInfo):
-        res = dict(title=p.dst_title, status=p.status)
+        res = dict(domain=p.dst_domain, title=p.dst_title, status=p.status)
         if p.hash:
             res['hash'] = p.hash
         if p.dst_timestamp:
@@ -348,36 +365,99 @@ class QueryCache:
         if p.behind:
             res['behind'] = p.behind
             res['matchedRevId'] = p.matched_revid
-        if p.not_multisite_deps:
-            res['notMultisiteDeps'] = p.not_multisite_deps
-        if p.multisite_deps_not_on_dst:
-            res['multisiteDepsNotOnDst'] = p.multisite_deps_not_on_dst
         if p.dst_protection:
             res['protection'] = p.dst_protection
         return res
 
+    def prepare_result(self, single_qid: Optional[str] = None) -> Dict[str, any]:
+        qids = set(self.syncinfo_by_qid_domain.keys()) if single_qid is None else {single_qid}
+
+        # Keep iterating until no more new dependent pages
+        other_deps = set()
+        found = 0
+        while found != len(qids):
+            found = len(qids)
+            for qid in list(qids):
+                page = self.primary_pages_by_qid[qid]
+                for dep in page.dependencies:
+                    sl = self.title_sitelinks[dep]
+                    if sl.pageType == 'sync':
+                        qids.add(sl.qid)
+                    else:
+                        other_deps.add(sl.normalizedTitle)
+
+        pages = []
+        for qid in qids:
+            page = self.primary_pages_by_qid[qid]
+            pages.append(dict(
+                primaryTitle=page.title,
+                type=self.title_sitelinks[page.title].pageType,
+                primarySite=primary_domain,
+                qid=qid,
+                primaryRevId=page.last_revision.revid,
+                dependencies=[
+                    vv.normalizedTitle
+                    for vv in [self.title_sitelinks[v]
+                               for v in self.primary_pages_by_qid[qid].dependencies]],
+                copies=[self.info_obj(info) for info in self.syncinfo_by_qid_domain[qid].values()]
+            ))
+
+        for dep in sorted(other_deps):
+            sl = self.title_sitelinks[dep]
+            obj = dict(
+                primaryTitle=sl.normalizedTitle,
+                type=sl.pageType,
+                primarySite=primary_domain,
+            )
+            if sl.qid is not None:
+                obj['qid'] = sl.qid
+            if sl.pageType == 'manual_sync' or sl.pageType == 'no_sync':
+                obj['copies'] = [dict(domain=d, title=t) for d, t in sl.domain_to_title.items()]
+            pages.append(obj)
+
+        return dict(
+            pages=pages,
+        )
+
     # noinspection PyUnusedLocal
-    def get_data(self, state: SessionState) -> List[dict]:
-        return [dict(
-            id=qid,
-            primarySite=primary_domain,
-            primaryTitle=self.primary_pages_by_qid[qid].title,
-            primaryRevId=self.primary_pages_by_qid[qid].history[-1].revid,
-            copies={domain: self.info_obj(info) for domain, info in obj.items()}
-        ) for qid, obj in self.syncinfo_by_qid_domain.items()]
+    def get_data(self, state: SessionState) -> Dict[str, List[dict]]:
+        return self.prepare_result()
 
     def get_page(self, state: SessionState, qid: str, domain: str) -> Optional[dict]:
         primary = self.primary_pages_by_qid[qid]
-        info = self.syncinfo_by_qid_domain[qid][domain]
-        _, _, page = self.update_syncinfo(state, [WdSitelink(qid, domain, info.dst_title)], True)[0]
-        if page is None:
-            raise ValueError(f"Unable to load {qid}/{domain}")
-        # sync info might have changed, re-get it
-        info = self.syncinfo_by_qid_domain[qid][domain]
-        return dict(
-            currentText=page.content,
-            currentRevId=page.revid,
-            newText=info.new_content,
-            summary=primary.create_summary(state.get_site(domain), info, self.summary_i18n),
-            syncInfo=self.info_obj(info)
+
+        info = self.syncinfo_by_qid_domain[qid].get(domain)
+        if info:
+            title = info.dst_title
+        else:
+            # in case the copy does not exist (assuming client wants to create a new copy),
+            # need to generate the new title using localized namespaces
+            self.update_metadata(state, [domain])
+            meta = self.sites_metadata[domain]
+            title = (meta.module_ns if primary.is_module else meta.template_ns) + ':' + primary.title.split(':', 1)[1]
+        page, info = self.update_syncinfo(state, WdSitelink(qid, domain, title))[0]
+
+        result = self.prepare_result(qid)
+
+        content = dict(
+            changeType=info.status,
+            domain=domain,
+            qid=qid,
+            title=primary.title,
         )
+        if info.status != 'ok':
+            content['newText'] = info.new_content
+        if page is not None:
+            content['currentText'] = page.content
+            content['currentRevId'] = page.revid
+            content['currentRevTs'] = page.content_ts
+            if info.status == 'outdated':
+                content['changes'] = [dict(
+                    user=v.user,
+                    ts=v.ts,
+                    comment=v.comment,
+                    revid=v.revid
+                ) for v in primary.history[-info.behind:]]
+        result['content'] = content
+
+        return result

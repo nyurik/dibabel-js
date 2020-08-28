@@ -1,25 +1,20 @@
 import React, { Dispatch, useCallback, useContext, useState } from 'react';
-import { error, rootUrlData, sleep } from '../utils';
-import { Item, Props, SyncContentType } from '../types';
-import { AllDataContext, DataLoadStatus, updateSyncInfo } from './AllData';
-import { isEqual } from 'lodash';
+import { error, sleep } from '../services/utils';
+import { Item, Props, SrvContentTypes, OptionalContentTypes } from '../services/types';
+import { AllDataContext, ItemStatus } from './AllData';
 import { ItemDstLink } from '../components/Snippets';
 import { ToastsContext } from './Toasts';
 import { EuiText } from '@elastic/eui';
+import { Message } from '../components/Message';
 
-type ItemContent = Item | undefined;
-
-interface ItemStatus {
-  status: DataLoadStatus;
-  error?: string;
-}
+type OptionalItem = Item | undefined;
 
 type ItemContentType = {
   itemStatus: ItemStatus,
   setItemStatus: Dispatch<ItemStatus>,
   currentItem?: Item,
-  syncData?: SyncContentType,
-  setCurrentItem: Dispatch<ItemContent>,
+  itemContent?: SrvContentTypes,
+  setCurrentItem: Dispatch<OptionalItem>,
   updateSavedItem: Dispatch<Item>,
 };
 
@@ -27,75 +22,44 @@ const initialStatus = { status: 'reset' } as ItemStatus;
 
 export const CurrentItemContext = React.createContext<ItemContentType>({} as ItemContentType);
 
-type SyncLoader = {
-  status: ItemStatus,
-  newItem?: Item,
-  newSyncData?: SyncContentType,
-};
-
-async function loadSyncData(item: Item): Promise<SyncLoader> {
-  const result = {} as SyncLoader;
-  try {
-    const res = await fetch(`${rootUrlData}page/${item.qid}/${item.wiki}`);
-    if (res.ok) {
-      const data: SyncContentType = await res.json();
-      const newItem = updateSyncInfo({ ...item }, data.syncInfo);
-      if (!isEqual(item, newItem)) {
-        result.newItem = newItem;
-      }
-      result.status = { status: 'ready' };
-      result.newSyncData = data;
-    } else {
-      result.status = ({
-        status: 'error',
-        error: `Unable to get the page. ${res.status}: ${res.statusText}\n${await res.text()}`
-      });
-    }
-  } catch (err) {
-    result.status = ({ status: 'error', error: `Unable to get the page. ${err.toString()}` });
-  }
-  return result;
-}
-
 export const CurrentItemProvider = ({ children }: Props) => {
-  const addToast = useContext(ToastsContext);
-  const { updateItem } = useContext(AllDataContext);
+  const { addToast } = useContext(ToastsContext);
+  const { loadItem } = useContext(AllDataContext);
 
-  let [currentItem, setCurrentItem] = useState<ItemContent>(undefined);
+  let [currentItem, setCurrentItem] = useState<OptionalItem>(undefined);
   let [itemStatus, setItemStatus] = useState<ItemStatus>(initialStatus);
-  let [syncData, setSyncData] = useState<SyncContentType | undefined>();
+  let [itemContent, setItemContent] = useState<OptionalContentTypes>();
 
-  const setCurrentItemCB = useCallback((item: ItemContent) => {
+  const setCurrentItemCB = useCallback((item: OptionalItem) => {
     (async () => {
       setCurrentItem(item);
       if (!item) {
         setItemStatus({ status: 'reset' });
       } else {
         setItemStatus({ status: 'loading' });
-        const res = await loadSyncData(item);
+        const res = await loadItem(item.qid, item.wiki);
         if (res.newItem) {
-          updateItem(res.newItem);
           setCurrentItem(res.newItem);
         }
         if (res.status.status === 'ready') {
-          setSyncData(res.newSyncData);
+          setItemContent(res.content);
         }
         setItemStatus(res.status);
       }
     })();
-  }, [updateItem]);
+  }, [loadItem]);
 
   const updateSavedItem = useCallback((item: Item) => {
     (async () => {
       let tries = 0;
       const maxTries = 30;
       for (; tries < maxTries; tries++) {
-        const res = await loadSyncData(item);
+        const res = await loadItem(item.qid, item.wiki);
         if (res.status.status !== 'ready') {
           break;
         }
-        if (res.newSyncData!.syncInfo!.timestamp !== item.dstTimestamp) {
-          updateItem(res.newItem!);
+        const syncData = res.content!;
+        if (syncData.changeType !== 'new' && syncData.currentRevTs !== item.dstTimestamp) {
           break;
         }
         // Sleep, but no longer than 10 seconds each time
@@ -103,16 +67,17 @@ export const CurrentItemProvider = ({ children }: Props) => {
       }
       if (tries === maxTries) {
         addToast(error({
-          title: (<EuiText><ItemDstLink item={item}/>{' '}was updated, but the DiBabel server was not able to get
-            updated information.</EuiText>),
+          title: (<EuiText><Message
+            id={'$1 was modified, but the DiBabel server was not able to get confirmation.'}
+            placeholders={[<ItemDstLink item={item}/>]}/></EuiText>),
         }));
       }
     })();
-  }, [addToast, updateItem]);
+  }, [addToast, loadItem]);
 
   return (
     <CurrentItemContext.Provider
-      value={{ itemStatus, setItemStatus, currentItem, syncData, setCurrentItem: setCurrentItemCB, updateSavedItem }}>
+      value={{ itemStatus, setItemStatus, currentItem, itemContent, setCurrentItem: setCurrentItemCB, updateSavedItem }}>
       {children}
     </CurrentItemContext.Provider>
   );

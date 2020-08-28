@@ -11,10 +11,10 @@ import {
   EuiToolTip
 } from '@elastic/eui';
 
-import { Group, Item } from '../types';
+import { Group, isGroup, Item } from '../services/types';
 import { iconsEuiMedium, lockIcon } from '../icons/icons';
 import { ExternalLink } from './Snippets';
-import { itemDiffLink, prettyDomain } from '../utils';
+import { itemDiffLink, prettyDomain } from '../services/utils';
 import { CurrentItemContext } from '../contexts/CurrentItem';
 import { I18nContext } from '../contexts/I18nContext';
 import { SettingsContext } from '../contexts/Settings';
@@ -34,13 +34,12 @@ export const ItemsTable = (
   const { i18n } = useContext(I18nContext);
   const { setCurrentItem } = useContext(CurrentItemContext);
 
-  const all_columns: { [key: string]: EuiBasicTableColumn<Item> } = {
+  const allColumns: { [key: string]: EuiBasicTableColumn<Item> } = {
     selector: {
       name: '',
       width: '2em',
       render: (item: Group | Item) => {
-        // @ts-ignore
-        const items: Array<Item> = item.allSubItems ?? [item];
+        const items: Array<Item> = isGroup(item) ? item.allSubItems : [item];
         const selectable = items.filter(v => v.behind && v.behind > 0);
         const selectedCount = selectable.filter(v => selectedItems.has(v)).length;
         const checked = selectedCount > 0 && selectable.length === selectedCount;
@@ -130,6 +129,25 @@ export const ItemsTable = (
         tooltip={i18n('table-header-wikipage--link', prettyDomain(item.lang, item.project), item.dstFullTitle)}
         href={item.dstTitleUrl}/></>),
     },
+    sortDepsStatus: {
+      field: 'sortDepsStatus',
+      name: (<EuiToolTip content={i18n('table-header-deps--tooltip')}><Message
+        id="table-header-deps--label"/></EuiToolTip>),
+      render: (_: string, item: Item) => {
+        const res = [];
+        if (item.missingDeps) {
+          res.push(<EuiIconTip size={'l'} type={'alert'} color={'danger'} content={i18n('This page has dependencies that do not exist on the target wiki')} />);
+        }
+        if (item.unsyncedDeps) {
+          res.push(<EuiIconTip size={'l'} type={'alert'} color={'warning'} content={i18n('This page has dependencies that are not being synced')} />);
+        }
+        if (item.staleDeps) {
+          res.push(<EuiIconTip size={'l'} type={'alert'} color={'primary'} content={i18n('The dependencies of this page are outdated on the target wiki')} />);
+        }
+        return (<>{res}</>);
+      },
+      sortable: true,
+    },
     hash: {
       field: 'hash',
       name: (<EuiToolTip content={i18n('table-header-hash--tooltip')}
@@ -167,8 +185,9 @@ export const ItemsTable = (
                 title={i18n('table-cell-status--diverged-tooltip')}
                 color={'danger'}><Message id="table-cell-status--diverged-label"/></EuiHealth>);
           default:
-            return (<EuiText>ERROR: {item.status} - {item.dstFullTitle}</EuiText>)
-            // throw new Error(item.status);
+            debugger;
+            return (<EuiText>ERROR: {item.status} - {item.dstFullTitle}</EuiText>);
+          // throw new Error(item.status);
         }
       },
     },
@@ -247,7 +266,7 @@ export const ItemsTable = (
   function createTable(groupedItems: any, isTop?: boolean) {
     const params: EuiInMemoryTableProps<Item> = {
       items: groupedItems.items,
-      columns: groupedItems.columns.map((v: string) => all_columns[v]),
+      columns: groupedItems.columns.map((v: string) => allColumns[v]),
       itemId: 'key',
       sorting: true,
       pagination: {

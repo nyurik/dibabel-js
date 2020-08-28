@@ -12,16 +12,17 @@ import {
   EuiSelectable,
   EuiSelectableOption,
   EuiSpacer,
-  EuiSwitch
+  EuiSwitch,
+  EuiToolTip
 } from '@elastic/eui';
+
+import Banana from 'banana-i18n';
+
 import { UserContext, UserState } from './UserContext';
-import { rootUrlData, rootUrlSite, usePersistedState } from '../utils';
-
+import { rootUrlData, rootUrlSite, usePersistedState } from '../services/utils';
 import { I18nContext } from './I18nContext';
-
-import { Props } from '../types';
+import { Props } from '../services/types';
 import i18n_en from './messages-en.json';
-import { isEmpty } from 'lodash';
 
 export type LanguageNames = { [key: string]: string };
 export type SiteData = { languages: string[] };
@@ -40,6 +41,7 @@ export type SettingsContextType = {
   messages: AllMessages,
   setLocale: Dispatch<string>,
   languageNames: LanguageNames,
+  i18nInLocale: (locale: string, key: string, ...parameters: any[]) => Promise<string>,
 }
 
 export const SettingsContext = React.createContext<SettingsContextType>({} as SettingsContextType);
@@ -48,27 +50,18 @@ const initMessages: AllMessages = { en: i18n_en };
 const initSiteData: SiteData = { languages: ['en'] };
 
 async function loadLocale(newLanguage: string, messages: AllMessages): Promise<Messages> {
-  const newData: AllMessages = {};
-  while (true) {
-    if (!messages[newLanguage]) {
-      newData[newLanguage] = {}; // prevent repeated downloads
-      try {
-        const resp = await fetch(`${rootUrlSite}i18n/${newLanguage}.json`);
-        if (resp.ok) {
-          newData[newLanguage] = await resp.json();
-        }
-      } catch {
-        // TODO: report errors?
+  if (!messages[newLanguage]) {
+    try {
+      const resp = await fetch(`${rootUrlSite}i18n/${newLanguage}.json`);
+      if (resp.ok) {
+        // return new object that combines new download plus existing languages
+        return Object.assign({ [newLanguage]: await resp.json() }, messages);
       }
+    } catch {
+      // TODO: report errors?
     }
-    const dashIdx = newLanguage.indexOf('-');
-    if (dashIdx < 0) {
-      break;
-    }
-    newLanguage = newLanguage.substring(0, dashIdx);
-  }
-  if (!isEmpty(newData)) {
-    return Object.assign(newData, messages);
+    // Cache that there is no such language (will use fallbacks)
+    return Object.assign({ [newLanguage]: {} }, messages);
   }
   return null;
 }
@@ -123,37 +116,44 @@ export const SettingsProvider = ({ children }: Props) => {
 
   //
   // Locale and the names of all languages in the language of the user
-  const [locale, setLocaleVal] = usePersistedState<string>(`lang`, 'en', v => v, v => v);
+  const [locale, setLocale] = usePersistedState<string>(`lang`, 'en', v => v, v => v);
 
   //
   // Names of all languages in the user's language
-  const [languageNames, setLanguageDate] = useState<LanguageNames>({});
+  const [languageNames, setLanguageNames] = useState<LanguageNames>({});
   useEffect(() => {
-    getLanguageNames(locale).then(v => setLanguageDate(v));
+    getLanguageNames(locale).then(v => setLanguageNames(v));
   }, [locale]);
 
   //
   // Configure language localization
   const [messages, setMessages] = useState<AllMessages>(initMessages);
 
-  const setLocale = useCallback((newLocale: string): void => {
+  const setLocaleCB = useCallback((newLocale: string): void => {
     loadLocale(newLocale, messages).then(newMsgs => {
       if (newMsgs) {
         setMessages(newMsgs);
       }
       if (locale !== newLocale) {
-        setLocaleVal(newLocale);
+        setLocale(newLocale);
       }
     });
-  }, [locale, messages, setLocaleVal]);
+  }, [locale, messages, setLocale]);
+
+  const i18nInLocale = useCallback(async (locale: string, key: string, ...parameters: any[]): Promise<string> => {
+    const newMsgs = await loadLocale(locale, messages);
+    if (newMsgs) {
+      setMessages(newMsgs);
+    }
+    const banana = new Banana(locale, { messages: newMsgs || messages });
+    return banana.i18n(key, ...parameters);
+  }, [messages]);
 
   // Do this only once to load user's locale
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => { setLocale(locale); }, []);
+  useEffect(() => { setLocaleCB(locale); }, []);
 
-  // // @ts-ignore
   // [(isDarkTheme ? themeLight : themeDark)].unuse();
-  // // @ts-ignore
   // [(isDarkTheme ? themeDark : themeLight)].use();
 
   return (
@@ -168,8 +168,9 @@ export const SettingsProvider = ({ children }: Props) => {
         setIsIncrementalSearch,
         locale,
         messages,
-        setLocale,
+        setLocale: setLocaleCB,
         languageNames,
+        i18nInLocale,
       }}>
       {children}
     </SettingsContext.Provider>
@@ -249,7 +250,9 @@ export const Settings = () => {
   const languageSelector = (<EuiPopover
     id="popover"
     panelPaddingSize="none"
-    button={<EuiButtonEmpty onClick={() => setIsLanguagesOpen(true)}>{locale}</EuiButtonEmpty>}
+    button={<EuiToolTip title={languageNames[locale] || i18n('dibabel-language-unknown')}
+                        content={i18n('dibabel-language--tooltip')}><EuiButtonEmpty
+      onClick={() => setIsLanguagesOpen(true)}>{locale}</EuiButtonEmpty></EuiToolTip>}
     isOpen={isLanguagesOpen}
     closePopover={closePopover}>
     <EuiSelectable
@@ -271,9 +274,10 @@ export const Settings = () => {
           <EuiPopoverTitle>{search}</EuiPopoverTitle>
           {list}
           <EuiPanel paddingSize="m"><EuiLink
+            id={'translate-link'}
             href={`https://translatewiki.net/w/i.php?title=Special:Translate&group=dibabel&action=translate&language=${encodeURIComponent(locale)}`}
             target={'_blank'}><EuiButtonIcon
-            iconType={'globe'}/>{i18n('language-help')}</EuiLink></EuiPanel>
+            iconType={'globe'} aria-labelledby={'translate-link'}/>{i18n('language-help')}</EuiLink></EuiPanel>
         </div>
       )}
     </EuiSelectable>

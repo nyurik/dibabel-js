@@ -1,7 +1,7 @@
 import React, { Dispatch, useContext } from 'react';
 
 import { EuiButton, EuiFlexItem } from '@elastic/eui';
-import { Item } from '../types';
+import { Item } from '../services/types';
 import { I18nContext } from '../contexts/I18nContext';
 
 export const SyncButton = (props: {

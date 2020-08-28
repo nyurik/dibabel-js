@@ -19,3 +19,5 @@ declare module '@wikimedia/react.i18n' {
 
   export const IntlProvider: React.ContextProvider<{}>;
 }
+
+declare module 'banana-i18n';

@@ -1,6 +1,6 @@
 import React, { Dispatch, useContext, useEffect, useState } from 'react';
-import { Props, ToastNoId } from '../types';
-import { error, rootUrlSite, success, warning } from '../utils';
+import { Props, ToastNoId } from '../services/types';
+import { error, rootUrlSite, success, warning } from '../services/utils';
 import { ToastsContext } from './Toasts';
 
 export enum UserState {
@@ -47,7 +47,7 @@ function login(addToast: Dispatch<ToastNoId>, setUser: Dispatch<UserType>) {
 }
 
 export const UserProvider = ({ children }: Props) => {
-  const addToast = useContext(ToastsContext);
+  const { addToast } = useContext(ToastsContext);
   const [user, setUser] = useState<UserType>(defaultUserState);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
-import { EuiButtonIcon, EuiButtonIconColor, EuiCallOut, EuiLink, EuiSpacer, EuiText, EuiToolTip } from '@elastic/eui';
-import { Item } from '../types';
+import React, { useContext, FunctionComponent, Dispatch } from 'react';
+import { EuiButtonIcon, EuiButtonIconColor, EuiLink, EuiToolTip, EuiFieldText } from '@elastic/eui';
+import { Item } from '../services/types';
 
 import { I18nContext } from '../contexts/I18nContext';
-import { prettyDomain } from '../utils';
-import { Message } from './Message';
+import { prettyDomain } from '../services/utils';
 
 export const ExternalLink = (
   { href, title, tooltip, icon = 'symlink', color = 'text' }: {
@@ -42,38 +41,20 @@ export const ItemWikidataLink = ({ item: { qid } }: { item: Item }) => {
   return (<EuiLink href={`https://wikidata.org/wiki/${qid}`} target={'_blank'}>{qid}</EuiLink>);
 };
 
-function formatLinks(site: string, links: Array<string>) {
-  return (<ul>
-    {links.map(el => (
-      <li key={el}><EuiLink href={`https://${site}/wiki/${el}`} target={'_blank'}>{el}</EuiLink></li>))}
-  </ul>);
-}
+export const Comment: FunctionComponent<{
+  readOnly: boolean, isLoading: boolean, value: string, setValue: Dispatch<string>
+}> = ({ readOnly, isLoading, value, setValue }) => {
 
-export const NotMultisiteDepsWarning = ({ item }: { item: Item }) => {
   const { i18n } = useContext(I18nContext);
-  return (
-    <EuiCallOut title={i18n('diff-header-warnings--multisite-head')} color={'warning'}
-                iconType={'alert'}>
-      <EuiText><Message id="diff-header-warnings--multisite"
-                        placeholders={[<ItemSrcLink item={item} linkToWD={false}/>,
-                          <ItemWikidataLink item={item}/>]}/></EuiText>
-      <EuiSpacer size={'s'}/>
-      <EuiText>{formatLinks(item.wiki, item.notMultisiteDeps!)}</EuiText>
-    </EuiCallOut>
-  );
-};
-
-export const MultisiteDepsNotOnDstWarning = ({ item }: { item: Item }) => {
-  const { i18n } = useContext(I18nContext);
-  return (
-    <EuiCallOut title={i18n('diff-header-warnings--dependencies-head', item.wiki)}
-                color={'warning'}
-                iconType={'alert'}>
-      <EuiText><Message id="diff-header-warnings--dependencies"
-                        placeholders={[<EuiLink href={`https://${item.wiki}`}
-                                                target={'_blank'}>{item.wiki}</EuiLink>]}/></EuiText>
-      <EuiSpacer size={'s'}/>
-      <EuiText>{formatLinks(item.srcSite, item.multisiteDepsNotOnDst!)}</EuiText>
-    </EuiCallOut>
-  );
+  const placeholder = i18n('diff-summary--placeholder');
+  return (<EuiFieldText
+    readOnly={readOnly}
+    placeholder={placeholder}
+    isLoading={isLoading}
+    isInvalid={!value.trim()}
+    value={value}
+    onChange={e => setValue(e.target.value)}
+    aria-label={placeholder}
+    fullWidth={true}
+  />);
 };

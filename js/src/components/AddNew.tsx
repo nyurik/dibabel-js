@@ -1,7 +1,7 @@
-import React, { Dispatch, DispatchWithoutAction, useContext, useState } from 'react';
+import React, { Dispatch, DispatchWithoutAction, useContext, useMemo, useState } from 'react';
+import { uniq } from 'lodash';
 
 import {
-  EuiBadge,
   EuiButton,
   EuiButtonEmpty,
   EuiComboBox,
@@ -14,18 +14,21 @@ import {
   EuiModalHeader,
   EuiModalHeaderTitle,
   EuiOverlayMask,
+  EuiSpacer,
   EuiText,
-  EuiTextAlign,
 } from '@elastic/eui';
-import { error, sleep, success } from '../utils';
+import { AllDataContext, SyncLoader } from '../contexts/AllData';
 import { ToastsContext } from '../contexts/Toasts';
-
 import { I18nContext } from '../contexts/I18nContext';
+import { Item } from '../services/types';
+import { error, fixMwLinks, getSummaryLink, getSummaryMsgFromStatus, success } from '../services/utils';
+import { createItem, editItem } from '../services/StateStore';
 import { Message } from './Message';
-import { AllDataContext } from '../contexts/AllData';
-import { uniq } from 'lodash';
-import { ItemDstLink, ItemSrcLink, NotMultisiteDepsWarning } from './Snippets';
-import { Item } from '../types';
+import { Comment, ItemDstLink, ItemSrcLink } from './Snippets';
+import { DependenciesList } from './DependenciesList';
+import { ItemDiffBlock } from './ItemDiffBlock';
+import { SettingsContext } from '../contexts/Settings';
+import { CurrentItemContext } from '../contexts/CurrentItem';
 
 const Picker = ({ disabled, placeholder, value, setValue, options }: {
   disabled: boolean,
@@ -44,6 +47,7 @@ const Picker = ({ disabled, placeholder, value, setValue, options }: {
 
   const opts = options.sort().map(v => ({ label: v }));
   return (<EuiComboBox
+    fullWidth={true}
     placeholder={placeholder}
     singleSelection={{ asPlainText: true }}
     options={opts}
@@ -55,63 +59,17 @@ const Picker = ({ disabled, placeholder, value, setValue, options }: {
 
 export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
   const { i18n } = useContext(I18nContext);
-  const addToast = useContext(ToastsContext);
+  const { i18nInLocale } = useContext(SettingsContext);
+  const { addToast } = useContext(ToastsContext);
+  const { updateSavedItem } = useContext(CurrentItemContext);
 
-  // TODO
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [status, setStatus] = useState<'show' | 'saving'>('show');
+  const [status, setStatus] = useState<'show' | 'loaded' | 'saving'>('show');
   const [pageTitle, setPageTitle] = useState<string | undefined>();
   const [wiki, setWiki] = useState<string | undefined>();
-  const { allItems } = useContext(AllDataContext);
-
-  const onCopy = async () => {
-    try {
-      setStatus('saving');
-
-      // const res = await postToApi(currentItem!.wiki, {
-      //   action: 'edit',
-      //   title: currentItem!.dstFullTitle,
-      //   text: syncData!.newText,
-      //   summary: comment,
-      //   basetimestamp: syncData!.syncInfo.timestamp,
-      //   nocreate: '1',
-      //   token: await getToken(currentItem!.wiki),
-      // });
-      //
-      // if (res.edit.result !== 'Success') {
-      //   setItemStatus({ status: 'error', error: res.edit.info || JSON.stringify(res.edit) });
-      //   return;
-      // }
-
-      await sleep(3000);
-
-      // TODO
-      const newItem: Item = {
-        dstTitleUrl: `https://dibabel.toolforge.org/`,
-        lang: 'xx',
-        project: 'wikipedia',
-        dstFullTitle: pageTitle!,
-      } as Item;
-
-      // FIXME I18N
-      addToast(success({
-        title: (<EuiText><Message id="Page $1 has been successfully created (Not really, just testing)"
-                                  placeholders={[(<ItemDstLink item={newItem}/>)]}/></EuiText>),
-        iconType: 'check',
-        toastLifeTimeMs: 15000
-      }));
-
-      // updateSavedItem(currentItem!);
-    } catch (err) {
-      addToast(error({
-        // FIXME: change message ID
-        title: (<EuiText><Message id="Error saving $1:  $2"
-                                  placeholders={['LINK_TODO', err.toString()]}/></EuiText>),
-      }));
-    } finally {
-      onClose();
-    }
-  };
+  const [comment, setComment] = useState<string>('');
+  const [commentEdited, setCommentEdited] = useState<boolean>();
+  const [info, setInfo] = useState<SyncLoader | undefined>();
+  const { allItems, loadItem } = useContext(AllDataContext);
 
   let pageHelpText = undefined;
   let knownWikis = 0;
@@ -134,55 +92,146 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
     wikiOptions = wikiOptions.filter(v => !existsOn.has(v));
   }
 
-  let warnings = undefined;
-  if (item && item.notMultisiteDeps) {
-    warnings = (
-      <EuiFormRow label={i18n('Attention')}>
-        <NotMultisiteDepsWarning item={item}/>
-      </EuiFormRow>);
-  }
-
-  const setNewPageTitle = (newTitle: string | undefined) => {
+  const setTarget = async (newTitle: string | undefined, newWiki: string | undefined) => {
     // Make sure that if the wiki has already been chosen and title changes,
     // wiki is kept only if it doesn't have the new title
-    setPageTitle(newTitle);
-    let newWiki;
-    if (newTitle) {
-      newWiki = allItems.some(v => v.srcFullTitle === newTitle && v.wiki === wiki) ? undefined : wiki;
+    if (pageTitle === newTitle && wiki === newWiki) {
+      return;
+    }
+    if (newTitle && newWiki) {
+      newWiki = allItems.some(v => v.srcFullTitle === newTitle && v.wiki === newWiki) ? undefined : newWiki;
     } else {
       newWiki = undefined;
     }
     if (wiki !== newWiki) {
       setWiki(newWiki);
     }
+    if (pageTitle !== newTitle) {
+      setPageTitle(newTitle);
+    }
+    if (newTitle && newWiki) {
+      setStatus('show');
+      const { qid, type, title, srcTitleUrl, srvPage } = allItems.find(v => v.srcFullTitle === newTitle)!;
+      const newInfo = await loadItem(qid, newWiki);
+      if (newInfo.newItem) {
+        // Item was just created
+        setWiki(undefined);
+      } else {
+        newInfo.newItem = createItem(type, title, srcTitleUrl, srvPage, {
+          domain: newWiki, status: 'new', title: srvPage.primaryTitle,
+        });
+        setInfo(newInfo);
+        if (newInfo && newInfo.content && newInfo.content.changeType === 'new') {
+          if (!comment || !commentEdited) {
+            debugger;
+            setComment(fixMwLinks(await i18nInLocale(
+              newInfo.newItem.lang, getSummaryMsgFromStatus('new'), getSummaryLink(newInfo.newItem))));
+            setCommentEdited(false);
+          }
+          setStatus('loaded');
+        }
+      }
+    } else if (info) {
+      setInfo(undefined);
+      setStatus('show');
+    }
+  };
+
+  const loadedInfo = useMemo(() => {
+    if (!info || !info.newItem) {
+      return;
+    }
+    const result = [];
+    result.push(
+      <EuiFormRow fullWidth={true} label={i18n('Dependencies')}>
+        <DependenciesList item={info.newItem}/>
+      </EuiFormRow>
+    );
+    if (info.content && info.content.changeType === 'new') {
+      result.push(
+        <EuiFormRow fullWidth={true} label={i18n('Content')}>
+          <ItemDiffBlock type={info.newItem.type}
+                         oldText={info.content.newText}
+                         newText={info.content.newText}/>
+        </EuiFormRow>
+      );
+    }
+    return (<>{result}</>);
+  }, [i18n, info]);
+
+  const setNewComment = (newComment: string) => {
+    debugger;
+    newComment = newComment.trim();
+    if (newComment !== comment) {
+      setComment(newComment);
+      setCommentEdited(true);
+    }
+  };
+
+  const onCopy = async () => {
+    try {
+      if (!pageTitle || !wiki || !info || !info.newItem || !info.content || info.content.changeType !== 'new') {
+        return;  // safety and make typescript happy
+      }
+
+      setStatus('saving');
+
+      const res = await editItem(info.newItem, info.content, comment);
+
+      if (res.edit.result !== 'Success') {
+        addToast(error({
+          title: (<EuiText><Message id="create-page--error"
+                                    placeholders={[res.edit.info || JSON.stringify(res.edit)]}/></EuiText>),
+        }));
+        setStatus('loaded');
+        return;
+      }
+
+      addToast(success({
+        title: (<EuiText><Message id="create-page--success"
+                                  placeholders={[<ItemDstLink item={info.newItem}/>]}/></EuiText>),
+        iconType: 'check',
+      }));
+
+      updateSavedItem(info.newItem);
+      onClose();
+
+    } catch (err) {
+      addToast(error({
+        // FIXME: change message ID
+        title: (<EuiText><Message id="Error creating $1:  $2"
+                                  placeholders={['LINK_TODO', err.toString()]}/></EuiText>),
+      }));
+      setStatus('loaded');
+    }
   };
 
   // FIXME I18N
-  return (<EuiOverlayMask><EuiModal onClose={onClose} maxWidth={'60%'}>
+  return (<EuiOverlayMask><EuiModal onClose={onClose}>
     <EuiModalHeader>
       <EuiModalHeaderTitle>{i18n('Create a new copy')}</EuiModalHeaderTitle>
     </EuiModalHeader>
     <EuiModalBody>
       <EuiForm>
-        <EuiFormRow label={i18n('A page to copy')} helpText={pageHelpText}>
-          <Picker disabled={status !== 'show'} placeholder={i18n('Select a page to copy')} value={pageTitle}
-                  setValue={setNewPageTitle}
-                  options={uniq(allItems.map(v => v.srcFullTitle))}/>
+        <EuiFormRow fullWidth={true} label={i18n('A page to copy')} helpText={pageHelpText}>
+          <Picker disabled={status === 'saving'} placeholder={i18n('Select a page to copy')} value={pageTitle}
+                  setValue={(v) => setTarget(v, wiki)} options={uniq(allItems.map(v => v.srcFullTitle))}/>
         </EuiFormRow>
-        <EuiFormRow label={i18n('Target wiki')}
+        <EuiFormRow fullWidth={true} label={i18n('Target wiki')}
                     helpText={pageTitle ? i18n('Already exists on $1 out of $2 wikis.', existsOn.size, knownWikis) : undefined}>
-          <Picker disabled={status !== 'show'} placeholder={i18n('Select target wiki')} value={wiki} setValue={setWiki}
-                  options={wikiOptions}/>
+          <Picker disabled={status === 'saving'} placeholder={i18n('Select target wiki')} value={wiki}
+                  setValue={(v) => setTarget(pageTitle, v)} options={wikiOptions}/>
         </EuiFormRow>
-        {warnings}
+        <EuiSpacer size={'m'} />
+        {loadedInfo}
       </EuiForm>
     </EuiModalBody>
     <EuiModalFooter>
-      <EuiTextAlign textAlign="left"><EuiBadge color={'accent'}>NOT IMPLEMENTED</EuiBadge></EuiTextAlign>
+      <Comment readOnly={false} isLoading={false} value={comment} setValue={setNewComment}/>
       <EuiButtonEmpty onClick={onClose}>{i18n('Cancel')}</EuiButtonEmpty>
-      <EuiButton isDisabled={status !== 'show' || !pageTitle || !wiki}
+      <EuiButton isDisabled={status !== 'loaded'}
                  onClick={onCopy}
-                 color={warnings ? 'danger' : 'primary'}
+                 color={'primary'}
                  isLoading={status === 'saving'}
                  fill>{i18n('Create!')}</EuiButton>
     </EuiModalFooter>

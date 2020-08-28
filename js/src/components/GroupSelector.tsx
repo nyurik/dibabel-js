@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { EuiComboBox, EuiComboBoxOptionOption, EuiToolTip } from '@elastic/eui';
-import { GroupDefsType, Item } from '../types';
+import { GroupDefsType, Item } from '../services/types';
 import { sortBy } from 'lodash';
 import { I18nContext } from '../contexts/I18nContext';
 
@@ -23,8 +23,7 @@ export const GroupSelector = (props: {
   };
 
   return (
-    <EuiToolTip anchorClassName="eui-displayBlock"
-                content={i18n('filters-groupby--tooltip')}>
+    <EuiToolTip anchorClassName="eui-displayBlock" content={i18n('filters-groupby--tooltip')}>
       <EuiComboBox
         fullWidth={true}
         placeholder={i18n('filters-groupby--placeholder')}
@@ -34,5 +33,4 @@ export const GroupSelector = (props: {
         isClearable={true}
       />
     </EuiToolTip>);
-
 };

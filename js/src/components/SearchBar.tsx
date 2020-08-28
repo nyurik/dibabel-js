@@ -10,7 +10,7 @@ import {
   SearchFilterConfig
 } from '@elastic/eui';
 
-import { groupDefs, Item, schema } from '../types';
+import { groupDefs, Item, schema } from '../services/types';
 
 import { AllDataContext } from '../contexts/AllData';
 import { flatten, map, uniq } from 'lodash';
@@ -63,7 +63,6 @@ export const SearchBar = (
       type: 'field_value_selection',
       field: 'type',
       name: i18n('filters-type'),
-      // @ts-ignore
       operator: 'exact',
       multiSelect: false,
       options: [
@@ -88,7 +87,6 @@ export const SearchBar = (
       field: 'status',
       name: i18n('filters-status'),
       multiSelect: 'or',
-      // @ts-ignore
       operator: 'exact',
       options: async () => {
         return map({
@@ -107,7 +105,6 @@ export const SearchBar = (
       field: 'project',
       name: i18n('filters-project'),
       multiSelect: 'or',
-      // @ts-ignore
       operator: 'exact',
       options: () => getOptions(allItems, 'project'),
     },
@@ -116,7 +113,6 @@ export const SearchBar = (
       field: 'lang',
       name: i18n('filters-lang'),
       multiSelect: 'or',
-      // @ts-ignore
       operator: 'exact',
       options: async () => {
         const values = uniq(allItems.map(v => v.lang));
@@ -136,7 +132,6 @@ export const SearchBar = (
       name: i18n('filters-wiki'),
       multiSelect: 'or',
       filterWith: 'includes',
-      // @ts-ignore
       operator: 'exact',
       options: () => getWikiOptions(allItems),
     },
@@ -145,10 +140,9 @@ export const SearchBar = (
       field: 'protection',
       name: i18n('filters-protection'),
       multiSelect: 'or',
-      // @ts-ignore
       operator: 'exact',
       options: async () => {
-        const values = uniq(flatten(allItems.map(v => v.protectionArray))).map(v => v || '').filter(v => v !== '');
+        const values = uniq(flatten(allItems.map(v => v.srvCopy.protection))).map(v => v || '').filter(v => v !== '');
         values.sort();
         return values.map(val => ({
           value: val,
