@@ -22,9 +22,9 @@ import { ToastsContext } from '../contexts/Toasts';
 import { I18nContext } from '../contexts/I18nContext';
 import { Item } from '../services/types';
 import { error, fixMwLinks, getSummaryLink, getSummaryMsgFromStatus, success } from '../services/utils';
-import { createItem, editItem } from '../services/StateStore';
+import { createItem, createSitelink, editItem } from '../services/StateStore';
 import { Message } from './Message';
-import { Comment, ItemDstLink, ItemSrcLink } from './Snippets';
+import { Comment, ItemDstLink, ItemSrcLink, ItemWikidataLink } from './Snippets';
 import { DependenciesList } from './DependenciesList';
 import { ItemDiffBlock } from './ItemDiffBlock';
 import { SettingsContext } from '../contexts/Settings';
@@ -59,7 +59,7 @@ const Picker = ({ disabled, placeholder, value, setValue, options }: {
 
 export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
   const { i18n } = useContext(I18nContext);
-  const { i18nInLocale } = useContext(SettingsContext);
+  const { i18nInLocale, siteData } = useContext(SettingsContext);
   const { addToast } = useContext(ToastsContext);
   const { updateSavedItem } = useContext(CurrentItemContext);
 
@@ -76,18 +76,17 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
   let wikiOptions: string[] = [];
   let existsOn: Set<string> = new Set();
 
-  // TODO: decide how to produce this
   let item: Item | null = null;
 
   if (pageTitle) {
-    // TODO: download a full list of wikis instead of this
     const items = allItems.filter(v => v.srcFullTitle === pageTitle);
     if (items.length > 0) {
       item = items[0];
       pageHelpText = (<ItemSrcLink item={item}/>);
     }
     existsOn = new Set(items.map(v => v.wiki));
-    wikiOptions = uniq(allItems.map(v => v.wiki));
+
+    wikiOptions = siteData.sites.filter(v => !v.closed).map(v => v.url.substring('https://'.length));
     knownWikis = wikiOptions.length;
     wikiOptions = wikiOptions.filter(v => !existsOn.has(v));
   }
@@ -177,13 +176,25 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
     try {
       setStatus('saving');
 
-      const res = await editItem(info.newItem, info.content, comment);
-
+      let res = await editItem(info.newItem, info.content, comment);
       if (res.edit.result !== 'Success') {
         addToast(error({
           title: (<Message id="create-page-error--title"
                            placeholders={[
                              <ItemDstLink item={info.newItem}/>,
+                             res.edit.info || JSON.stringify(res.edit)]}/>),
+        }));
+        setStatus('loaded');
+        return;
+      }
+
+      res = await createSitelink(siteData, info.newItem);
+      if (res.edit.result !== 'Success') {
+        addToast(error({
+          title: (<Message id="create-page-error-wd--title"
+                           placeholders={[
+                             <ItemDstLink item={info.newItem}/>,
+                             <ItemWikidataLink item={info.newItem}/>,
                              res.edit.info || JSON.stringify(res.edit)]}/>),
         }));
         setStatus('loaded');

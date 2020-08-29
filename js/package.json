@@ -18,6 +18,7 @@
     "jest-fetch-mock": "^3.0.3",
     "lodash": "^4.17.20",
     "moment": "^2.27.0",
+    "node-fetch": "^2.6.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-diff-viewer": "^3.1.1",

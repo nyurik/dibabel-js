@@ -28,6 +28,7 @@ import fauxPageOutdatedDe from './faux/outdated2-Q63324398-de.json';
 
 import { getToken, postToApi, rootUrlData, splitNs, wikiUrl } from './utils';
 import { map } from 'lodash';
+import { SiteData } from '../contexts/Settings';
 
 export const createItem = (
   pageType: PageType,
@@ -221,6 +222,21 @@ export const editItem = async function (
   }
 
   return await postToApi(item.wiki, apiData);
+};
+
+export const createSitelink = async function (siteData: SiteData, item: Item) {
+  const linksite = siteData.sites.filter(v => v.url === `https://${item.wiki}`)[0];
+  if (!linksite) throw new Error(item.wiki);
+
+  const apiData: any = {
+    action: 'wbsetsitelink',
+    id: item.qid,
+    linksite: linksite,
+    linktitle: item.dstFullTitle,
+    token: await getToken(item.wiki),
+  };
+
+  return await postToApi('wikidata.org', apiData);
 };
 
 // export async function fetchContent(site: string, title: string): Promise<string> {

@@ -25,7 +25,25 @@ import { Props } from '../services/types';
 import i18n_en from './messages-en.json';
 
 export type LanguageNames = Map<string, string>;
-export type SiteData = { languages: string[] };
+
+export type SiteInfo = {
+  code: string,
+  url: string,
+  dbname: string,
+  sitename: string,
+  name?: string,
+  dir?: string,
+  localname?: string,
+  lang?: string,
+  closed?: boolean,
+}
+
+export type SiteData = {
+  summaries: { [langCode: string]: { [msgKey: string]: string } }
+  languages: string[],
+  sites: SiteInfo[],
+};
+
 export type Messages = any;
 export type AllMessages = { [key: string]: Messages };
 
@@ -48,7 +66,7 @@ export type SettingsContextType = {
 export const SettingsContext = React.createContext<SettingsContextType>({} as SettingsContextType);
 
 const initMessages: AllMessages = { en: i18n_en };
-const initSiteData: SiteData = { languages: ['en'] };
+const initSiteData: SiteData = { languages: ['en'], summaries: { en: i18n_en as any }, sites: [] };
 
 async function loadLocale(newLanguage: string, messages: AllMessages): Promise<Messages> {
   if (!messages[newLanguage]) {
