@@ -187,7 +187,7 @@ export const SearchBar = (
   const addLangButton = (<EuiButton
     isDisabled={status !== 'ready'}
     onClick={() => setIsAddLangShown(true)}
-  >{i18n('create-page-error--button')}</EuiButton>);
+  >{i18n('create-page--button')}</EuiButton>);
 
   let addLang;
   if (isAddLangShown) {
