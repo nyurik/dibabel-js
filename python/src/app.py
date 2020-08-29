@@ -99,7 +99,7 @@ def call_api(domain: str):
         # FIXME ?
         action = params.pop('action') if 'action' in params else 'query'
         if action == 'edit':
-            print(f"Modifying page {params['title']} at {domain}")
+            print(f"{'Modifying' if 'nocreate' in params else 'Creating'} page {params['title']} at {domain}")
         try:
             result = site(action, EXTRAS=dict(auth=auth), NO_LOGIN=True, POST=True, **params)
         except ApiError as err:
