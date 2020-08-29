@@ -233,7 +233,7 @@ export const createSitelink = async function (siteData: SiteData, item: Item) {
   const apiData: any = {
     action: 'wbsetsitelink',
     id: item.qid,
-    linksite: linksite,
+    linksite: linksite.dbname,
     linktitle: item.dstFullTitle,
     token: await getToken(item.wiki),
   };
