@@ -209,9 +209,6 @@ export const editItem = async function (
   const apiData: any = {
     action: 'edit',
     title: item.dstFullTitle,
-    text: content.newText,
-    summary: comment,
-    token: await getToken(item.wiki),
   };
 
   if (content.changeType === 'new') {
@@ -220,6 +217,11 @@ export const editItem = async function (
     apiData.basetimestamp = content.currentRevTs;
     apiData.nocreate = '1';
   }
+
+  // put text at the end for easier log inspection
+  apiData.summary = comment;
+  apiData.text = content.newText;
+  apiData.token = await getToken(item.wiki);
 
   return await postToApi(item.wiki, apiData);
 };
