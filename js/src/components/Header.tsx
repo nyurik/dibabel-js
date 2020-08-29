@@ -28,8 +28,14 @@ export function Header() {
       <EuiPageHeaderSection>
         <EuiHeaderSectionItem border={'none'}>
           <EuiHeaderLogo iconType={logoIcon}>
-            Dibabel&nbsp;&nbsp;<EuiBetaBadge label={i18n('header-beta--label')}
-                                             title={i18n('header-beta--tooltip')}/>
+            <EuiFlexGroup gutterSize={'none'} alignItems={'center'} responsive={false}>
+              <EuiFlexItem>
+                Dibabel
+              </EuiFlexItem>
+              <EuiFlexItem>
+                <EuiBetaBadge label={i18n('header-beta--label')} title={i18n('header-beta--tooltip')}/>
+              </EuiFlexItem>
+            </EuiFlexGroup>
           </EuiHeaderLogo>
         </EuiHeaderSectionItem>
       </EuiPageHeaderSection>

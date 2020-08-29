@@ -142,7 +142,7 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
     }
 
     const result = [
-      <EuiSpacer size={'l'}/>,
+      <EuiSpacer size={'xl'}/>,
       <EuiFormRow fullWidth={true} label={i18n('table-header-deps--label')}>
         <DependenciesList item={info.newItem}/>
       </EuiFormRow>
@@ -150,7 +150,7 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
 
     if (info.content && info.content.changeType === 'new') {
       result.push(
-        <EuiSpacer size={'l'}/>,
+        <EuiSpacer size={'xxl'}/>,
         <EuiFormRow fullWidth={true} label={i18n('create-page-content--label')}>
           <ItemDiffBlock type={info.newItem.type}
                          oldText={info.content.newText}

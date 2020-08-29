@@ -24,7 +24,7 @@ import { I18nContext } from './I18nContext';
 import { Props } from '../services/types';
 import i18n_en from './messages-en.json';
 
-export type LanguageNames = { [key: string]: string };
+export type LanguageNames = Map<string, string>;
 export type SiteData = { languages: string[] };
 export type Messages = any;
 export type AllMessages = { [key: string]: Messages };
@@ -41,6 +41,7 @@ export type SettingsContextType = {
   messages: AllMessages,
   setLocale: Dispatch<string>,
   languageNames: LanguageNames,
+  languageNamesLowerCase: LanguageNames,
   i18nInLocale: (locale: string, key: string, ...parameters: any[]) => Promise<string>,
 }
 
@@ -72,15 +73,16 @@ async function getLanguageNames(langCode: string): Promise<LanguageNames> {
   let data = await fetch(mw_languages_query + encodeURIComponent(isDebugLang ? 'en' : langCode));
   if (data.ok) {
     const langs = (await data.json()).query.languageinfo;
-    const result = Object.fromEntries(Object.keys(langs).map(lang => {
+    const result = new Map();
+    Object.keys(langs).forEach(lang => {
       const langInfo = langs[lang];
       let name = langInfo.name;
       if (langInfo.autonym && langInfo.autonym !== langInfo.name) {
         name += ` - ${langInfo.autonym}`;
       }
-      return [lang, name];
-    }));
-    result['qqx'] = '* Debug UI';
+      result.set(lang, name);
+    });
+    result.set('qqx', '* Debug UI');
     return result;
   } else {
     throw new Error(`${data.status}: ${data.statusText}\n${await data.text()}`);
@@ -95,6 +97,8 @@ async function getSiteData(): Promise<SiteData> {
     throw new Error(`${data.status}: ${data.statusText}\n${await data.text()}`);
   }
 }
+
+const initLanguageNames = new Map<string, string>();
 
 export const SettingsProvider = ({ children }: Props) => {
   const [isDarkTheme, setIsDarkTheme] = usePersistedState<boolean>(
@@ -120,10 +124,15 @@ export const SettingsProvider = ({ children }: Props) => {
 
   //
   // Names of all languages in the user's language
-  const [languageNames, setLanguageNames] = useState<LanguageNames>({});
+  const [languageNames, setLanguageNames] = useState<LanguageNames>(initLanguageNames);
   useEffect(() => {
     getLanguageNames(locale).then(v => setLanguageNames(v));
   }, [locale]);
+  const languageNamesLowerCase = useMemo((): Map<string, string> => {
+    const res = new Map<string, string>();
+    languageNames.forEach((v, k) => res.set(k, v.toLowerCase()));
+    return res;
+  }, [languageNames]);
 
   //
   // Configure language localization
@@ -170,6 +179,7 @@ export const SettingsProvider = ({ children }: Props) => {
         messages,
         setLocale: setLocaleCB,
         languageNames,
+        languageNamesLowerCase,
         i18nInLocale,
       }}>
       {children}
@@ -240,7 +250,7 @@ export const Settings = () => {
 
   const langOptions = useMemo((): EuiSelectableOption[] =>
     siteData.languages.map(lang => {
-      const res = { key: lang, label: languageNames[lang] || i18n('language-unknown') } as EuiSelectableOption;
+      const res = { key: lang, label: languageNames.get(lang) || i18n('language-unknown') } as EuiSelectableOption;
       if (lang === locale) {
         res.checked = 'on';
       }
@@ -250,7 +260,7 @@ export const Settings = () => {
   const languageSelector = (<EuiPopover
     id="popover"
     panelPaddingSize="none"
-    button={<EuiToolTip title={languageNames[locale] || i18n('language-unknown')}
+    button={<EuiToolTip title={languageNames.get(locale) || i18n('language-unknown')}
                         content={i18n('language--tooltip')}><EuiButtonEmpty
       onClick={() => setIsLanguagesOpen(true)}>{locale}</EuiButtonEmpty></EuiToolTip>}
     isOpen={isLanguagesOpen}
@@ -258,8 +268,7 @@ export const Settings = () => {
     <EuiSelectable
       searchable
       singleSelection={'always'}
-      // TODO: enable height once the translations list is larger
-      // height={500}
+      height={500}
       searchProps={{
         placeholder: i18n('language-filter--placeholder'),
         compressed: true,

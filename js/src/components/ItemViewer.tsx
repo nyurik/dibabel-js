@@ -199,15 +199,27 @@ const ItemDiffViewer = () => {
       btnProps.title = i18n('diff-content--login-error');
       btnProps.disabled = true;
     }
-    const externalLink = itemContent ? <ExternalLink
-        href={`https://translatewiki.net/w/i.php?title=Special:Translate&showMessage=dibabel-${encodeURIComponent(getSummaryMsgFromStatus(itemContent.changeType))}&group=dibabel&language=${encodeURIComponent(item.lang)}&filter=&optional=1&action=translate`}
-        icon={'globe'} color={'primary'}
-        tooltip={i18n('diff-summary--tooltip')}/>
-      : null;
+
+    let summaryLabel = <EuiFlexItem><Message id={'diff-summary--label'}/></EuiFlexItem>;
+
+    if (itemContent) {
+      summaryLabel = (
+        <EuiFlexGroup gutterSize={'xs'} alignItems={'center'} responsive={false}>
+          {summaryLabel}
+          <EuiFlexItem grow={false}>
+            <ExternalLink
+              href={`https://translatewiki.net/w/i.php?title=Special:Translate&showMessage=dibabel-${encodeURIComponent(getSummaryMsgFromStatus(itemContent.changeType))}&group=dibabel&language=${encodeURIComponent(item.lang)}&filter=&optional=1&action=translate`}
+              icon={'globe'} color={'primary'}
+              tooltip={i18n('diff-summary--tooltip')}/>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+      );
+    }
+
     footer = <EuiFlyoutFooter>
-      <EuiFlexGroup justifyContent={'spaceBetween'} alignItems={'center'}>
+      <EuiFlexGroup gutterSize={'s'} justifyContent={'spaceBetween'} alignItems={'center'}>
         <EuiFlexItem grow={false}>
-          <span>{i18n('diff-summary--label')}&nbsp;{externalLink}</span>
+          {summaryLabel}
         </EuiFlexItem>
         <EuiFlexItem grow={true}>
           <Comment readOnly={!isLoggedIn} isLoading={!commentIsLoaded} value={comment} setValue={setComment}/>

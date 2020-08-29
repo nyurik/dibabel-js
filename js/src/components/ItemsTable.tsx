@@ -106,7 +106,7 @@ export const ItemsTable = (
         </EuiToolTip>),
       sortable: true,
       render: (lang: string) => {
-        const name = languageNames[lang];
+        const name = languageNames.get(lang);
         return name ? `${lang} - ${name}` : lang;
       },
     },

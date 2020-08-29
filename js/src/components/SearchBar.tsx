@@ -54,7 +54,7 @@ export const SearchBar = (
   }) => {
 
   const { i18n } = useContext(I18nContext);
-  const { languageNames, isIncrementalSearch } = useContext(SettingsContext);
+  const { languageNames, languageNamesLowerCase, isIncrementalSearch } = useContext(SettingsContext);
   const { allItems, status } = useContext(AllDataContext);
   const [isAddLangShown, setIsAddLangShown] = useState(false);
 
@@ -65,6 +65,7 @@ export const SearchBar = (
       name: i18n('filters-type'),
       operator: 'exact',
       multiSelect: false,
+      filterWith: 'includes',
       options: [
         {
           value: 'module',
@@ -88,6 +89,7 @@ export const SearchBar = (
       name: i18n('filters-status'),
       multiSelect: 'or',
       operator: 'exact',
+      filterWith: 'includes',
       options: async () => {
         return map({
           ok: 'success',
@@ -106,6 +108,7 @@ export const SearchBar = (
       name: i18n('filters-project'),
       multiSelect: 'or',
       operator: 'exact',
+      filterWith: 'includes',
       options: () => getOptions(allItems, 'project'),
     },
     {
@@ -114,6 +117,14 @@ export const SearchBar = (
       name: i18n('filters-lang'),
       multiSelect: 'or',
       operator: 'exact',
+      filterWith: (name, query) => {
+        if (name.startsWith(query)) {
+          return true;
+        }
+        debugger;
+        const l = languageNamesLowerCase.get(name);
+        return (l !== undefined && l.indexOf(query.toLowerCase()) >= 0);
+      },
       options: async () => {
         const values = uniq(allItems.map(v => v.lang));
         values.sort();
@@ -121,7 +132,7 @@ export const SearchBar = (
           value: lang,
           view: <EuiFlexGroup>
             <EuiFlexItem grow={false} className={'lang-code'}>{lang}</EuiFlexItem>
-            <EuiFlexItem grow={false}>{languageNames[lang] || i18n('filters-lang--unknown')}</EuiFlexItem>
+            <EuiFlexItem grow={false}>{languageNames.get(lang) || i18n('filters-lang--unknown')}</EuiFlexItem>
           </EuiFlexGroup>
         }));
       },
@@ -131,8 +142,8 @@ export const SearchBar = (
       field: 'wiki',
       name: i18n('filters-wiki'),
       multiSelect: 'or',
-      filterWith: 'includes',
       operator: 'exact',
+      filterWith: 'includes',
       options: () => getWikiOptions(allItems),
     },
     {
@@ -141,6 +152,7 @@ export const SearchBar = (
       name: i18n('filters-protection'),
       multiSelect: 'or',
       operator: 'exact',
+      filterWith: 'includes',
       options: async () => {
         const values = uniq(flatten(allItems.map(v => v.srvCopy.protection))).map(v => v || '').filter(v => v !== '');
         values.sort();
