@@ -6,6 +6,7 @@ from collections import defaultdict
 from datetime import datetime, timedelta
 from json import dumps, loads
 from pathlib import Path
+import random
 from sys import intern
 from typing import Generator, Optional, List, Dict, Set, Iterable, Tuple
 
@@ -27,24 +28,12 @@ primary_domain = 'www.mediawiki.org'
 
 
 class SessionState:
-    @staticmethod
-    def my_encode(obj):
-        try:
-            return dumps(obj, ensure_ascii=False)
-        except TypeError:
-            return sqlite3.Binary(zlib.compress(pickle.dumps(obj, pickle.HIGHEST_PROTOCOL)))
-
-    @staticmethod
-    def my_decode(obj):
-        try:
-            obj = loads(obj)
-        except ValueError:
-            return pickle.loads(zlib.decompress(bytes(obj)))
-
     def __init__(self, cache_file: str, user_requested=False):
         self.user_requested = user_requested
-        self.cache = SqliteDict(cache_file, autocommit=True,
-                                encode=self.my_encode, decode=self.my_decode)
+        random.seed()
+        self.key = random.randint(0, 999999)
+        print(f'Opening SQL connection for {self.key}')
+        self.cache = SqliteDict(cache_file, autocommit=True)
         self.session = Session()
         # noinspection PyTypeChecker
         self.session.mount(
@@ -58,6 +47,7 @@ class SessionState:
     def __exit__(self, typ, value, traceback):
         self.cache.close()
         self.session.close()
+        print(f'Closed SQL connection for {self.key}')
 
     def get_site(self, domain: str) -> WikiSite:
         try:
