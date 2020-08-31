@@ -4,9 +4,9 @@ import { Item, PageType, ToastNoId } from './types';
 // lang=(zh or ace or de) shared template project:(wikipedia)
 
 // Using full root for the ease of debugging locally. Eventually should probably use '/'
-export const rootUrlData = '/';
+// export const rootUrlData = '/';
 // export const rootUrlData = 'http://localhost:5000/';
-// export const rootUrlData = 'https://dibabel.toolforge.org/';
+export const rootUrlData = 'https://dibabel.toolforge.org/';
 export const rootUrlSite = '/';
 
 export const titleUrlSuffix = '/wiki/';
@@ -174,4 +174,8 @@ export function fixMwLinks(summary: string): string {
   // <a href="./mw:Special:MyLanguage/WP:TNT" title="mw:Special:MyLanguage/WP:TNT">docs</a>
   // [[mw:Special:MyLanguage/WP:TNT|docs]]
   return summary.replace(new RegExp(/<a href="\.\/([^"]+)" title="\1">([^<]+)<\/a>/, 'g'), (_, lnk, txt) => `[[${lnk}|${txt}]]`).trim();
+}
+
+export function titleCase(value: string): string {
+  return value[0].toUpperCase() + value.substring(1);
 }

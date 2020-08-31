@@ -20,6 +20,7 @@ import { SyncButton } from './SyncButton';
 import { SettingsContext } from '../contexts/Settings';
 import { I18nContext } from '../contexts/I18nContext';
 import { AddNew } from './AddNew';
+import { titleCase } from '../services/utils';
 
 async function getOptions(allItems: Array<Item>, field: ('project')) {
   const values = uniq(allItems.map(v => v[field])).filter(v => v);
@@ -29,7 +30,7 @@ async function getOptions(allItems: Array<Item>, field: ('project')) {
     value: value,
     view: (<EuiFlexGroup>
       <EuiFlexItem grow={false}>{iconsEuiMedium[value]}</EuiFlexItem>
-      <EuiFlexItem grow={false}>{value[0].toUpperCase() + value.substring(1)}</EuiFlexItem>
+      <EuiFlexItem grow={false}>{titleCase(value)}</EuiFlexItem>
     </EuiFlexGroup>)
   }));
 }

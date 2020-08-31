@@ -20,7 +20,7 @@ import {
 } from '@elastic/eui';
 
 import { Item } from '../services/types';
-import { Comment, ExternalLink, ItemDstLink, ItemSrcLink } from './Snippets';
+import { Comment, ItemDstLink, ItemSrcLink, SummaryLabel } from './Snippets';
 import { fixMwLinks, getSummaryLink, getSummaryMsgFromStatus, itemDiffLink } from '../services/utils';
 import { UserContext, UserState } from '../contexts/UserContext';
 import { SettingsContext } from '../contexts/Settings';
@@ -41,7 +41,7 @@ const limitEllipsis = (values: Set<string>, maxLength: number): string => {
 };
 
 const ItemDiffViewer = () => {
-  const { i18nInLocale } = useContext(SettingsContext);
+  const { getSummaryMsg } = useContext(SettingsContext);
   const { i18n } = useContext(I18nContext);
   const { user } = useContext(UserContext);
   const { internalError } = useContext(ToastsContext);
@@ -65,15 +65,16 @@ const ItemDiffViewer = () => {
       let newSummary;
       if (itemContent.changeType === 'outdated') {
         const users = limitEllipsis(new Set(itemContent.changes.map(v => v.user)), 80);
-        const comments = limitEllipsis(new Set(itemContent.changes.map(v => v.comment)), 210);
-        newSummary = await i18nInLocale(item.lang, msgKey, itemContent.changes.length, users, comments, summaryLink);
+        const comments = limitEllipsis(new Set(itemContent.changes.map(v => v.comment.trim()).filter(v => v)), 210)
+          || getSummaryMsg(item.lang, 'diff-summary-text--empty-summary');
+        newSummary = getSummaryMsg(item.lang, msgKey, itemContent.changes.length, users, comments, summaryLink);
       } else {
-        newSummary = await i18nInLocale(item.lang, msgKey, summaryLink);
+        newSummary = getSummaryMsg(item.lang, msgKey, summaryLink);
       }
       setComment(fixMwLinks(newSummary));
       setCommentIsLoaded(true);
     })();
-  }, [comment, item, i18n, itemStatus.status, itemContent, commentIsLoaded, i18nInLocale]);
+  }, [comment, item, i18n, itemStatus.status, itemContent, commentIsLoaded, getSummaryMsg]);
 
   let infoSubHeader;
   switch (item.status) {
@@ -200,26 +201,11 @@ const ItemDiffViewer = () => {
       btnProps.disabled = true;
     }
 
-    let summaryLabel = <EuiFlexItem><Message id={'diff-summary--label'}/></EuiFlexItem>;
-
-    if (itemContent) {
-      summaryLabel = (
-        <EuiFlexGroup gutterSize={'xs'} alignItems={'center'} responsive={false}>
-          {summaryLabel}
-          <EuiFlexItem grow={false}>
-            <ExternalLink
-              href={`https://translatewiki.net/w/i.php?title=Special:Translate&showMessage=dibabel-${encodeURIComponent(getSummaryMsgFromStatus(itemContent.changeType))}&group=dibabel&language=${encodeURIComponent(item.lang)}&filter=&optional=1&action=translate`}
-              icon={'globe'} color={'primary'}
-              tooltip={i18n('diff-summary--tooltip')}/>
-          </EuiFlexItem>
-        </EuiFlexGroup>
-      );
-    }
-
     footer = <EuiFlyoutFooter>
       <EuiFlexGroup gutterSize={'s'} justifyContent={'spaceBetween'} alignItems={'center'}>
         <EuiFlexItem grow={false}>
-          {summaryLabel}
+          <SummaryLabel msgKey={itemContent && getSummaryMsgFromStatus(itemContent.changeType)}
+                        lang={itemContent && item.lang}/>
         </EuiFlexItem>
         <EuiFlexItem grow={true}>
           <Comment readOnly={!isLoggedIn} isLoading={!commentIsLoaded} value={comment} setValue={setComment}/>

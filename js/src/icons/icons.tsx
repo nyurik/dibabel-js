@@ -50,6 +50,7 @@ import { ReactComponent as wikimaniaIcon } from './site_wikimania.svg';
 
 import { ReactComponent as templateIcon } from './type_template.svg';
 import { ReactComponent as moduleIcon } from './type_module.svg';
+import { titleCase } from '../services/utils';
 
 /**
  * https://commons.wikimedia.org/wiki/File:Create-protection-shackle-no-text.svg
@@ -96,5 +97,5 @@ export const icons: { [name: string]: any } = {
 
 // Cache all medium size icons as EuiIcon objects
 export const iconsEuiMedium = Object.fromEntries(Object.entries(icons).map(
-  ([name, icon]) => [name, (<EuiToolTip content={name[0].toUpperCase() + name.substring(1)}><EuiIcon type={icon} size={'m'} /></EuiToolTip>)]
+  ([name, icon]) => [name, (<EuiToolTip content={titleCase(name)}><EuiIcon type={icon} size={'m'} /></EuiToolTip>)]
 ));

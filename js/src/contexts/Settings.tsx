@@ -60,7 +60,7 @@ export type SettingsContextType = {
   setLocale: Dispatch<string>,
   languageNames: LanguageNames,
   languageNamesLowerCase: LanguageNames,
-  i18nInLocale: (locale: string, key: string, ...parameters: any[]) => Promise<string>,
+  getSummaryMsg: (locale: string, key: string, ...parameters: any[]) => string,
 }
 
 export const SettingsContext = React.createContext<SettingsContextType>({} as SettingsContextType);
@@ -167,14 +167,10 @@ export const SettingsProvider = ({ children }: Props) => {
     });
   }, [locale, messages, setLocale]);
 
-  const i18nInLocale = useCallback(async (locale: string, key: string, ...parameters: any[]): Promise<string> => {
-    const newMsgs = await loadLocale(locale, messages);
-    if (newMsgs) {
-      setMessages(newMsgs);
-    }
-    const banana = new Banana(locale, { messages: newMsgs || messages });
+  const getSummaryMsg = useCallback((locale: string, key: string, ...parameters: any[]): string => {
+    const banana = new Banana(locale, { messages: siteData.summaries });
     return banana.i18n(key, ...parameters);
-  }, [messages]);
+  }, [siteData.summaries]);
 
   // Do this only once to load user's locale
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -198,7 +194,7 @@ export const SettingsProvider = ({ children }: Props) => {
         setLocale: setLocaleCB,
         languageNames,
         languageNamesLowerCase,
-        i18nInLocale,
+        getSummaryMsg,
       }}>
       {children}
     </SettingsContext.Provider>

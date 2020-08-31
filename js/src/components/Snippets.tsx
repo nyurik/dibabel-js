@@ -1,9 +1,18 @@
-import React, { useContext, FunctionComponent, Dispatch } from 'react';
-import { EuiButtonIcon, EuiButtonIconColor, EuiLink, EuiToolTip, EuiFieldText } from '@elastic/eui';
+import React, { Dispatch, FunctionComponent, useContext } from 'react';
+import {
+  EuiButtonIcon,
+  EuiButtonIconColor,
+  EuiFieldText,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiLink,
+  EuiToolTip
+} from '@elastic/eui';
 import { Item } from '../services/types';
 
 import { I18nContext } from '../contexts/I18nContext';
 import { prettyDomain } from '../services/utils';
+import { Message } from './Message';
 
 export const ExternalLink = (
   { href, title, tooltip, icon = 'symlink', color = 'text' }: {
@@ -42,13 +51,14 @@ export const ItemWikidataLink = ({ item: { qid } }: { item: Item }) => {
 };
 
 export const Comment: FunctionComponent<{
-  readOnly: boolean, isLoading: boolean, value: string, setValue: Dispatch<string>
-}> = ({ readOnly, isLoading, value, setValue }) => {
+  readOnly: boolean, tooltip?: string, isLoading: boolean, value: string, setValue: Dispatch<string>
+}> = ({ readOnly, tooltip, isLoading, value, setValue }) => {
 
   const { i18n } = useContext(I18nContext);
   const placeholder = i18n('diff-summary--placeholder');
   return (<EuiFieldText
     readOnly={readOnly}
+    title={tooltip}
     placeholder={placeholder}
     isLoading={isLoading}
     isInvalid={!value.trim()}
@@ -57,4 +67,29 @@ export const Comment: FunctionComponent<{
     aria-label={placeholder}
     fullWidth={true}
   />);
+};
+
+export const SummaryLabel: FunctionComponent<{
+  msgKey?: string, lang?: string
+}> = ({ msgKey = undefined, lang = undefined }) => {
+
+  const { i18n } = useContext(I18nContext);
+
+  let summaryLabel = <EuiFlexItem><Message id={'diff-summary--label'}/></EuiFlexItem>;
+
+  if (msgKey && lang) {
+    summaryLabel = (
+      <EuiFlexGroup gutterSize={'xs'} alignItems={'center'} responsive={false}>
+        {summaryLabel}
+        <EuiFlexItem grow={false}>
+          <ExternalLink
+            href={`https://translatewiki.net/w/i.php?title=Special:Translate&showMessage=dibabel-${encodeURIComponent(msgKey)}&group=dibabel&language=${encodeURIComponent(lang)}&filter=&optional=1&action=translate`}
+            icon={'globe'} color={'primary'}
+            tooltip={i18n('diff-summary--tooltip')}/>
+        </EuiFlexItem>
+      </EuiFlexGroup>
+    );
+  }
+
+  return summaryLabel;
 };

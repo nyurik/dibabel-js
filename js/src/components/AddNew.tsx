@@ -1,4 +1,4 @@
-import React, { Dispatch, DispatchWithoutAction, useContext, useMemo, useState } from 'react';
+import React, { Dispatch, DispatchWithoutAction, useContext, useMemo, useState, useCallback, useEffect } from 'react';
 import { uniq } from 'lodash';
 
 import {
@@ -15,20 +15,33 @@ import {
   EuiModalHeaderTitle,
   EuiOverlayMask,
   EuiSpacer,
+  EuiFieldText,
+  EuiText,
+  EuiFlexGroup,
+  EuiFlexItem,
 } from '@elastic/eui';
 
 import { AllDataContext, SyncLoader } from '../contexts/AllData';
 import { ToastsContext } from '../contexts/Toasts';
 import { I18nContext } from '../contexts/I18nContext';
-import { Item } from '../services/types';
-import { error, fixMwLinks, getSummaryLink, getSummaryMsgFromStatus, success } from '../services/utils';
+import { AddNewClone, Item } from '../services/types';
+import {
+  error,
+  fixMwLinks,
+  getSummaryLink,
+  getSummaryMsgFromStatus,
+  splitNs,
+  success,
+  titleCase
+} from '../services/utils';
 import { createItem, createSitelink, editItem } from '../services/StateStore';
 import { Message } from './Message';
-import { Comment, ItemDstLink, ItemSrcLink, ItemWikidataLink } from './Snippets';
+import { Comment, ItemDstLink, ItemSrcLink, ItemWikidataLink, SummaryLabel } from './Snippets';
 import { DependenciesList } from './DependenciesList';
 import { ItemDiffBlock } from './ItemDiffBlock';
 import { SettingsContext } from '../contexts/Settings';
 import { CurrentItemContext } from '../contexts/CurrentItem';
+import { UserContext, UserState } from '../contexts/UserContext';
 
 const Picker = ({ disabled, placeholder, value, setValue, options }: {
   disabled: boolean,
@@ -57,15 +70,17 @@ const Picker = ({ disabled, placeholder, value, setValue, options }: {
   />);
 };
 
-export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
+export const AddNew = ({ onClose, initWith }: { onClose: DispatchWithoutAction, initWith?: AddNewClone }) => {
   const { i18n } = useContext(I18nContext);
-  const { i18nInLocale, siteData } = useContext(SettingsContext);
+  const { getSummaryMsg, siteData } = useContext(SettingsContext);
   const { addToast } = useContext(ToastsContext);
   const { updateSavedItem } = useContext(CurrentItemContext);
+  const { user } = useContext(UserContext);
 
   const [status, setStatus] = useState<'show' | 'loaded' | 'saving'>('show');
   const [pageTitle, setPageTitle] = useState<string | undefined>();
   const [wiki, setWiki] = useState<string | undefined>();
+  const [dstTitle, setDstTitle] = useState<string>('');
   const [comment, setComment] = useState<string>('');
   const [commentEdited, setCommentEdited] = useState<boolean>();
   const [info, setInfo] = useState<SyncLoader | undefined>();
@@ -78,20 +93,7 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
 
   let item: Item | null = null;
 
-  if (pageTitle) {
-    const items = allItems.filter(v => v.srcFullTitle === pageTitle);
-    if (items.length > 0) {
-      item = items[0];
-      pageHelpText = (<ItemSrcLink item={item}/>);
-    }
-    existsOn = new Set(items.map(v => v.wiki));
-
-    wikiOptions = siteData.sites.filter(v => !v.closed).map(v => v.url.substring('https://'.length));
-    knownWikis = wikiOptions.length;
-    wikiOptions = wikiOptions.filter(v => !existsOn.has(v));
-  }
-
-  const setTarget = async (newTitle: string | undefined, newWiki: string | undefined) => {
+  const setTarget = useCallback(async (newTitle: string | undefined, newWiki: string | undefined) => {
     // Make sure that if the wiki has already been chosen and title changes,
     // wiki is kept only if it doesn't have the new title
     if (pageTitle === newTitle && wiki === newWiki) {
@@ -107,6 +109,7 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
     }
     if (pageTitle !== newTitle) {
       setPageTitle(newTitle);
+      setDstTitle(newTitle ? splitNs(newTitle)[1] : '');
     }
     if (newTitle && newWiki) {
       setStatus('show');
@@ -117,13 +120,12 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
         setWiki(undefined);
       } else {
         newInfo.newItem = createItem(type, title, srcTitleUrl, srvPage, {
-          domain: newWiki, status: 'new', title: srvPage.primaryTitle,
+          domain: newWiki, status: 'new', title: titleCase(type) + ':' + dstTitle,
         });
         setInfo(newInfo);
         if (newInfo && newInfo.content && newInfo.content.changeType === 'new') {
           if (!comment || !commentEdited) {
-            setComment(fixMwLinks(await i18nInLocale(
-              newInfo.newItem.lang, getSummaryMsgFromStatus('new'), getSummaryLink(newInfo.newItem))));
+            setComment(fixMwLinks(getSummaryMsg(newInfo.newItem.lang, getSummaryMsgFromStatus('new'), getSummaryLink(newInfo.newItem))));
             setCommentEdited(false);
           }
           setStatus('loaded');
@@ -133,7 +135,7 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
       setInfo(undefined);
       setStatus('show');
     }
-  };
+  }, [allItems, comment, commentEdited, dstTitle, getSummaryMsg, info, loadItem, pageTitle, wiki]);
 
   const loadedInfo = useMemo(() => {
     if (!info || !info.newItem) {
@@ -168,8 +170,8 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
     }
   };
 
-  const onCopy = async () => {
-    if (!pageTitle || !wiki || !info || !info.newItem || !info.content || info.content.changeType !== 'new') {
+  const onCopy = useCallback(async () => {
+    if (!pageTitle || !wiki || !info || !info.newItem || !info.content || info.content.changeType !== 'new' || !dstTitle) {
       return;  // safety and make typescript happy
     }
 
@@ -217,7 +219,35 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
       }));
       setStatus('loaded');
     }
-  };
+  }, [addToast, comment, dstTitle, info, onClose, pageTitle, siteData, updateSavedItem, wiki]);
+
+  useEffect(() => {
+      if (initWith) {
+        setTarget(initWith.titleNoNs, initWith.wiki);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [initWith]);
+
+  if (pageTitle) {
+    const items = allItems.filter(v => v.srcFullTitle === pageTitle);
+    existsOn = new Set(items.map(v => v.wiki));
+
+    wikiOptions = siteData.sites.filter(v => !v.closed).map(v => v.url.substring('https://'.length));
+    knownWikis = wikiOptions.length;
+    wikiOptions = wikiOptions.filter(v => !existsOn.has(v));
+
+    if (items.length > 0) {
+      item = items[0];
+      pageHelpText = (
+        <p>
+          <ItemSrcLink item={item}/><br/>
+          {i18n('create-page-wiki--info', existsOn.size, knownWikis)}
+        </p>);
+    }
+  }
+
+  const isLoggedIn = user.state === UserState.LoggedIn;
 
   return (<EuiOverlayMask><EuiModal onClose={onClose}>
     <EuiModalHeader>
@@ -229,20 +259,52 @@ export const AddNew = ({ onClose }: { onClose: DispatchWithoutAction }) => {
           <Picker disabled={status === 'saving'} placeholder={i18n('create-page-page--placeholder')} value={pageTitle}
                   setValue={(v) => setTarget(v, wiki)} options={uniq(allItems.map(v => v.srcFullTitle))}/>
         </EuiFormRow>
-        <EuiFormRow fullWidth={true} label={i18n('create-page-wiki--label')}
-                    helpText={pageTitle ? i18n('create-page-wiki--info', existsOn.size, knownWikis) : undefined}>
-          <Picker disabled={status === 'saving'} placeholder={i18n('create-page-wiki--placeholder')} value={wiki}
-                  setValue={(v) => setTarget(pageTitle, v)} options={wikiOptions}/>
+        <EuiFormRow fullWidth={true} label={i18n('create-page-wiki--label')}>
+          <Picker disabled={status === 'saving'}
+                  placeholder={pageTitle ? i18n('create-page-wiki--placeholder') : i18n('create-page-page--placeholder')}
+                  value={wiki}
+                  setValue={(v) => setTarget(pageTitle, v)}
+                  options={wikiOptions}/>
+        </EuiFormRow>
+        <EuiFormRow fullWidth={true} label={i18n('create-page-target--label')}>
+          <EuiFieldText
+            prepend={pageTitle ?
+              (<EuiText className={'euiFieldTExt'} size={'s'}>
+                {pageTitle.split(':')[0] + ':'}
+              </EuiText>) : ''}
+            disabled={!pageTitle}
+            placeholder={pageTitle ? i18n('create-page-target--placeholder') : i18n('create-page-page--placeholder')}
+            isLoading={status === 'saving'}
+            isInvalid={!dstTitle.trim()}
+            value={dstTitle}
+            onChange={e => setDstTitle(e.target.value)}
+            aria-label={i18n('create-page-target--placeholder')}
+            fullWidth={true}
+          />
         </EuiFormRow>
         <EuiSpacer size={'m'}/>
         {loadedInfo}
       </EuiForm>
     </EuiModalBody>
     <EuiModalFooter>
-      <Comment readOnly={false} isLoading={false} value={comment} setValue={setNewComment}/>
+      <EuiFlexGroup gutterSize={'s'} justifyContent={'spaceBetween'} alignItems={'center'}>
+        <EuiFlexItem grow={false}>
+          <SummaryLabel msgKey={info && getSummaryMsgFromStatus('new')}
+                        lang={info && info.newItem!.lang}/>
+        </EuiFlexItem>
+        <EuiFlexItem grow={true}>
+          <Comment
+            readOnly={!isLoggedIn || status !== 'loaded' || !dstTitle}
+            tooltip={isLoggedIn ? undefined : i18n('diff-content--login-error') }
+            isLoading={false}
+            value={comment}
+            setValue={setNewComment}/>
+        </EuiFlexItem>
+      </EuiFlexGroup>
       <EuiButtonEmpty onClick={onClose}>{i18n('create-page-cancel--label')}</EuiButtonEmpty>
-      <EuiButton isDisabled={status !== 'loaded' || !comment}
-                 onClick={onCopy}
+      <EuiButton isDisabled={!isLoggedIn || status !== 'loaded' || !comment || !dstTitle}
+                 onClick={isLoggedIn ? onCopy : undefined}
+                 title={isLoggedIn ? undefined : i18n('diff-content--login-error')}
                  color={'primary'}
                  isLoading={status === 'saving'}
                  fill>{i18n('create-page-create--label')}</EuiButton>

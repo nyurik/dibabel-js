@@ -316,3 +316,9 @@ export type LoadResult = {
 
 export type RawData = TitlesMap<SrvPageType>;
 export type RawSyncData = TitlesMap<SrvSyncPage>;
+
+export type AddNewClone = {
+  status: 'create',
+  titleNoNs: string,
+  wiki: string,
+}
