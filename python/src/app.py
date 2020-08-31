@@ -1,8 +1,9 @@
+from datetime import datetime
 from pathlib import Path
-
 import atexit
 import mwoauth
 import yaml
+
 from apscheduler.schedulers.background import BackgroundScheduler
 from dibabel.QueryCache import QueryCache
 from flask import Flask, jsonify, session, flash, abort, Response
@@ -23,8 +24,9 @@ cache = QueryCache('../cache')
 
 
 def refresher():
-    print(f"Refreshing state...")
+    print(f'Refreshing state at {datetime.utcnow()}...')
     cache.refresh_state()
+    print(f'Done refreshing state at {datetime.utcnow()}...')
 
 
 # Make sure we have the latest data by occasionally refreshing it

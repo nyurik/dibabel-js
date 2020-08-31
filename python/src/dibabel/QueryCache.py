@@ -92,15 +92,20 @@ class QueryCache:
 
             wd_warnings = []
             # Make sure we have primary domain metadata
+            print(f'-- {datetime.utcnow()} update_metadata')
             self.update_metadata(state, [primary_domain])
             # Query WDQS for the list of all available primary pages
             # Init self.primary_pages_by_qid and self.primary_pages_by_title
+            print(f'-- {datetime.utcnow()} query_primary_pages')
             self.query_primary_pages(wd_warnings)
             # Load primary page history and update the sitelinks for pages and dependencies
+            print(f'-- {datetime.utcnow()} update_primary_pages')
             self.update_primary_pages(state)
             # Download content of all copies and compute sync info
+            print(f'-- {datetime.utcnow()} update_syncinfo')
             self.update_syncinfo(state)
             # Update localization strings
+            print(f'-- {datetime.utcnow()} get_translation_table')
             self.summary_i18n = self.get_translation_table(state)
 
     def create_session(self, user_requested) -> SessionState:
