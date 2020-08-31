@@ -104,7 +104,7 @@ def call_api(domain: str):
         action = params.pop('action')
         if action == 'edit':
             print(f"{'**** Modifying' if 'nocreate' in params else 'Creating'} page {params['title']} at {domain}")
-        is_token = action == 'query' and 'meta' in params and params['meta'] == 'token'
+        is_token = action == 'query' and 'meta' in params and params['meta'] == 'tokens'
         if not is_token:
             record_to_log(filename, params)
         try:
