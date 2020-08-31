@@ -219,7 +219,7 @@ export const editItem = async function (
   }
 
   // put text at the end for easier log inspection
-  apiData.summary = comment;
+  apiData.summary = comment.trim();
   apiData.text = content.newText;
   apiData.token = await getToken(item.wiki);
 

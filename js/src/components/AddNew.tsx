@@ -163,7 +163,6 @@ export const AddNew = ({ onClose, initWith }: { onClose: DispatchWithoutAction, 
   }, [i18n, info]);
 
   const setNewComment = (newComment: string) => {
-    newComment = newComment.trim();
     if (newComment !== comment) {
       setComment(newComment);
       setCommentEdited(true);
@@ -302,7 +301,7 @@ export const AddNew = ({ onClose, initWith }: { onClose: DispatchWithoutAction, 
         </EuiFlexItem>
       </EuiFlexGroup>
       <EuiButtonEmpty onClick={onClose}>{i18n('create-page-cancel--label')}</EuiButtonEmpty>
-      <EuiButton isDisabled={!isLoggedIn || status !== 'loaded' || !comment || !dstTitle}
+      <EuiButton isDisabled={!isLoggedIn || status !== 'loaded' || !comment.trim() || !dstTitle}
                  onClick={isLoggedIn ? onCopy : undefined}
                  title={isLoggedIn ? undefined : i18n('diff-content--login-error')}
                  color={'primary'}
