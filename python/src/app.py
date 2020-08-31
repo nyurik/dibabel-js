@@ -38,6 +38,20 @@ scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
 
 
+class Counter:
+
+    def __init__(self) -> None:
+        self._count = 0
+
+    @property
+    def next(self):
+        self._count += 1
+        return self._count
+
+
+counter = Counter()
+
+
 def create_consumer_token():
     return mwoauth.ConsumerToken(app.config["CONSUMER_KEY"], app.config["CONSUMER_SECRET"])
 
@@ -50,18 +64,21 @@ def after_request(response):
 
 @app.route("/data")
 def get_data():
+    print(f"++++ /data - #{counter.next}")
     with cache.create_session(user_requested=True) as state:
         return jsonify(cache.get_data(state))
 
 
 @app.route("/page/<qid>/<domain>")
 def get_page(qid: str, domain: str):
+    print(f"++++ /page/{qid}/{domain} - #{counter.next}")
     with cache.create_session(user_requested=True) as state:
         return jsonify(cache.get_page(state, qid, domain))
 
 
 @app.route('/login')
 def login():
+    print(f"++++ /login - #{counter.next}")
     try:
         redirect_url, request_token = mwoauth.initiate(app.config["OAUTH_MWURI"], create_consumer_token())
     except:
@@ -74,6 +91,7 @@ def login():
 
 @app.route('/userinfo')
 def userinfo():
+    print(f"++++ /userinfo - #{counter.next}")
     try:
         access_token = mwoauth.AccessToken(**session['access_token'])
     except KeyError:
@@ -86,6 +104,7 @@ def userinfo():
 
 @app.route('/api/<domain>', methods=['POST'])
 def call_api(domain: str):
+    print(f"++++ /api/{domain} - #{counter.next}")
     if domain not in cache.sites_metadata:
         return abort(Response('Unrecognized domain', 400))
     try:
@@ -97,13 +116,15 @@ def call_api(domain: str):
                   client_secret=consumer_token.secret,
                   resource_owner_key=access_token.key,
                   resource_owner_secret=access_token.secret)
-    filename = f'{datetime.utcnow()}.log'
     with cache.create_session(user_requested=True) as state:
         site = state.get_site(domain)
         params = request.get_json()
         action = params.pop('action')
+        filename = f'{datetime.utcnow()}-{action}'
         if action == 'edit':
-            print(f"{'**** Modifying' if 'nocreate' in params else 'Creating'} page {params['title']} at {domain}")
+            modifying = 'nocreate' in params
+            print(f"{'**** Modifying' if modifying else 'Creating'} page {params['title']} at {domain}")
+            filename += ('modify' if modifying else 'create')
         is_token = action == 'query' and 'meta' in params and params['meta'] == 'tokens'
         if not is_token:
             record_to_log(filename, domain, params)
@@ -129,7 +150,7 @@ def record_to_log(filename: str, domain: str, data: dict):
         clone = {k: v for k, v in data.items() if k != 'token'}
         f = Path(__file__).parent / '..' / '..' / '..' / 'logs'
         f.mkdir(exist_ok=True)
-        f = f / filename
+        f = f / (filename + '.log')
         with f.open(mode='a', encoding='utf-8') as f:
             f.write(f"\n\nDOMAIN: {domain}\n")
             f.write(json.dumps(clone, ensure_ascii=False, indent=2))
@@ -139,6 +160,7 @@ def record_to_log(filename: str, domain: str, data: dict):
 
 @app.route('/oauth_callback.php')
 def oauth_callback():
+    print(f"++++ /oauth_callback.php - #{counter.next}")
     if 'request_token' not in session:
         flash('OAuth callback failed, do you have your cookies disabled?')
         return redirect('/')
@@ -164,6 +186,7 @@ def oauth_callback():
 
 @app.route('/logout')
 def logout():
+    print(f"++++ /logout - #{counter.next}")
     session.clear()
     return redirect('/')
 
