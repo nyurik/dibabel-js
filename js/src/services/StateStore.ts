@@ -238,7 +238,7 @@ export const createSitelink = async function (siteData: SiteData, item: Item) {
     token: await getToken(item.wiki),
   };
 
-  return await postToApi('wikidata.org', apiData);
+  return await postToApi('www.wikidata.org', apiData);
 };
 
 // export async function fetchContent(site: string, title: string): Promise<string> {
