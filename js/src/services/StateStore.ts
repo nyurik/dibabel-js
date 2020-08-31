@@ -26,7 +26,7 @@ import fauxPageNewAb from './faux/new-Q63324398-ab.json';
 import fauxPageOkZh from './faux/ok-Q63324398-zh.json';
 import fauxPageOutdatedDe from './faux/outdated2-Q63324398-de.json';
 
-import { getToken, postToApi, rootUrlData, splitNs, wikiUrl } from './utils';
+import { getToken, postToApi, rootUrlData, splitNs, wikiUrl, wikidataDomain } from './utils';
 import { map } from 'lodash';
 import { SiteData } from '../contexts/Settings';
 
@@ -235,10 +235,10 @@ export const createSitelink = async function (siteData: SiteData, item: Item) {
     id: item.qid,
     linksite: linksite.dbname,
     linktitle: item.dstFullTitle,
-    token: await getToken(item.wiki),
+    token: await getToken(wikidataDomain),
   };
 
-  return await postToApi('www.wikidata.org', apiData);
+  return await postToApi(wikidataDomain, apiData);
 };
 
 // export async function fetchContent(site: string, title: string): Promise<string> {

@@ -4,14 +4,15 @@ import { Item, PageType, ToastNoId } from './types';
 // lang=(zh or ace or de) shared template project:(wikipedia)
 
 // Using full root for the ease of debugging locally. Eventually should probably use '/'
-// export const rootUrlData = '/';
 // export const rootUrlData = 'http://localhost:5000/';
-export const rootUrlData = 'https://dibabel.toolforge.org/';
+// export const rootUrlData = 'https://dibabel.toolforge.org/';
+export const rootUrlData = '/';
 export const rootUrlSite = '/';
 
 export const titleUrlSuffix = '/wiki/';
 
-// export const rootUrlData = '/';
+export const wikidataDomain = 'www.wikidata.org';
+
 
 export function wikiUrl(site: string, title: string) {
   return `https://${site}${titleUrlSuffix}${encodeURIComponent(title)}`;
