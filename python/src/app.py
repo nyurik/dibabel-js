@@ -24,20 +24,6 @@ print(f"Running as {app.config['CONSUMER_KEY']}")
 cache = QueryCache('../cache')
 
 
-def refresher():
-    print(f'Refreshing state at {datetime.utcnow()}...')
-    with cache.create_session(user_requested=False) as state:
-        cache.refresh_state(state)
-    print(f'Done refreshing state at {datetime.utcnow()}...')
-
-
-# Make sure we have the latest data by occasionally refreshing it
-scheduler = BackgroundScheduler()
-scheduler.add_job(func=refresher, trigger="interval", seconds=300)
-scheduler.start()
-atexit.register(lambda: scheduler.shutdown())
-
-
 class Counter:
 
     def __init__(self) -> None:
@@ -50,6 +36,21 @@ class Counter:
 
 
 counter = Counter()
+refresh_counter = Counter()
+
+
+def refresher():
+    print(f'Refreshing state at {datetime.utcnow()}...#{refresh_counter.next}')
+    with cache.create_session(user_requested=False) as state:
+        cache.refresh_state(state)
+    print(f'Done refreshing state at {datetime.utcnow()}...')
+
+
+# Make sure we have the latest data by occasionally refreshing it
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=refresher, trigger="interval", seconds=300)
+scheduler.start()
+atexit.register(lambda: scheduler.shutdown())
 
 
 def create_consumer_token():
