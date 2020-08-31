@@ -159,7 +159,7 @@ export const AddNew = ({ onClose, initWith }: { onClose: DispatchWithoutAction, 
         </EuiFormRow>
       );
     }
-    return (<>{result}</>);
+    return React.Children.toArray(result);
   }, [i18n, info]);
 
   const setNewComment = (newComment: string) => {

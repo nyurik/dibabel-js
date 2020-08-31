@@ -122,7 +122,6 @@ export const SearchBar = (
         if (name.startsWith(query)) {
           return true;
         }
-        debugger;
         const l = languageNamesLowerCase.get(name);
         return (l !== undefined && l.indexOf(query.toLowerCase()) >= 0);
       },

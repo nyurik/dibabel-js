@@ -142,14 +142,6 @@ export const prettyDomain = (lang: string, project: string) => {
   return lang !== '-' ? `${lang}.${project}` : project;
 };
 
-export function dbg(log: string, fn: any): any {
-  return function () {
-    console.log(`++++++ ${log}`, arguments);
-    // debugger;
-    return fn.apply(arguments);
-  };
-}
-
 export function getSummaryMsgFromStatus(changeType: string): string {
   switch (changeType) {
     default:

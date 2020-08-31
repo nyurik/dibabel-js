@@ -27,12 +27,11 @@ export const DependenciesList: FunctionComponent<{ item: Item, links?: boolean }
 
   if (item.sortDepsStatus > 0) {
     result.push(
-      <EuiCallOut key={'1'}
-                  title={i18n('diff-deps-warning--title')}
+      <EuiCallOut title={i18n('diff-deps-warning--title')}
                   color={'warning'} iconType={'alert'}>
         <Message id={'diff-deps-warnings--content'}/>
       </EuiCallOut>,
-      <EuiSpacer key={'2'} size={'m'}/>
+      <EuiSpacer size={'m'}/>
     );
   }
 
@@ -49,7 +48,6 @@ export const DependenciesList: FunctionComponent<{ item: Item, links?: boolean }
   item.srvPage.allLocalDependencies.forEach((value) => {
     const copy = value.copiesLookup.get(item.wiki);
     if (!copy) {
-      debugger;
       depItems.push({
         title: value.primaryTitle,
         href: wikiUrl(value.primarySite, value.primaryTitle),
@@ -57,7 +55,7 @@ export const DependenciesList: FunctionComponent<{ item: Item, links?: boolean }
         color: 'danger',
         sort: `2/${value.primaryTitle}`,
         clone: {
-          status:'create',
+          status: 'create',
           titleNoNs: value.primaryTitle,
           wiki: item.wiki,
         },
@@ -129,7 +127,6 @@ export const DependenciesList: FunctionComponent<{ item: Item, links?: boolean }
   }
 
   result.push(<EuiInMemoryTable
-    key={'3'}
     items={depItems}
     columns={columns}
     itemId={'href'}
@@ -137,5 +134,5 @@ export const DependenciesList: FunctionComponent<{ item: Item, links?: boolean }
     pagination={false}
   />);
 
-  return (<>{result}</>);
+  return (<>{React.Children.toArray(result)}</>);
 };
