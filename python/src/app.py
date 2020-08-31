@@ -25,7 +25,8 @@ cache = QueryCache('../cache')
 
 def refresher():
     print(f'Refreshing state at {datetime.utcnow()}...')
-    cache.refresh_state()
+    with cache.create_session(user_requested=False) as state:
+        cache.refresh_state(state)
     print(f'Done refreshing state at {datetime.utcnow()}...')
 
 
