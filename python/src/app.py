@@ -110,15 +110,15 @@ def call_api(domain: str):
         try:
             result = site(action, EXTRAS=dict(auth=auth), NO_LOGIN=True, POST=True, **params)
             if not is_token:
-                record_to_log(filename, domain, dict(result=result))
+                record_to_log(filename, domain, result)
         except ApiError as err:
             print("----------------------------boom")
             print(repr(err.data))
             if 'text' in err.data:
-                record_to_log(filename, domain, dict(repr=repr(err.data), text=repr(err.data.text)))
+                record_to_log(filename, domain, dict(err=repr(err.data), text=repr(err.data.text)))
                 print(err.data.text)
             else:
-                record_to_log(filename, domain, dict(repr=repr(err.data)))
+                record_to_log(filename, domain, dict(err=repr(err.data)))
             print("----------------------end")
             return abort(Response('API boom', 500))
         return jsonify(result)

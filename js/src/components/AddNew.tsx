@@ -194,7 +194,7 @@ export const AddNew = ({ onClose, initWith }: { onClose: DispatchWithoutAction, 
       }
 
       res = await createSitelink(siteData, info.newItem);
-      if (!res.result.success) {
+      if (!res.success) {
         addToast(error({
           title: (<Message id="create-page-error-wd--title"
                            placeholders={[
