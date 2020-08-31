@@ -28,7 +28,7 @@ class SessionState:
         self.user_requested = user_requested
         random.seed()
         self.key = random.randint(0, 999999)
-        print(f'Opening SQL connection for {self.key}')
+        print(f'Opening SQL connection for {self.key} at {datetime.utcnow()}')
         self.cache = SqliteDict(cache_file, autocommit=True)
         self.session = Session()
         # noinspection PyTypeChecker
@@ -43,7 +43,7 @@ class SessionState:
     def __exit__(self, typ, value, traceback):
         self.cache.close()
         self.session.close()
-        print(f'Closed SQL connection for {self.key}')
+        print(f'Closed SQL connection for {self.key} at {datetime.utcnow()}')
 
     def get_site(self, domain: str) -> WikiSite:
         try:
