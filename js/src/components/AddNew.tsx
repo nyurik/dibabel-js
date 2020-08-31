@@ -107,9 +107,13 @@ export const AddNew = ({ onClose, initWith }: { onClose: DispatchWithoutAction, 
     if (wiki !== newWiki) {
       setWiki(newWiki);
     }
+    let newDstTitle;
     if (pageTitle !== newTitle) {
       setPageTitle(newTitle);
-      setDstTitle(newTitle ? splitNs(newTitle)[1] : '');
+      newDstTitle = newTitle ? splitNs(newTitle)[1] : '';
+      setDstTitle(newDstTitle);
+    } else {
+      newDstTitle = dstTitle;
     }
     if (newTitle && newWiki) {
       setStatus('show');
@@ -120,7 +124,7 @@ export const AddNew = ({ onClose, initWith }: { onClose: DispatchWithoutAction, 
         setWiki(undefined);
       } else {
         newInfo.newItem = createItem(type, title, srcTitleUrl, srvPage, {
-          domain: newWiki, status: 'new', title: titleCase(type) + ':' + dstTitle,
+          domain: newWiki, status: 'new', title: titleCase(type) + ':' + newDstTitle,
         });
         setInfo(newInfo);
         if (newInfo && newInfo.content && newInfo.content.changeType === 'new') {
