@@ -4,5 +4,5 @@
 			"Yurik"
 		]
 	},
-	"diff-summary-text--edit": "Kopē {{PLURAL:$1|$1 izmaiņas|$1 izmaiņu|$1 izmaiņas}}, autori $2{{#if:$3|: \"$3\"}} no $4. ([[mw:WP:TNT|dokumentācija]], [[c:Data:I18n/DiBabel.tab|tulkot]])"
+	"diff-summary-text--edit": "Kopē {{PLURAL:$1|$1 izmaiņas|$1 izmaiņu|$1 izmaiņas}}, autori $2: \"$3\" no $4. ([[mw:WP:TNT|dokumentācija]], [[c:Data:I18n/DiBabel.tab|tulkot]])"
 }

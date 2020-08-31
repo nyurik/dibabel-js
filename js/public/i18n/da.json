@@ -1,7 +1,11 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Saederup92"
+		]
 	},
+	"create-page-content--label": "Indhold",
+	"create-page-target--placeholder": "Titel",
 	"filters-groupby--lang": "efter sprog",
 	"filters-groupby--placeholder": "Grupper efter...",
 	"filters-groupby--project": "efter projekt",
@@ -9,6 +13,7 @@
 	"filters-groupby--title": "efter titel",
 	"filters-lang": "Sprog",
 	"filters-project": "Projekt",
+	"filters-protection": "Beskyttelse",
 	"filters-type--modules": "Moduler",
 	"filters-type--templates": "Skabeloner",
 	"header-links--help": "Hjælp",

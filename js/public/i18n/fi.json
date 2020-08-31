@@ -2,13 +2,20 @@
 	"@metadata": {
 		"authors": [
 			"Nike",
+			"Pyscowicz",
 			"Yurik"
 		]
 	},
+	"create-page--button": "Lisää uusi...",
+	"create-page-cancel--label": "Peruuta",
+	"create-page-content--label": "Sisältö",
+	"create-page-create--label": "Luo!",
+	"create-page-wiki--label": "Kohdewiki",
+	"create-page-wiki--placeholder": "Valitse kohdewiki",
 	"diff-summary--label": "Yhteenveto",
 	"diff-summary--placeholder": "Muokkausyhteenveto",
 	"diff-summary--tooltip": "Auta kääntämään yhteenvetoviestejä.",
-	"diff-summary-text--edit": "Kopioitiin {{PLURAL:$1|yksi muutos|$1 muutosta}} käyttäjältä $2{{#if:$3|: \"$3\"}} sivulta $4. ([[mw:WP:TNT|ohje]], [[c:Data:I18n/DiBabel.tab|käännös]])",
+	"diff-summary-text--edit": "Kopioitiin {{PLURAL:$1|yksi muutos|$1 muutosta}} käyttäjältä $2: \"$3\" sivulta $4. ([[mw:WP:TNT|ohje]], [[c:Data:I18n/DiBabel.tab|käännös]])",
 	"diff-update": "Päivitä!",
 	"filters-groupby--hash": "tiivisteen mukaan",
 	"filters-groupby--lang": "kielen mukaan",
@@ -40,7 +47,16 @@
 	"settings-theme--label": "Yötila",
 	"table-header-hash--label": "Tiiviste",
 	"table-header-language--label": "Kieli",
+	"table-header-project--label": "Hanke",
+	"table-header-project--tooltip": "Wikihanke, esim. Wikipedia, Wikikirjasto, ...",
+	"table-header-site--label": "Wikisivusto",
+	"table-header-status--label": "Tila",
+	"table-header-unlocalized--label": "Lokalisoimaton",
+	"table-header-updated--label": "Sama",
+	"table-header-wikipage--label": "Wikisivu",
 	"table-loading": "Ladataan...",
 	"table-loading--error": "Tietojen lataaminen epäonnistui",
-	"table-pagecount": "{{PLURAL:$1|$1 sivu|$1 sivua}}"
+	"table-pagecount": "{{PLURAL:$1|$1 sivu|$1 sivua}}",
+	"updatepage-confirm--no": "Ei, vie minut takaisin",
+	"user-login": "Kirjaudu sisään"
 }

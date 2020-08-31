@@ -7,5 +7,6 @@
 	"diff-content--loading": "Ја вчитувам содржината на страницата...",
 	"diff-content--loading-error": "Грешка при вчитувањето на содржината...",
 	"diff-content--login-error": "Најавете се во десниот агол погоре пред да копирате.",
-	"diff-header-description--diverged": "Не ја најдов тековната верзија на $1 во историјата на главната страница $2."
+	"diff-header-description--diverged": "Не ја најдов тековната верзија на $1 во историјата на главната страница $2.",
+	"table-header-hash--label": "Тараба"
 }

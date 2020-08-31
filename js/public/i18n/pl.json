@@ -1,12 +1,14 @@
 {
 	"@metadata": {
 		"authors": [
-			"Rail"
+			"Rail",
+			"WaldiSt"
 		]
 	},
 	"diff-content--loading": "Wczytywanie treści strony…",
 	"diff-content--loading-error": "Wystąpił błąd podczas wczytywania…",
 	"diff-content--login-error": "Zaloguj się używając linku w prawym górnym roku ekranu, zanim skopiujesz.",
+	"diff-header-warnings--diverged-head": "Nierozpoznana zawartość",
 	"diff-summary--label": "Opis zmian",
 	"header-links--source": "Źródło",
 	"settings-options": "Opcje",

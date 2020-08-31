@@ -4,6 +4,14 @@
 			"Beta16"
 		]
 	},
+	"create-page-cancel--label": "Annulla",
+	"create-page-content--label": "Contenuto",
+	"create-page-create--label": "Crea!",
+	"create-page-header--label": "Crea una nuova copia",
+	"create-page-target--placeholder": "Titolo",
+	"dataloader-toast-success--copies": "{{PLURAL:$1|una copia|$1 copie}}",
+	"dataloader-toast-success--pages": "{{PLURAL:$1|una pagina|$1 pagine}}",
 	"diff-summary-text--edit": "Copia di {{PLURAL:$1|una modifica|$1 modifiche}} di $2: $3 da $4. ([[mw:Special:MyLanguage/WP:TNT|documentazione]])",
+	"diff-summary-text--empty-summary": "(nessun oggetto)",
 	"filters-protection": "Protezione"
 }

@@ -4,7 +4,7 @@
 			"Yurik"
 		]
 	},
-	"diff-summary-text--edit": "$2 {{PLURAL:$1|egy változtatásának|$1 változtatásának}} {{#if:$3|(„$3”)}} másolása a(z) $4 lapról ([[mw:WP:TNT|további információk]], [[c:Data:I18n/DiBabel.tab|fordítás]])",
+	"diff-summary-text--edit": "$2 {{PLURAL:$1|egy változtatásának|$1 változtatásának}} („$3”) másolása a(z) $4 lapról ([[mw:WP:TNT|további információk]], [[c:Data:I18n/DiBabel.tab|fordítás]])",
 	"diff-summary-text--localized": "$1 sablon- és modulneveinek lefordítása ([[mw:WP:TNT|további információk]], [[c:Data:I18n/DiBabel.tab|fordítás]])",
 	"diff-summary-text--reset": "A lap visszaállítása a(z) $1 jelenlegi tartalmára ([[mw:WP:TNT|további információk]], [[c:Data:I18n/DiBabel.tab|fordítás]])"
 }

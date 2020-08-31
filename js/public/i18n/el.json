@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"Giorgos456"
+		]
+	},
+	"create-page--button": "Προσθήκη νέου...",
+	"create-page-cancel--label": "Ακύρωση",
+	"create-page-content--label": "Περιεχόμενο",
+	"create-page-create--label": "Δημιουργία!",
+	"create-page-header--label": "Δημιουργία νέου αντίγραφου",
+	"dataloader-toast-success--pages": "{{PLURAL:$1|μια σελίδα|$1 σελίδες}}",
+	"diff-deps-warnings--content": "Παρακαλούμε διορθώστε τα προβλήματα με άλλες σελίδες που χρησιμοποιούνται από αυτήν την σελίδα. Αντιγράφοντας αυτήν την σελίδα χωρίς να τα διορθώσετε πρώτα ίσως καταλήξει σε σφάλματα."
+}

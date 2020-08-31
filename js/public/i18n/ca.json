@@ -4,5 +4,5 @@
 			"Yurik"
 		]
 	},
-	"diff-summary-text--edit": "Còpia {{PLURAL:$1|d’1 canvi|de $1 canvis}} per $2{{#if:$3|: «$3»}} des de $4. [[mw:WP:TNT|Més informació]]."
+	"diff-summary-text--edit": "Còpia {{PLURAL:$1|d’1 canvi|de $1 canvis}} per $2: «$3» des de $4. [[mw:WP:TNT|Més informació]]."
 }

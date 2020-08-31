@@ -4,5 +4,5 @@
 			"Yurik"
 		]
 	},
-	"diff-summary-text--edit": "{{PLURAL:$1|Ai Änderig|$1 Änderige}} vu $2{{#if:$3|: \"$3\"}} vu $4 kopiert. ([[mw:WP:TNT|Mee Information]])"
+	"diff-summary-text--edit": "{{PLURAL:$1|Ai Änderig|$1 Änderige}} vu $2: \"$3\" vu $4 kopiert. ([[mw:WP:TNT|Mee Information]])"
 }

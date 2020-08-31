@@ -4,5 +4,5 @@
 			"Yurik"
 		]
 	},
-	"diff-summary-text--edit": "Menyalin {{PLURAL:$1|satu revisi|$1 revisi}} oleh $2{{#if:$3|: \"$3\"}} dari $4. ([[mw:WP:TNT|dokumentasi]], [[c:Data:I18n/DiBabel.tab|terjemahan]])"
+	"diff-summary-text--edit": "Menyalin {{PLURAL:$1|satu revisi|$1 revisi}} oleh $2: \"$3\" dari $4. ([[mw:WP:TNT|dokumentasi]], [[c:Data:I18n/DiBabel.tab|terjemahan]])"
 }

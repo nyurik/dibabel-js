@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Bugoslav"
+		]
+	},
+	"create-page-error--title": "Pogrješka pri stvaranju stranice $1: $2",
+	"create-page-header--label": "Stvori novu presliku",
+	"create-page-page--label": "Stranica za preslik",
+	"create-page-page--placeholder": "Odaberi stranicu za preslik",
+	"diff-summary-text--empty-summary": "(bez sažetka izmjene)",
+	"diff-summary-text--reset": "Povovno postavljanje na trenutačni sadržaj stranice imena $1. ([[mw:Special:MyLanguage/WP:TNT|dokumentacija]])",
+	"language--tooltip": "Škljocnite za promjenu prikaznoga jezika",
+	"table-cell-deps-unsynced--tooltip": "Ova stranica ima o njoj zavisne stranice koje nisu u ovome trenutku usklađene."
+}

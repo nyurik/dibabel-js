@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"DraconicDark"
+		]
+	},
+	"diff-content--loading": "Seiteninhalt ladet...",
+	"diff-content--loading-error": "Fehler beim Laden des Inhalts...",
+	"diff-content--login-error": "Bitte melden Sie sich vor dem Kopieren in der oberen rechten Ecke an.",
+	"diff-header-description--diverged": "Die aktuelle Version von $1 wurde in der Geschichte der Primärseite $2 nicht gefunden.",
+	"diff-header-description--ok": "Seite $1 ist eine lokalisierte Version des Originals $2.",
+	"diff-header-description--outdated": "Seite $1 liegt $2 hinter den primären $3.",
+	"diff-header-description--outdated-rev": "{{PLURAL:$1|Eine Version|$1 Versionen}}",
+	"diff-header-description--unlocalized": "Seite $1 ist identisch mit dem Original $2, muss aber einige Lokalisierungen haben."
+}

@@ -1,8 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Yurik",
-			"Sophivorus"
+			"Sophivorus",
+			"Yurik"
 		]
 	},
 	"diff-content--loading": "Cargando el contenido…",
@@ -13,21 +13,17 @@
 	"diff-header-description--outdated": "La página $1 está $2 detrás de la primaria $3.",
 	"diff-header-description--outdated-rev": "{{PLURAL:$1|una revisión|$1 revisiones}}",
 	"diff-header-description--unlocalized": "La página $1 es idéntica a la original $2, pero necesita tener algunas localizaciones.",
-	"diff-header-warnings--dependencies": "Las siguientes dependencias no están presentes en el sitio destino. Copia esas páginas a $1 y comprueba que están enlazadas a otras wikis.",
-	"diff-header-warnings--dependencies-head": "Dependencias no existen en $1",
 	"diff-header-warnings--diverged": "Esta página fue modificada por la comunidad $1. No la sobrescribas a menos que:",
 	"diff-header-warnings--diverged-1": "Cambios locales hechos por error y que se deben revertir",
 	"diff-header-warnings--diverged-2": "Los cambios locales ahora se incluyen en la página primaria",
 	"diff-header-warnings--diverged-3": "Los cambios locales ya no se necesitan",
 	"diff-header-warnings--diverged-head": "Contenido no reconocido",
-	"diff-header-warnings--multisite": "Esta página depende de plantillas o módulos que no se han marcado como \"multi-sitio\" en Wikidata. La mayoría de las veces esto significa que la página $1 no está lista para sincronización y no debería estar marcada como multi-sitio en $2. También podría significar que la página fue editada para utilizar una nueva plantilla o módulo, y que la nueva página todavía no está habilitada para sincronización.",
-	"diff-header-warnings--multisite-head": "Dependencias no habilitadas para sincronización",
 	"diff-label--current": "Contenido $1 actual",
 	"diff-label--new": "Contenido $1 nuevo",
 	"diff-summary--label": "Resumen",
 	"diff-summary--placeholder": "Resumen de edición",
 	"diff-summary--tooltip": "Ayuda a traducir los mensajes de resumen.",
-	"diff-summary-text--edit": "Copia de {{PLURAL:$1|1 cambio|$1 cambios}} de $2{{#if:$3|: «$3»}} desde $4. [[mw:WP:TNT|Más información]].",
+	"diff-summary-text--edit": "Copia de {{PLURAL:$1|1 cambio|$1 cambios}} de $2: «$3» desde $4. [[mw:WP:TNT|Más información]].",
 	"diff-update": "¡Actualizar!",
 	"filters-groupby--hash": "por hash",
 	"filters-groupby--lang": "por lenguaje",

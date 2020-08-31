@@ -3,9 +3,9 @@
 		"locale": "ru",
 		"message-documentation": "qqq",
 		"authors": [
+			"Iniquity",
 			"Yuri Astrakhan",
-			"Yurik",
-			"Iniquity"
+			"Yurik"
 		]
 	},
 	"filters-status-ok": "OK",
@@ -39,7 +39,7 @@
 	"table-header-unlocalized--label": "Не переведен",
 	"table-header-wikipage--label": "Вики-страница",
 	"table-header-wikipage--link": "Показать $1 / $2 в новой вкладке.",
-	"table-icons-protection--rights": "Необходимы права для редактирования:",
+	"table-icons-protection--rights": "Права требуемые для редактирования",
 	"table-icons-protection--tooltip": "Отображается есть ли у страницы защита и требуются ли особые права для ее редактирования.",
 	"table-loading": "Загрузка...",
 	"table-loading--error": "Ошибка загрузки данных",

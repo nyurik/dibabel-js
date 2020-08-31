@@ -1,13 +1,23 @@
 {
 	"@metadata": {
 		"authors": [
+			"Shuiwater",
 			"Yurik"
 		]
 	},
+	"create-page--button": "添加新的……",
+	"create-page-cancel--label": "取消",
+	"create-page-create--label": "创建！",
+	"create-page-header--label": "创建一个新的拷贝对象",
+	"create-page-page--label": "要拷贝的一页",
+	"create-page-page--placeholder": "选择一个页面拷贝",
+	"create-page-wiki--label": "目标wiki",
+	"dataloader-toast-error--title": "错误加载拷贝",
+	"dataloader-toast-success--title": "加载数据",
 	"diff-summary--placeholder": "编辑摘要",
-	"diff-summary-text--edit": "正由$2从$4复制{{PLURAL:$1|一次更改|$1次更改}}{{#if:$3|: \"$3\"}}。（[[mw:WP:TNT|文档]]、[[c:Data:I18n/DiBabel.tab|翻译]]）",
+	"diff-summary-text--edit": "正由$2从$4复制{{PLURAL:$1|一次更改|$1次更改}}: \"$3\"。（[[mw:WP:TNT|文档]]、[[c:Data:I18n/DiBabel.tab|翻译]]）",
 	"filters-lang": "语言",
-	"filters-protection": "锁定",
+	"filters-protection": "保护",
 	"filters-status-ok": "好",
 	"filters-type": "类型",
 	"filters-type--modules": "模块",
