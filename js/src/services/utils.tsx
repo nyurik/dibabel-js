@@ -88,13 +88,16 @@ export function usePersistedJsonState<TValue>(
 }
 
 export async function postToApi(domain: string, data: { [key: string]: string }) {
-  const response = await fetch(`${rootUrlData}api/${domain}`, {
+  const resp = await fetch(`${rootUrlData}api/${domain}`, {
     method: 'POST',
     mode: 'cors', // TODO: possibly use a different mode here?  no-cors, cors, same-origin
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
-  return response.json();
+  if (!resp.ok) {
+    throw new Error(`${resp.status}: ${resp.statusText}\n` + await resp.text());
+  }
+  return resp.json();
 }
 
 const tokenCache: { [key: string]: string } = {};

@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from pathlib import Path
 import atexit
@@ -96,22 +97,44 @@ def call_api(domain: str):
                   client_secret=consumer_token.secret,
                   resource_owner_key=access_token.key,
                   resource_owner_secret=access_token.secret)
+    filename = f'{datetime.utcnow()}.log'
     with cache.create_session(user_requested=True) as state:
         site = state.get_site(domain)
         params = request.get_json()
         action = params.pop('action')
         if action == 'edit':
             print(f"{'**** Modifying' if 'nocreate' in params else 'Creating'} page {params['title']} at {domain}")
+        is_token = action == 'query' and 'meta' in params and params['meta'] == 'token'
+        if not is_token:
+            record_to_log(filename, params)
         try:
             result = site(action, EXTRAS=dict(auth=auth), NO_LOGIN=True, POST=True, **params)
+            if not is_token:
+                record_to_log(filename, dict(result=result))
         except ApiError as err:
             print("----------------------------boom")
             print(repr(err.data))
             if 'text' in err.data:
+                record_to_log(filename, dict(repr=repr(err.data), text=repr(err.data.text)))
                 print(err.data.text)
+            else:
+                record_to_log(filename, dict(repr=repr(err.data)))
             print("----------------------end")
             return abort(Response('API boom', 500))
         return jsonify(result)
+
+
+def record_to_log(filename: str, data: dict):
+    try:
+        clone = {k: v for k, v in data.items() if k != 'token'}
+        f = Path(__file__).parent / '..' / '..' / '..' / 'logs'
+        f.mkdir(exist_ok=True)
+        f = f / filename
+        with f.open(mode='a', encoding='utf-8') as f:
+            f.write("\n\n\n")
+            f.write(json.dumps(clone, ensure_ascii=False, indent=2))
+    except Exception as ex:
+        print('error logging: ', ex)
 
 
 @app.route('/oauth_callback.php')

@@ -95,16 +95,12 @@ class QueryCache:
         wd_warnings = []
         # Query WDQS for the list of all available primary pages
         # Init self.primary_pages_by_qid and self.primary_pages_by_title
-        print(f'-- {datetime.utcnow()} query_primary_pages')
         self.query_primary_pages(wd_warnings)
         # Load primary page history and update the sitelinks for pages and dependencies
-        print(f'-- {datetime.utcnow()} update_primary_pages')
         self.update_primary_pages(state)
         # Download content of all copies and compute sync info
-        print(f'-- {datetime.utcnow()} update_syncinfo')
         self.update_syncinfo(state)
         # Update localization strings
-        print(f'-- {datetime.utcnow()} get_translation_table')
         self.summary_i18n = self.get_translation_table(state)
 
     def create_session(self, user_requested) -> SessionState:
@@ -138,14 +134,12 @@ SELECT ?id ?sl WHERE {
         self.primary_pages_by_title = {v.title: v for v in self.primary_pages_by_qid.values()}
 
     def update_primary_pages(self, state: SessionState, page: Optional[PagePrimary] = None):
-        print(f'---- {datetime.utcnow()} update_primary_pages start')
         primary_metadata = self.sites_metadata[primary_domain]
         pages_to_update = list(self.primary_pages_by_qid.values()) if page is None else [page]
         # Load primary page revision history from cache if needed
         for page in pages_to_update:
             if not page.history:
                 page.set_history(state.cache.get(f"primary:{page.title}") or [], primary_metadata)
-        print(f'---- {datetime.utcnow()} update_primary_pages 2')
         # Find latest available revisions for primary pages, and cleanup if don't exist
         latest_primary_revids: Dict[str, int] = {}
         for title, revid in self.primary_site.query_pages_revid((v.title for v in pages_to_update)):
@@ -154,7 +148,6 @@ SELECT ?id ?sl WHERE {
                 del self.primary_pages_by_qid[page.qid]
             else:
                 latest_primary_revids[title] = revid
-        print(f'---- {datetime.utcnow()} update_primary_pages 3')
         # Load page history if needed, and cache it
         for page in pages_to_update:
             revid = latest_primary_revids[page.title]
@@ -162,14 +155,11 @@ SELECT ?id ?sl WHERE {
             if hist:
                 page.add_to_history(hist, primary_metadata)
                 state.cache[f"primary:{page.title}"] = page.history
-        print(f'---- {datetime.utcnow()} update_primary_pages 4')
         # Load sitelinks for both primary pages and their dependencies
         titles = set((v.title for v in pages_to_update))
         for page in pages_to_update:
             titles.update(page.historic_dependencies)
-        print(f'---- {datetime.utcnow()} update_primary_pages 5')
         self.update_sitelinks_map(state, titles)
-        print(f'---- {datetime.utcnow()} update_primary_pages done')
 
     def update_syncinfo(self, state: SessionState,
                         sitelink: Optional[WdSitelink] = None) -> List[Tuple[PageContent, SyncInfo]]:
