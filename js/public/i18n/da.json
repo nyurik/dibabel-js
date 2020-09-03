@@ -4,7 +4,9 @@
 			"Saederup92"
 		]
 	},
+	"create-page-cancel--label": "Annullér",
 	"create-page-content--label": "Indhold",
+	"create-page-success--title": "$1 blev oprettet",
 	"create-page-target--placeholder": "Titel",
 	"filters-groupby--lang": "efter sprog",
 	"filters-groupby--placeholder": "Grupper efter...",

@@ -1,10 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
+			"Fitoschido",
+			"MarcoAurelio",
 			"Sophivorus",
 			"Yurik"
 		]
 	},
+	"create-page-target--placeholder": "Título",
 	"diff-content--loading": "Cargando el contenido…",
 	"diff-content--loading-error": "Error al cargar el contenido...",
 	"diff-content--login-error": "Por favor accede con tu usuario en la esquina superior izquierda antes de copiar.",
@@ -35,7 +38,7 @@
 	"filters-lang": "Lenguaje",
 	"filters-lang--unknown": "Multilingüe / Otro",
 	"filters-project": "Proyecto",
-	"filters-protection": "Bloquear",
+	"filters-protection": "Protección",
 	"filters-searchbar--placeholder": "ejemplos: en.wikipedia   TNT   lang=en",
 	"filters-status": "Estado",
 	"filters-status-diverged": "Divergido",
@@ -104,7 +107,7 @@
 	"table-header-wikipage--label": "Página wiki",
 	"table-header-wikipage--link": "Mostrar $1 / $2 en una nueva pestaña.",
 	"table-header-wikipage--tooltip": "Título de la página copiada como aparece en la wiki destino.",
-	"table-icons-protection--rights": "Permisos necesarias para editar:",
+	"table-icons-protection--rights": "Permisos necesarios para editar",
 	"table-icons-protection--tooltip": "Indicar si la página tiene protección y requiere permisos especiales para editar.",
 	"table-loading": "Cargando...",
 	"table-loading--error": "Error al cargar datos",
@@ -115,6 +118,6 @@
 	"updatepage-confirm--tooltip": "Actualizando la página wiki",
 	"updatepage-confirm--yes": "¡Sí, hazlo!",
 	"updatepage-status": "$1 fue actualizada",
-	"updatepage-status-error": "Error al guardar $1 - $2",
+	"updatepage-status-error": "Error al publicar $1 - $2",
 	"user-login": "Acceder"
 }

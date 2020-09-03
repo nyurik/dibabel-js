@@ -5,6 +5,14 @@
 			"Yurik"
 		]
 	},
+	"create-page--button": "להוסיף חדש...",
+	"create-page-cancel--label": "ביטול",
+	"create-page-content--label": "תוכן",
+	"create-page-create--label": "ליצור!",
+	"create-page-error--title": "בעת יצירת הדף $1 אירעה שגיאה: $2",
+	"create-page-error-wd--title": "הדף $1 נוצר, אבל בעת הוספתו למאגר $2 אירעה שגיאה: $3",
+	"create-page-header--label": "יצירת עותק חדש",
+	"create-page-page--label": "איזה דף להעתיק",
 	"diff-content--loading": "טעינת תוכן הדף...",
 	"diff-content--loading-error": "שגיאה בטעינת התוכן...",
 	"diff-content--login-error": "נא להיכנס לחשבון בפינה השמאלית העליונה לפני העתקה.",

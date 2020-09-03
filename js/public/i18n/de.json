@@ -1,15 +1,33 @@
 {
 	"@metadata": {
 		"authors": [
-			"DraconicDark"
+			"DraconicDark",
+			"Elliot"
 		]
 	},
+	"create-page--button": "Neu hinzufügen...",
+	"create-page-cancel--label": "Abbrechen",
+	"create-page-content--label": "Inhalt",
+	"create-page-create--label": "Erstellen!",
+	"create-page-error--title": "Fehler erstellt $1: $2",
+	"create-page-error-wd--title": "$1 wurde erstellt, aber es gab einen Fehler beim hinzufügen zu $2: $3",
+	"create-page-header--label": "Erstelle eine neue Kopie",
+	"create-page-page--label": "Eine Seite zum Kopieren",
+	"create-page-page--placeholder": "Wähle eine Seite zum kopieren aus.",
+	"create-page-success--title": "$1 wurde erstellt",
+	"create-page-target--placeholder": "Titel",
+	"create-page-wiki--info": "Existiert bereits in $1 von $2 wikis.",
+	"dataloader-toast-success--copies": "{{PLURAL:$1|eine Kopie|$1 Kopien}}",
+	"dataloader-toast-success--pages": "{{PLURAL:$1|eine Seite|$1 Seiten}}",
 	"diff-content--loading": "Seiteninhalt ladet...",
 	"diff-content--loading-error": "Fehler beim Laden des Inhalts...",
 	"diff-content--login-error": "Bitte melden Sie sich vor dem Kopieren in der oberen rechten Ecke an.",
+	"diff-deps-header--title": "Titel der Abhängigkeit",
 	"diff-header-description--diverged": "Die aktuelle Version von $1 wurde in der Geschichte der Primärseite $2 nicht gefunden.",
 	"diff-header-description--ok": "Seite $1 ist eine lokalisierte Version des Originals $2.",
 	"diff-header-description--outdated": "Seite $1 liegt $2 hinter den primären $3.",
 	"diff-header-description--outdated-rev": "{{PLURAL:$1|Eine Version|$1 Versionen}}",
-	"diff-header-description--unlocalized": "Seite $1 ist identisch mit dem Original $2, muss aber einige Lokalisierungen haben."
+	"diff-header-description--unlocalized": "Seite $1 ist identisch mit dem Original $2, muss aber einige Lokalisierungen haben.",
+	"table-cell-deps-stale--tooltip": "Die Abhängigkeiten dieser Seite sind auf dem Zielwiki veraltet",
+	"table-cell-deps-unsynced--tooltip": "Diese Seite hat Abhängigkeiten, die nicht synchronisiert werden."
 }

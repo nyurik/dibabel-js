@@ -1,0 +1,17 @@
+{
+	"@metadata": {
+		"authors": [
+			"MR973"
+		]
+	},
+	"create-page-cancel--label": "Кире алырға",
+	"create-page-error--title": "Хата булдырылған $1: $2",
+	"create-page-error-wd--title": "$1 булдырылды, әммә уны $2: $3 өҫтәүҙә хата килеп сыҡты",
+	"create-page-header--label": "Яңы күсермә булдырығыҙ",
+	"create-page-page--placeholder": "Күсермәһен алыу өсөн битте һайлағыҙ",
+	"create-page-target--label": "Исем арауығы булмаған яңы бит исеме",
+	"create-page-target--placeholder": "Баш һүҙ",
+	"diff-deps-button-new--caption": "Бәйләнеш булдырыу",
+	"diff-summary-text--empty-summary": "(резюме юҡ)",
+	"table-cell-deps-unsynced--tooltip": "Был бит синхронизацияланмаған бәйләнештәргә эйә."
+}

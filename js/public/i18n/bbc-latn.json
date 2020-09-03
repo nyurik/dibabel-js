@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"Herryz"
+		]
+	},
+	"diff-deps-none--label": "Alaman on dang habir tu modul sanga template na asing na",
+	"diff-deps-status--manual-sync": "diaithon manual",
+	"diff-deps-warning--title": "Masala dohot habir na",
+	"filters-searchbar--placeholder": "umpama: en.wikipedia    TNT    lang=en",
+	"table-cell-deps-missing--tooltip": "\nAlaman on adong na habir jala dang adong di wiki target"
+}

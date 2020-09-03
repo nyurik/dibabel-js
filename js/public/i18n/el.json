@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Giorgos456"
+			"Giorgos456",
+			"Norhorn"
 		]
 	},
 	"create-page--button": "Προσθήκη νέου...",
@@ -9,6 +10,11 @@
 	"create-page-content--label": "Περιεχόμενο",
 	"create-page-create--label": "Δημιουργία!",
 	"create-page-header--label": "Δημιουργία νέου αντίγραφου",
+	"create-page-target--placeholder": "Τίτλος",
+	"dataloader-toast-error--title": "Σφάλμα φόρτωσης του αντιγράφου",
 	"dataloader-toast-success--pages": "{{PLURAL:$1|μια σελίδα|$1 σελίδες}}",
-	"diff-deps-warnings--content": "Παρακαλούμε διορθώστε τα προβλήματα με άλλες σελίδες που χρησιμοποιούνται από αυτήν την σελίδα. Αντιγράφοντας αυτήν την σελίδα χωρίς να τα διορθώσετε πρώτα ίσως καταλήξει σε σφάλματα."
+	"diff-deps-status--manual-sync": "Συγχρονίστηκε χειροκίνητα",
+	"diff-deps-warnings--content": "Παρακαλούμε διορθώστε τα προβλήματα με άλλες σελίδες που χρησιμοποιούνται από αυτήν την σελίδα. Αντιγράφοντας αυτήν την σελίδα χωρίς να τα διορθώσετε πρώτα ίσως καταλήξει σε σφάλματα.",
+	"filters-searchbar--placeholder": "παράδειγμα:   el.wikipedia    TNT    lang=el",
+	"language--tooltip": "Κάντε κλικ για αλλαγή της εμφανιζόμενης γλώσσας."
 }
