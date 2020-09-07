@@ -1,8 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
+			"Hamilton Abreu",
 			"Yurik"
 		]
 	},
-	"diff-summary-text--edit": "A copiar {{PLURAL:$1|uma alteração|$1 alterações}} de $2 \"$3\" de $4. ([[mw:WP:TNT|documentos]], [[c:Data:I18n/DiBabel.tab|traduzir]])"
+	"diff-summary-text--edit": "A copiar {{PLURAL:$1|uma alteração feita|$1 alterações feitas}} por $2: \"$3\" de $4. ([[mw:Special:MyLanguage/WP:TNT|documentos]])"
 }

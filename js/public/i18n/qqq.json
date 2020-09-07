@@ -4,6 +4,7 @@
 			"Amire80",
 			"Nike",
 			"Robby",
+			"Tacsipacsi",
 			"Yuri Astrakhan",
 			"Yurik"
 		]
@@ -90,7 +91,7 @@
 	"table-cell-diverged--tooltip": "$1 pages have local modifications and must be synchronized individually.",
 	"table-cell-hash--tooltip": "Tooltip for a table cell.",
 	"table-cell-outdated--tooltip": "$1 pages are behind the primary and can be synchronized automatically.",
-	"table-cell-primary--tooltip": "!!FUZZY!!Show primary $1 in a new tab.",
+	"table-cell-primary--tooltip": "{{delete|Accidental creation—content is a fuzzy marker plus the English message content, this makes no sense.}}\n!!FUZZY!!Show primary $1 in a new tab.",
 	"table-cell-status--diverged-label": "A status indicator in the table.",
 	"table-cell-status--diverged-tooltip": "Tooltip for the icon next to {{msg-dibabel|dibabel-table-cell-status--diverged-label}}",
 	"table-cell-status--ok--tooltip": "Tooltip for the icon next to {{msg-dibabel|dibabel-table-cell-status--ok-label}}",

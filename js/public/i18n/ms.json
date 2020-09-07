@@ -1,0 +1,16 @@
+{
+	"@metadata": {
+		"authors": [
+			"Tofeiku"
+		]
+	},
+	"create-page-cancel--label": "Batalkan",
+	"create-page-content--label": "Kandungan",
+	"create-page-create--label": "Cipta!",
+	"create-page-target--label": "Nama laman baru tanpa ruang nama",
+	"create-page-target--placeholder": "Tajuk",
+	"create-page-wiki--placeholder": "Pilih wiki sasaran",
+	"diff-summary-text--empty-summary": "(tiada ringkasan)",
+	"filters-protection": "Perlindungan",
+	"table-icons-protection--rights": "Hak diperlukan untuk sunting"
+}

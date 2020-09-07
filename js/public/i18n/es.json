@@ -7,7 +7,12 @@
 			"Yurik"
 		]
 	},
+	"create-page-content--label": "Contenido",
+	"create-page-create--label": "Crear",
+	"create-page-page--label": "Una página para copiar",
 	"create-page-target--placeholder": "Título",
+	"create-page-wiki--label": "Wiki de destino",
+	"dataloader-toast-success--copies": "{{PLURAL:$1|1 copia|$1 copias}}",
 	"diff-content--loading": "Cargando el contenido…",
 	"diff-content--loading-error": "Error al cargar el contenido...",
 	"diff-content--login-error": "Por favor accede con tu usuario en la esquina superior izquierda antes de copiar.",

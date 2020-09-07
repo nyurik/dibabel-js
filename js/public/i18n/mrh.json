@@ -1,10 +1,17 @@
 {
 	"@metadata": {
 		"authors": [
-			"Chhithai"
+			"Chhithai",
+			"Teitei Para"
 		]
 	},
+	"create-page-cancel--label": "Châvei",
+	"create-page-create--label": "Tao!",
 	"create-page-error--title": "$1 taona a do leipa: $2",
+	"create-page-page--label": "Patly awpa châhmia sâkha",
+	"create-page-success--title": "$1 cha tao hawpa a châ",
 	"create-page-target--placeholder": "Chôtlâhpi",
+	"create-page-wiki--label": "Wiki châtaw",
+	"dataloader-toast-success--copies": "{{PLURAL:$1|sâkha patly|$1 patlypazy}}",
 	"diff-summary-text--empty-summary": "(Biechho y vei)"
 }

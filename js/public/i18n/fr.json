@@ -1,13 +1,17 @@
 {
 	"@metadata": {
 		"authors": [
-			"Gomoko"
+			"Alno",
+			"Gomoko",
+			"Pols12",
+			"Thibaut120094",
+			"Wladek92"
 		]
 	},
 	"create-page--button": "Ajouter une nouvelle…",
 	"create-page-cancel--label": "Annuler",
 	"create-page-content--label": "Contenu",
-	"create-page-create--label": "Créer !",
+	"create-page-create--label": "Créer !",
 	"create-page-error--title": "Erreur en créant $1 : $2",
 	"create-page-error-wd--title": "$1 a été créé, mais il y a eu une erreur en l’ajoutant à $2 : $3",
 	"create-page-header--label": "Créer une nouvelle copie",
@@ -25,9 +29,9 @@
 	"dataloader-toast-success--title": "Données chargées",
 	"diff-content--loading": "Chargement du contenu de la page…",
 	"diff-content--loading-error": "Erreur au chargement du contenu…",
-	"diff-content--login-error": "Veuillez vous connecter dans le coin haut droit avant de copier.",
+	"diff-content--login-error": "Veuillez vous connecter dans le coin supérieur à droite avant de copier.",
 	"diff-deps-button--caption": "Afficher la dépendance",
-	"diff-deps-button-new--caption": "Créer la dépendance",
+	"diff-deps-button-new--caption": "Créer une dépendence",
 	"diff-deps-header--status": "État de la dépendance",
 	"diff-deps-header--title": "Titre de la dépendance",
 	"diff-deps-none--label": "Cette page ne dépend d’aucun autre module ou modèle",
@@ -58,7 +62,7 @@
 	"diff-summary-text--localized": "Localiser $1 pour utiliser le modèle et les noms de module de ce wiki. ([[mw:Special:MyLanguage/WP:TNT|docs]])",
 	"diff-summary-text--new": "Créer une copie localisée de $1. ([[mw:Special:MyLanguage/WP:TNT|docs]])",
 	"diff-summary-text--reset": "Réinitialiser la page avec le contenu actuel de $1. ([[mw:Special:MyLanguage/WP:TNT|docs]])",
-	"diff-update": "Mettre à jour !",
+	"diff-update": "Mettre à jour !",
 	"filters-groupby--deps-status": "par dépendance",
 	"filters-groupby--hash": "par hachage",
 	"filters-groupby--lang": "par langue",
@@ -108,5 +112,16 @@
 	"table-cell-hash--tooltip": "Ce numéro de hachage représente une empreinte unique du contenu de la page actuelle. Les pages avec un même hachage ont un contenu identique. Le hachage est calculé avant que la page soit localisée pour ce wiki.",
 	"table-cell-outdated--tooltip": "{{PLURAL:$1|Une page se trouve derrière la primaire et peut être synchronisée|$1 pages sont derrière la primaire et peuvent être synchronisées}} automatiquement.",
 	"table-cell-primary--tooltip": "Afficher le primaire $1 dans un nouvel onglet.",
-	"table-cell-status--diverged-label": "Divergent"
+	"table-cell-status--diverged-label": "Divergent",
+	"table-cell-status--diverged-tooltip": "La page cible a été modifiée et n’a pas pu être mise à jour automatiquement.",
+	"table-cell-status--ok--tooltip": "La page cible est à jour avec la page primaire",
+	"table-cell-status--ok-label": "OK",
+	"table-cell-status--outdated-label": "Obsolète de {{PLURAL:$1|1 modification|$1 modifications}}",
+	"table-cell-status--outdated-link": "Afficher ce qui a changé dans {{PLURAL:$1|la dernière modification|les $1 dernières modifications}} du primaire $2 dans un nouvel onglet.",
+	"table-cell-status--outdated-tooltip": "La page cible a {{PLURAL:$1|une modification|$1 modifications}} de retard et peut être mise à jour. Cliquez pour voir les changements.",
+	"table-cell-status--unlocalized-label": "Non localisé",
+	"table-header-deps--label": "Dépendances",
+	"table-header-deps--tooltip": "L’indicateur des dépendances indique s’il y a un problème avec les pages utilisées par cette page.",
+	"table-icons-protection--rights": "Permissions nécessaires pour modifier",
+	"updatepage-status-error": "Erreur pendant la publication de $1 : $2"
 }
