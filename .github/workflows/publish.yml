@@ -37,4 +37,4 @@ jobs:
           host: "tools-dev.wmflabs.org"
           username: ${{ secrets.TOOLFORGE_USER }}
           key: ${{ secrets.TOOLFORGE_KEY }}
-          script: become dibabel bash -c 'take www/static'
+          script: become dibabel bash -c 'take www/static && cd www && git fetch origin && git reset --hard origin/master && webservice python3.7 restart'
