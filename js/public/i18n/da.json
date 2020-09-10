@@ -8,6 +8,7 @@
 	"create-page-content--label": "Indhold",
 	"create-page-success--title": "$1 blev oprettet",
 	"create-page-target--placeholder": "Titel",
+	"filters-groupby--deps-status": "efter afhængighed",
 	"filters-groupby--lang": "efter sprog",
 	"filters-groupby--placeholder": "Grupper efter...",
 	"filters-groupby--project": "efter projekt",

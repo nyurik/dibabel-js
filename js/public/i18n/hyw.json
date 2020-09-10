@@ -4,6 +4,9 @@
 			"Շահէն"
 		]
 	},
+	"create-page-cancel--label": "Չեղարկել",
 	"create-page-content--label": "Բովանդակութիւն",
-	"create-page-create--label": "Ստեղծէ՛"
+	"create-page-create--label": "Ստեղծէ՛",
+	"create-page-target--placeholder": "Վերնագիր",
+	"diff-summary-text--empty-summary": "(ամփոփում չկայ)"
 }

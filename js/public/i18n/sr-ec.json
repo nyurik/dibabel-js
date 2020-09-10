@@ -4,5 +4,7 @@
 			"BadDog"
 		]
 	},
+	"create-page-target--placeholder": "Наслов",
+	"diff-summary-text--empty-summary": "(без описа измене)",
 	"language--tooltip": "Кликните да бисте променили језик приказа"
 }

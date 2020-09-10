@@ -16,6 +16,8 @@
 	"dataloader-toast-success--title": "加载数据",
 	"diff-summary--placeholder": "编辑摘要",
 	"diff-summary-text--edit": "正由$2从$4复制{{PLURAL:$1|一次更改|$1次更改}}: \"$3\"。（[[mw:WP:TNT|文档]]、[[c:Data:I18n/DiBabel.tab|翻译]]）",
+	"diff-summary-text--localized": "正在本地化$1以使用此wiki的模板和模块名称。（[[mw:WP:TNT|文档]]、[[c:Data:I18n/DiBabel.tab|翻译]]）",
+	"diff-summary-text--reset": "正在重置页面至$1的当前内容。（[[mw:WP:TNT|文档]]、[[c:Data:I18n/DiBabel.tab|翻译]]）",
 	"filters-lang": "语言",
 	"filters-protection": "保护",
 	"filters-status-ok": "好",
