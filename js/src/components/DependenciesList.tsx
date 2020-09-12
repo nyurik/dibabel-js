@@ -10,7 +10,7 @@ import { ExternalLink } from './Snippets';
 import { EuiBasicTableColumn, EuiButtonEmpty, EuiCallOut, EuiHealth, EuiInMemoryTable, EuiSpacer, } from '@elastic/eui';
 import { AddNew } from './AddNew';
 
-type DepItem = { title: string, href: string, color: string, status: string, sort: string, clone?: Item | AddNewClone };
+type DepItem = { key: string, title: string, href: string, color: string, status: string, sort: string, clone?: Item | AddNewClone };
 
 export const DependenciesList: FunctionComponent<{ item: Item, links?: boolean }> = ({ item, links }) => {
   const { i18n } = useContext(I18nContext);
@@ -24,6 +24,7 @@ export const DependenciesList: FunctionComponent<{ item: Item, links?: boolean }
 
   const result = [];
   let depItems: DepItem[] = [];
+  let rowIndex = 0;
 
   if (item.sortDepsStatus > 0) {
     result.push(
@@ -37,6 +38,7 @@ export const DependenciesList: FunctionComponent<{ item: Item, links?: boolean }
 
   item.srvPage.allPrimaryDependencies.forEach((value) => {
     depItems.push({
+      key: (rowIndex++).toString(),
       title: value.primaryTitle,
       href: value.type === 'no_wd' ? wikiUrl(value.primarySite, value.primaryTitle) : '',
       status: value.type === 'no_wd' ? i18n('diff-deps-status--no-wd') : i18n('diff-deps-status--missing', value.primarySite),
@@ -49,6 +51,7 @@ export const DependenciesList: FunctionComponent<{ item: Item, links?: boolean }
     const copy = value.copiesLookup.get(item.wiki);
     if (!copy) {
       depItems.push({
+        key: (rowIndex++).toString(),
         title: value.primaryTitle,
         href: wikiUrl(value.primarySite, value.primaryTitle),
         status: i18n('diff-deps-status--no-copy', item.wiki),
@@ -62,6 +65,7 @@ export const DependenciesList: FunctionComponent<{ item: Item, links?: boolean }
       });
     } else if (!isSyncCopy(copy)) {
       depItems.push({
+        key: (rowIndex++).toString(),
         title: copy.title,
         href: wikiUrl(copy.domain, copy.title),
         status: i18n(value.type === 'manual_sync' ? 'diff-deps-status--manual-sync' : 'diff-deps-status--no-sync'),
@@ -70,6 +74,7 @@ export const DependenciesList: FunctionComponent<{ item: Item, links?: boolean }
       });
     } else {
       depItems.push({
+        key: (rowIndex++).toString(),
         title: copy.title,
         href: wikiUrl(copy.domain, copy.title),
         status: i18n(`table-cell-status--${copy.status}-label`, copy.behind),
@@ -129,7 +134,7 @@ export const DependenciesList: FunctionComponent<{ item: Item, links?: boolean }
   result.push(<EuiInMemoryTable
     items={depItems}
     columns={columns}
-    itemId={'href'}
+    itemId={'key'}
     sorting={true}
     pagination={false}
   />);
