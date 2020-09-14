@@ -1,0 +1,27 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hakim1bal"
+		]
+	},
+	"create-page--button": "ⵔⵏⵓ ⴰⵎⴰⵢⵏⵓ...",
+	"create-page-cancel--label": "ⵙⵔ",
+	"create-page-content--label": "ⵜⵓⵎⴰⵢⵜ",
+	"create-page-create--label": "ⵙⵏⴼⵍⵓⵍ!",
+	"create-page-success--title": "ⵜⴻⵜⵜⵓⵙⵏⴼⵍ $1",
+	"create-page-target--placeholder": "ⴰⵣⵡⵍ",
+	"diff-update": "ⵙⴷⵖⵉ!",
+	"filters-groupby--project": "ⵙ ⵓⵙⵏⵜⵉ",
+	"filters-groupby--site": "ⵙ ⵓⵡⵉⴽⵉ",
+	"filters-groupby--title": "ⵙ ⵓⵣⵡⵍ",
+	"filters-lang": "ⵜⵓⵜⵍⴰⵢⵜ",
+	"filters-project": "ⴰⵙⵏⵜⵉ",
+	"filters-protection": "ⴰⵔⴰⵢ",
+	"filters-searchbar--placeholder": "ⴰⵎⴷⵢⴰ:   zgh.wikipedia    TNT    lang=zgh",
+	"filters-status": "ⴰⴷⴷⴰⴷ",
+	"filters-status-ok": "ⵡⴰⵅⵅⴰ",
+	"table-header-site--label": "ⴰⵙⵉⵜ ⵏ ⵓⵡⵉⴽⵉ",
+	"updatepage-confirm--description-part2": "ⵉⵙ ⵏⵉⵜ ⵜⵅⵙⴷ ⴰⴷ ⵜⴳⴷ ⴰⵢⴰ?",
+	"updatepage-confirm--tooltip": "ⴰⵙⴷⵖⵉ ⵜⴰⵙⵏⴰ ⵏ ⵓⵡⵉⴽⵉ",
+	"updatepage-confirm--yes": "ⵢⴰⵀ, ⴳ ⵜⵜ!"
+}

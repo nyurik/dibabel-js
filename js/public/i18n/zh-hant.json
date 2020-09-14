@@ -5,6 +5,11 @@
 			"Yurik"
 		]
 	},
+	"create-page-cancel--label": "取消",
+	"create-page-content--label": "內容",
+	"create-page-create--label": "建立！",
+	"create-page-target--placeholder": "標題",
+	"create-page-wiki--label": "目標 wiki",
 	"diff-content--loading": "載入頁面內容中…",
 	"diff-content--loading-error": "載入內容出錯…",
 	"diff-content--login-error": "複製前請在右上角登入。",

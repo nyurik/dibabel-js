@@ -4,11 +4,15 @@
 			"Robby"
 		]
 	},
+	"create-page-content--label": "Inhalt",
+	"create-page-target--placeholder": "Titel",
+	"dataloader-toast-success--pages": "{{PLURAL:$1|en Säit|$1 Säiten}}",
 	"diff-content--loading": "Säiten-Inhalt gëtt gelueden...",
 	"diff-content--loading-error": "Feeler beim Luede vum Inhalt...",
 	"diff-summary--label": "Resumé",
 	"diff-summary--placeholder": "Resumé vun der Ännerung",
 	"diff-summary--tooltip": "Hëlleft de Resumé vu Messagen z'iwwersetzen.",
+	"diff-summary-text--empty-summary": "(kee Resumé)",
 	"diff-update": "Aktualiséieren!",
 	"filters-groupby--lang": "no Sprooch",
 	"filters-groupby--placeholder": "Gruppéiert no...",

@@ -158,7 +158,7 @@
 	"updatepage-confirm--description-part2": "Êtes-vous sûr de vouloir faire cela ?",
 	"updatepage-confirm--no": "Non, ramenez-moi en arrière",
 	"updatepage-confirm--tooltip": "Mise à jour de la page du wiki",
-	"updatepage-confirm--yes": "Oui, fais-le !",
+	"updatepage-confirm--yes": "Oui, faites-le !",
 	"updatepage-status": "$1 a été mis à jour",
 	"updatepage-status-error": "Erreur pendant la publication de $1 : $2",
 	"user-login": "Connexion"
