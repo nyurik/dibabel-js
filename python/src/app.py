@@ -13,9 +13,9 @@ from flask import redirect, request
 from pywikiapi import ApiError
 from requests_oauthlib import OAuth1
 
-from .dibabel.Controller import Controller
-from .dibabel.DataTypes import Domain
-from .dibabel.SessionState import SessionState
+from dibabel.Controller import Controller
+from dibabel.DataTypes import Domain
+from dibabel.SessionState import create_session
 
 is_shutting_down = False
 default_signal_handlers = {}
@@ -37,6 +37,28 @@ for sig in [signal.SIGINT, signal.SIGTERM]:
         default_signal_handlers[sig] = handler
     signal.signal(sig, handle_stop_signal)
 
+site_data_file = Path(__file__).parent / '..' / '..' / 'static' / 'sitedata.json'
+print(f"Loading site data from {site_data_file}")
+allowed_domain = set((v["url"].replace("https://", "") for v in json.loads(site_data_file.read_text())["sites"]))
+
+
+def refresher():
+    if not is_shutting_down:
+        print(f'Refreshing state at {datetime.utcnow()}...')
+        with create_session(user_requested=False) as state:
+            Controller(state).refresh_state()
+        print(f'Done refreshing state at {datetime.utcnow()}...')
+
+
+# Refresh state during startup, before serving any requests
+refresher()
+
+# Make sure we have the latest data by occasionally refreshing it
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=refresher, trigger="interval", seconds=300)
+scheduler.start()
+atexit.register(lambda: scheduler.shutdown())
+
 app = Flask(__name__)
 
 for file in ('default.yaml', 'secret.yaml'):
@@ -46,26 +68,6 @@ for file in ('default.yaml', 'secret.yaml'):
         app.config.update(yaml.safe_load(stream))
 
 print(f"Running as {app.config['CONSUMER_KEY']}")
-cache_file = Path('../cache/cache.sqlite')
-
-site_data_file = Path('../../js/public/sitedata.json')
-print(f"Loading site data from {site_data_file}")
-allowed_domain = set((v["url"].replace("https://", "") for v in json.loads(site_data_file.read_text())["sites"]))
-
-
-def refresher():
-    if not is_shutting_down:
-        print(f'Refreshing state at {datetime.utcnow()}...')
-        with SessionState(cache_file, user_requested=False) as state:
-            Controller(state).refresh_state()
-        print(f'Done refreshing state at {datetime.utcnow()}...')
-
-
-# Make sure we have the latest data by occasionally refreshing it
-scheduler = BackgroundScheduler()
-scheduler.add_job(func=refresher, trigger="interval", seconds=300)
-scheduler.start()
-atexit.register(lambda: scheduler.shutdown())
 
 
 def _create_consumer_token():
@@ -82,7 +84,7 @@ def after_request(response):
 def get_data():
     _validate_not_stopping()
     print(f"++++ /data")
-    with SessionState(cache_file, user_requested=True) as state:
+    with create_session(user_requested=True) as state:
         return jsonify(Controller(state).get_data())
 
 
@@ -91,7 +93,7 @@ def get_page(qid: str, domain: str):
     _validate_not_stopping()
     print(f"++++ /page/{qid}/{domain}")
     _validate_domain(domain)
-    with SessionState(cache_file, user_requested=True) as state:
+    with create_session(user_requested=True) as state:
         return jsonify(Controller(state).get_page(qid, domain))
 
 
@@ -138,7 +140,7 @@ def call_api(domain: str):
                   resource_owner_key=access_token.key,
                   resource_owner_secret=access_token.secret)
 
-    with SessionState(cache_file, user_requested=True) as state:
+    with create_session(user_requested=True) as state:
         site = state.get_site(domain)
         params = request.get_json()
         action = params.pop('action')

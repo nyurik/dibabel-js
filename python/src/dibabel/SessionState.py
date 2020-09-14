@@ -1,7 +1,10 @@
 import random
 from datetime import datetime
 from pathlib import Path
+from pickle import loads, dumps
+from typing import Any, Optional
 
+from redis import Redis
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from requests.sessions import Session
@@ -13,14 +16,34 @@ from .WikiSite import WikiSite
 from .utils import primary_domain
 
 
+def create_session(user_requested: bool, redis="tools-redis.svc.eqiad.wmflabs"):
+    # Path to the cache file
+    cache_file = Path('../cache/cache.sqlite')
+    # This should be changed every time database schema is changed
+    db_version = "eO14i1AM"
+
+    return SessionState(cache_file, db_version, redis, user_requested=user_requested)
+
+
 class SessionState:
-    def __init__(self, cache_file: Path, user_requested=False):
+    def __init__(self, cache_file: Path, cache_key: str, redis: str, user_requested=False):
         self.user_requested = user_requested
+        self._cache_file = cache_file
+        self._cache_key = cache_key
+        self._cache: Optional[SqliteDict] = None
         random.seed()
-        self.key = random.randint(0, 999999)
-        print(f'Opening SQL connection for {self.key} at {datetime.utcnow()}')
-        cache_file.parent.mkdir(parents=True, exist_ok=True)
-        self.cache = SqliteDict(cache_file, autocommit=True)
+        self._session_key = random.randint(0, 999999)
+        self._redis = Redis(host=redis)
+
+        if not user_requested:
+            self._open()
+            if self._cache_key != self._cache.get("_cache_key_", None):
+                self._cache.close()
+                self._cache: Optional[SqliteDict] = None
+                self._cache_file.unlink()
+                self._open()
+                self._cache["_cache_key_"] = self._cache_key
+
         self.session = Session()
         # noinspection PyTypeChecker
         self.session.mount(
@@ -34,9 +57,17 @@ class SessionState:
         return self
 
     def __exit__(self, typ, value, traceback):
-        self.cache.close()
         self.session.close()
-        print(f'Closed SQL connection for {self.key} at {datetime.utcnow()}')
+        if self._cache is not None:
+            self._cache.close()
+            self._cache = None
+            print(f'Closed SQL connection for {self._session_key} at {datetime.utcnow()}')
+
+    def _open(self):
+        if self._cache is None:
+            print(f'Opening SQL connection for {self._session_key} at {datetime.utcnow()}')
+            self._cache_file.parent.mkdir(parents=True, exist_ok=True)
+            self._cache = SqliteDict(self._cache_file, autocommit=True)
 
     def get_site(self, domain: Domain) -> WikiSite:
         try:
@@ -50,11 +81,31 @@ class SessionState:
             return site
 
     def delete_cached_items(self, prefix: str) -> None:
-        for vv in {v for v in self.cache.keys() if v.startswith(prefix)}:
-            del self.cache[vv]
+        self._open()
+        for vv in {v for v in self._cache.keys() if v.startswith(prefix)}:
+            del self._cache[vv]
 
-    def get_cache_ts(self, key: str) -> datetime:
-        return self.cache.get(f'{key}:ts')
+    def del_obj(self, key: str) -> Any:
+        self._redis.delete(self.redis_key(key))
+        self._open()
+        print(f"%% del {key}")
+        return self._cache.pop(key, None)
 
-    def update_cache_ts(self, key: str) -> None:
-        self.cache[f'{key}:ts'] = datetime.utcnow()
+    def load_obj(self, key: str, default: Any = None) -> Any:
+        value = self._redis.get(self.redis_key(key))
+        if value is not None:
+            return loads(value)
+        self._open()
+        print(f"%% load {key}")
+        value = self._cache.get(key, default)
+        self._redis.set(self.redis_key(key), dumps(value))
+        return value
+
+    def save_obj(self, key: str, value: Any):
+        self._open()
+        print(f"%% save {key}")
+        self._cache[key] = value
+        self._redis.set(self.redis_key(key), dumps(value))
+
+    def redis_key(self, key: str):
+        return self._cache_key + key

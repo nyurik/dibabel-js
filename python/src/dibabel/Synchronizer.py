@@ -26,7 +26,7 @@ class Synchronizer:
         try:
             return self._infos[qid]
         except KeyError:
-            self._infos[qid] = self._state.cache.get(f'{self._cache_prefix}{qid}', {})
+            self._infos[qid] = self._state.load_obj(f'{self._cache_prefix}{qid}', {})
             return self._infos[qid]
 
     def update_syncinfo(self, qid: QID = None, domain: Domain = None) -> Optional[Tuple[PageContent, SyncInfo]]:
@@ -89,9 +89,7 @@ class Synchronizer:
 
     def get_syncinfo(self, single_qid: Optional[str] = None) -> Dict[str, any]:
         if single_qid is None:
-            qids = set((v[len(self._cache_prefix):]
-                        for v in self._state.cache.keys()
-                        if v.startswith(self._cache_prefix)))
+            qids = set(self._primaries.get_all_qids())
         else:
             qids = {single_qid}
 
@@ -149,7 +147,7 @@ class Synchronizer:
         cached_pages = {}
         unresolved: Set[str] = set()
         for title in titles:
-            page = self._state.cache.get(title_to_url(site.domain, title))
+            page = self._state.load_obj(title_to_url(site.domain, title))
             if page:
                 cached_pages[title] = page
             else:
@@ -161,10 +159,10 @@ class Synchronizer:
                     cache_title = title_to_url(site.domain, title)
                     page = cached_pages.pop(title)
                     if revid == 0:
-                        del self._state.cache[cache_title]
+                        self._state.del_obj(cache_title)
                         yield title, None
                     elif revid != page.revid:
-                        del self._state.cache[cache_title]
+                        self._state.del_obj(cache_title)
                         unresolved.add(title)
                     else:
                         yield page.title, page
@@ -177,9 +175,9 @@ class Synchronizer:
             for title, page in site.query_pages_content(unresolved):
                 cache_title = title_to_url(site.domain, title)
                 if page is None:
-                    self._state.cache.pop(cache_title, None)  # ok if doesn't exist
+                    self._state.del_obj(cache_title)  # ok if doesn't exist
                 else:
-                    self._state.cache[cache_title] = page
+                    self._state.save_obj(cache_title, page)
                 yield title, page
 
     @staticmethod
@@ -202,5 +200,5 @@ class Synchronizer:
 
     def _save_updated_infos(self) -> None:
         for qid in self._modified_qids:
-            self._state.cache[f'{self._cache_prefix}{qid}'] = self._infos[qid]
+            self._state.save_obj(f'{self._cache_prefix}{qid}', self._infos[qid])
         self._modified_qids.clear()

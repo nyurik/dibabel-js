@@ -18,7 +18,7 @@ class Sitelinks:
         self._state = state
         self._warnings = warnings
         self._ttl = timedelta(hours=1)
-        self._sitelinks = state.cache.get(self._cache_key) or {}
+        self._sitelinks = state.load_obj(self._cache_key) or {}
 
     def __getitem__(self, title: Title) -> TitleSitelinks:
         return self._sitelinks[title]
@@ -69,8 +69,7 @@ class Sitelinks:
         for row in qid_copies:
             self._sitelinks[qid_primary[row.qid]].domain_to_title[row.domain] = row.title
 
-        self._state.cache[self._cache_key] = self._sitelinks
-        self._state.update_cache_ts(self._cache_key)
+        self._state.save_obj(self._cache_key, self._sitelinks)
 
     def _query_wikidata(self, titles: Iterable[Title]):
         values = "\n".join((f'<{title_to_url(primary_domain, v)}>' for v in titles))

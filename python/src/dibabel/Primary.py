@@ -137,10 +137,10 @@ class Primary:
 
     def load_history(self, state: SessionState, metadata: SiteMetadata) -> None:
         if not self.history:
-            self.set_history(state.cache.get(f"{self._cache_prefix}{self.title}") or [], metadata)
+            self.set_history(state.load_obj(f"{self._cache_prefix}{self.title}") or [], metadata)
 
     def save_history(self, state: SessionState) -> None:
-        state.cache[f"{self._cache_prefix}{self.title}"] = self.history
+        state.save_obj(f"{self._cache_prefix}{self.title}", self.history)
 
     def compute_sync_info(self, qid: QID, page: PageContent, metadata: SiteMetadata,
                           title_sitelinks: Sitelinks) -> SyncInfo:

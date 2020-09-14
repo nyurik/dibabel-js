@@ -19,8 +19,11 @@ class PrimaryPages:
         self._sitelinks = sitelinks
         self._warnings: List[WdWarning] = warnings
 
-        self._primary_pages_by_qid: Dict[QID, Primary] = state.cache.get(self._cache_key) or {}
-        if is_older_than(state.get_cache_ts(self._cache_key), self._ttl):
+        ts, val = state.load_obj(self._cache_key, (None, None))
+        self._primary_pages_by_qid_ts: datetime = ts
+        self._primary_pages_by_qid: Dict[QID, Primary] = val or {}
+
+        if is_older_than(self._primary_pages_by_qid_ts, self._ttl):
             new_primaries = self._query_primaries()
             # Remove primary pages that are no longer listed as multi-copiable in WD
             for old_key in set(self._primary_pages_by_qid.keys()).difference(new_primaries.keys()):
@@ -31,19 +34,25 @@ class PrimaryPages:
                     primary = Primary(qid, sl.title)
                     primary.load_history(state, self._metadata[primary_domain])
                     self._primary_pages_by_qid[qid] = primary
-            self._state.cache[self._cache_key] = self._primary_pages_by_qid
-            self._state.update_cache_ts(self._cache_key)
+            self._save()
 
         # Update reverse lookup by title
         self._primary_pages_by_title: Dict[Title, Primary] = {
             v.title: v for v in self._primary_pages_by_qid.values()
         }
 
+    def _save(self):
+        self._primary_pages_by_qid_ts = datetime.utcnow()
+        self._state.save_obj(self._cache_key, (self._primary_pages_by_qid_ts, self._primary_pages_by_qid))
+
     def get_page(self, qid: QID, load_history=False) -> Primary:
         page = self._primary_pages_by_qid[qid]
         if load_history:
             page.load_history(self._state, self._metadata[primary_domain])
         return page
+
+    def get_all_qids(self) -> Iterable[QID]:
+        return self._primary_pages_by_qid.keys()
 
     def get_all(self) -> Iterable[Tuple[QID, Primary]]:
         return self._primary_pages_by_qid.items()
@@ -99,4 +108,4 @@ SELECT ?id ?sl WHERE {
         if titles:
             self._sitelinks.refresh(titles)
 
-        self._state.cache[self._cache_key] = self._primary_pages_by_qid
+        self._save()
