@@ -1,9 +1,9 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from typing import Iterable, Dict, List
 
 from .DataTypes import TitleSitelinks, WdWarning, Title
 from .SessionState import SessionState
-from .utils import batches, title_to_url, parse_wd_sitelink, is_older_than, parse_qid, primary_domain
+from .utils import batches, title_to_url, parse_wd_sitelink, parse_qid, primary_domain
 
 
 class Sitelinks:

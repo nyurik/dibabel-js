@@ -1,8 +1,8 @@
 import re
 from datetime import datetime
 from sys import intern
-from typing import Iterable, Optional, Callable
 from typing import List
+from typing import Optional, Callable
 from typing import Set
 
 from .DataTypes import RevComment, SyncInfo, QID, Title, Domain, RevID

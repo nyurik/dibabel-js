@@ -1,11 +1,11 @@
 import json
 from pathlib import Path
 
-from python.src.dibabel.Controller import Controller
-from python.src.dibabel.Primary import Primary
-from python.src.dibabel.PrimaryPages import PrimaryPages
-from python.src.dibabel.SessionState import SessionState
-from python.src.dibabel.Synchronizer import Synchronizer
+from .dibabel.Controller import Controller
+from .dibabel.Primary import Primary
+from .dibabel.PrimaryPages import PrimaryPages
+from .dibabel.SessionState import SessionState
+from .dibabel.Synchronizer import Synchronizer
 
 cache_file = Path('../cache/cache.sqlite')
 

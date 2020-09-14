@@ -1,7 +1,7 @@
 from sys import intern
 from typing import Tuple, Union, Optional, List
 
-from python.src.dibabel.DataTypes import Domain, Title, RevID
+from .DataTypes import Domain, Title, RevID
 
 
 class PageContent:

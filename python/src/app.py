@@ -8,14 +8,14 @@ import atexit
 import mwoauth
 import yaml
 from apscheduler.schedulers.background import BackgroundScheduler
-from dibabel.Controller import Controller
-from dibabel.SessionState import SessionState
 from flask import Flask, jsonify, session, flash, abort, Response
 from flask import redirect, request
 from pywikiapi import ApiError
 from requests_oauthlib import OAuth1
 
-from python.src.dibabel.DataTypes import Domain
+from .dibabel.Controller import Controller
+from .dibabel.DataTypes import Domain
+from .dibabel.SessionState import SessionState
 
 is_shutting_down = False
 default_signal_handlers = {}

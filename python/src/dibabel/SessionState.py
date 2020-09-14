@@ -7,10 +7,10 @@ from requests.packages.urllib3.util.retry import Retry
 from requests.sessions import Session
 from sqlitedict import SqliteDict
 
-from python.src.dibabel.DataTypes import Domain
-from python.src.dibabel.Sparql import Sparql
-from python.src.dibabel.WikiSite import WikiSite
-from python.src.dibabel.utils import primary_domain
+from .DataTypes import Domain
+from .Sparql import Sparql
+from .WikiSite import WikiSite
+from .utils import primary_domain
 
 
 class SessionState:
