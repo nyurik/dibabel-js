@@ -7,6 +7,7 @@ class Sparql:
         self.rdf_url = rdf_url
 
     def query(self, sparql):
+        print(f"Querying WDQS:  {sparql}")
         headers = {
             'Accept': 'application/sparql-results+json',
             'User-Agent': 'Dibabel Bot (User:Yurik, YuriAstrakhan@gmail.com)'

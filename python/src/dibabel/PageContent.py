@@ -1,10 +1,11 @@
-from datetime import datetime
 from sys import intern
 from typing import Tuple, Union, Optional, List
 
+from python.src.dibabel.DataTypes import Domain, Title, RevID
+
 
 class PageContent:
-    def __init__(self, domain: str, title: str, revid: int, content: str, content_ts: str,
+    def __init__(self, domain: Domain, title: Title, revid: RevID, content: str, content_ts: str,
                  protection: Optional[List[str]]):
         self.domain = domain
         self.title = title

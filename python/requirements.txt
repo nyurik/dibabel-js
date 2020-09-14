@@ -6,5 +6,5 @@ mwoauth>=0.3.7
 pywikiapi>=4.3.0
 pyyaml>=5.3.1
 requests>=2.24.0
-sqlitedict>=1.6.0
+sqlitedict>=1.7.0
 toolforge>=4.3.2

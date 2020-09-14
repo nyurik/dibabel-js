@@ -1,16 +1,41 @@
 import json
+import signal
 from datetime import datetime
 from pathlib import Path
+from time import sleep
+
 import atexit
 import mwoauth
 import yaml
-
 from apscheduler.schedulers.background import BackgroundScheduler
-from dibabel.QueryCache import QueryCache
+from dibabel.Controller import Controller
+from dibabel.SessionState import SessionState
 from flask import Flask, jsonify, session, flash, abort, Response
 from flask import redirect, request
 from pywikiapi import ApiError
 from requests_oauthlib import OAuth1
+
+from python.src.dibabel.DataTypes import Domain
+
+is_shutting_down = False
+default_signal_handlers = {}
+
+
+def handle_stop_signal(sig_num, stack_frame):
+    global is_shutting_down
+    is_shutting_down = True
+    print(f"Shutting down dibabel with ({sig_num}) ...")
+    if sig_num in default_signal_handlers:
+        sleep(5)
+        print("Calling default handler...")
+        return default_signal_handlers[sig_num](sig_num, stack_frame)
+
+
+for sig in [signal.SIGINT, signal.SIGTERM]:
+    handler = signal.getsignal(sig)
+    if callable(handler):
+        default_signal_handlers[sig] = handler
+    signal.signal(sig, handle_stop_signal)
 
 app = Flask(__name__)
 
@@ -21,29 +46,19 @@ for file in ('default.yaml', 'secret.yaml'):
         app.config.update(yaml.safe_load(stream))
 
 print(f"Running as {app.config['CONSUMER_KEY']}")
-cache = QueryCache('../cache')
+cache_file = Path('../cache/cache.sqlite')
 
-
-class Counter:
-
-    def __init__(self) -> None:
-        self._count = 0
-
-    @property
-    def next(self):
-        self._count += 1
-        return self._count
-
-
-counter = Counter()
-refresh_counter = Counter()
+site_data_file = Path('../../js/public/sitedata.json')
+print(f"Loading site data from {site_data_file}")
+allowed_domain = set((v["url"].replace("https://", "") for v in json.loads(site_data_file.read_text())["sites"]))
 
 
 def refresher():
-    print(f'Refreshing state at {datetime.utcnow()}...#{refresh_counter.next}')
-    with cache.create_session(user_requested=False) as state:
-        cache.refresh_state(state)
-    print(f'Done refreshing state at {datetime.utcnow()}...')
+    if not is_shutting_down:
+        print(f'Refreshing state at {datetime.utcnow()}...')
+        with SessionState(cache_file, user_requested=False) as state:
+            Controller(state).refresh_state()
+        print(f'Done refreshing state at {datetime.utcnow()}...')
 
 
 # Make sure we have the latest data by occasionally refreshing it
@@ -53,7 +68,7 @@ scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
 
 
-def create_consumer_token():
+def _create_consumer_token():
     return mwoauth.ConsumerToken(app.config["CONSUMER_KEY"], app.config["CONSUMER_SECRET"])
 
 
@@ -65,23 +80,27 @@ def after_request(response):
 
 @app.route("/data")
 def get_data():
-    print(f"++++ /data - #{counter.next}")
-    with cache.create_session(user_requested=True) as state:
-        return jsonify(cache.get_data(state))
+    _validate_not_stopping()
+    print(f"++++ /data")
+    with SessionState(cache_file, user_requested=True) as state:
+        return jsonify(Controller(state).get_data())
 
 
 @app.route("/page/<qid>/<domain>")
 def get_page(qid: str, domain: str):
-    print(f"++++ /page/{qid}/{domain} - #{counter.next}")
-    with cache.create_session(user_requested=True) as state:
-        return jsonify(cache.get_page(state, qid, domain))
+    _validate_not_stopping()
+    print(f"++++ /page/{qid}/{domain}")
+    _validate_domain(domain)
+    with SessionState(cache_file, user_requested=True) as state:
+        return jsonify(Controller(state).get_page(qid, domain))
 
 
 @app.route('/login')
 def login():
-    print(f"++++ /login - #{counter.next}")
+    _validate_not_stopping()
+    print(f"++++ /login")
     try:
-        redirect_url, request_token = mwoauth.initiate(app.config["OAUTH_MWURI"], create_consumer_token())
+        redirect_url, request_token = mwoauth.initiate(app.config["OAUTH_MWURI"], _create_consumer_token())
     except:
         app.logger.exception('mwoauth.initiate failed')
         return redirect('/')
@@ -92,12 +111,13 @@ def login():
 
 @app.route('/userinfo')
 def userinfo():
-    print(f"++++ /userinfo - #{counter.next}")
+    _validate_not_stopping()
+    print(f"++++ /userinfo")
     try:
         access_token = mwoauth.AccessToken(**session['access_token'])
     except KeyError:
         return abort(Response('Not authenticated', 403))
-    identity = mwoauth.identify(app.config["OAUTH_MWURI"], create_consumer_token(), access_token)
+    identity = mwoauth.identify(app.config["OAUTH_MWURI"], _create_consumer_token(), access_token)
     # TODO: remove this -- needed to track any changes being done while testing
     print(f"******************** {identity['username']}")
     return jsonify(identity)
@@ -105,19 +125,20 @@ def userinfo():
 
 @app.route('/api/<domain>', methods=['POST'])
 def call_api(domain: str):
-    print(f"++++ /api/{domain} - #{counter.next}")
-    if domain not in cache.sites_metadata:
-        return abort(Response('Unrecognized domain', 400))
+    _validate_not_stopping()
+    print(f"++++ /api/{domain}")
+    _validate_domain(domain)
     try:
         access_token = mwoauth.AccessToken(**session['access_token'])
     except KeyError:
         return abort(Response('Not authenticated', 403))
-    consumer_token = create_consumer_token()
+    consumer_token = _create_consumer_token()
     auth = OAuth1(consumer_token.key,
                   client_secret=consumer_token.secret,
                   resource_owner_key=access_token.key,
                   resource_owner_secret=access_token.secret)
-    with cache.create_session(user_requested=True) as state:
+
+    with SessionState(cache_file, user_requested=True) as state:
         site = state.get_site(domain)
         params = request.get_json()
         action = params.pop('action')
@@ -146,27 +167,14 @@ def call_api(domain: str):
         return jsonify(result)
 
 
-def record_to_log(filename: str, domain: str, data: dict):
-    try:
-        clone = {k: v for k, v in data.items() if k != 'token'}
-        f = Path(__file__).parent / '..' / '..' / '..' / 'logs'
-        f.mkdir(exist_ok=True)
-        f = f / (filename + '.log')
-        with f.open(mode='a', encoding='utf-8') as f:
-            f.write(f"\n\nDOMAIN: {domain}\n")
-            f.write(json.dumps(clone, ensure_ascii=False, indent=2))
-    except Exception as ex:
-        print('error logging: ', ex)
-
-
 @app.route('/oauth_callback.php')
 def oauth_callback():
-    print(f"++++ /oauth_callback.php - #{counter.next}")
+    print(f"++++ /oauth_callback.php")
     if 'request_token' not in session:
         flash('OAuth callback failed, do you have your cookies disabled?')
         return redirect('/')
 
-    consumer_token = create_consumer_token()
+    consumer_token = _create_consumer_token()
     try:
         access_token = mwoauth.complete(
             app.config["OAUTH_MWURI"],
@@ -187,9 +195,32 @@ def oauth_callback():
 
 @app.route('/logout')
 def logout():
-    print(f"++++ /logout - #{counter.next}")
+    print(f"++++ /logout")
     session.clear()
     return redirect('/')
+
+
+def _validate_domain(domain: Domain):
+    if domain not in allowed_domain:
+        return abort(Response('Invalid domain', 400))
+
+
+def _validate_not_stopping():
+    if is_shutting_down:
+        return abort(Response('Shutting down', 500))
+
+
+def record_to_log(filename: str, domain: Domain, data: dict):
+    try:
+        clone = {k: v for k, v in data.items() if k != 'token'}
+        f = Path(__file__).parent / '..' / '..' / '..' / 'logs'
+        f.mkdir(exist_ok=True)
+        f = f / (filename + '.log')
+        with f.open(mode='a', encoding='utf-8') as f:
+            f.write(f"\n\nDOMAIN: {domain}\n")
+            f.write(json.dumps(clone, ensure_ascii=False, indent=2))
+    except Exception as ex:
+        print('error logging: ', ex)
 
 
 if __name__ == "__main__":

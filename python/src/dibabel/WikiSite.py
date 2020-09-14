@@ -1,5 +1,4 @@
 import re
-from datetime import datetime
 from json import dumps
 from typing import List, Iterable, Tuple
 
@@ -7,7 +6,7 @@ from pywikiapi import Site, AttrDict
 # noinspection PyUnresolvedReferences
 from requests import Session
 
-from .DataTypes import RevComment, SiteMetadata
+from .DataTypes import RevComment, SiteMetadata, Domain, Title
 from .PageContent import PageContent, TitlePagePair
 
 reDomain = re.compile(r'^(?P<lang>[a-z0-9-_]+)\.(?P<project>[a-z0-9-_]+)\.org$', re.IGNORECASE)
@@ -15,7 +14,7 @@ reDomain = re.compile(r'^(?P<lang>[a-z0-9-_]+)\.(?P<project>[a-z0-9-_]+)\.org$',
 
 class WikiSite(Site):
 
-    def __init__(self, domain: str, session: Session, is_primary: bool):
+    def __init__(self, domain: Domain, session: Session, is_primary: bool):
         super().__init__(f'https://{domain}/w/api.php', session=session, json_object_hook=AttrDict)
         self.retry_on_lag_error = 30
         self.is_primary = is_primary
@@ -42,8 +41,7 @@ class WikiSite(Site):
         flagged_revisions = \
             bool([v for v in res.extensions if 'descriptionmsg' in v and v.descriptionmsg == 'flaggedrevs-desc'])
 
-        return SiteMetadata(datetime.utcnow(),
-                            magic_words=magic_words,
+        return SiteMetadata(magic_words=magic_words,
                             magic_prefixes=magic_prefixes,
                             flagged_revisions=flagged_revisions,
                             template_ns=res.namespaces['10'].name,
@@ -80,28 +78,27 @@ class WikiSite(Site):
                 protection=list(set(protection)) or None,
             )
 
-    def load_page_history(self, title: str, history: List[RevComment], current_revid: int) -> List[RevComment]:
+    def load_page_history(self, title: Title, history: List[RevComment]) -> List[RevComment]:
+        params = dict(
+            prop='revisions',
+            rvprop=['user', 'comment', 'timestamp', 'content', 'ids'],
+            rvlimit=25,
+            rvslots='main',
+            rvdir='newer',
+            titles=title,
+        )
+        if history:
+            params['rvstart'] = history[-1].ts
+        # there could (in theory) be more than one revision at the same timestamp,
+        # ensure we don't duplicate
+        rev_ids = set((v.revid for v in history))
         result = []
-        if not history or history[-1].revid != current_revid:
-            params = dict(
-                prop='revisions',
-                rvprop=['user', 'comment', 'timestamp', 'content', 'ids'],
-                rvlimit=25,
-                rvslots='main',
-                rvdir='newer',
-                titles=title,
-            )
-            if history:
-                params['rvstart'] = history[-1].ts
-            # there could (in theory) be more than one revision at the same timestamp,
-            # ensure we don't duplicate
-            rev_ids = set((v.revid for v in history))
-            for res in self.query(**params):
-                for r in res.pages[0].revisions:
-                    if r.revid not in rev_ids:
-                        rev = RevComment(r.user, r.timestamp, r.comment.strip(),
-                                         r.slots.main.content, r.revid)
-                        result.append(rev)
+        for res in self.query(**params):
+            for r in res.pages[0].revisions:
+                if r.revid not in rev_ids:
+                    rev = RevComment(r.user, r.timestamp, r.comment.strip(),
+                                     r.slots.main.content, r.revid)
+                    result.append(rev)
         return result
 
     def __str__(self):

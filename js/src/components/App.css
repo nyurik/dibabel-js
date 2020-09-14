@@ -11,7 +11,10 @@
 }
 
 .sub-table {
-    margin: 0.3em 0 0.7em 2.5em;
+    margin-block-start: 0.3em;
+    margin-block-end: 0.7em;
+    margin-inline-start: 2.5em;
+    margin-inline-end: 0;
 }
 
 .lang-code {
@@ -29,25 +32,3 @@
 .diff-view {
     tab-size: 4;
 }
-
-/*
- * Fix spacing around the buttons with icons for the RTL languages
- * See https://github.com/elastic/eui/pull/3974
- */
-.euiButtonContent > * + * {
-    margin-left: unset;
-    -webkit-margin-start: 8px;
-    margin-inline-start: 8px; }
-
-.euiButtonContent--iconRight > * + * {
-    margin-left: unset;
-    margin-right: unset;
-    -webkit-margin-start: 0;
-    margin-inline-start: 0;
-    -webkit-margin-end: 8px;
-    margin-inline-end: 8px; }
-
-.euiFacetButton__content > * + * {
-    margin-left: unset;
-    -webkit-margin-start: 8px;
-    margin-inline-start: 8px; }

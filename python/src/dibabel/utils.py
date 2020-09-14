@@ -5,11 +5,11 @@ from datetime import datetime, timedelta
 from typing import Iterable, List, Optional, TypeVar, Callable, Dict
 from urllib.parse import unquote, quote
 
-from pywikiapi.utils import to_timestamp, to_datetime
+from pywikiapi.utils import to_timestamp
 # noinspection PyUnresolvedReferences
 from requests.packages.urllib3.util.retry import Retry
 
-from .DataTypes import Timestamp
+from .DataTypes import Timestamp, Domain, Title, QID
 from .DataTypes import WdSitelink, \
     WdWarning
 
@@ -17,6 +17,8 @@ T = TypeVar('T')
 T1 = TypeVar('T1')
 T2 = TypeVar('T2')
 T3 = TypeVar('T3')
+
+primary_domain = 'www.mediawiki.org'
 
 
 def list_to_dict_of_sets(items, key, value=None):
@@ -39,22 +41,22 @@ def batches(items: Iterable, batch_size: int):
         yield res
 
 
-def is_older_than(timestamp: Timestamp, value: timedelta) -> bool:
-    return (datetime.utcnow() - to_datetime(timestamp)) > value
+def is_older_than(timestamp: Optional[datetime], value: timedelta) -> bool:
+    return timestamp is None or (datetime.utcnow() - timestamp) > value
 
 
 def now_ts() -> Timestamp:
     return to_timestamp(datetime.utcnow())
 
 
-def title_to_url(domain: str, title: str):
+def title_to_url(domain: Domain, title: Title):
     return f'https://{domain}/wiki/' + quote(title.replace(" ", "_"), ": &=+/")
 
 
 reUrl = re.compile(r'^https://(?P<site>[a-z0-9-_.]+)/wiki/(?P<title>[^?#]+)$', re.IGNORECASE)
 
 
-def parse_wd_sitelink(qid: str, url: str, warnings: List[WdWarning] = None) -> Optional[WdSitelink]:
+def parse_wd_sitelink(qid: QID, url: str, warnings: List[WdWarning] = None) -> Optional[WdSitelink]:
     match = reUrl.match(url)
     if match:
         return WdSitelink(qid, match.group('site'), unquote(match.group('title')).replace('_', ' '))
@@ -95,3 +97,7 @@ def calc_hash(content):
     m = hashlib.sha1()
     m.update(content.encode())
     return m.hexdigest()
+
+
+def parse_qid(row):
+    return row['id']['value'][len('http://www.wikidata.org/entity/'):]
