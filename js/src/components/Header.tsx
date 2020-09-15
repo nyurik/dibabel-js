@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import {
-  EuiBetaBadge,
   EuiFlexGroup,
   EuiFlexItem,
   EuiHeaderLink,
@@ -14,26 +13,23 @@ import {
 import { Settings } from '../contexts/Settings';
 import { User } from './User';
 import { logoIcon } from '../icons/icons';
-import { I18nContext } from '../contexts/I18nContext';
 import { Message } from './Message';
+import { ResetContext } from '../contexts/ResetContext';
 
 export function Header() {
-  const { i18n } = useContext(I18nContext);
+  const { resetAll } = useContext(ResetContext);
 
   const userLink = (<EuiLink color={'text'}
                              href={'https://www.mediawiki.org/wiki/User:Yurik'} target={'_blank'}>User:Yurik</EuiLink>);
 
   return (
     <EuiPageHeader>
-      <EuiPageHeaderSection>
+      <EuiPageHeaderSection onClick={resetAll}>
         <EuiHeaderSectionItem border={'none'}>
           <EuiHeaderLogo iconType={logoIcon}>
             <EuiFlexGroup gutterSize={'none'} alignItems={'center'} responsive={false}>
               <EuiFlexItem>
-                Dibabel
-              </EuiFlexItem>
-              <EuiFlexItem>
-                <EuiBetaBadge label={i18n('header-beta--label')} title={i18n('header-beta--tooltip')}/>
+                DiBabel
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiHeaderLogo>

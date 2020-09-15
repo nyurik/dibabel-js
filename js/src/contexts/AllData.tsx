@@ -8,6 +8,7 @@ import { Item, Items, Props, SrvContentTypes } from '../services/types';
 import { StateStore } from '../services/StateStore';
 import { I18nContext } from './I18nContext';
 import { Message } from '../components/Message';
+import { ResetContext } from './ResetContext';
 
 export type DataLoadStatus = 'reset' | 'loading' | 'ready' | 'error'
 
@@ -22,11 +23,20 @@ export type AllDataContextType = {
 export const AllDataContext = React.createContext<AllDataContextType>({} as AllDataContextType);
 
 export const AllDataProvider = ({ children }: Props) => {
+  const { resetIndex } = useContext(ResetContext);
   const { i18n } = useContext(I18nContext);
   const { addToast } = useContext(ToastsContext);
-  let [status, setStatus] = useState<DataLoadStatus>('reset');
+  const [status, setStatus] = useState<DataLoadStatus>('reset');
   const reload = useCallback(() => setStatus('reset'), []);
   const dataRef = useRef<StateStore>();
+
+  useEffect(() => {
+    if (resetIndex) {
+      reload();
+    }
+    // Should only trigger when resetIndex changes. The setters are immutable.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resetIndex]);
 
   if (dataRef.current === undefined) {
     dataRef.current = new StateStore(window.location.hostname === 'localhost');

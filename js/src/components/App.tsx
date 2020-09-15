@@ -20,6 +20,7 @@ import { AllDataProvider } from '../contexts/AllData';
 import { CurrentItemProvider } from '../contexts/CurrentItem';
 import { I18nProvider } from '../contexts/I18nContext';
 import { IntlProvider } from '@wikimedia/react.i18n';
+import { ResetProvider } from '../contexts/ResetContext';
 
 export function AppWithSettings() {
   const { locale, messages } = useContext(SettingsContext);
@@ -28,16 +29,18 @@ export function AppWithSettings() {
       <ToastsProvider>
         <I18nProvider>
           <UserProvider>
-            <EuiPage>
-              <EuiPageBody>
-                <Header/>
-                <AllDataProvider>
-                  <CurrentItemProvider>
-                    <WorkArea/>
-                  </CurrentItemProvider>
-                </AllDataProvider>
-              </EuiPageBody>
-            </EuiPage>
+            <ResetProvider>
+              <EuiPage>
+                <EuiPageBody>
+                  <Header/>
+                  <AllDataProvider>
+                    <CurrentItemProvider>
+                      <WorkArea/>
+                    </CurrentItemProvider>
+                  </AllDataProvider>
+                </EuiPageBody>
+              </EuiPage>
+            </ResetProvider>
           </UserProvider>
         </I18nProvider>
       </ToastsProvider>

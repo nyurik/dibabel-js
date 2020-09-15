@@ -26,9 +26,9 @@ export const CurrentItemProvider = ({ children }: Props) => {
   const { addToast } = useContext(ToastsContext);
   const { loadItem } = useContext(AllDataContext);
 
-  let [currentItem, setCurrentItem] = useState<OptionalItem>(undefined);
-  let [itemStatus, setItemStatus] = useState<ItemStatus>(initialStatus);
-  let [itemContent, setItemContent] = useState<OptionalContentTypes>();
+  const [currentItem, setCurrentItem] = useState<OptionalItem>(undefined);
+  const [itemStatus, setItemStatus] = useState<ItemStatus>(initialStatus);
+  const [itemContent, setItemContent] = useState<OptionalContentTypes>();
 
   const setCurrentItemCB = useCallback((item: OptionalItem) => {
     (async () => {

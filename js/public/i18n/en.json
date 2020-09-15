@@ -83,8 +83,6 @@
   "filters-type--modules": "Modules",
   "filters-type--templates": "Templates",
   "filters-wiki": "Wiki",
-  "header-beta--label": "BETA",
-  "header-beta--tooltip": "Work in progress. Please verify your changes.",
   "header-description": "Keep modules and templates the same across wikis and languages. Written by $1",
   "header-links--bugs": "Bugs & Ideas",
   "header-links--help": "Help",
