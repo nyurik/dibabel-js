@@ -2,11 +2,11 @@ import {
   isSyncCopy,
   Item,
   Items,
+  LoadResult,
   PageType,
   Project,
   RawData,
   RawSyncData,
-  LoadResult,
   SrvAllData,
   SrvAllDataTyped,
   SrvDivergedContentType,
@@ -26,7 +26,7 @@ import fauxPageNewAb from './faux/new-Q63324398-ab.json';
 import fauxPageOkZh from './faux/ok-Q63324398-zh.json';
 import fauxPageOutdatedDe from './faux/outdated2-Q63324398-de.json';
 
-import { getToken, postToApi, rootUrlData, splitNs, wikiUrl, wikidataDomain } from './utils';
+import { getToken, postToApi, rootUrlData, splitNs, wikidataDomain, wikiUrl } from './utils';
 import { map } from 'lodash';
 import { SiteData } from '../contexts/Settings';
 
@@ -90,6 +90,7 @@ export const createItem = (
     unsyncedDeps: unsyncedDeps,
     staleDeps: staleDeps,
     sortDepsStatus: (missingDeps ? 4 : 0) + (unsyncedDeps ? 2 : 0) + (staleDeps ? 1 : 0),
+    selectable: !missingDeps && !staleDeps && !unsyncedDeps && (clone.status === 'outdated' || clone.status === 'unlocalized'),
   };
 };
 

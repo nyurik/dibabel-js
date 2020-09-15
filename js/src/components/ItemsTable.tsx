@@ -40,7 +40,7 @@ export const ItemsTable = (
       width: '2em',
       render: (item: Group | Item) => {
         const items: Array<Item> = isGroup(item) ? item.allSubItems : [item];
-        const selectable = items.filter(v => v.behind && v.behind > 0);
+        const selectable = items.filter(v => v.selectable);
         const selectedCount = selectable.filter(v => selectedItems.has(v)).length;
         const checked = selectedCount > 0 && selectable.length === selectedCount;
         const disabled = selectable.length === 0;

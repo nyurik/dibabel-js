@@ -65,6 +65,7 @@ export type Item = {
   staleDeps: boolean,
   unsyncedDeps: boolean,
   sortDepsStatus: number,
+  selectable: boolean,
 }
 
 export type Group = {

@@ -3,7 +3,7 @@ name: Periodically restart
 on:
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '* 7,15,23 * * *'
+    - cron:  '5 3 * * 3'
 
 jobs:
   restart:
