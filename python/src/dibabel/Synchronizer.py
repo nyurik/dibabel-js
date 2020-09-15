@@ -35,7 +35,6 @@ class Synchronizer:
         For single link return page content and sync info
         """
         if qid is not None:
-            self._primaries.refresh(qid)
             info = self.get_info_by_qid(qid).get(domain)
             if info:
                 title = info.dst_title

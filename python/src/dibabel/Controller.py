@@ -54,7 +54,5 @@ class Controller:
     def refresh_state(self):
         wd_warnings = []
         self._metadata.refresh()
-        # Load primary page history and update the sitelinks for pages and dependencies
-        self._primaries.refresh()
         # Download content of all copies and compute sync info
         self._synchronizer.update_syncinfo()

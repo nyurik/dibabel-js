@@ -109,7 +109,6 @@ class Primary:
         self.historic_dependencies: Optional[Set[Title]] = None
         # Dependencies found in the most recent page version
         self.dependencies: Optional[Set[Title]] = None
-        self.refreshed_ts: Optional[datetime] = None
         self.last_rev_id: Optional[RevID] = None
 
     def __str__(self) -> str:
