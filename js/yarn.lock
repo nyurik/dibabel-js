@@ -1173,10 +1173,10 @@
   dependencies:
     tslib "^1.9.3"
 
-"@elastic/eui@^28.4.0":
-  version "28.4.0"
-  resolved "https://registry.yarnpkg.com/@elastic/eui/-/eui-28.4.0.tgz#6b3b6b5e8b602d009410a97c26e22093846f708a"
-  integrity sha512-4iXo5fNx4qqeI+Tj5EJ0qHRhyi8KTLaqeQJCWg9Vy7N83ap6kp6s7X6D6qYUHqdmOdJH9QZYuYIpRUi3TQEJNg==
+"@elastic/eui@^29.0.0":
+  version "29.0.0"
+  resolved "https://registry.yarnpkg.com/@elastic/eui/-/eui-29.0.0.tgz#1c8d822c62ad5e29298a3a36f5b02fd9b32a5550"
+  integrity sha512-YsDjtN/nRA4vvWukg5FDN4iPQgHUVxDwn/JZ1mArCeMe34JwzYJlEkk6Z/+iNbJOZQNHngmV8I2TStcP8k82gg==
   dependencies:
     "@types/chroma-js" "^2.0.0"
     "@types/lodash" "^4.14.160"
@@ -1753,10 +1753,15 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
-"@types/node@*", "@types/node@^14.10.1":
+"@types/node@*":
   version "14.10.1"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.10.1.tgz#cc323bad8e8a533d4822f45ce4e5326f36e42177"
   integrity sha512-aYNbO+FZ/3KGeQCEkNhHFRIzBOUgc7QvcVNKXbfnhDkSfwUv91JsQQa10rDgKSTSLkXZ1UIyPe4FJJNVgw1xWQ==
+
+"@types/node@^14.10.2":
+  version "14.10.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.10.2.tgz#9b47a2c8e4dabd4db73b57e750b24af689600514"
+  integrity sha512-IzMhbDYCpv26pC2wboJ4MMOa9GKtjplXfcAqrMeNJpUUwpM/2ATt2w1JPUXwS6spu856TvKZL2AOmeU2rAxskw==
 
 "@types/numeral@^0.0.28":
   version "0.0.28"
@@ -8036,6 +8041,13 @@ p-limit@^2.0.0, p-limit@^2.2.0, p-limit@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-2.3.0.tgz#3dd33c647a214fdfffd835933eb086da0dc21db1"
   integrity sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==
+  dependencies:
+    p-try "^2.0.0"
+
+p-limit@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-3.0.2.tgz#1664e010af3cadc681baafd3e2a437be7b0fb5fe"
+  integrity sha512-iwqZSOoWIW+Ew4kAGUlN16J4M7OB3ysMLSZtnhmqx7njIHFPlxWBX8xo3lVTyFVq6mI/lL9qt2IsN1sHwaxJkg==
   dependencies:
     p-try "^2.0.0"
 

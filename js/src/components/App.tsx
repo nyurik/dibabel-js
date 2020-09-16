@@ -10,17 +10,19 @@ import '@elastic/eui/dist/eui_theme_light.css';
 // This should come last to override the defaults from EUI
 import './App.css';
 
-import { EuiErrorBoundary, EuiPage, EuiPageBody } from '@elastic/eui';
+import { EuiErrorBoundary, EuiPage, EuiPageBody, EuiSpacer } from '@elastic/eui';
 import { ToastsProvider } from '../contexts/Toasts';
 import { UserProvider } from '../contexts/UserContext';
 import { SettingsContext, SettingsProvider } from '../contexts/Settings';
-import { WorkArea } from './WorkArea';
 import { Header } from './Header';
 import { AllDataProvider } from '../contexts/AllData';
-import { CurrentItemProvider } from '../contexts/CurrentItem';
 import { I18nProvider } from '../contexts/I18nContext';
 import { IntlProvider } from '@wikimedia/react.i18n';
 import { ResetProvider } from '../contexts/ResetContext';
+import { SearchBar } from './SearchBar';
+import { ItemViewer } from './ItemViewer';
+import { SelectionProvider } from '../contexts/SelectionContext';
+import { ItemsTable } from './ItemsTable';
 
 export function AppWithSettings() {
   const { locale, messages } = useContext(SettingsContext);
@@ -34,9 +36,12 @@ export function AppWithSettings() {
                 <EuiPageBody>
                   <Header/>
                   <AllDataProvider>
-                    <CurrentItemProvider>
-                      <WorkArea/>
-                    </CurrentItemProvider>
+                    <SelectionProvider>
+                      <SearchBar/>
+                      <EuiSpacer size={'l'}/>
+                      <ItemsTable/>
+                      <ItemViewer/>
+                    </SelectionProvider>
                   </AllDataProvider>
                 </EuiPageBody>
               </EuiPage>

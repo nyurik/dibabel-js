@@ -4,17 +4,21 @@ import { EuiConfirmModal, EuiOverlayMask, } from '@elastic/eui';
 import { ItemDstLink } from './Snippets';
 import { error, success } from '../services/utils';
 import { ToastsContext } from '../contexts/Toasts';
-import { CurrentItemContext } from '../contexts/CurrentItem';
 
 import { I18nContext } from '../contexts/I18nContext';
 import { Message } from './Message';
-import { editItem } from '../services/StateStore';
+import { Item } from '../services/types';
+import { AllDataContext } from '../contexts/AllData';
 
 export const Updater = ({ comment, onClose }: { comment: string, onClose: () => void }): null | React.ReactElement => {
   const { i18n } = useContext(I18nContext);
   const { addToast, internalError } = useContext(ToastsContext);
-  const { setItemStatus, currentItem, itemContent, setCurrentItem, updateSavedItem } = useContext(CurrentItemContext);
+  const { editItem, updateSavedItem, currentItem, setCurrentItem } = useContext(AllDataContext);
+
   const [confirmationStatus, setConfirmationStatus] = useState<'show' | 'saving'>('show');
+
+  const item = currentItem as Item;
+  const itemContent = item ? item.content : undefined;
 
   if (!currentItem || !itemContent || itemContent.changeType === 'ok') {
     internalError('Missing or OK item');
@@ -25,10 +29,8 @@ export const Updater = ({ comment, onClose }: { comment: string, onClose: () => 
     try {
       setConfirmationStatus('saving');
 
-      const res = await editItem(currentItem, itemContent, comment);
-
-      if (res.edit.result !== 'Success') {
-        setItemStatus({ status: 'error', error: res.edit.info || JSON.stringify(res.edit) });
+      await editItem(currentItem, comment);
+      if (currentItem.contentStatus!.status === 'error') {
         return;
       }
 

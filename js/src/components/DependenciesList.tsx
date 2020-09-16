@@ -2,7 +2,6 @@ import React, { FunctionComponent, useContext, useState } from 'react';
 import { AddNewClone, isSyncCopy, Item } from '../services/types';
 import { I18nContext } from '../contexts/I18nContext';
 import { AllDataContext } from '../contexts/AllData';
-import { CurrentItemContext } from '../contexts/CurrentItem';
 import { Message } from './Message';
 import { wikiUrl } from '../services/utils';
 import { ExternalLink } from './Snippets';
@@ -14,8 +13,7 @@ type DepItem = { key: string, title: string, href: string, color: string, status
 
 export const DependenciesList: FunctionComponent<{ item: Item, links?: boolean }> = ({ item, links }) => {
   const { i18n } = useContext(I18nContext);
-  const { allItems } = useContext(AllDataContext);
-  const { setCurrentItem } = useContext(CurrentItemContext);
+  const { allItems, setCurrentItem } = useContext(AllDataContext);
   const [addLang, setAddLang] = useState<AddNewClone | null>(null);
 
   if (item.srvPage.allPrimaryDependencies.size === 0 && item.srvPage.allLocalDependencies.size === 0) {
@@ -80,7 +78,7 @@ export const DependenciesList: FunctionComponent<{ item: Item, links?: boolean }
         status: i18n(`table-cell-status--${copy.status}-label`, copy.behind),
         color: copy.status === 'ok' ? 'success' : (copy.status === 'diverged' ? 'danger' : 'warning'),
         sort: `${copy.status === 'ok' ? 9 : (copy.status === 'diverged' ? 5 : 6)}/${copy.title}`,
-        clone: allItems.filter(v => v.wiki === copy.domain && v.dstFullTitle === copy.title)[0],
+        clone: allItems.find(v => v.wiki === copy.domain && v.dstFullTitle === copy.title),
       });
     }
   });

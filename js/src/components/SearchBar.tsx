@@ -1,4 +1,4 @@
-import React, { Dispatch, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import {
   EuiButton,
@@ -10,7 +10,7 @@ import {
   SearchFilterConfig
 } from '@elastic/eui';
 
-import { groupDefs, Item, schema } from '../services/types';
+import { Item, schema } from '../services/types';
 
 import { AllDataContext } from '../contexts/AllData';
 import { flatten, map, uniq } from 'lodash';
@@ -21,6 +21,7 @@ import { SettingsContext } from '../contexts/Settings';
 import { I18nContext } from '../contexts/I18nContext';
 import { AddNew } from './AddNew';
 import { titleCase } from '../services/utils';
+import { SelectionContext } from '../contexts/SelectionContext';
 
 async function getOptions(allItems: Array<Item>, field: ('project')) {
   const values = uniq(allItems.map(v => v[field])).filter(v => v);
@@ -42,21 +43,13 @@ async function getWikiOptions(allItems: Array<Item>) {
   return values.map(wiki => ({ value: wiki }));
 }
 
-export const SearchBar = (
-  { query, setQuery, setQueryError, selectedItems, setSelectedItems, groupSelection, setGroupSelection }
-    : {
-    query: string,
-    setQuery: Dispatch<string>,
-    setQueryError: Dispatch<string>,
-    selectedItems: Set<Item>,
-    setSelectedItems: Dispatch<Set<Item>>
-    groupSelection: Array<keyof Item>,
-    setGroupSelection: Dispatch<Array<keyof Item>>,
-  }) => {
+export const SearchBar = () => {
 
   const { i18n } = useContext(I18nContext);
   const { languageNames, languageNamesLowerCase, isIncrementalSearch } = useContext(SettingsContext);
   const { allItems, status } = useContext(AllDataContext);
+  const { query, setQuery, setQueryError } = useContext(SelectionContext);
+
   const [isAddLangShown, setIsAddLangShown] = useState(false);
 
   const filters: Array<SearchFilterConfig> = [
@@ -196,9 +189,9 @@ export const SearchBar = (
 
   return (
     <EuiFlexGroup alignItems={'center'}>
-      <SyncButton selectedItems={selectedItems} setSelectedItems={setSelectedItems}/>
+      <SyncButton />
       <EuiFlexItem style={{ minWidth: '10em' }} grow={false}>
-        <GroupSelector groupDefs={groupDefs} groupSelection={groupSelection} setGroupSelection={setGroupSelection}/>
+        <GroupSelector />
       </EuiFlexItem>
       <EuiFlexItem>{searchBar}</EuiFlexItem>
       <EuiFlexItem grow={false}>{addLangButton}{addLang}</EuiFlexItem>

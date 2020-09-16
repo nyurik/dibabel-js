@@ -19,9 +19,16 @@ import {
 import Banana from 'banana-i18n';
 
 import { UserContext, UserState } from './UserContext';
-import { rootUrlData, rootUrlSite, usePersistedState } from '../services/utils';
+import {
+  fixMwLinks,
+  getSummaryLink,
+  getSummaryMsgFromStatus,
+  rootUrlData,
+  rootUrlSite,
+  usePersistedState
+} from '../services/utils';
 import { I18nContext } from './I18nContext';
-import { Props } from '../services/types';
+import { Item, Props } from '../services/types';
 import i18n_en from './messages-en.json';
 
 export type LanguageNames = Map<string, string>;
@@ -60,7 +67,7 @@ export type SettingsContextType = {
   setLocale: Dispatch<string>,
   languageNames: LanguageNames,
   languageNamesLowerCase: LanguageNames,
-  getSummaryMsg: (locale: string, key: string, ...parameters: any[]) => string,
+  createSummaryMsg: (item: Item) => string,
 }
 
 export const SettingsContext = React.createContext<SettingsContextType>({} as SettingsContextType);
@@ -116,6 +123,11 @@ async function getSiteData(): Promise<SiteData> {
   }
 }
 
+const limitEllipsis = (values: Set<string>, maxLength: number): string => {
+  const text = Array.from(values).join(',');
+  return text.length < maxLength ? text : (text.substring(0, maxLength) + '…');
+};
+
 const initLanguageNames = new Map<string, string>();
 
 export const SettingsProvider = ({ children }: Props) => {
@@ -167,9 +179,35 @@ export const SettingsProvider = ({ children }: Props) => {
     });
   }, [locale, messages, setLocale]);
 
-  const getSummaryMsg = useCallback((locale: string, key: string, ...parameters: any[]): string => {
-    const banana = new Banana(locale, { messages: siteData.summaries });
-    return banana.i18n(key, ...parameters);
+  const createSummaryMsg = useCallback((item: Item): string => {
+    if (!item?.content) {
+      throw new Error('item has no content');
+    }
+
+    for (const lang of [item.lang, 'en']) {
+      try {
+        const banana = new Banana(lang, { messages: siteData.summaries });
+        const summaryLink = getSummaryLink(item);
+        const msgKey = getSummaryMsgFromStatus(item.content.changeType);
+
+        let newSummary;
+        if (item.content.changeType === 'outdated') {
+          const users = limitEllipsis(new Set(item.content.changes.map(v => v.user)), 80);
+          let comments = limitEllipsis(new Set(item.content.changes.map(v => v.comment.trim()).filter(v => v)), 210);
+          if (!comments) {
+            comments = banana.i18n('diff-summary-text--empty-summary');
+          }
+          newSummary = banana.i18n(msgKey, item.content.changes.length, users, comments, summaryLink);
+        } else {
+          newSummary = banana.i18n(msgKey, summaryLink);
+        }
+        return fixMwLinks(newSummary);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    return '';  // In case all languages failed
   }, [siteData.summaries]);
 
   // Do this only once to load user's locale
@@ -194,7 +232,7 @@ export const SettingsProvider = ({ children }: Props) => {
         setLocale: setLocaleCB,
         languageNames,
         languageNamesLowerCase,
-        getSummaryMsg,
+        createSummaryMsg,
       }}>
       {children}
     </SettingsContext.Provider>
@@ -289,7 +327,7 @@ export const Settings = () => {
       }}
       options={langOptions}
       onChange={(val: EuiSelectableOption[]) => {
-        setLocale(val.filter(v => v.checked === 'on')[0].key!);
+        setLocale(val.find(v => v.checked === 'on')!.key!);
         closePopover();
       }}>
       {(list, search) => (

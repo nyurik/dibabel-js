@@ -44,7 +44,7 @@ export const ToastsProvider = ({ children }: Props) => {
     console.error(msg);
     doToast(error({
       title: 'INTERNAL ERROR',
-      text: (<EuiText>{msg}</EuiText>),
+      text: (<EuiText>{msg.toString()}</EuiText>),
     }));
     debugger;
   }, []);

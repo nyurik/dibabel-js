@@ -1,13 +1,13 @@
 import { ReactChild } from 'react';
 import { EuiToastProps } from '@elastic/eui/src/components/toast/toast';
+import { DataLoadStatus } from '../contexts/AllData';
+import { clone, isEqual } from 'lodash';
 
 export type StatusType = 'ok' | 'outdated' | 'unlocalized' | 'diverged' | 'new';
 
 export type DependencyStatus = 'missing' | 'sync' | 'manual_sync' | 'no_sync' | 'no_wd'
 
 export type PageType = 'module' | 'template';
-
-export type LangInfo = { name: string, autonym: string } ;
 
 export type Props = { children: React.ReactNode };
 
@@ -66,6 +66,8 @@ export type Item = {
   unsyncedDeps: boolean,
   sortDepsStatus: number,
   selectable: boolean,
+  contentStatus?: ItemStatus,
+  content?: SrvContentTypes,
 }
 
 export type Group = {
@@ -126,7 +128,7 @@ export type SrvPageType = SrvSyncPage | SrvMissingPage | SrvManualSyncPage | Srv
 
 export type SrvPageWithCopies<T> = {
   copies: T[],
-  // Copies as a lookup by domain
+  // Copies as a lookup by domain. Generated locally.
   copiesLookup: Map<string, T>,
 };
 
@@ -138,12 +140,21 @@ export type SrvSyncPage = {
   primaryRevId: number,
   dependencies: string[],
 
-  // Generated locally
+  // Generated locally. Make sure the localSrvSyncPageProps below has these values.
   // Dependencies that exist on local wikis (have a WD entry)
   allLocalDependencies: TitlesMap<SrvSyncPage | SrvManualSyncPage | SrvNoSyncPage>,
   // Dependencies without the local pages (have no WD entry, or missing)
   allPrimaryDependencies: TitlesMap<SrvMissingPage | SrvNoWikidataPage>,
 } & SrvPageWithCopies<SrvSyncCopy>;
+
+// This must match the extra values added locally in SrvSyncPage
+export const localSrvSyncPageProps = new Set(['allLocalDependencies', 'allPrimaryDependencies', 'copiesLookup']);
+
+export function isEqualSrvPage(localObj: SrvPageType, newObj: SrvPageType): boolean {
+  const old2: any = clone(localObj);
+  localSrvSyncPageProps.forEach(v => { delete old2[v]; });
+  return isEqual(old2, newObj);
+}
 
 export type SrvMissingPage = {
   type: 'missing',
@@ -215,6 +226,13 @@ export type SrvDivergedContentType = {
 export type SrvNewContentType = {
   changeType: 'new',
 } & SrvContentPrimary & SrvContentNew;
+
+export type EditItem = (
+  item: Item,
+  comment: string
+) => Promise<any>;
+
+export type LoadItem = (item: Item) => Promise<SyncLoaderOrItem>;
 
 export type SrvSyncCopy = {
   domain: string,
@@ -312,7 +330,6 @@ export type Items = Item[];
 export type LoadResult = {
   status: 'success' | 'debug' | 'error',
   exception?: any,
-  content?: SrvContentTypes,
 };
 
 export type RawData = TitlesMap<SrvPageType>;
@@ -322,4 +339,22 @@ export type AddNewClone = {
   status: 'create',
   titleNoNs: string,
   wiki: string,
+}
+
+export interface ItemStatus {
+  promise?: Promise<LoadResult>;
+  status: DataLoadStatus;
+  error?: string;
+}
+
+export type SyncLoader = {
+  contentStatus: ItemStatus,
+  // newItem?: Item,
+  content?: SrvContentTypes,
+};
+
+export type SyncLoaderOrItem = SyncLoader | Item;
+
+export function isItem(value: SyncLoader | Item): value is Item {
+  return (value as Item).srvPage !== undefined;
 }

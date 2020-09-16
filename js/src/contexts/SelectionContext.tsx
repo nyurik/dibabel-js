@@ -1,25 +1,48 @@
-import React, { Dispatch, useContext, useMemo } from 'react';
-
-import { EuiSearchBar, Query } from '@elastic/eui';
-
-import { defaultSearchableFields, Group, groupDefs, Item } from '../services/types';
-
-import { AllDataContext } from '../contexts/AllData';
+import React, { Dispatch, useContext, useEffect, useMemo, useState } from 'react';
+import { defaultSearchableFields, Group, groupDefs, Item, Props } from '../services/types';
+import { ResetContext } from './ResetContext';
+import { usePersistedJsonState, usePersistedState } from '../services/utils';
+import { AllDataContext } from './AllData';
+import { EuiSearchBar } from '@elastic/eui';
 import { groupBy, map } from 'lodash';
-import { ItemsTable } from './ItemsTable';
 
-import { I18nContext } from '../contexts/I18nContext';
-
-export const Tables = ({ query, queryError, selectedItems, setSelectedItems, groupSelection }
-  : {
-  queryError: string,
+export type SelectionContextType = {
+  query: string,
+  setQuery: Dispatch<string>,
+  setQueryError: Dispatch<string>,
   selectedItems: Set<Item>,
   setSelectedItems: Dispatch<Set<Item>>
   groupSelection: Array<keyof Item>,
-  query: string | Query,
-}) => {
-  const { i18n } = useContext(I18nContext);
-  const { allItems, status } = useContext(AllDataContext);
+  setGroupSelection: Dispatch<Array<keyof Item>>,
+  groupedItems: any,
+  queryError: string,
+}
+
+export const SelectionContext = React.createContext<SelectionContextType>({} as SelectionContextType);
+
+const initGroupSelection: Array<keyof Item> = ['srcTitleUrl'];
+
+export const SelectionProvider = ({ children }: Props) => {
+  const { resetIndex } = useContext(ResetContext);
+  const { allItems } = useContext(AllDataContext);
+
+  const [queryError, setQueryError] = useState('');
+  const [selectedItems, setSelectedItems] = useState<Set<Item>>(() => new Set());
+  const [query, setQuery] = usePersistedState<string>('query', '', v => v === '[object Object]' ? '' : v, v => v);
+  const [rawGroupSelection, setGroupSelection] = usePersistedJsonState<Array<keyof Item>>('groupSelection', initGroupSelection);
+
+  useEffect(() => {
+    if (resetIndex) {
+      setSelectedItems(new Set());
+      setQuery('');
+      setGroupSelection(initGroupSelection);
+    }
+    // Should only trigger when resetIndex changes. The setters are immutable.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resetIndex]);
+
+  // Just in case local store has some weird values, filter them out
+  const groupSelection = rawGroupSelection.filter(v => groupDefs.hasOwnProperty(v));
 
   const groupedItems = useMemo(() => {
     function makeLastItem(items: Array<Item>, parentColumns: Array<string>) {
@@ -68,12 +91,20 @@ export const Tables = ({ query, queryError, selectedItems, setSelectedItems, gro
     return organizeItemsInGroups(0, filteredItems, ['protection', 'wiki', 'dstTitle', 'status', 'sortDepsStatus', 'hash']);
   }, [allItems, groupSelection, query]);
 
-  return (<ItemsTable
-    groupedItems={groupedItems}
-    isLoading={status === 'loading'}
-    message={status === 'loading' ? i18n('table-loading') : ''}
-    error={status === 'error' ? i18n('table-loading--error') : queryError}
-    selectedItems={selectedItems}
-    setSelectedItems={setSelectedItems}
-  />);
+  return (
+    <SelectionContext.Provider
+      value={{
+        query,
+        setQuery,
+        setQueryError,
+        selectedItems,
+        setSelectedItems,
+        groupSelection,
+        setGroupSelection,
+        groupedItems,
+        queryError,
+      }}>
+      {children}
+    </SelectionContext.Provider>
+  );
 };

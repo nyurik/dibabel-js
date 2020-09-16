@@ -2,6 +2,8 @@
 import { enableFetchMocks, } from 'jest-fetch-mock';
 
 import dataTestAll from './faux/all.json';
+import dataTestDivergedQ63324398bcl from './faux/diverged-Q63324398-bcl.json';
+
 import { StateStore } from './StateStore';
 import { Items, RawData, SrvPageType } from './types';
 
@@ -17,6 +19,9 @@ test('Load faux data', async () => {
   const store = new StateStore(false);
   expect(store.rawData).toStrictEqual(new Map<string, SrvPageType>());
   await store.loadData();
+
+  fetchMock.mockOnce(JSON.stringify(dataTestDivergedQ63324398bcl));
+  await store.loadData('Q63324398', 'bcl.wikipedia.org');
 
   // @ts-ignore
   const rawData = JSON.stringify(Object.assign({}, ...[...store.rawData.entries()].map(([k, v]) => ({ [k]: v }))),

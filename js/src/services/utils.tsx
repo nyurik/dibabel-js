@@ -1,5 +1,5 @@
 import { DependencyList, Dispatch, useEffect, useState } from 'react';
-import { Item, PageType, ToastNoId } from './types';
+import { Item, PageType, StatusType, ToastNoId } from './types';
 
 // lang=(zh or ace or de) shared template project:(wikipedia)
 
@@ -146,7 +146,7 @@ export const prettyDomain = (lang: string, project: string) => {
   return lang !== '-' ? `${lang}.${project}` : project;
 };
 
-export function getSummaryMsgFromStatus(changeType: string): string {
+export function getSummaryMsgFromStatus(changeType: StatusType): string {
   switch (changeType) {
     default:
       throw new Error(changeType);
@@ -174,4 +174,10 @@ export function fixMwLinks(summary: string): string {
 
 export function titleCase(value: string): string {
   return value[0].toUpperCase() + value.substring(1);
+}
+
+// See https://stackoverflow.com/questions/46240647/react-how-to-force-a-function-component-to-render
+export function useForceUpdate() {
+  const [, setValue] = useState(0);
+  return () => setValue(value => ++value);
 }

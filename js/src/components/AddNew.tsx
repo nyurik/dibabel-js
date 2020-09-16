@@ -1,4 +1,4 @@
-import React, { Dispatch, DispatchWithoutAction, useContext, useMemo, useState, useCallback, useEffect } from 'react';
+import React, { Dispatch, DispatchWithoutAction, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { uniq } from 'lodash';
 
 import {
@@ -6,6 +6,9 @@ import {
   EuiButtonEmpty,
   EuiComboBox,
   EuiComboBoxOptionOption,
+  EuiFieldText,
+  EuiFlexGroup,
+  EuiFlexItem,
   EuiForm,
   EuiFormRow,
   EuiModal,
@@ -15,32 +18,20 @@ import {
   EuiModalHeaderTitle,
   EuiOverlayMask,
   EuiSpacer,
-  EuiFieldText,
   EuiText,
-  EuiFlexGroup,
-  EuiFlexItem,
 } from '@elastic/eui';
 
-import { AllDataContext, SyncLoader } from '../contexts/AllData';
+import { AllDataContext } from '../contexts/AllData';
 import { ToastsContext } from '../contexts/Toasts';
 import { I18nContext } from '../contexts/I18nContext';
-import { AddNewClone, Item } from '../services/types';
-import {
-  error,
-  fixMwLinks,
-  getSummaryLink,
-  getSummaryMsgFromStatus,
-  splitNs,
-  success,
-  titleCase
-} from '../services/utils';
-import { createItem, createSitelink, editItem } from '../services/StateStore';
+import { AddNewClone, isItem, Item } from '../services/types';
+import { error, getSummaryMsgFromStatus, splitNs, success, titleCase } from '../services/utils';
+import { createItem, createSitelink } from '../services/StateStore';
 import { Message } from './Message';
 import { Comment, ItemDstLink, ItemSrcLink, ItemWikidataLink, SummaryLabel } from './Snippets';
 import { DependenciesList } from './DependenciesList';
-import { ItemDiffBlock } from './ItemDiffBlock';
+import { diffBlock } from './ItemDiffBlock';
 import { SettingsContext } from '../contexts/Settings';
-import { CurrentItemContext } from '../contexts/CurrentItem';
 import { UserContext, UserState } from '../contexts/UserContext';
 
 const Picker = ({ disabled, placeholder, value, setValue, options }: {
@@ -72,10 +63,10 @@ const Picker = ({ disabled, placeholder, value, setValue, options }: {
 
 export const AddNew = ({ onClose, initWith }: { onClose: DispatchWithoutAction, initWith?: AddNewClone }) => {
   const { i18n } = useContext(I18nContext);
-  const { getSummaryMsg, siteData } = useContext(SettingsContext);
-  const { addToast } = useContext(ToastsContext);
-  const { updateSavedItem } = useContext(CurrentItemContext);
+  const { createSummaryMsg, siteData } = useContext(SettingsContext);
+  const { addToast, internalError } = useContext(ToastsContext);
   const { user } = useContext(UserContext);
+  const { allItems, loadItem, editItem, updateSavedItem } = useContext(AllDataContext);
 
   const [status, setStatus] = useState<'show' | 'loaded' | 'saving'>('show');
   const [pageTitle, setPageTitle] = useState<string | undefined>();
@@ -83,8 +74,7 @@ export const AddNew = ({ onClose, initWith }: { onClose: DispatchWithoutAction, 
   const [dstTitle, setDstTitle] = useState<string>('');
   const [comment, setComment] = useState<string>('');
   const [commentEdited, setCommentEdited] = useState<boolean>();
-  const [info, setInfo] = useState<SyncLoader | undefined>();
-  const { allItems, loadItem } = useContext(AllDataContext);
+  const [fakeItem, setFakeItem] = useState<Item | undefined>();
 
   let pageHelpText = undefined;
   let knownWikis = 0;
@@ -117,54 +107,54 @@ export const AddNew = ({ onClose, initWith }: { onClose: DispatchWithoutAction, 
     }
     if (newTitle && newWiki) {
       setStatus('show');
-      const { qid, type, title, srcTitleUrl, srvPage } = allItems.find(v => v.srcFullTitle === newTitle)!;
-      const newInfo = await loadItem(qid, newWiki);
-      if (newInfo.newItem) {
-        // Item was just created
-        setWiki(undefined);
-      } else {
-        newInfo.newItem = createItem(type, title, srcTitleUrl, srvPage, {
-          domain: newWiki, status: 'new', title: titleCase(type) + ':' + newDstTitle,
-        });
-        setInfo(newInfo);
-        if (newInfo && newInfo.content && newInfo.content.changeType === 'new') {
+      const { type, title, srcTitleUrl, srvPage } = allItems.find(v => v.srcFullTitle === newTitle)!;
+      const itm = createItem(type, title, srcTitleUrl, srvPage, {
+        domain: newWiki, status: 'new', title: titleCase(type) + ':' + newDstTitle
+      });
+
+      await loadItem(itm);
+
+      if (isItem(itm)) {
+        if (itm.content?.changeType === 'new') {
           if (!comment || !commentEdited) {
-            setComment(fixMwLinks(getSummaryMsg(newInfo.newItem.lang, getSummaryMsgFromStatus('new'), getSummaryLink(newInfo.newItem))));
+            setComment(createSummaryMsg(itm));
             setCommentEdited(false);
           }
           setStatus('loaded');
+        } else {
+          // Item was just created
+          setWiki(undefined);
         }
+        setFakeItem(itm);
       }
-    } else if (info) {
-      setInfo(undefined);
+    } else if (fakeItem) {
+      setFakeItem(undefined);
       setStatus('show');
     }
-  }, [allItems, comment, commentEdited, dstTitle, getSummaryMsg, info, loadItem, pageTitle, wiki]);
+  }, [allItems, comment, commentEdited, createSummaryMsg, dstTitle, fakeItem, loadItem, pageTitle, wiki]);
 
   const loadedInfo = useMemo(() => {
-    if (!info || !info.newItem) {
+    if (!fakeItem) {
       return;
     }
 
     const result = [
       <EuiSpacer size={'xl'}/>,
       <EuiFormRow fullWidth={true} label={i18n('table-header-deps--label')}>
-        <DependenciesList item={info.newItem}/>
+        <DependenciesList item={fakeItem}/>
       </EuiFormRow>
     ];
 
-    if (info.content && info.content.changeType === 'new') {
+    if (fakeItem.content && fakeItem.content.changeType === 'new') {
       result.push(
         <EuiSpacer size={'xxl'}/>,
         <EuiFormRow fullWidth={true} label={i18n('create-page-content--label')}>
-          <ItemDiffBlock type={info.newItem.type}
-                         oldText={info.content.newText}
-                         newText={info.content.newText}/>
+          {diffBlock(fakeItem, internalError)}
         </EuiFormRow>
       );
     }
     return React.Children.toArray(result);
-  }, [i18n, info]);
+  }, [fakeItem, i18n, internalError]);
 
   const setNewComment = (newComment: string) => {
     if (newComment !== comment) {
@@ -174,32 +164,30 @@ export const AddNew = ({ onClose, initWith }: { onClose: DispatchWithoutAction, 
   };
 
   const onCopy = useCallback(async () => {
-    if (!pageTitle || !wiki || !info || !info.newItem || !info.content || info.content.changeType !== 'new' || !dstTitle) {
+    if (!pageTitle || !wiki || !fakeItem || !fakeItem.content || fakeItem.content.changeType !== 'new' || !dstTitle) {
       return;  // safety and make typescript happy
     }
 
     try {
       setStatus('saving');
 
-      let res = await editItem(info.newItem, info.content, comment);
-      if (res.edit.result !== 'Success') {
+      await editItem(fakeItem, comment);
+      if (fakeItem.contentStatus!.status === 'error') {
         addToast(error({
           title: (<Message id="create-page-error--title"
-                           placeholders={[
-                             <ItemDstLink item={info.newItem}/>,
-                             res.edit.info || JSON.stringify(res.edit)]}/>),
+                           placeholders={[<ItemDstLink item={fakeItem}/>, fakeItem.contentStatus!.error]}/>),
         }));
         setStatus('loaded');
         return;
       }
 
-      res = await createSitelink(siteData, info.newItem);
+      let res = await createSitelink(siteData, fakeItem);
       if (!res.success) {
         addToast(error({
           title: (<Message id="create-page-error-wd--title"
                            placeholders={[
-                             <ItemDstLink item={info.newItem}/>,
-                             <ItemWikidataLink item={info.newItem}/>,
+                             <ItemDstLink item={fakeItem}/>,
+                             <ItemWikidataLink item={fakeItem}/>,
                              res.edit.info || JSON.stringify(res.edit)]}/>),
         }));
         setStatus('loaded');
@@ -208,21 +196,21 @@ export const AddNew = ({ onClose, initWith }: { onClose: DispatchWithoutAction, 
 
       addToast(success({
         title: (<Message id="create-page-success--title"
-                         placeholders={[<ItemDstLink item={info.newItem}/>]}/>),
+                         placeholders={[<ItemDstLink item={fakeItem}/>]}/>),
         iconType: 'check',
       }));
 
-      updateSavedItem(info.newItem);
+      updateSavedItem(fakeItem);
       onClose();
 
     } catch (err) {
       addToast(error({
         title: (<Message id="create-page-error--title"
-                         placeholders={[<ItemDstLink item={info.newItem}/>, err.toString()]}/>),
+                         placeholders={[<ItemDstLink item={fakeItem}/>, err.toString()]}/>),
       }));
       setStatus('loaded');
     }
-  }, [addToast, comment, dstTitle, info, onClose, pageTitle, siteData, updateSavedItem, wiki]);
+  }, [addToast, comment, dstTitle, editItem, fakeItem, onClose, pageTitle, siteData, updateSavedItem, wiki]);
 
   useEffect(() => {
       if (initWith) {
@@ -292,13 +280,13 @@ export const AddNew = ({ onClose, initWith }: { onClose: DispatchWithoutAction, 
     <EuiModalFooter>
       <EuiFlexGroup gutterSize={'s'} justifyContent={'spaceBetween'} alignItems={'center'}>
         <EuiFlexItem grow={false}>
-          <SummaryLabel msgKey={info && getSummaryMsgFromStatus('new')}
-                        lang={info && info.newItem!.lang}/>
+          <SummaryLabel msgKey={fakeItem && getSummaryMsgFromStatus('new')}
+                        lang={fakeItem && fakeItem.lang}/>
         </EuiFlexItem>
         <EuiFlexItem grow={true}>
           <Comment
             readOnly={!isLoggedIn || status !== 'loaded' || !dstTitle}
-            tooltip={isLoggedIn ? undefined : i18n('diff-content--login-error') }
+            tooltip={isLoggedIn ? undefined : i18n('diff-content--login-error')}
             isLoading={false}
             value={comment}
             setValue={setNewComment}/>

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 
 import {
   EuiButton,
@@ -21,31 +21,27 @@ import {
 
 import { Item } from '../services/types';
 import { Comment, ItemDstLink, ItemSrcLink, SummaryLabel } from './Snippets';
-import { fixMwLinks, getSummaryLink, getSummaryMsgFromStatus, itemDiffLink } from '../services/utils';
+import { getSummaryMsgFromStatus, itemDiffLink } from '../services/utils';
 import { UserContext, UserState } from '../contexts/UserContext';
 import { SettingsContext } from '../contexts/Settings';
 import { Props } from '@elastic/eui/src/components/button/button';
 import { icons } from '../icons/icons';
-import { CurrentItemContext } from '../contexts/CurrentItem';
 import { Updater } from './Updater';
 import { I18nContext } from '../contexts/I18nContext';
 import { Message } from './Message';
 import { LineRange } from '@elastic/eui/src/components/loading/loading_content';
 import { ToastsContext } from '../contexts/Toasts';
 import { DependenciesList } from './DependenciesList';
-import { ItemDiffBlock } from './ItemDiffBlock';
-
-const limitEllipsis = (values: Set<string>, maxLength: number): string => {
-  const text = Array.from(values).join(',');
-  return text.length < maxLength ? text : (text.substring(0, maxLength) + '…');
-};
+import { diffBlock } from './ItemDiffBlock';
+import { AllDataContext } from '../contexts/AllData';
 
 const ItemDiffViewer = () => {
-  const { getSummaryMsg } = useContext(SettingsContext);
+  const { createSummaryMsg } = useContext(SettingsContext);
   const { i18n } = useContext(I18nContext);
   const { user } = useContext(UserContext);
   const { internalError } = useContext(ToastsContext);
-  const { itemStatus, currentItem, itemContent, setCurrentItem } = useContext(CurrentItemContext);
+  const { dataVersion, currentItem, setCurrentItem } = useContext(AllDataContext);
+
   const [commentIsLoaded, setCommentIsLoaded] = useState<boolean>(false);
   const [confirmationStatus, setConfirmationStatus] = useState<boolean>(false);
 
@@ -54,72 +50,57 @@ const ItemDiffViewer = () => {
   const [comment, setComment] = useState('');
 
   const item = currentItem as Item;
+  const itemContent = item?.content;
+  const itemContentStatus = item?.contentStatus?.status;
 
-  useEffect(() => {
-    (async () => {
-      if (commentIsLoaded || !itemContent || itemStatus.status !== 'ready' || itemContent.changeType === 'ok') {
-        return;
-      }
-      const summaryLink = getSummaryLink(item);
-      const msgKey = getSummaryMsgFromStatus(itemContent.changeType);
-      let newSummary;
-      if (itemContent.changeType === 'outdated') {
-        const users = limitEllipsis(new Set(itemContent.changes.map(v => v.user)), 80);
-        const comments = limitEllipsis(new Set(itemContent.changes.map(v => v.comment.trim()).filter(v => v)), 210)
-          || getSummaryMsg(item.lang, 'diff-summary-text--empty-summary');
-        newSummary = getSummaryMsg(item.lang, msgKey, itemContent.changes.length, users, comments, summaryLink);
-      } else {
-        newSummary = getSummaryMsg(item.lang, msgKey, summaryLink);
-      }
-      setComment(fixMwLinks(newSummary));
-      setCommentIsLoaded(true);
-    })();
-  }, [comment, item, i18n, itemStatus.status, itemContent, commentIsLoaded, getSummaryMsg]);
-
-  let infoSubHeader;
-  switch (item.status) {
-    case 'diverged':
-      infoSubHeader = (
-        <EuiHealth color={'danger'}>
-          <Message id="diff-header-description--diverged"
-                   placeholders={[<ItemDstLink item={item}/>, <ItemSrcLink item={item}/>]}/>
-        </EuiHealth>);
-      break;
-    case 'outdated':
-      infoSubHeader = (
-        <EuiHealth color={'warning'}>
-          <Message id="diff-header-description--outdated"
-                   placeholders={[
-                     <ItemDstLink item={item}/>,
-                     <EuiLink href={itemDiffLink(item)}
-                              target={'_blank'}>{i18n('diff-header-description--outdated-rev', item.behind)}</EuiLink>,
-                     <ItemSrcLink item={item}/>
-                   ]}/>
-        </EuiHealth>);
-      break;
-    case 'unlocalized':
-      infoSubHeader = (
-        <EuiHealth color={'warning'}>
-          <Message id="diff-header-description--unlocalized"
-                   placeholders={[<ItemDstLink item={item}/>, <ItemSrcLink item={item}/>]}/>
-        </EuiHealth>);
-      break;
-    case 'ok':
-      infoSubHeader = (
-        <EuiHealth color={'success'}>
-          <Message id="diff-header-description--ok"
-                   placeholders={[<ItemDstLink item={item}/>, <ItemSrcLink item={item}/>]}/>
-        </EuiHealth>);
-      break;
-    default:
-      throw new Error(item.status);
+  if (!commentIsLoaded && itemContent && itemContentStatus === 'ready' && itemContent.changeType === 'ok') {
+    setComment(createSummaryMsg(item));
+    setCommentIsLoaded(true);
   }
 
-  const warnings = useMemo(() => {
-    if (item.status === 'diverged') {
-      return (<>
-        <EuiCallOut title={i18n('diff-header-warnings--diverged-head')} color={'warning'}
-                    iconType={'alert'}>
+  const infoSubHeader = useMemo(() => {
+    switch (item?.status) {
+      case 'diverged':
+        return (
+          <EuiHealth color={'danger'}>
+            <Message id="diff-header-description--diverged"
+                     placeholders={[<ItemDstLink item={item}/>, <ItemSrcLink item={item}/>]}/>
+          </EuiHealth>);
+      case 'outdated':
+        return (
+          <EuiHealth color={'warning'}>
+            <Message id="diff-header-description--outdated"
+                     placeholders={[
+                       <ItemDstLink item={item}/>,
+                       <EuiLink href={itemDiffLink(item)}
+                                target={'_blank'}>{i18n('diff-header-description--outdated-rev', item.behind)}</EuiLink>,
+                       <ItemSrcLink item={item}/>
+                     ]}/>
+          </EuiHealth>);
+      case 'unlocalized':
+        return (
+          <EuiHealth color={'warning'}>
+            <Message id="diff-header-description--unlocalized"
+                     placeholders={[<ItemDstLink item={item}/>, <ItemSrcLink item={item}/>]}/>
+          </EuiHealth>);
+      case 'ok':
+        return (
+          <EuiHealth color={'success'}>
+            <Message id="diff-header-description--ok"
+                     placeholders={[<ItemDstLink item={item}/>, <ItemSrcLink item={item}/>]}/>
+          </EuiHealth>);
+      default:
+        throw new Error(item.status);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n, item, item?.status]);
+
+  const header = useMemo(() => {
+    const res = [];
+    if (item?.status === 'diverged') {
+      res.push(<EuiCallOut title={i18n('diff-header-warnings--diverged-head')} color={'warning'}
+                           iconType={'alert'}>
           <EuiText>{i18n('diff-header-warnings--diverged', item.wiki)}
             <ul>
               <li key={'1'}>{i18n('diff-header-warnings--diverged-1')}</li>
@@ -129,19 +110,20 @@ const ItemDiffViewer = () => {
           </EuiText>
         </EuiCallOut>,
         <EuiSpacer size={'m'}/>
-      </>);
+      );
     }
-  }, [i18n, item]);
+    res.push(<DependenciesList links={true} item={item}/>);
+    return res;
 
-  const dependencies = useMemo(() => {
-    return <DependenciesList links={true} item={item}/>;
-  }, [item]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n, item, item?.status]);
 
   const body = useMemo(() => {
-    if (!itemStatus) {
+    debugger;
+    if (!itemContentStatus) {
       return;
     }
-    switch (itemStatus.status) {
+    switch (itemContentStatus) {
       case 'reset':
         return undefined;
       case 'loading':
@@ -158,41 +140,26 @@ const ItemDiffViewer = () => {
         </>);
       case 'error':
         return (<EuiCallOut title={i18n('diff-content--loading-error')} color={'danger'} iconType={'alert'}>
-          <p>{itemStatus.error}</p>
+          <p>{item!.contentStatus!.error}</p>
         </EuiCallOut>);
       case 'ready':
-        if (!itemContent) {
-          internalError('Empty content when ready. Debugging?');
-          return;
-        }
-        switch (itemContent.changeType) {
-          case 'ok':
-            return (
-              <ItemDiffBlock type={item.type} oldText={itemContent.currentText} newText={itemContent.currentText}/>);
-          case 'new':
-            return (<ItemDiffBlock type={item.type} oldText={itemContent.newText} newText={itemContent.newText}/>);
-          case 'outdated':
-          case 'unlocalized':
-          case 'diverged':
-            return (<ItemDiffBlock type={item.type} oldText={itemContent.currentText} newText={itemContent.newText}/>);
-          default:
-            internalError(`content.changeType ${(itemContent as any).changeType}`);
-            return;
-        }
+        return diffBlock(item, internalError);
       default:
-        throw new Error(itemStatus.status);
+        throw new Error(itemContentStatus);
     }
-  }, [itemStatus, i18n, itemContent, item.type, internalError]);
+    // Must use   dataVersion
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataVersion, item, itemContentStatus, i18n, internalError]);
 
   const onClose = useCallback(() => setCurrentItem(undefined), [setCurrentItem]);
 
   let footer;
-  if (itemStatus.status === 'ready' && item.status !== 'ok') {
+  if (itemContentStatus === 'ready' && item.status !== 'ok') {
     const isLoggedIn = user.state === UserState.LoggedIn;
     const isDiverged = item.status === 'diverged';
     const btnProps: Props = {
       fill: true,
-      color: (isDiverged || warnings) ? 'danger' : 'primary',
+      color: (isDiverged) ? 'danger' : 'primary',
     };
     if (isLoggedIn) {
       btnProps.onClick = () => setConfirmationStatus(true);
@@ -240,8 +207,7 @@ const ItemDiffViewer = () => {
           <EuiFlexItem grow={true}>{infoSubHeader}</EuiFlexItem>
         </EuiFlyoutHeader>
         <EuiFlyoutBody>
-          {warnings}
-          {dependencies}
+          {header}
           <EuiSpacer size={'l'}/>
           {body}
         </EuiFlyoutBody>
@@ -253,7 +219,7 @@ const ItemDiffViewer = () => {
 };
 
 export const ItemViewer = () => {
-  const { currentItem } = useContext(CurrentItemContext);
+  const { currentItem } = useContext(AllDataContext);
 
   if (!currentItem) {
     return null;

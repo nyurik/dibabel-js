@@ -1,34 +1,48 @@
-import React, { Dispatch, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { Dispatch, useCallback, useContext, useEffect, useReducer, useRef, useState } from 'react';
 
 import { EuiText } from '@elastic/eui';
 
-import { error, success } from '../services/utils';
+import { error, sleep, success } from '../services/utils';
 import { ToastsContext } from './Toasts';
-import { Item, Items, Props, SrvContentTypes } from '../services/types';
+import { EditItem, Item, Items, LoadItem, Props, SyncLoaderOrItem } from '../services/types';
 import { StateStore } from '../services/StateStore';
 import { I18nContext } from './I18nContext';
 import { Message } from '../components/Message';
 import { ResetContext } from './ResetContext';
+import { ItemDstLink } from '../components/Snippets';
 
-export type DataLoadStatus = 'reset' | 'loading' | 'ready' | 'error'
+export type DataLoadStatus = 'reset' | 'loading' | 'ready' | 'error' | 'saved';
+
+type OptionalItem = Item | undefined;
 
 export type AllDataContextType = {
+  dataVersion: number,
   stateStore: StateStore,
   allItems: Items,
   status: DataLoadStatus,
   reload: Dispatch<void>,
-  loadItem: (qid: string, wiki: string) => Promise<SyncLoader>,
-}
+  loadItem: LoadItem,
+  editItem: EditItem,
+  updateSavedItem: Dispatch<Item>,
+  currentItem?: Item,
+  setCurrentItem: Dispatch<OptionalItem>,
+};
 
 export const AllDataContext = React.createContext<AllDataContextType>({} as AllDataContextType);
+
+const bumpDataVerDispatcher = (state: number) => state + 1;
 
 export const AllDataProvider = ({ children }: Props) => {
   const { resetIndex } = useContext(ResetContext);
   const { i18n } = useContext(I18nContext);
   const { addToast } = useContext(ToastsContext);
+
   const [status, setStatus] = useState<DataLoadStatus>('reset');
+  const [currentItem, setCurrentItem] = useState<OptionalItem>(undefined);
+
   const reload = useCallback(() => setStatus('reset'), []);
   const dataRef = useRef<StateStore>();
+  const [dataVersion, bumpDataVersion] = useReducer(bumpDataVerDispatcher, 0);
 
   useEffect(() => {
     if (resetIndex) {
@@ -48,6 +62,7 @@ export const AllDataProvider = ({ children }: Props) => {
       setStatus('loading');
       (async () => {
         const res = await stateStore.loadData();
+        bumpDataVersion();
         switch (res.status) {
           case 'error':
             setStatus('error');
@@ -83,15 +98,53 @@ export const AllDataProvider = ({ children }: Props) => {
     }
   }, [addToast, i18n, stateStore, status]);
 
-  const loadItem = useCallback(async (qid: string, wiki: string): Promise<SyncLoader> => {
-    const res = await dataRef.current!.loadData(qid, wiki);
+  const editItem: EditItem = useCallback(async (item, comment) => {
+    try {
+      const res = await dataRef.current!.editItem(item, comment);
+      if (res.edit.result !== 'Success') {
+        item.contentStatus = { status: 'error', error: res.edit.info || JSON.stringify(res.edit) };
+      } else {
+        item.contentStatus = { status: 'saved' };
+      }
+    } catch (err) {
+      item.contentStatus = { status: 'error', error: err.toString() };
+    }
+    bumpDataVersion();
+  }, []);
+
+  const loadItem: LoadItem = useCallback(async (item: Item): Promise<SyncLoaderOrItem> => {
+
+    // let item: SyncLoaderOrItem = stateStore.items.filter(v => v.qid === qid && v.wiki === wiki)[0];
+    if (item.content !== undefined) {
+      return item;
+    }
+    if (item.contentStatus && item.contentStatus.promise) {
+      await item.contentStatus.promise;
+      return item;
+    }
+
+    item.contentStatus = { status: 'loading' };
+    bumpDataVersion();
+
+    item.contentStatus.promise = dataRef.current!.loadData(item.qid, item.wiki);
+    let res;
+    try {
+      res = await item.contentStatus.promise;
+    } finally {
+      item.contentStatus.promise = undefined;
+    }
+
+    bumpDataVersion();
+
     switch (res.status) {
+
       case 'error':
         addToast(error({
           title: i18n('dataloader-toast-error--title'),
           text: (<EuiText>{res.exception.toString()}</EuiText>),
         }));
-        return { status: { status: 'error', error: res.exception.toString() } };
+        return { contentStatus: { status: 'error', error: res.exception.toString() } };
+
       case 'success':
       case 'debug':
         // TODO: detect actual changes and don't refresh when not needed
@@ -103,30 +156,63 @@ export const AllDataProvider = ({ children }: Props) => {
             text: 'LOADED ITEM',
           }));
         }
-        return {
-          status: { status: 'ready' },
-          newItem: stateStore.items.filter(v => v.qid === qid && v.wiki === wiki)[0],
-          content: res.content,
-        };
+
+        item.contentStatus = { status: 'ready' };
+        return item;
+
       default:
         throw new Error(res.status);
     }
-  }, [addToast, i18n, stateStore]);
+  }, [addToast, i18n]);
+
+  const updateSavedItem = useCallback((item: Item) => {
+    (async () => {
+      let tries = 0;
+      const maxTries = 30;
+      for (; tries < maxTries; tries++) {
+        const res = await loadItem(item);
+        if (!res.contentStatus || res.contentStatus.status !== 'ready') {
+          break;
+        }
+        const syncData = res.content!;
+        if (syncData.changeType !== 'new' && syncData.currentRevTs !== item.dstTimestamp) {
+          break;
+        }
+        // Sleep, but no longer than 10 seconds each time
+        await sleep(1000 * Math.min(10, tries));
+      }
+      if (tries === maxTries) {
+        addToast(error({
+          title: (<Message id={'$1 was modified, but the DiBabel server was not able to get confirmation.'}
+                           placeholders={[<ItemDstLink item={item}/>]}/>),
+        }));
+      }
+    })();
+  }, [addToast, loadItem]);
+
+  const setCurrentItemCB = useCallback((item: OptionalItem) => {
+    (async () => {
+      setCurrentItem(item);
+      if (item) {
+        await loadItem(item);
+      }
+    })();
+  }, [loadItem]);
 
   return (
-    <AllDataContext.Provider value={{ stateStore, allItems: stateStore.items, status, reload, loadItem }}>
+    <AllDataContext.Provider value={{
+      stateStore,
+      dataVersion,
+      allItems: stateStore.items,
+      status,
+      reload,
+      loadItem,
+      editItem,
+      updateSavedItem,
+      currentItem,
+      setCurrentItem: setCurrentItemCB,
+    }}>
       {children}
     </AllDataContext.Provider>
   );
-};
-
-export interface ItemStatus {
-  status: DataLoadStatus;
-  error?: string;
-}
-
-export type SyncLoader = {
-  status: ItemStatus,
-  newItem?: Item,
-  content?: SrvContentTypes,
 };
