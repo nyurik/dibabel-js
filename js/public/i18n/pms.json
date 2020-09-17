@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Borichèt"
+			"Borichèt",
+			"Yurik"
 		]
 	},
 	"create-page--button": "Gionté un neuv...",
@@ -71,7 +72,7 @@
 	"filters-lang--unknown": "Multilenga / Àutr",
 	"filters-project": "Proget",
 	"filters-protection": "Protession",
-	"filters-searchbar--placeholder": "esempi:   en.wikipedia    TNT    lang=en",
+	"filters-searchbar--placeholder": "esempi:   pms.wikipedia    TNT    lang=pms",
 	"filters-status": "Stat",
 	"filters-status-diverged": "Divergent",
 	"filters-status-ok": "Va bin",
@@ -81,8 +82,6 @@
 	"filters-type--modules": "Mòdoj",
 	"filters-type--templates": "Stamp",
 	"filters-wiki": "Wiki",
-	"header-beta--label": "BETA",
-	"header-beta--tooltip": "Travaj an cors. Për piasì, ch'a verìfica soe modìfiche.",
 	"header-description": "Conservé ij mòdoj e jë stamp idèntich a travers le wiki e le lenghe. Scrit da $1",
 	"header-links--bugs": "Givo e idèje",
 	"header-links--help": "Agiut",
@@ -91,6 +90,9 @@
 	"language-filter--placeholder": "Filtré la lista",
 	"language-help": "Giuté a volté",
 	"language-unknown": "Nen conossù",
+	"multisync-button-tooltip--content": "Apliché sa modìfica-sì a {{PLURAL:$1|$1 pàgina|$1 pàgine}}. {{PLURAL:$1|Un resumé Ëd modìfica voltà a sarà|Dij resumé Ëd modìfica voltà a saran}} generà an automàtich.",
+	"multisync-header-count--tooltip": "Nùmer ëd pàgine ch'a saran copià an na partìa sola.",
+	"multisync-page-header--label": "Sincronisé le pàgine",
 	"settings-gear--aria": "Duverté lë mnu dj'opsion",
 	"settings-logout": "Seurte dal sistema...",
 	"settings-options": "Opsion",
@@ -99,8 +101,8 @@
 	"settings-split--label": "Divide la visualisassion ëd dif",
 	"settings-split--tooltip": "Smon-e la comparassion ëd pàgina su doe colòne (dividùa) o unificà.",
 	"settings-theme--label": "Meud nuité",
-	"sync-button--label": "Sincronisé $1 pàgine",
-	"sync-button--tooltip": "La sincronisassion multipàgine a l'é ancor nen an servissi",
+	"sync-button--label": "Agiorné {{PLURAL:$1|$1 pàgina|$1 pàgine}}",
+	"sync-button-tooltip--content": "Sòn a përmet a vàire pàgine selessionà d'esse copià an massa. Sgnaché ansima a 's boton-sì për arlese minca na partìa ëd modìfica prima ëd copié.",
 	"table-cell-deps-missing--tooltip": "Costa pàgina a l'ha dle dipendense che a esisto nen an sla wiki bërsaj.",
 	"table-cell-deps-stale--tooltip": "Le dipendense ëd costa pàgina a son sorpassà an sla wiki bërsaj.",
 	"table-cell-deps-unsynced--tooltip": "Costa pàgina a l'ha dle dipendese ch'a son nen sincronisà.",
@@ -120,6 +122,7 @@
 	"table-cell-unlocalized--tooltip": "{{PLURAL:$1|un-a pàgina a l'é idèntica|$1 pàgine a son idèntiche}} a l'original. Coste pàgina a l'han damanca d'esse localisà përché chèich ëstamp dipendent a peulo avèj dij nòm diferent an sa wiki. Sòn a peul esse fàit an automàtich.",
 	"table-cell-updated--tooltip": "{{PLURAL:$1|Un-a pàgina a l'é|$1 pàgine a son}} agiornà.",
 	"table-externallink--aria": "Duverté la liura esterna an na scheda neuva",
+	"table-header-count--label": "Conteur",
 	"table-header-deps--label": "Dipendense",
 	"table-header-deps--tooltip": "L'andicator dle dipendense a mostra s'a-i é dij problema con le pàgine dovrà da costa pàgina-sì.",
 	"table-header-diverged--label": "Divergent",

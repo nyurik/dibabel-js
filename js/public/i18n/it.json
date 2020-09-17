@@ -13,5 +13,6 @@
 	"dataloader-toast-success--pages": "{{PLURAL:$1|una pagina|$1 pagine}}",
 	"diff-summary-text--edit": "Copia di {{PLURAL:$1|una modifica|$1 modifiche}} di $2: $3 da $4. ([[mw:Special:MyLanguage/WP:TNT|documentazione]])",
 	"diff-summary-text--empty-summary": "(nessun oggetto)",
-	"filters-protection": "Protezione"
+	"filters-protection": "Protezione",
+	"sync-button--label": "Aggiorna {{PLURAL:$1|$1 pagina|$1 pagine}}"
 }

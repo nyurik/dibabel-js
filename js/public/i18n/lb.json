@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Robby"
+			"Robby",
+			"Yurik"
 		]
 	},
 	"create-page-content--label": "Inhalt",
@@ -23,7 +24,7 @@
 	"filters-lang--unknown": "Méisproocheg / Anerer",
 	"filters-project": "Projet",
 	"filters-protection": "Limitéiert op",
-	"filters-searchbar--placeholder": "Beispiller:en.wikipedia    TNT    lang=en",
+	"filters-searchbar--placeholder": "Beispiller:  lb.wikipedia    TNT    lang=lb",
 	"filters-status": "Status",
 	"filters-status-ok": "OK",
 	"filters-status-outdated": "Vereelzt",
@@ -32,7 +33,6 @@
 	"filters-type--modules": "Moduller",
 	"filters-type--templates": "Schablounen",
 	"filters-wiki": "Wiki",
-	"header-beta--label": "BETA",
 	"header-links--help": "Hëllef",
 	"header-links--source": "Quell",
 	"language--tooltip": "Klicke fir d'Sprooch z'änneren",

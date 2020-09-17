@@ -36,7 +36,7 @@
 	"diff-summary-text--edit": "$4에서 $2: \"$3\"에 의한 편집 {{PLURAL:$1|한 개|$1개}}를 복사함. ([[mw:WP:TNT|docs]], [[c:Data:I18n/DiBabel.tab|translate]])",
 	"diff-summary-text--empty-summary": "(요약 없음)",
 	"filters-protection": "보호",
-	"filters-searchbar--placeholder": "예시:   ko.wikipedia    트라이나이트로톨루엔    lang=ko",
+	"filters-searchbar--placeholder": "예시:   ko.wikipedia    TNT    lang=ko",
 	"language--tooltip": "표시 언어를 변경하려면 클릭",
 	"table-cell-deps-missing--tooltip": "이 문서는 대상 위키에 존재하지 않는 의존성이 있습니다.",
 	"table-cell-deps-unsynced--tooltip": "이 문서는 동기화되지 않은 의존성이 있습니다.",

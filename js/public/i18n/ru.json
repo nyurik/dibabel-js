@@ -14,7 +14,6 @@
 	"filters-type": "Тип",
 	"filters-type--modules": "Модули",
 	"filters-type--templates": "Шаблоны",
-	"header-beta--label": "БЕТА",
 	"header-description": "Сохраняет код модулей и шаблонов одинаковыми на всех языках. Автор $1",
 	"header-links--bugs": "Ошибки и Идеи",
 	"header-links--help": "Справка",

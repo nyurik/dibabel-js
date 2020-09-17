@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"DraconicDark",
-			"Elliot"
+			"Elliot",
+			"Yurik"
 		]
 	},
 	"create-page--button": "Neu hinzufügen...",
@@ -35,11 +36,10 @@
 	"diff-header-warnings--diverged": "Diese Seite wurde von der $1 Gemeinschaft bearbeitet. Nicht überschreiben außer:",
 	"diff-label--current": "Derzeitiger $1 Inhalt",
 	"diff-label--new": "Neuer $1 Inhalt",
-	"filters-searchbar--placeholder": "Beispiele: en.wikipedia    TNT    lang=en",
+	"filters-searchbar--placeholder": "Beispiele: de.wikipedia    TNT    lang=de",
 	"header-links--bugs": "Bugs & Ideen",
 	"settings-gear--aria": "Öffne Auswahlmenü",
 	"sync-button--label": "Synchronisiere $1 Seiten",
-	"sync-button--tooltip": "Mehrseitige Synchronisation ist noch nicht durchgeführt",
 	"table-cell-deps-stale--tooltip": "Die Abhängigkeiten dieser Seite sind auf dem Zielwiki veraltet",
 	"table-cell-deps-unsynced--tooltip": "Diese Seite hat Abhängigkeiten, die nicht synchronisiert werden.",
 	"table-cell-status--outdated-label": "Veraltet durch {{PLURAL:$1|1 Bearbeitung|$1 Bearbeitungen}}",
