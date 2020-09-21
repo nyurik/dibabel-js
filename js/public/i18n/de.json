@@ -3,6 +3,7 @@
 		"authors": [
 			"DraconicDark",
 			"Elliot",
+			"Ferdinand0101",
 			"Yurik"
 		]
 	},
@@ -39,7 +40,7 @@
 	"filters-searchbar--placeholder": "Beispiele: de.wikipedia    TNT    lang=de",
 	"header-links--bugs": "Bugs & Ideen",
 	"settings-gear--aria": "Öffne Auswahlmenü",
-	"sync-button--label": "Synchronisiere $1 Seiten",
+	"sync-button--label": "Synchronisiere {{PLURAL:$1|$1 Seite|$1 Seiten}}",
 	"table-cell-deps-stale--tooltip": "Die Abhängigkeiten dieser Seite sind auf dem Zielwiki veraltet",
 	"table-cell-deps-unsynced--tooltip": "Diese Seite hat Abhängigkeiten, die nicht synchronisiert werden.",
 	"table-cell-status--outdated-label": "Veraltet durch {{PLURAL:$1|1 Bearbeitung|$1 Bearbeitungen}}",
