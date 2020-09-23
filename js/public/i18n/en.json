@@ -103,7 +103,7 @@
   "settings-split--tooltip": "Show page comparison side by side (split) or unified.",
   "settings-theme--label": "Night mode",
   "sync-button--label": "Update {{PLURAL:$1|$1 page|$1 pages}}",
-  "sync-button-tooltip--content": "This allows multiple selected pages to be copied in bulk.  Click this button to review each change group before copying.",
+  "sync-button-tooltip--content": "This allows multiple selected pages to be copied in bulk. Click this button to review each change group before copying.",
   "table-cell-deps-missing--tooltip": "This page has dependencies that do not exist on the target wiki.",
   "table-cell-deps-stale--tooltip": "The dependencies of this page are outdated on the target wiki.",
   "table-cell-deps-unsynced--tooltip": "This page has dependencies that are not being synchronized.",
