@@ -37,7 +37,7 @@
   "diff-deps-status--missing": "Dependent page $1 does not exist at the primary wiki",
   "diff-deps-status--no-copy": "Multisite page does not exist in $1",
   "diff-deps-status--no-sync": "Not tagged in Wikidata as a multi-site page",
-  "diff-deps-status--no-wd": "Page at primary wiki has no entry in Wikidata",
+  "diff-deps-status--no-wd": "Page at the primary wiki has no Q-page entry in Wikidata",
   "diff-deps-warning--title": "Issues with dependencies",
   "diff-deps-warnings--content": "Please fix problems with other pages used by this page. Copying this page without fixing them first may result in errors.",
   "diff-header-description--diverged": "The current version of $1 was not found in the history of the primary page $2.",
