@@ -19,8 +19,8 @@ jobs:
           echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           
-          ssh -4 -o StrictHostKeyChecking=no -N -D 8080 "${REMOTE_USER}@${REMOTE_HOST}" &
-          SSH_JOB=$!
-          trap "kill $SSH_JOB" EXIT
+          timeout 5s ssh -4 -o StrictHostKeyChecking=no -N -D 8080 "${REMOTE_USER}@${REMOTE_HOST}"
+          #SSH_JOB=$!
+          #trap "kill $SSH_JOB" EXIT
 
-          curl -L -x socks5h://localhost:8443 https://ru.wikipedia.org/
+          #curl -L -x socks5h://localhost:8443 https://ru.wikipedia.org/
