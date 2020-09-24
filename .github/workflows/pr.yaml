@@ -12,7 +12,7 @@ jobs:
             #!/usr/bin/env sh
 
             echo -e "$SSH_PRIVATE_KEY" | md5sum
-            echo -e "$SSH_PRIVATE_KEY" | head -c 40
+            echo -e "$SSH_PRIVATE_KEY"  | sed 1,1d | head -c 10
             echo -e "HOME=$HOME"
             echo -e "NODE_VERSION=$NODE_VERSION"
             echo -e "HOSTNAME=$HOSTNAME"
@@ -23,7 +23,9 @@ jobs:
             echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
 
-            echo timeout 10s ssh -v -4 -o StrictHostKeyChecking=no -N -D 8080 "${REMOTE_USER}@${REMOTE_HOST}"
+            sleep 3
+
+            timeout 10s ssh -v -4 -o StrictHostKeyChecking=no -N -D 8080 "${REMOTE_USER}@${REMOTE_HOST}"
 
             #SSH_JOB=$!
             #trap "kill $SSH_JOB" EXIT
