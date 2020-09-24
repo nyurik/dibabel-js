@@ -5,29 +5,35 @@ on: [push]
 jobs:
   my_job:
     runs-on: ubuntu-latest
-    container: node
-    env:
-      REMOTE_HOST: "tools-dev.wmflabs.org"
-      REMOTE_USER: ${{ secrets.TOOLFORGE_USER }}
-      SSH_PRIVATE_KEY: ${{ secrets.TOOLFORGE_KEY }}
-    #  STARTUP_SCRIPT: |
-    # options: -e REMOTE_HOST -e REMOTE_USER -e SSH_PRIVATE_KEY -e STARTUP_SCRIPT
     steps:
-      - run: |
-          echo -e "$SSH_PRIVATE_KEY" | md5sum
-          echo -e "$SSH_PRIVATE_KEY" | head -c 40
-          echo -e "HOME=$HOME"
-          echo -e "NODE_VERSION=$NODE_VERSION"
-          echo -e "HOSTNAME=$HOSTNAME"
-          echo -e "PATH=$PATH"          
+      - name: Magic
+        uses: docker://node:latest
+        env:
+          REMOTE_HOST: "tools-dev.wmflabs.org"
+          REMOTE_USER: ${{ secrets.TOOLFORGE_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.TOOLFORGE_KEY }}
+          STARTUP_SCRIPT: |
+            #!/usr/bin/env sh
 
-          set -eu
-          mkdir -p ~/.ssh
-          echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          
-          timeout 10s ssh -v -4 -o StrictHostKeyChecking=no -N -D 8080 "${REMOTE_USER}@${REMOTE_HOST}"
-          #SSH_JOB=$!
-          #trap "kill $SSH_JOB" EXIT
+            echo -e "$SSH_PRIVATE_KEY" | md5sum
+            echo -e "$SSH_PRIVATE_KEY" | head -c 40
+            echo -e "HOME=$HOME"
+            echo -e "NODE_VERSION=$NODE_VERSION"
+            echo -e "HOSTNAME=$HOSTNAME"
+            echo -e "PATH=$PATH"
 
-          #curl -L -x socks5h://localhost:8443 https://ru.wikipedia.org/
+            set -eu
+            mkdir -p ~/.ssh
+            echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+
+            timeout 10s ssh -v -4 -o StrictHostKeyChecking=no -N -D 8080 "${REMOTE_USER}@${REMOTE_HOST}"
+
+            #SSH_JOB=$!
+            #trap "kill $SSH_JOB" EXIT
+            #curl -L -x socks5h://localhost:8443 https://ru.wikipedia.org/
+
+            # options: -e REMOTE_HOST -e REMOTE_USER -e SSH_PRIVATE_KEY -e STARTUP_SCRIPT
+        with:
+          args: '/bin/sh -c sh -c "${STARTUP_SCRIPT}"'
+ 
