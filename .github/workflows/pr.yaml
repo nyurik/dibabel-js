@@ -23,7 +23,7 @@ jobs:
             echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
 
-            timeout 10s ssh -v -4 -o StrictHostKeyChecking=no -N -D 8080 "${REMOTE_USER}@${REMOTE_HOST}"
+            echo timeout 10s ssh -v -4 -o StrictHostKeyChecking=no -N -D 8080 "${REMOTE_USER}@${REMOTE_HOST}"
 
             #SSH_JOB=$!
             #trap "kill $SSH_JOB" EXIT
