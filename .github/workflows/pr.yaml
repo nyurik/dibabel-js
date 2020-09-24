@@ -1,0 +1,15 @@
+name: Test and publish
+
+on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test
+        env:
+          REMOTE_HOST: "tools-dev.wmflabs.org"
+          REMOTE_USER: ${{ secrets.TOOLFORGE_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.TOOLFORGE_KEY }}
+        run:
+          ls
