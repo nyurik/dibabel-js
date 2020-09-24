@@ -3,13 +3,24 @@ name: Test and publish
 on: [push]
 
 jobs:
-  build:
+  my_job:
     runs-on: ubuntu-latest
-    steps:
-      - name: Test
-        env:
-          REMOTE_HOST: "tools-dev.wmflabs.org"
-          REMOTE_USER: ${{ secrets.TOOLFORGE_USER }}
-          SSH_PRIVATE_KEY: ${{ secrets.TOOLFORGE_KEY }}
-        run:
-          ls
+    container:
+      image: node:10.16-jessie
+      options: -e REMOTE_HOST -e REMOTE_USER -e SSH_PRIVATE_KEY -e STARTUP_SCRIPT /bin/sh -c 'sh -c "${STARTUP_SCRIPT}"'
+      env:
+        REMOTE_HOST: "tools-dev.wmflabs.org"
+        REMOTE_USER: ${{ secrets.TOOLFORGE_USER }}
+        SSH_PRIVATE_KEY: ${{ secrets.TOOLFORGE_KEY }}
+        STARTUP_SCRIPT: |
+          #!/usr/bin/env sh
+          set -eu
+          mkdir -p ~/.ssh
+          echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          
+          ssh -4 -o StrictHostKeyChecking=no -N -D 8080 "${REMOTE_USER}@${REMOTE_HOST}" &
+          SSH_JOB=$!
+          trap "kill $SSH_JOB" EXIT
+
+          curl -L -x socks5h://localhost:8443 https://ru.wikipedia.org/
