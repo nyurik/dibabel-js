@@ -13,8 +13,6 @@ jobs:
           REMOTE_USER: ${{ secrets.TOOLFORGE_USER }}
           SSH_PRIVATE_KEY: ${{ secrets.TOOLFORGE_KEY }}
           STARTUP_SCRIPT: |
-            #!/usr/bin/env sh
-
             echo -e "$SSH_PRIVATE_KEY" | md5sum
             echo -e "$SSH_PRIVATE_KEY" | head -c 40
             echo -e "HOME=$HOME"
@@ -35,5 +33,5 @@ jobs:
 
             # options: -e REMOTE_HOST -e REMOTE_USER -e SSH_PRIVATE_KEY -e STARTUP_SCRIPT
         with:
-          args: '/bin/sh -c sh -c "${STARTUP_SCRIPT}"'
+          args: sh -c '"${STARTUP_SCRIPT}"'
  
