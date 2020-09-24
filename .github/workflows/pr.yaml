@@ -6,13 +6,11 @@ jobs:
   my_job:
     runs-on: ubuntu-latest
     steps:
-      - name: Magic
-        uses: docker://node:latest
-        env:
-          REMOTE_HOST: "tools-dev.wmflabs.org"
-          REMOTE_USER: ${{ secrets.TOOLFORGE_USER }}
-          SSH_PRIVATE_KEY: ${{ secrets.TOOLFORGE_KEY }}
-          STARTUP_SCRIPT: |
+      - name: Create script
+        run: |
+            cat << 'EOF' > runme.sh
+            #!/usr/bin/env sh
+
             echo -e "$SSH_PRIVATE_KEY" | md5sum
             echo -e "$SSH_PRIVATE_KEY" | head -c 40
             echo -e "HOME=$HOME"
@@ -32,6 +30,24 @@ jobs:
             #curl -L -x socks5h://localhost:8443 https://ru.wikipedia.org/
 
             # options: -e REMOTE_HOST -e REMOTE_USER -e SSH_PRIVATE_KEY -e STARTUP_SCRIPT
-        with:
-          args: sh -c '"${STARTUP_SCRIPT}"'
+            EOF
+            chmod +x runme.sh
+
+      - name: Magic
+        env:
+          REMOTE_HOST: "tools-dev.wmflabs.org"
+          REMOTE_USER: ${{ secrets.TOOLFORGE_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.TOOLFORGE_KEY }}
+        run: |
+          ./runme.sh
+        
+
+#       - name: Magic
+#         uses: docker://node:latest
+#         env:
+#           REMOTE_HOST: "tools-dev.wmflabs.org"
+#           REMOTE_USER: ${{ secrets.TOOLFORGE_USER }}
+#           SSH_PRIVATE_KEY: ${{ secrets.TOOLFORGE_KEY }}
+#         with:
+#           entrypoint: runme.sh
  
