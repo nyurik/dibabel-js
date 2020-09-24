@@ -1,6 +1,6 @@
 name: Test and publish
 
-on: [pull_request]
+on: [push]
 
 jobs:
   build:
