@@ -12,7 +12,7 @@ jobs:
             #!/usr/bin/env sh
 
             echo -e "$SSH_PRIVATE_KEY" | md5sum
-            echo -e "$SSH_PRIVATE_KEY"  | sed 1,1d | head -c 10
+            echo -e "$SSH_PRIVATE_KEY"  | sed 1,1d | head -c 15
             echo -e "HOME=$HOME"
             echo -e "NODE_VERSION=$NODE_VERSION"
             echo -e "HOSTNAME=$HOSTNAME"
