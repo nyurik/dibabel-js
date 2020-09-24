@@ -72,7 +72,7 @@
 	"settings-split--label": "Dividir la vista diff",
 	"settings-split--tooltip": "Mostrar la página de comparación lado a lado o unificada.",
 	"settings-theme--label": "Modo nocturno",
-	"sync-button--label": "Sincronizar $1 páginas",
+	"sync-button--label": "Actualizar {{PLURAL:$1|$1 página|$1 páginas}}",
 	"table-cell-diverged--tooltip": "{{PLURAL:$1|Una página tiene|$1 páginas tienen}} modificaciones locales y se deben sincronizar individualmente.",
 	"table-cell-hash--tooltip": "Este número de hash representa una identificación única para el contenido actual de la página. Páginas con hash idéntica tienen el mismo contenido. El hash se computa antes de que la página sea localizada para esta wiki.",
 	"table-cell-outdated--tooltip": "{{PLURAL:$1|Una página está|$1 páginas están}} detrás de la primaria y se puede sincronizar automáticamente.",

@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Fitoschido",
 			"Mguix",
 			"Yurik"
 		]
@@ -90,6 +91,7 @@
 	"language-filter--placeholder": "Llista de filtres",
 	"language-help": "Ajudeu a traduir",
 	"language-unknown": "Desconegut",
+	"multisync-page-header--label": "Sincronitza les pàgines",
 	"settings-gear--aria": "Obre el menú d'opcions",
 	"settings-logout": "Sortir...",
 	"settings-options": "Opcions",
@@ -98,7 +100,7 @@
 	"settings-split--label": "Dividir la vista diff",
 	"settings-split--tooltip": "Mostra la comparació de pàgina costat a costat (split) o unificada.",
 	"settings-theme--label": "Mode nocturn",
-	"sync-button--label": "Sincronitza $1 pàgines",
+	"sync-button--label": "Actualitza {{PLURAL:$1|$1 pàgina|$1 pàgines}}",
 	"table-cell-deps-missing--tooltip": "Aquesta pàgina té dependències que no existeixen al wiki de destinació.",
 	"table-cell-deps-stale--tooltip": "Les dependències d'aquesta pàgina són obsoletes en el wiki de destinació.",
 	"table-cell-deps-unsynced--tooltip": "Aquesta pàgina té dependències que no s'estan sincronitzant.",
@@ -118,6 +120,7 @@
 	"table-cell-unlocalized--tooltip": "{{PLURAL: Una pàgina és idèntica|Les $1 pàgines són idèntiques}} a l'original.  {{PLURAL: Aquesta pàgina s'ha|Aquestes pàgines s'han}}  de traduir perquè algunes plantilles dependents poden tenir diferents noms en aquest wiki.  Això es pot fer automàticament.",
 	"table-cell-updated--tooltip": "{{PLURAL:Una pàgina està actualitzada|$1 pàgines estan actualitzades}}.",
 	"table-externallink--aria": "Obre l'enllaç extern en una pestanya nova",
+	"table-header-count--label": "Recompte",
 	"table-header-deps--label": "Dependències",
 	"table-header-deps--tooltip": "L'estat de la dependència indica si hi ha algun problema amb les pàgines utilitzades per aquesta pàgina.",
 	"table-header-diverged--label": "Divergit",
