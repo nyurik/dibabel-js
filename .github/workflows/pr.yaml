@@ -14,6 +14,13 @@ jobs:
     # options: -e REMOTE_HOST -e REMOTE_USER -e SSH_PRIVATE_KEY -e STARTUP_SCRIPT
     steps:
       - run: |
+          echo -e "$SSH_PRIVATE_KEY" | md5sum
+          echo -e "$SSH_PRIVATE_KEY" | head -c 40
+          echo -e "HOME=$HOME"
+          echo -e "NODE_VERSION=$NODE_VERSION"
+          echo -e "HOSTNAME=$HOSTNAME"
+          echo -e "PATH=$PATH"          
+
           set -eu
           mkdir -p ~/.ssh
           echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
