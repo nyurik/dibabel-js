@@ -35,7 +35,7 @@
 	"diff-deps-status--missing": "Beroendesidan $1 finns inte på primärwikin",
 	"diff-deps-status--no-copy": "Multisite-sidan finns inte på $1",
 	"diff-deps-status--no-sync": "Inte märkt i Wiki som en multi-site-sida",
-	"diff-deps-status--no-wd": "Sidan på primärwikin har inget Wikidata-inlägg",
+	"diff-deps-status--no-wd": "Sidan på primärwikin har inget motsvarande Wikidata-objekt.",
 	"diff-deps-warning--title": "Problem med beroenden",
 	"diff-deps-warnings--content": "Åtgärda problemen med andra sidor som används av den här sidan. Att kopiera den här sidan utan att åtgärda dem först kan leda till fel.",
 	"diff-header-description--diverged": "Den nuvarande versionen av $1 hittades inte i historiken på primärsidan $2.",

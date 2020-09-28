@@ -35,7 +35,7 @@
 	"diff-deps-status--missing": "Bağımlı sayfa $1 birincil vikide yok",
 	"diff-deps-status--no-copy": "$1 içindeki çoklu site sayfası yok",
 	"diff-deps-status--no-sync": "Vikiveri'de çok siteli bir sayfa olarak etiketlenmemiş",
-	"diff-deps-status--no-wd": "Birincil vikideki sayfanın Vikiveri'ye girişi yok",
+	"diff-deps-status--no-wd": "Birincil vikideki sayfada karşılık gelen Vikiveri öğe sayfası yok.",
 	"diff-deps-warning--title": "Bağımlılıklarla ilgili sorunlar",
 	"diff-deps-warnings--content": "Lütfen bu sayfanın kullandığı diğer sayfalarla ilgili sorunları düzeltin. Bu sayfanın düzeltilmeden kopyalanması hatalara neden olabilir.",
 	"diff-header-description--diverged": "$1 sayfasının mevcut sürümü, $2 ana sayfasının geçmişinde bulunamadı.",

@@ -31,7 +31,7 @@
 	"diff-deps-status--missing": "A página dependente $1 não existe na wiki principal",
 	"diff-deps-status--no-copy": "A página multisite não existe em $1",
 	"diff-deps-status--no-sync": "Não marcado no Wikidata como uma página multi-site",
-	"diff-deps-status--no-wd": "A página na wiki primário não tem entrada no Wikidata",
+	"diff-deps-status--no-wd": "A página na wiki principal não tem página de item do Wikidata correspondente.",
 	"diff-deps-warning--title": "Problemas com dependências",
 	"diff-deps-warnings--content": "Corrija problemas com outras páginas usadas por esta página. Copiar esta página sem corrigi-los primeiro pode resultar em erros.",
 	"diff-header-warnings--diverged-2": "As mudanças locais agora estão incluídas na página principal",

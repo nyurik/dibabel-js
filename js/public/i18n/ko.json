@@ -38,6 +38,7 @@
 	"filters-protection": "보호",
 	"filters-searchbar--placeholder": "예시:   ko.wikipedia    TNT    lang=ko",
 	"language--tooltip": "표시 언어를 변경하려면 클릭",
+	"multisync-page-header--label": "페이지 동기화",
 	"table-cell-deps-missing--tooltip": "이 문서는 대상 위키에 존재하지 않는 의존성이 있습니다.",
 	"table-cell-deps-unsynced--tooltip": "이 문서는 동기화되지 않은 의존성이 있습니다.",
 	"table-header-deps--label": "의존성"
