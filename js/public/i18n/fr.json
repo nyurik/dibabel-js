@@ -40,7 +40,7 @@
 	"diff-deps-status--missing": "La page dépendante $1 n’existe pas sur le wiki primaire",
 	"diff-deps-status--no-copy": "La page multi-site n’existe pas sur $1",
 	"diff-deps-status--no-sync": "Non marqué dans Wikidata comme page multi-site",
-	"diff-deps-status--no-wd": "La page dans le wiki primaire n’a pas d’entrée dans Wikidata",
+	"diff-deps-status--no-wd": "La page dans le wiki primaire n’a pas de page d'article correspondante dans Wikidata.",
 	"diff-deps-warning--title": "Problèmes avec les dépendances",
 	"diff-deps-warnings--content": "Veuillez corriger les problèmes avec les autres pages utilisées par cette page-ci. Copier cette page sans les corriger peut provoquer des erreurs.",
 	"diff-header-description--diverged": "La version actuelle de $1 n’a pas été trouvée dans l’historique de la page primaire $2.",

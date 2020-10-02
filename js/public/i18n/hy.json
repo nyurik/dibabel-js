@@ -4,5 +4,26 @@
 			"Kareyac"
 		]
 	},
-	"create-page-cancel--label": "Չեղարկել"
+	"create-page--button": "Ավելացնել նոր...",
+	"create-page-cancel--label": "Չեղարկել",
+	"create-page-content--label": "Բովանդակություն",
+	"create-page-create--label": "Ստեղծել",
+	"diff-summary--label": "Ամփոփում",
+	"diff-summary--placeholder": "Խմբագրել ամփոփումը",
+	"filters-lang": "Լեզու",
+	"filters-project": "Նախագիծ",
+	"filters-protection": "Պաշտպանություն",
+	"filters-status": "Կարգավիճակ",
+	"filters-status-ok": "Լավ",
+	"filters-type--modules": "Մոդուլներ",
+	"filters-type--templates": "Կաղապարներ",
+	"filters-wiki": "Վիքի",
+	"header-links--help": "Օգնություն",
+	"header-links--source": "Աղբյուր",
+	"settings-options": "Ընտրանքներ",
+	"table-cell-status--ok-label": "Լավ",
+	"table-header-language--label": "Լեզու",
+	"table-header-project--label": "Նախագիծ",
+	"table-header-status--label": "Կարգավիճակ",
+	"user-login": "Մուտք"
 }

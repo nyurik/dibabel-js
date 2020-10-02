@@ -5,11 +5,15 @@
 			"Yurik"
 		]
 	},
+	"create-page--button": "添加新的...",
 	"create-page-cancel--label": "取消",
 	"create-page-content--label": "內容",
 	"create-page-create--label": "建立！",
+	"create-page-success--title": "$1已建立",
 	"create-page-target--placeholder": "標題",
 	"create-page-wiki--label": "目標 wiki",
+	"create-page-wiki--placeholder": "選擇目標 Wiki",
+	"dataloader-toast-success--title": "已載入資料",
 	"diff-content--loading": "載入頁面內容中…",
 	"diff-content--loading-error": "載入內容出錯…",
 	"diff-content--login-error": "複製前請在右上角登入。",
