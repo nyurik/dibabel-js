@@ -46,7 +46,7 @@
   "diff-header-description--outdated-rev": "{{PLURAL:$1|one revision|$1 revisions}}",
   "diff-header-description--unlocalized": "Page $1 is identical with the original $2, but needs to have some localizations.",
   "diff-header-warnings--diverged": "This page was modified by the $1 community. Do not override it unless:",
-  "diff-header-warnings--diverged-1": "Local, changes were done by mistake and should be reverted",
+  "diff-header-warnings--diverged-1": "The local changes were made by mistake and should be reverted",
   "diff-header-warnings--diverged-2": "The local changes are now included in the primary page",
   "diff-header-warnings--diverged-3": "The local changes are no longer needed",
   "diff-header-warnings--diverged-head": "Unrecognized content",
