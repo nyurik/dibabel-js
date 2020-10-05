@@ -21,14 +21,14 @@ jobs:
           host: "tools-dev.wmflabs.org"
           username: ${{ secrets.TOOLFORGE_USER }}
           key: ${{ secrets.TOOLFORGE_KEY }}
-          script: become dibabel bash -c 'mkdir -p www/static && (take www/static || echo "take failed") && chmod 2775 -R  www/static'
+          script: become dibabel bash -c 'mkdir -p www/static && (take www/static || echo "take failed") && (chmod 2775 -R  www/static || echo "chmod failed")'
       - name: Deploy to www/static dir
         uses: easingthemes/ssh-deploy@v2.1.1
         env:
             REMOTE_HOST: "tools-dev.wmflabs.org"
             REMOTE_USER: ${{ secrets.TOOLFORGE_USER }}
             SSH_PRIVATE_KEY: ${{ secrets.TOOLFORGE_KEY }}
-            ARGS: "-rltgoDzvO --delete"
+            ARGS: "-rltgoDzvO"  #  --delete
             SOURCE: "js/build/"
             TARGET: "/data/project/dibabel/www/static"
       - name: Take file ownership to the tool
