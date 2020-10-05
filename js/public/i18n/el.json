@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Geraki",
 			"Giorgos456",
 			"Norhorn"
 		]
@@ -9,12 +10,27 @@
 	"create-page-cancel--label": "Ακύρωση",
 	"create-page-content--label": "Περιεχόμενο",
 	"create-page-create--label": "Δημιουργία!",
+	"create-page-error--title": "Σφάλμα κατά τη δημιουργία του $1: $2",
+	"create-page-error-wd--title": "Το $1 δημιουργήθηκε, αλλά υπήρξε ένα σφάλμα κατά την προστθήκη τουw στο $2: $3",
 	"create-page-header--label": "Δημιουργία νέου αντίγραφου",
+	"create-page-page--label": "Μια σελίδα για αντιγραφή",
+	"create-page-page--placeholder": "Επιλέξτε μια σελίδα για αντιγραφή",
+	"create-page-success--title": "Το $1 δημιουργήθηκε",
+	"create-page-target--label": "Νέο όνομα σελίδας χωρίς ονοματοχώρο",
 	"create-page-target--placeholder": "Τίτλος",
+	"create-page-wiki--label": "Wiki στόχος",
+	"create-page-wiki--placeholder": "Επιλογή wiki στόχου",
 	"dataloader-toast-error--title": "Σφάλμα φόρτωσης του αντιγράφου",
+	"dataloader-toast-success--copies": "{{PLURAL:$1|ένα αντίγραφο|$1 αντίγραφα}}",
 	"dataloader-toast-success--pages": "{{PLURAL:$1|μια σελίδα|$1 σελίδες}}",
 	"diff-deps-status--manual-sync": "Συγχρονίστηκε χειροκίνητα",
 	"diff-deps-warnings--content": "Παρακαλούμε διορθώστε τα προβλήματα με άλλες σελίδες που χρησιμοποιούνται από αυτήν την σελίδα. Αντιγράφοντας αυτήν την σελίδα χωρίς να τα διορθώσετε πρώτα ίσως καταλήξει σε σφάλματα.",
+	"diff-summary--label": "Σύνοψη",
+	"diff-summary--placeholder": "Σύνοψη επεξεργασίας",
+	"diff-summary-text--edit": "Αντιγραφή {{PLURAL:$1|μιας αλλαγής|$1 αλλαγών}} από $2: $3 από $4. ([[mw:Special:MyLanguage/WP:TNT|docs]])",
+	"diff-summary-text--empty-summary": "(χωρίς σύνοψη)",
+	"diff-summary-text--new": "Δημιουργία ενός τοπικού αντιγράφου του $1. ([[mw:Special:MyLanguage/WP:TNT|docs]])",
+	"diff-summary-text--reset": "Επαναφορά της σελίδας στο τρέχον περιεχόμενο του $1. ([[mw:Special:MyLanguage/WP:TNT|docs]])",
 	"filters-searchbar--placeholder": "παράδειγμα:   el.wikipedia    TNT    lang=el",
 	"language--tooltip": "Κάντε κλικ για αλλαγή της εμφανιζόμενης γλώσσας."
 }

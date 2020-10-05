@@ -1,15 +1,27 @@
 {
 	"@metadata": {
 		"authors": [
+			"Kareyac",
 			"Rail",
 			"WaldiSt"
 		]
 	},
+	"create-page--button": "Dodaj nowy...",
+	"create-page-cancel--label": "Anuluj",
+	"create-page-create--label": "Utwórz!",
 	"diff-content--loading": "Wczytywanie treści strony…",
 	"diff-content--loading-error": "Wystąpił błąd podczas wczytywania…",
 	"diff-content--login-error": "Zaloguj się używając linku w prawym górnym roku ekranu, zanim skopiujesz.",
 	"diff-header-warnings--diverged-head": "Nierozpoznana zawartość",
 	"diff-summary--label": "Opis zmian",
+	"diff-update": "Aktualizuj!",
+	"filters-project": "Projekt",
+	"filters-protection": "Zabezpieczenie",
+	"filters-status": "Status",
+	"filters-status-ok": "OK",
+	"filters-type--templates": "Szablony",
+	"filters-wiki": "Wiki",
+	"header-links--help": "Pomoc",
 	"header-links--source": "Źródło",
 	"settings-options": "Opcje",
 	"sync-button--label": "Zaktualizuj $1 {{PLURAL:$1|stronę|strony|stron}}",
@@ -17,5 +29,6 @@
 	"table-header-diverged--tooltip": "Liczba stron z lokalnymi modyfikacjami.",
 	"table-header-outdated--label": "Zdezaktualizowane",
 	"table-header-project--label": "Projekt",
+	"table-header-status--label": "Status",
 	"table-loading": "Ładowanie…"
 }

@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Hanna Tardos",
 			"Tacsipacsi",
 			"Yurik"
 		]
@@ -39,7 +40,7 @@
 	"diff-header-description--outdated-rev": "$1 változattal",
 	"diff-header-description--unlocalized": "A(z) $1 lap azonos az eredetivel ($2), de szükség van a lokalizálására.",
 	"diff-header-warnings--diverged": "Ezt a lapot módosította a(z) $1 közössége. Ne írd felül, kivéve ha:",
-	"diff-header-warnings--diverged-1": "A helyi változtatások hibásak és visszavonandók",
+	"diff-header-warnings--diverged-1": "A helyi változtatások véletlen történtek. Visszaállítás szükséges",
 	"diff-header-warnings--diverged-2": "A helyi változtatásokat most már tartalmazza az elsődleges lap",
 	"diff-header-warnings--diverged-3": "A helyi változtatások már nem szükségesek",
 	"diff-summary--label": "Összefoglaló",
@@ -77,6 +78,8 @@
 	"language-filter--placeholder": "Lista szűrése",
 	"language-help": "Segíts fordítani",
 	"language-unknown": "Ismeretlen",
+	"multisync-header-count--tooltip": "Csoportosan másolandó oldalak száma.",
+	"multisync-page-header--label": "Oldalak szinkronizálása",
 	"settings-gear--aria": "Beállítások menü megnyitása",
 	"settings-logout": "Kijelentkezés…",
 	"settings-options": "Beállítások",
@@ -100,6 +103,7 @@
 	"table-cell-unlocalized--tooltip": "$1 lap azonos az eredetivel. Ezeket a lapokat lokalizálni kell, mert néhány függőségnek eltérő neve lehet az adott wikin. Ez automatikusan megtehető.",
 	"table-cell-updated--tooltip": "$1 lap naprakész.",
 	"table-externallink--aria": "Külső hivatkozás megnyitása új lapon",
+	"table-header-count--label": "Számláló",
 	"table-header-deps--label": "Függőségek",
 	"table-header-deps--tooltip": "A függőségek állapota jelzi, hogy vannak-e problémák a lap által használt többi lappal.",
 	"table-header-diverged--tooltip": "A helyi módosítással rendelkező lapok száma.",

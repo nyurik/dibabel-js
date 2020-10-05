@@ -39,7 +39,7 @@
 	"diff-deps-status--no-wd": "לדף בוויקי הראשי אין דף פריט מתאים בוויקינתונים",
 	"diff-deps-warning--title": "בעיות עם תלויות",
 	"diff-deps-warnings--content": "נא לתקן בעיות בדפים אחרים שהדף הזה משתמש בהם. העתקת הדף הזה בלי תיקון הבעיות האלה יכולה לגרום לשגיאות.",
-	"diff-header-description--diverged": "הגרסה הנוכחית של $1 לא נמצאה בהסטוריה של הדף הראשי $2.",
+	"diff-header-description--diverged": "הגרסה הנוכחית של $1 לא נמצאה בהיסטוריה של הדף הראשי $2.",
 	"diff-header-description--ok": "הדף $1 הוא גרסה עם התאמה מקומית של הדף המקורי $2.",
 	"diff-header-description--outdated": "הדף $1 נמצא $2 אחרי הדך הראשי $3.",
 	"diff-header-description--outdated-rev": "{{PLURAL:$1|גרסה אחת|$1 גרסאות}}",

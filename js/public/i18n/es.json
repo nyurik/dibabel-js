@@ -24,7 +24,7 @@
 	"diff-header-description--outdated-rev": "{{PLURAL:$1|una revisión|$1 revisiones}}",
 	"diff-header-description--unlocalized": "La página $1 es idéntica a la original $2, pero necesita tener algunas localizaciones.",
 	"diff-header-warnings--diverged": "Esta página fue modificada por la comunidad $1. No la sobrescribas a menos que:",
-	"diff-header-warnings--diverged-1": "Cambios locales hechos por error y que se deben revertir",
+	"diff-header-warnings--diverged-1": "Los cambios locales se hicieron por error y deben revertirse",
 	"diff-header-warnings--diverged-2": "Los cambios locales ahora se incluyen en la página primaria",
 	"diff-header-warnings--diverged-3": "Los cambios locales ya no se necesitan",
 	"diff-header-warnings--diverged-head": "Contenido no reconocido",
