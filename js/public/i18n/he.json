@@ -45,7 +45,7 @@
 	"diff-header-description--outdated-rev": "{{PLURAL:$1|גרסה אחת|$1 גרסאות}}",
 	"diff-header-description--unlocalized": "הדף $1 זהה לדך המקורי $2, אבל נחוצות בו מספר התאמות מקומיות.",
 	"diff-header-warnings--diverged": "הדף הזה שוּנה על־די קהילת $1. אין לדרוס אותו אלא אם:",
-	"diff-header-warnings--diverged-1": "מקומי, שינויים נעשו בטעות, וכדאי לשחזר אותם",
+	"diff-header-warnings--diverged-1": "השינויים המקומיים נעשו בטעות וכדאי לשחזר אותם",
 	"diff-header-warnings--diverged-2": "השינויים המקומיים כלולים עכשיו בדף הראשי",
 	"diff-header-warnings--diverged-3": "השינויים המקומיים כבר לא נחוצים",
 	"diff-header-warnings--diverged-head": "תוכן לא מזוהה",

@@ -5,6 +5,7 @@
 			"Gomoko",
 			"Pols12",
 			"Thibaut120094",
+			"Verdy p",
 			"Wladek92",
 			"Yurik"
 		]
@@ -49,7 +50,7 @@
 	"diff-header-description--outdated-rev": "{{PLURAL:$1|une révision|$1 révisions}}",
 	"diff-header-description--unlocalized": "La page $1 est identique à l’originale $2, mais nécessite certaines adaptations locales.",
 	"diff-header-warnings--diverged": "Cette page a été modifiée par la communauté $1. Ne pas l’écraser à moins que :",
-	"diff-header-warnings--diverged-1": "Local, les modifications ont été faites par erreur et doivent être annulées",
+	"diff-header-warnings--diverged-1": "Les modifications locales ont été faites par erreur et devraient être annulées",
 	"diff-header-warnings--diverged-2": "Les modifications locales sont maintenant incluses dans la page primaire",
 	"diff-header-warnings--diverged-3": "Les modifications locales ne sont plus nécessaires",
 	"diff-header-warnings--diverged-head": "Contenu non reconnu",

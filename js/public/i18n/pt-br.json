@@ -34,6 +34,7 @@
 	"diff-deps-status--no-wd": "A página na wiki principal não tem página de item do Wikidata correspondente.",
 	"diff-deps-warning--title": "Problemas com dependências",
 	"diff-deps-warnings--content": "Corrija problemas com outras páginas usadas por esta página. Copiar esta página sem corrigi-los primeiro pode resultar em erros.",
+	"diff-header-warnings--diverged-1": "As alterações locais foram feitas por engano e devem ser revertidas",
 	"diff-header-warnings--diverged-2": "As mudanças locais agora estão incluídas na página principal",
 	"diff-header-warnings--diverged-3": "As mudanças locais não são mais necessárias",
 	"diff-summary-text--edit": "Copiando {{PLURAL:$1|uma mudança|$1 mudanças}} de $2 \"$3\" de $4. ([[mw:WP:TNT|documentos]])",

@@ -44,7 +44,7 @@
 	"diff-header-description--outdated-rev": "{{PLURAL:$1|bir revizyon|$1 revizyon}}",
 	"diff-header-description--unlocalized": "$1 sayfası orijinal $2 ile aynı, ancak bazı yerelleştirmeler olması gerekiyor.",
 	"diff-header-warnings--diverged": "Bu sayfa $1 topluluğu tarafından değiştirildi. Aşağıdakiler olmadıkça geçersiz kılmayın:",
-	"diff-header-warnings--diverged-1": "Yerel, değişiklikler yanlışlıkla yapıldı ve geri alınmalı",
+	"diff-header-warnings--diverged-1": "Yerel değişiklikler yanlışlıkla yapıldı ve geri alınmalı",
 	"diff-header-warnings--diverged-2": "Yerel değişiklikler artık ana sayfaya dahil edilmiştir",
 	"diff-header-warnings--diverged-3": "Yerel değişikliklere artık gerek yok",
 	"diff-header-warnings--diverged-head": "Tanınmayan içerik",

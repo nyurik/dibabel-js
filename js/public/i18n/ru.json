@@ -7,7 +7,8 @@
 			"Kareyac",
 			"Putnik",
 			"Yuri Astrakhan",
-			"Yurik"
+			"Yurik",
+			"Арсен Асхат"
 		]
 	},
 	"create-page--button": "Добавить новую…",
@@ -30,6 +31,7 @@
 	"diff-deps-button-new--caption": "Создать зависимость",
 	"diff-deps-header--status": "Статус зависимости",
 	"diff-deps-header--title": "Заголовок зависимости",
+	"diff-header-warnings--diverged-1": "Локальные изменения были сделаны по ошибке и должны быть возвращены.",
 	"diff-summary--label": "Описание",
 	"diff-summary--placeholder": "Редактировать описание",
 	"diff-summary-text--empty-summary": "(без описания)",
