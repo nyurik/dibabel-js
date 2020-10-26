@@ -1,0 +1,34 @@
+{
+	"@metadata": {
+		"authors": [
+			"Maqa001"
+		]
+	},
+	"create-page--button": "Yeni əlavə et ...",
+	"create-page-cancel--label": "Ləğv et",
+	"create-page-content--label": "Məzmun",
+	"create-page-create--label": "Yaradın!",
+	"create-page-error--title": "Yaratma xətası $1: $2",
+	"create-page-error-wd--title": "$1 yaradıldı, lakin $2: $3-ə əlavə edərkən bir səhv oldu",
+	"create-page-header--label": "Yeni bir nüsxə yaradın",
+	"create-page-page--label": "Nüsxə etmək üçün səhifə",
+	"create-page-page--placeholder": "Nüsxə etmək üçün bir səhifə seçin",
+	"create-page-success--title": "$1 yaradıldı",
+	"create-page-target--label": "Ad sahəsi olmayan yeni səhifə adı",
+	"create-page-target--placeholder": "Başlıq",
+	"create-page-wiki--info": "Artıq $2 vikidən $1-də mövcuddur.",
+	"create-page-wiki--label": "Hədəf vikisi",
+	"create-page-wiki--placeholder": "Hədəf vikisi seçin",
+	"dataloader-toast-error--title": "Nüsxə yüklənərkən xəta baş verdi",
+	"dataloader-toast-success--copies": "{{PLURAL:$1|bir nüsxə|$1 nüsxələr}}",
+	"dataloader-toast-success--pages": "{{PLURAL:$1|bir səhifə|$1 səhifələr}}",
+	"dataloader-toast-success--title": "Yüklənmiş məlumatlar",
+	"diff-content--loading": "Səhifə məzmunu yüklənir ...",
+	"diff-content--loading-error": "Məzmun yüklənərkən xəta baş verdi ...",
+	"diff-content--login-error": "Lütfən, nüsxə etmədən əvvəl yuxarı sağ küncdə daxil olun.",
+	"diff-deps-button--caption": "Asılılığa baxın",
+	"diff-deps-button-new--caption": "Asılılıq yaradın",
+	"diff-deps-header--status": "Asılılıq Statusu",
+	"diff-deps-header--title": "Asılılığın Başlığı",
+	"diff-deps-none--label": "Bu səhifə başqa modul və ya şablondan asılı deyil"
+}
