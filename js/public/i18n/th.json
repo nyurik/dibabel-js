@@ -30,6 +30,7 @@
 	"diff-summary--placeholder": "ความย่อการแก้ไข",
 	"diff-summary-text--edit": "คัดลอก $1 การแก้ไข โดย $2: \"$3\" จาก $4 ([[mw:WP:TNT|คู่มือ]], [[c:Data:I18n/DiBabel.tab|แปล]])",
 	"diff-summary-text--localized": "ปรับ $1 สำหรับใช้กับแม่แบบและมอดูลบนวิกินี้ ([[mw:Special:MyLanguage/WP:TNT|คู่มือ]])",
+	"diff-summary-text--new": "สร้างการคัดลอกมายังท้องถิ่นของ $1 (([[mw:Special:MyLanguage/WP:TNT|วิธีใช้]]))",
 	"diff-summary-text--reset": "รีเซ็ตหน้าให้เนื้อหาปัจจุบันตรงกับ $1 ([[mw:Special:MyLanguage/WP:TNT|คู่มือ]])",
 	"filters-groupby--placeholder": "จัดกลุ่มตาม",
 	"filters-lang": "ภาษา",
