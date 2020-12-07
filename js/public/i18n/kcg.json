@@ -1,0 +1,33 @@
+{
+	"@metadata": {
+		"authors": [
+			"Kambai Akau"
+		]
+	},
+	"create-page--button": "Mbeang a̠fai",
+	"create-page-cancel--label": "Lyang",
+	"create-page-content--label": "Nkyang na̠ shyia̠ mami a̠ni",
+	"create-page-create--label": "Mat!",
+	"create-page-error--title": "Ghyuap di̠ mat $1: $2",
+	"create-page-error-wd--title": "Á̠ mat $1, a̠wot ghyuap ku nshya̠ mi̠ mbeang nhu ma̠ng $2: $3",
+	"create-page-header--label": "Mat kopi fai",
+	"create-page-success--title": "Á̠ mat $1",
+	"create-page-target--label": "A̠lyoot peji fai di̠ mi̠n a̠wata̠lyoot",
+	"create-page-target--placeholder": "A̠pyia̠ a̠lyiat",
+	"filters-lang": "A̠lyem",
+	"filters-lang--unknown": "A̠lyem á̠kpa/A̠ɡhyang",
+	"filters-project": "Ta̠m",
+	"filters-protection": "Cok",
+	"filters-searchbar--placeholder": "kídee: kcg.wikipidya TNT lang=kcg",
+	"filters-status": "Yong",
+	"filters-status-diverged": "Ka̠u nvak",
+	"filters-status-ok": "Ndei",
+	"filters-status-outdated": "A̠khwop",
+	"filters-type": "Kak",
+	"filters-wiki": "Wiki",
+	"header-links--help": "Beang",
+	"header-links--source": "A̠ni̠nan",
+	"language-help": "Beang bwuan",
+	"language-unknown": "Á̠ lyen bah",
+	"settings-logout": "Ghwut..."
+}
