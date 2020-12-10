@@ -100,6 +100,8 @@
 	"settings-split--tooltip": "Pera pêver kerdış pêkışta yana pêneyaye bımısne.",
 	"settings-theme--label": "Modê sewe",
 	"sync-button--label": "{{PLURAL:$1|$1 pela rocane ke|$1 pelan rocane ke}}",
+	"sync-button-tooltip--content": "No, jew ra zêde peran piya kopya kerdışi rê mısade dano. Verê kopyay gruba herg çımeştışi rê nê butoni bıploğne.",
+	"table-cell-deps-missing--tooltip": "Na per dı hedef wiki dı nêvinaye xuyi esta",
 	"table-cell-diverged--tooltip": "{{PLURAL:$1|ju per|$1 peran}} de lokal vurnayışi estê u gani tek tek senkronize bıbê .",
 	"table-cell-primary--tooltip": "Yew taba newiye de yewenê $1 bımocne .",
 	"table-cell-status--diverged-label": "Abırneyao",
