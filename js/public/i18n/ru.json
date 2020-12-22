@@ -5,6 +5,7 @@
 		"authors": [
 			"Iniquity",
 			"Kareyac",
+			"Okras",
 			"Putnik",
 			"Yuri Astrakhan",
 			"Yurik",
@@ -15,6 +16,7 @@
 	"create-page-cancel--label": "Отменить",
 	"create-page-content--label": "Содержимое",
 	"create-page-create--label": "Создать!",
+	"create-page-header--label": "Создать новую копию",
 	"create-page-page--label": "Страница для копирования",
 	"create-page-page--placeholder": "Выберите страницу для копирования",
 	"create-page-success--title": "$1 была создана",

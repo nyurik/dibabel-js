@@ -23,7 +23,7 @@
 	"dataloader-toast-error--title": "שגיאה בטעינת העותק",
 	"dataloader-toast-success--copies": "{{PLURAL:$1|עותק אחד|$1 עותקים}}",
 	"dataloader-toast-success--pages": "{{PLURAL:$1|דף אחד|$1 דפים}}",
-	"dataloader-toast-success--title": "נתונים שנטענו",
+	"dataloader-toast-success--title": "הנתונים נטענו",
 	"diff-content--loading": "טעינת תוכן הדף...",
 	"diff-content--loading-error": "שגיאה בטעינת התוכן...",
 	"diff-content--login-error": "נא להיכנס לחשבון בפינה השמאלית העליונה לפני העתקה.",

@@ -25,6 +25,7 @@
 	"create-page-wiki--placeholder": "If target wiki input field is empty, this text is shown in gray.",
 	"dataloader-toast-success--copies": "Shown on startup -- indicates how many page copies exist that have been loaded from the server (not to be confused with pages - a much smaller number)\n\n* $1 number of copies",
 	"dataloader-toast-success--pages": "Shown on startup -- indicates how many pages exist that have been loaded from the server (not to be confused with copies - a much higher number)\n\n* $1 number of pages",
+	"dataloader-toast-success--title": "Appears in a bubble at the bottom of the screen shortly after entering the Dibabel dashboard and lists what data was loaded, for example:\n\nLoaded data<br />\n23 pages<br />\n<br />\n3236 copies",
 	"diff-content--loading": "Info text shown while downloading the latest page changes.",
 	"diff-content--loading-error": "An error shown when it was not possible to get the latest changes to the page.",
 	"diff-content--login-error": "In right to left languages, it's \"upper left\".",
