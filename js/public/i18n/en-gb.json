@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Alefar"
+		]
+	},
+	"create-page--button": "Add new…",
+	"create-page-cancel--label": "Cancel",
+	"create-page-content--label": "Content",
+	"create-page-create--label": "CREATE!"
+}

@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Alefar",
 			"Amire80",
 			"Nike",
 			"Robby",
@@ -10,7 +11,8 @@
 		]
 	},
 	"create-page--button": "Text on a button to create a new copy of the primary page.",
-	"create-page-cancel--label": "Cancel/close the modal dialog box to create a new copy.",
+	"create-page-cancel--label": "Cancel/close the modal dialog box to create a new copy.\n{{identical|Cancel}}",
+	"create-page-content--label": "{{identical|Content}}",
 	"create-page-create--label": "A button to start creating a new copy of a primary page on a given wiki.",
 	"create-page-error--title": "Error message shown when the new page was not created.",
 	"create-page-error-wd--title": "An error shown if a new wiki page was created, but it was not possible to add it to the wikidata sitelinks (translations).\n\nParameters:\n* $1 link to the new page\n* $2 link to Wikidata\n* $3 error message",
@@ -50,6 +52,7 @@
 	"diff-summary--placeholder": "Gray text appearing in the summary edit box when no text is entered. This will almost never be shown, and might be deleted later.",
 	"diff-summary--tooltip": "This is a tooltip text shown when the user hovers over the link to translatewiki.",
 	"diff-summary-text--edit": "Edit summary when the local page has fallen behind from the original, and the user is updating it to the latest.\n\nParameter:\n* $1 - change count\n* $2 - list of users who made changes\n* $3 - combined text of summary messages\n* $4 link to the source page.",
+	"diff-summary-text--empty-summary": "Text that gets displayed instead of the edit summary, when it was left empty",
 	"diff-summary-text--localized": "Edit summary when the local page is identical to the original, and namespaces, module names and template names need to be translated to the local wiki. \n\n* $1 is a link to the primary version of the page.",
 	"diff-summary-text--new": "Edit summary when the user is creating a new copy of the centrally stored page to a wiki.\n\n* $1 is a link to the primary version of the page.",
 	"diff-summary-text--reset": "Edit summary when the local page has diverged from the original, and the user is overwriting it with the current content from the primary page.\n\n* $1 is a link to the primary version of the page.",

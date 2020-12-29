@@ -1,0 +1,29 @@
+{
+	"@metadata": {
+		"authors": [
+			"Dr Lotus Black"
+		]
+	},
+	"create-page-cancel--label": "မလုပ်တော့ပါ",
+	"create-page-content--label": "မာတိကာ",
+	"create-page-create--label": "ဖန်တီးရန်",
+	"create-page-target--placeholder": "ခေါင်းစဉ်",
+	"diff-summary--label": "အကျဉ်းချုပ်",
+	"diff-summary--placeholder": "အကျဉ်းချုပ်ကို တည်းဖြတ်ရန်",
+	"filters-lang": "ဘာသာစကား",
+	"filters-project": "ပရောဂျက်",
+	"filters-protection": "ကာကွယ်မှု",
+	"filters-status-ok": "အိုကေ",
+	"filters-type--templates": "တမ်းပလိတ်များ",
+	"filters-wiki": "ဝီကီ",
+	"header-links--help": "အကူအညီ",
+	"header-links--source": "ရင်းမြစ်",
+	"language-help": "ဘာသာပြန် ကူညီရန်",
+	"language-unknown": "အမည်မသိ",
+	"settings-options": "ရွေးချယ်စရာများ",
+	"table-cell-status--ok-label": "အိုကေ",
+	"table-header-language--label": "ဘာသာစကား",
+	"table-header-project--label": "ပရောဂျက်",
+	"table-loading": "ဝန်ဆွဲတင်နေသည်...",
+	"user-login": "အကောင့်ထဲဝင်ရန်"
+}
