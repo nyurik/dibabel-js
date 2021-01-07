@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Smobile"
+		]
+	},
+	"create-page--button": "Nawaa Jorro ...",
+	"create-page-cancel--label": "Nai karo",
+	"create-page-create--label": "Banao!",
+	"create-page-error-wd--title": "$1 ke banae dewa gais hai, lekin iske $2 se jorrte ke time kuchh garrbarri hoe gais: $3"
+}

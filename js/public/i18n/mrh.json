@@ -2,9 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Chhithai",
+			"Reihpaleituh",
 			"Teitei Para"
 		]
 	},
+	"create-page--button": "A thiehpa khôthlu...",
 	"create-page-cancel--label": "Châvei",
 	"create-page-create--label": "Tao!",
 	"create-page-error--title": "$1 taona a do leipa: $2",
