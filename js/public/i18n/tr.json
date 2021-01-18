@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Hedda",
 			"MuratTheTurkish"
 		]
 	},
@@ -9,7 +10,7 @@
 	"create-page-content--label": "İçerik",
 	"create-page-create--label": "Oluştur!",
 	"create-page-error--title": "$1 oluşturulurken hata oluştu: $2",
-	"create-page-error-wd--title": "$1 oluşturuldu, ancak $2 ile eklenirken bir hata oluştu: $3",
+	"create-page-error-wd--title": "$1 oluşturuldu ancak $2 ile eklenirken bir hata oluştu: $3",
 	"create-page-header--label": "Yeni bir kopya oluştur",
 	"create-page-page--label": "Kopyalanacak bir sayfa",
 	"create-page-page--placeholder": "Kopyalamak için bir sayfa seçin",
