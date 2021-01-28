@@ -108,7 +108,7 @@
 	"table-cell-diverged--tooltip": "{{PLURAL:$1|Una pagina  la gh'hà|$1 pagine i gh'han}} di modifiche locai e i gh'han de vesser sincornizzade in deperlor.",
 	"table-cell-hash--tooltip": "El numer de hash el rapresenta un'impronta unega del contegnud atual de la pagina. I pagine cont un hash i gh'han l'istess contegnud.  L'hash a l'é calcolad inanz che la pagina l'è stada tradota per questa wiki.",
 	"table-cell-outdated--tooltip": "{{PLURAL:$1|Una pagina|$1 pagine}} de dree a quella principal e poden vesser sincronizzade in automatich.",
-	"table-cell-primary--tooltip": "Fa vede el principal $1 ind una scheda noeuva.",
+	"table-cell-primary--tooltip": "Fa vede el principal $1 in d'una scheda noeuva.",
 	"table-cell-status--diverged-label": "Desviad",
 	"table-cell-status--diverged-tooltip": "La pegina selezionada a l'é stada modificada e la po vesser minga asgiorada in automatich.",
 	"table-cell-status--ok--tooltip": "La pagina selezionada a l'é agiornada con quella principal",
@@ -158,6 +158,6 @@
 	"updatepage-confirm--tooltip": "Adrée a asgiornà la pagina wiki",
 	"updatepage-confirm--yes": "Si, fal!",
 	"updatepage-status": "$1 a l'è stad asgiornad",
-	"updatepage-status-error": "Eror ind del cors de la publicazzion de $1 - $2",
+	"updatepage-status-error": "Eror in del cors de la publicazzion de $1 - $2",
 	"user-login": "Va dent al sistema"
 }
