@@ -20,6 +20,7 @@
 	"dataloader-toast-success--pages": "{{PLURAL:$1|$1 агӀо}}",
 	"dataloader-toast-success--title": "Чубаьхна хаамаш",
 	"diff-content--loading": "АгӀонан чулацам чубаккхар...",
+	"diff-deps-header--status": "Хьажжина хиларан статус",
 	"diff-summary--label": "Цунах лаьцна",
 	"diff-summary--placeholder": "Хийца",
 	"diff-summary-text--empty-summary": "(хийцамах лаьцна доцуш)",
