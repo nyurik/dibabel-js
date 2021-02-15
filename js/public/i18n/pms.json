@@ -36,7 +36,7 @@
 	"diff-deps-status--missing": "La pàgina dipendenta $1 a esist nen ant la wiki primaria",
 	"diff-deps-status--no-copy": "La pàgina multisit a esist nen an $1",
 	"diff-deps-status--no-sync": "Nen marcà an Wikidata tanme pàgina multisit",
-	"diff-deps-status--no-wd": "La pàgina an sla wiki primaria a l'ha gnun-a vos su Wikidàit",
+	"diff-deps-status--no-wd": "La pàgina an sla wiki primaria a l'ha gnun-a pàgina d'element corëspondenta su Wikidàit.",
 	"diff-deps-warning--title": "Problema con le dipendense",
 	"diff-deps-warnings--content": "Për piasì, ch'a rangia ël problema con j'àutre pàgine dovrà da costa pàgina-sì. Copié sa pàgina sensa prima avèj rangiaje a peul causé d'eror.",
 	"diff-header-description--diverged": "La version atual ëd $1 a l'é nen ëstàita trovà ant la stòria dla pagina prinsipal $2.",
