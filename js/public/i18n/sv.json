@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Sabelöga"
+			"Sabelöga",
+			"WikiPhoenix"
 		]
 	},
 	"create-page--button": "Lägg till ny...",
@@ -44,7 +45,7 @@
 	"diff-header-description--outdated-rev": "{{PLURAL:$1|en version|$1 versioner}}",
 	"diff-header-description--unlocalized": "Sidan $1 är identisk originalet $2, men behöver några lokaliseringar.",
 	"diff-header-warnings--diverged": "Denna sida modifierades av $1-gemenskapen. Överskrid den inte förutom om:",
-	"diff-header-warnings--diverged-1": "Lokalt, ändringarna utfördes av misstag och borde därför göras ogjorda",
+	"diff-header-warnings--diverged-1": "De lokala ändringarna utfördes av misstag och borde därför göras ogjorda",
 	"diff-header-warnings--diverged-2": "De lokala ändringarna inkluderas nu på primärsidan",
 	"diff-header-warnings--diverged-3": "De lokala ändringarna behövs inte längre",
 	"diff-header-warnings--diverged-head": "Innehållet kändes inte igen",
