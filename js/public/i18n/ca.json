@@ -46,7 +46,7 @@
 	"diff-header-description--outdated-rev": "{{PLURAL:$1|una revisió|$1 revisions}}",
 	"diff-header-description--unlocalized": "La pàgina $1 és idèntica a l'original $2, però necessita tenir algunes localitzacions.",
 	"diff-header-warnings--diverged": "Aquesta pàgina ha estat modificada per la comunitat $1.  No ho substitueixis llevat que:",
-	"diff-header-warnings--diverged-1": "Local, els canvis es van fer per error i s'haurien de revertir",
+	"diff-header-warnings--diverged-1": "Els canvis locals es van fer per error i s'haurien de revertir",
 	"diff-header-warnings--diverged-2": "Els canvis locals s'inclouen ara a la pàgina principal",
 	"diff-header-warnings--diverged-3": "Els canvis locals ja no són necessaris",
 	"diff-header-warnings--diverged-head": "Contingut no reconegut",
