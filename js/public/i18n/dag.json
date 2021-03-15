@@ -1,10 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"Amire80",
 			"Musahfm"
 		]
 	},
-	"multisync-header-count--tooltip": "Gbaŋ sheŋa ŋan yen yaai laɣim niŋ boŋ yinga ni kalinli",
+	"multisync-header-count--tooltip": "Gbaŋ sheŋa ŋan yen yaai laɣim niŋ boŋ yinga ni kalinli.",
 	"sync-button--label": "Pahimi lahabali ti {{PLURAL:$1|$1 page|$1 pages}}",
 	"table-header-count--label": "Kalima"
 }
