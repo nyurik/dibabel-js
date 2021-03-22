@@ -3,6 +3,7 @@
 		"authors": [
 			"Alefar",
 			"Amire80",
+			"FF11",
 			"Nike",
 			"Robby",
 			"Tacsipacsi",
@@ -105,7 +106,7 @@
 	"table-cell-status--unlocalized-label": "A status indicator in the table.",
 	"table-cell-status--unlocalized-tooltip": "Tooltip for the icon next to {{msg-dibabel|dibabel-table-cell-status--unlocalized-label}}",
 	"table-cell-unlocalized--tooltip": "$1 pages are identical to the original. These pages need to be localized because some dependent templates may have different names on that wiki. This can be done automatically.",
-	"table-cell-updated--tooltip": "!!FUZZY!!$1 pages are up to date.",
+	"table-cell-updated--tooltip": "",
 	"table-header-diverged--label": "Title in a table cell",
 	"table-header-diverged--tooltip": "Tooltip for {{msg-dibabel|dibabel-table-header-diverged--label}}",
 	"table-header-hash--label": "Table column heading",
