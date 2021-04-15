@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Bugoslav"
+			"Bugoslav",
+			"MaGa"
 		]
 	},
 	"create-page-error--title": "Pogrješka pri stvaranju stranice $1: $2",
@@ -10,6 +11,6 @@
 	"create-page-page--placeholder": "Odaberi stranicu za preslik",
 	"diff-summary-text--empty-summary": "(bez sažetka izmjene)",
 	"diff-summary-text--reset": "Povovno postavljanje na trenutačni sadržaj stranice imena $1. ([[mw:Special:MyLanguage/WP:TNT|dokumentacija]])",
-	"language--tooltip": "Škljocnite za promjenu prikaznoga jezika",
+	"language--tooltip": "Kliknite za promjenu prikaznoga jezika",
 	"table-cell-deps-unsynced--tooltip": "Ova stranica ima o njoj zavisne stranice koje nisu u ovome trenutku usklađene."
 }
