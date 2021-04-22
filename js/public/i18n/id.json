@@ -1,8 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
+			"AJBot2",
 			"Yurik"
 		]
 	},
-	"diff-summary-text--edit": "Menyalin {{PLURAL:$1|satu revisi|$1 revisi}} oleh $2: \"$3\" dari $4. ([[mw:WP:TNT|dokumentasi]], [[c:Data:I18n/DiBabel.tab|terjemahan]])"
+	"create-page--button": "Tambah baru...",
+	"create-page-cancel--label": "Membatalkan",
+	"diff-summary-text--edit": "Menyalin {{PLURAL:$1|satu revisi|$1 revisi}} oleh $2: \"$3\" dari $4. ([[mw:WP:TNT|dokumentasi]], [[c:Data:I18n/DiBabel.tab|terjemahan]])",
+	"table-pagecount": "{{PLURAL:$1|$1 halaman|$1 halaman}}",
+	"user-login": "Gabung"
 }
