@@ -1,0 +1,26 @@
+{
+	"@metadata": {
+		"authors": [
+			"ಮಲ್ನಾಡಾಚ್ ಕೊಂಕ್ಣೊ"
+		]
+	},
+	"create-page-cancel--label": "ರದ್ದುಮಾಡಿ",
+	"create-page-create--label": "ಸೃಷ್ಟಿಸು!",
+	"create-page-error--title": "$1 ಸೃಷ್ಟಿಸಲು ದೋಷವಾಯಿತು: $2",
+	"create-page-target--placeholder": "ಶೀರ್ಷಿಕೆ",
+	"diff-summary--label": "ಸಾರಾಂಶ",
+	"diff-summary--placeholder": "ಸಂಪಾದನೆಯ ಸಾರಾಂಶ",
+	"filters-lang": "ಭಾಷೆ",
+	"filters-project": "ಯೋಜನೆ",
+	"filters-status-ok": "ಸರಿ",
+	"filters-type": "ನಮೂನೆ",
+	"filters-type--modules": "ಮಾಡ್ಯೂಲ್‌ಗಳು",
+	"filters-type--templates": "ಟೆಂಪ್ಲೇಟುಗಳು",
+	"filters-wiki": "ವಿಕಿ",
+	"header-links--help": "ಸಹಾಯ",
+	"header-links--source": "ಮೂಲ",
+	"language-help": "ಅನುವಾದಿಸಲು ನೆರವಾಗಿ",
+	"settings-logout": "ಲಾಗೌಟ್...",
+	"settings-options": "ಆಯ್ಕೆಗಳು",
+	"table-cell-status--ok-label": "ಸರಿ"
+}
