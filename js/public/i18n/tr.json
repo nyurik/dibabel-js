@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Cobija",
 			"Hedda",
 			"MuratTheTurkish"
 		]
@@ -69,7 +70,7 @@
 	"filters-groupby--title": "başlığa göre",
 	"filters-groupby--tooltip": "Kopya listesini grupla...",
 	"filters-lang": "Dil",
-	"filters-lang--unknown": "Çok Dilli / Diğer",
+	"filters-lang--unknown": "Çokdilli / Diğer",
 	"filters-project": "Proje",
 	"filters-protection": "Koruma",
 	"filters-searchbar--placeholder": "örnekler:   tr.wikipedia    TNT    lang=tr",
