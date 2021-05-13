@@ -1,0 +1,21 @@
+{
+	"@metadata": {
+		"authors": [
+			"Narazeni"
+		]
+	},
+	"create-page--button": "ქეგუძინჷ ახალი...",
+	"create-page-cancel--label": "გოუქვაფა",
+	"create-page-content--label": "დინორე",
+	"create-page-create--label": "დორსხუაფა!",
+	"create-page-error--title": "ჩილათს $1-შ დორსხუაფაშის: $2",
+	"create-page-header--label": "ახალი ანგიშ გოჭყაფა",
+	"create-page-page--label": "ხასჷლა ანგიშო",
+	"create-page-page--placeholder": "გეგშაგორით ხასჷლა ანგიშო",
+	"create-page-success--title": "$1 გოჭყაფილი რე",
+	"create-page-target--placeholder": "დუდჯოხო",
+	"create-page-wiki--label": "ოღანკე ვიკი",
+	"dataloader-toast-success--copies": "{{PLURAL:$1|ართი ანგი|$1 ანგი}}",
+	"dataloader-toast-success--pages": "{{PLURAL:$1|ართი ხასჷლა|$1 ხასჷლა}}",
+	"dataloader-toast-success--title": "გჷმოხარგელი მუნაჩემეფი"
+}

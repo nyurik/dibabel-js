@@ -1,0 +1,20 @@
+{
+	"@metadata": {
+		"authors": [
+			"Гусейн"
+		]
+	},
+	"create-page--button": "Нујә гылә әловә карде",
+	"create-page-cancel--label": "Оһаштеј",
+	"create-page-content--label": "Контент",
+	"create-page-create--label": "Сохте!",
+	"create-page-error--title": "сохте хәто $1: $2",
+	"create-page-success--title": "$1 сохтә бе",
+	"filters-lang": "Зывон",
+	"filters-type": "Тиспир",
+	"filters-wiki": "Вики",
+	"header-links--help": "Дастәк",
+	"header-links--source": "Мәнбә",
+	"language-help": "Пегордыније дастәк",
+	"language-unknown": "Номәлум"
+}
