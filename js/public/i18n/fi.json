@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Joquliina",
 			"Nike",
 			"Pyscowicz",
 			"Yurik"
@@ -60,5 +61,6 @@
 	"table-loading--error": "Tietojen lataaminen epäonnistui",
 	"table-pagecount": "{{PLURAL:$1|$1 sivu|$1 sivua}}",
 	"updatepage-confirm--no": "Ei, vie minut takaisin",
+	"updatepage-confirm--yes": "Kyllä, tee se!",
 	"user-login": "Kirjaudu sisään"
 }

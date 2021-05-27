@@ -1,8 +1,0 @@
-{
-	"@metadata": {
-		"authors": [
-			"Yurik"
-		]
-	},
-	"diff-summary-text--edit": "لەبەرگرتنەوەی {{PLURAL:$1|گۆڕانکارییەک|$1 گۆڕانکاری}} لە $4 لەلایەن $2{{#if:$3|: \"$3\"}}. ([[mw:WP:TNT|بەڵگەنامەکان]]، [[c:Data:I18n/DiBabel.tab|وەرگێڕان]]|"
-}
