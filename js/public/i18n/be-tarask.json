@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Renessaince"
+		]
+	},
+	"create-page-error-wd--title": "$1 была створаная, але пры даданьні да $2 адбылася памылка: $3"
+}
