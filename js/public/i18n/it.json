@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ajeje Brazorf",
 			"Beta16"
 		]
 	},
@@ -8,11 +9,20 @@
 	"create-page-content--label": "Contenuto",
 	"create-page-create--label": "Crea!",
 	"create-page-header--label": "Crea una nuova copia",
+	"create-page-success--title": "$1 è stata creata",
 	"create-page-target--placeholder": "Titolo",
 	"dataloader-toast-success--copies": "{{PLURAL:$1|una copia|$1 copie}}",
 	"dataloader-toast-success--pages": "{{PLURAL:$1|una pagina|$1 pagine}}",
 	"diff-summary-text--edit": "Copia di {{PLURAL:$1|una modifica|$1 modifiche}} di $2: $3 da $4. ([[mw:Special:MyLanguage/WP:TNT|documentazione]])",
 	"diff-summary-text--empty-summary": "(nessun oggetto)",
 	"filters-protection": "Protezione",
-	"sync-button--label": "Aggiorna {{PLURAL:$1|$1 pagina|$1 pagine}}"
+	"filters-type": "Tipo",
+	"filters-type--modules": "Moduli",
+	"filters-type--templates": "Template",
+	"filters-wiki": "Wiki",
+	"header-links--help": "Aiuto",
+	"header-links--source": "Fonte",
+	"settings-options": "Opzioni",
+	"sync-button--label": "Aggiorna {{PLURAL:$1|$1 pagina|$1 pagine}}",
+	"user-login": "Entra"
 }
