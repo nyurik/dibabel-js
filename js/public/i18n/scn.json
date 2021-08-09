@@ -1,0 +1,27 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ajeje Brazorf"
+		]
+	},
+	"create-page-cancel--label": "Annulla",
+	"create-page-content--label": "Cuntinutu",
+	"create-page-create--label": "Crea!",
+	"create-page-target--placeholder": "Tìtulu",
+	"dataloader-toast-success--pages": "{{PLURAL:$1|na pàggina|$1 pàggini}}",
+	"diff-summary--placeholder": "Riassuntu dû canciamentu",
+	"filters-lang": "Lingua",
+	"filters-status-ok": "OK",
+	"filters-type": "Tipu",
+	"filters-type--templates": "Template",
+	"filters-wiki": "Wiki",
+	"header-links--help": "Aiutu",
+	"header-links--source": "Fonti",
+	"language-unknown": "Scanusciuta",
+	"settings-options": "Opzioni",
+	"table-cell-status--ok-label": "OK",
+	"table-header-language--label": "Lingua",
+	"table-header-project--label": "Pruggettu",
+	"table-header-status--label": "Statu",
+	"user-login": "Trasi"
+}
