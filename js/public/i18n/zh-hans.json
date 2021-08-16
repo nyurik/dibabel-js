@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			")8",
+			"Crowley666",
 			"Shuiwater",
 			"Yurik"
 		]
@@ -10,6 +11,7 @@
 	"create-page-cancel--label": "取消",
 	"create-page-content--label": "内容",
 	"create-page-create--label": "创建！",
+	"create-page-error--title": "无法创建$1：$2",
 	"create-page-header--label": "创建一个新的拷贝对象",
 	"create-page-page--label": "要拷贝的一页",
 	"create-page-page--placeholder": "选择一个页面拷贝",
@@ -47,5 +49,6 @@
 	"table-header-status--label": "状态",
 	"table-header-unlocalized--label": "未本地化",
 	"table-loading": "加载中……",
+	"updatepage-confirm--tooltip": "更新维基页面",
 	"user-login": "登录"
 }
